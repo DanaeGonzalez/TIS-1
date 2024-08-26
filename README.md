@@ -6,3 +6,4 @@ Proyecto Taller de Ingeniería de Software
 - Maicol Rámirez
 - Javier Pino
 - Danae González
+### Proyecto: IKEA
