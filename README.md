@@ -7,3 +7,4 @@ Proyecto Taller de Ingeniería de Software
 - Javier Pino
 - Danae González
 ### Proyecto: IKEA
+Martes 15:00hrs a 16:00hrs
