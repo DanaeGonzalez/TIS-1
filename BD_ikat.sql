@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-10-2024 a las 07:42:01
+-- Tiempo de generación: 20-10-2024 a las 05:43:05
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -218,16 +218,17 @@ CREATE TABLE `producto` (
   `caracteristicas_producto` text NOT NULL,
   `foto_producto` varchar(255) NOT NULL,
   `cantidad_vendida` int(11) NOT NULL,
-  `top_venta` tinyint(1) NOT NULL
+  `top_venta` tinyint(1) NOT NULL,
+  `activo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `producto`
 --
 
-INSERT INTO `producto` (`id_producto`, `nombre_producto`, `precio_unitario`, `stock_producto`, `descripcion_producto`, `caracteristicas_producto`, `foto_producto`, `cantidad_vendida`, `top_venta`) VALUES
-(1, 'Mesa kawaii', 12990, 11, 'Una mesa muy kawaii', 'Mesa larga y es kawaii', 'https://cdn-icons-png.freepik.com/512/1660/1660256.png', 0, 1),
-(2, 'Silla kawaii', 5990, 0, 'Una silla kawaii', 'Rosadita', 'https://www.ubuy.cl/productimg/?image=aHR0cHM6Ly9tLm1lZGlhLWFtYXpvbi5jb20vaW1hZ2VzL0kvNTErUTVaTHozWkwuX0FDX1NMMTUwMF8uanBn.jpg', 0, 0);
+INSERT INTO `producto` (`id_producto`, `nombre_producto`, `precio_unitario`, `stock_producto`, `descripcion_producto`, `caracteristicas_producto`, `foto_producto`, `cantidad_vendida`, `top_venta`, `activo`) VALUES
+(1, 'Mesa kawaii', 12990, 11, 'Una mesa muy kawaii', 'Mesa larga y es kawaii', 'https://cdn-icons-png.freepik.com/512/1660/1660256.png', 0, 0, 1),
+(2, 'Silla kawaii', 5990, 0, 'Una silla kawaii', 'Rosadita', 'https://www.ubuy.cl/productimg/?image=aHR0cHM6Ly9tLm1lZGlhLWFtYXpvbi5jb20vaW1hZ2VzL0kvNTErUTVaTHozWkwuX0FDX1NMMTUwMF8uanBn.jpg', 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -249,7 +250,7 @@ CREATE TABLE `resenia` (
 
 INSERT INTO `resenia` (`id_resenia`, `calificacion`, `comentario`, `id_usuario`, `id_producto`) VALUES
 (1, 5, 'La mejor MESA QUE HE TENIDO OMG!!!!', 1, 1),
-(2, 1, 'MESA MALA', 2, 1),
+(2, 1, 'MESA BUENA', 2, 1),
 (3, 2, 'MESA MALA', 3, 1);
 
 -- --------------------------------------------------------
@@ -269,17 +270,18 @@ CREATE TABLE `usuario` (
   `direccion_usuario` varchar(100) DEFAULT NULL,
   `tipo_usuario` enum('Administrador','Registrado') NOT NULL,
   `puntos_totales` bigint(255) NOT NULL,
-  `id_divisa` int(10) NOT NULL
+  `id_divisa` int(10) NOT NULL,
+  `activo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `run_usuario`, `correo_usuario`, `numero_usuario`, `contrasenia_usuario`, `direccion_usuario`, `tipo_usuario`, `puntos_totales`, `id_divisa`) VALUES
-(1, 'Javier', 'Pino', '208460730', 'jpinoh@ing.ucsc.cl', '+56932365067', '$2y$10$AD05GOBM', 'Concepcion', 'Administrador', 5000, 1),
-(2, 'Camilo', 'Campos', '21243765k', 'ccamposg@ing.ucsc.cl', '+56912345678', '$2y$10$HGCFeNoF', 'Sri lanka', 'Administrador', 1, 1),
-(3, 'Danae', 'González', '20695321k', 'dgonzalezv@ing.ucsc.cl', '+56932361234', '$2y$10$el/Th/a8', 'Lorenzo arenas', 'Administrador', 2, 1);
+INSERT INTO `usuario` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `run_usuario`, `correo_usuario`, `numero_usuario`, `contrasenia_usuario`, `direccion_usuario`, `tipo_usuario`, `puntos_totales`, `id_divisa`, `activo`) VALUES
+(1, 'Javier', 'Pino', '208460730', 'jpinoh@ing.ucsc.cl', '+56932365067', '$2y$10$AD05GOBM', 'Concepcion', 'Administrador', 5000, 1, 0),
+(2, 'Camilo', 'Campos', '21243765k', 'ccamposg@ing.ucsc.cl', '+56912345678', '$2y$10$HGCFeNoF', 'Sri lanka', 'Administrador', 1, 1, 0),
+(3, 'Danae', 'González', '20695321k', 'dgonzalezv@ing.ucsc.cl', '+56932361234', '$2y$10$el/Th/a8', 'Lorenzo arenas', 'Administrador', 2, 1, 0);
 
 --
 -- Índices para tablas volcadas
