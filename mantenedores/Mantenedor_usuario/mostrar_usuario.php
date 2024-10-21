@@ -1,5 +1,9 @@
 <?php
-    include '../conexion.php';
+include '../conexion.php';
+session_start();
+
+$mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : '';
+unset($_SESSION['mensaje']);
 ?>
 
 <!DOCTYPE html>
@@ -74,7 +78,16 @@
 
         <!-- Content Area -->
         <div class="content-area flex-grow-1 p-5 col-4 col-md-10">
+
+            <?php if ($mensaje): ?>
+                <div class="alert alert-info alert-dismissible fade show text-center" role="alert">
+                    <?php echo $mensaje; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
             <h1 class="text-center p-4">Mantenedor de Usuarios</h1>
+            
             <div class="table-responsive">
                 <?php
                     $sql = "SELECT * FROM usuario";
@@ -110,23 +123,103 @@
                                     <td>{$row['tipo_usuario']}</td>
                                     <td>{$row['puntos_totales']}</td>
                                     <td>{$row['id_divisa']}</td>
-                                    <td>
-                                        <a href='editar_usuario.php?id={$row['id_usuario']}' class='btn btn-warning btn-sm'>Editar</a>
+                                    <td>   
+                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarUsuarioModal" . $row["id_usuario"] . "'>Editar</a> |
                                         <a href='borrar_usuario.php?id={$row['id_usuario']}' class='btn btn-danger btn-sm'>Borrar</a>
                                     </td>
                                   </tr>";
+
+                            echo "
+                            <div class='modal fade' id='editarUsuarioModal" . $row["id_usuario"] . "' tabindex='-1' aria-labelledby='editarUsuarioModalLabel' aria-hidden='true'>
+                                <div class='modal-dialog'>
+                                    <div class='modal-content'>
+                                        <div class='modal-header'>
+                                            <h5 class='modal-title' id='editarUsuarioModalLabel'>Editar Producto</h5>
+                                            <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                        </div>
+                                        <div class='modal-body'>
+                                            <form action='actualizar_usuario.php' method='post'>
+                                                <input type='hidden' name='id_usuario' value='" . $row['id_usuario'] . "'>
+
+                                                Nombre: <input class='form-control' type='text' name='nombre_usuario' value='" . $row['nombre_usuario'] . "'><br>
+
+                                                Apellido: <input class='form-control' type='text' name='apellido_usuario' value='" . $row['apellido_usuario'] . "'><br>
+
+                                                RUN: <input class='form-control' type='text' name='run_usuario' value='" . $row['run_usuario'] . "'><br>
+
+                                                Correo: <input class='form-control' type='email' name='correo_usuario' value='" . $row['correo_usuario'] . "'><br>
+
+                                                Teléfono: <input class='form-control' type='text' name='numero_usuario' value='" . $row['numero_usuario'] . "'><br>
+
+                                                Dirección: <input class='form-control' type='text' name='direccion_usuario' value='" . $row['direccion_usuario'] . "'><br>
+
+                                                Tipo de Usuario:
+                                                <select name='tipo_usuario' class='form-control'>
+                                                    <option value='Administrador' " . ($row['tipo_usuario'] === 'Administrador' ? 'selected' : '') . ">Administrador</option>
+                                                    <option value='Registrado' " . ($row['tipo_usuario'] === 'Registrado' ? 'selected' : '') . ">Registrado</option>
+                                                </select><br>
+
+                                                <input class='form-control btn btn-primary d-block' type='submit' value='Actualizar Usuario'>
+
+                                                <a href='mostrar_usuario.php' class='btn btn-primary mt-3 d-block'>Volver</a>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>";
                         }
                         echo "</tbody></table>";
-                        echo "<a href='insertar_usuario.php' class='btn btn-primary mt-3 d-block'>Agregar Usuario</a>";
+                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarUsuarioModal'>Agregar Usuario</a>";
                         echo "<a href='../Mantenedor_puntos/modificar_puntos_usuario.php' class='btn btn-primary mt-3 d-block'>Mantenedor Puntos</a>";
                     } else {
                         echo "<p class='text-center'>No hay usuarios registrados.</p>";
-                        echo "<a href='insertar_usuario.php' class='btn btn-primary mt-3 d-block'>Agregar Usuario</a>";
+                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarUsuarioModal'>Agregar Usuario</a>";
                         echo "<a href='../menu/menu.html' class='btn btn-primary mt-3 d-block'>Volver al menú</a>";
                     }
                 ?>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="agregarUsuarioModal" tabindex="-1" aria-labelledby="agregarUsuarioModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="agregarUsuarioModalLabel">Agregar Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form action="insertar_usuario.php" method="post">
+
+                        Nombre: <input class="form-control" type="text" name="nombre_usuario" placeholder="Nombre" required><br>
+
+                        Apellido: <input class="form-control" type="text" name="apellido_usuario" placeholder="Apellido" required><br>
+
+                        Run: <input class="form-control" type="text" name="run_usuario" placeholder="RUN" required><br>
+
+                        Correo: <input class="form-control" type="email" name="correo_usuario" placeholder="Correo" required><br>
+
+                        Numero: <input class="form-control" type="text" name="numero_usuario" placeholder="Teléfono" required><br>
+
+                        Contrasenia: <input class="form-control" type="password" name="contrasenia_usuario" placeholder="Contraseña" required><br>
+
+                        Direccion: <input class="form-control" type="text" name="direccion_usuario" placeholder="Dirección" required><br>
+
+                        <select class="form-control" name="tipo_usuario" required>
+                            <option value="Administrador">Administrador</option>
+                            <option value="Registrado">Registrado</option>
+                        </select><br>
+
+                        <input class="form-control btn btn-primary d-block" type="submit" value="Crear Usuario">
+
+                        <a href="mostrar_usuario.php" class="btn btn-primary mt-3 d-block">Volver</a>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

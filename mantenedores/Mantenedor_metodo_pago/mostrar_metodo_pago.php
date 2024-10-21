@@ -1,5 +1,9 @@
 <?php
-    include '../conexion.php';
+include '../conexion.php';
+session_start();
+
+$mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : '';
+unset($_SESSION['mensaje']);
 ?>
 
 <!DOCTYPE html>
@@ -110,10 +114,33 @@
                                     <td>" . $row["id_metodo"] . "</td>
                                     <td>" . $row["nombre_metodo"] . "</td>
                                     <td>
-                                        <a href='editar_metodo_pago.php?id=" . $row["id_metodo"] . "' class='btn btn-warning btn-sm'>Editar</a> |
+                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarMetodoPagoModal" . $row["id_metodo"] . "'>Editar</a> |
                                         <a href='borrar_metodo_pago.php?id=" . $row["id_metodo"] . "' class='btn btn-danger btn-sm'>Borrar</a>
                                     </td>
                                   </tr>";
+
+                            echo "
+                                <div class='modal fade' id='editarMetodoPagoModal" . $row["id_metodo"] . "' tabindex='-1' aria-labelledby='editarMetodoPagoModalLabel' aria-hidden='true'>
+                                    <div class='modal-dialog'>
+                                        <div class='modal-content'>
+                                            <div class='modal-header'>
+                                                <h5 class='modal-title' id='editarMetodoPagoModalLabel'>Editar Producto</h5>
+                                                <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                            </div>
+                                            <div class='modal-body'>
+                                                <form action='actualizar_metodo_pago.php' method='post'>
+                                                    <input type='hidden' name='id_metodo' value='" . htmlspecialchars($row['id_metodo']) . "'>
+
+                                                    Nombre del Método:<input class='form-control' type='text' name='nombre_metodo' value='" . htmlspecialchars($row['nombre_metodo']) . "' required><br>
+
+                                                    <input class='form-control btn btn-primary d-block' type='submit' value='Actualizar Método de Pago'>
+
+                                                    <a href='mostrar_metodo_pago.php' class='btn btn-primary mt-3 d-block'>Volver</a>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>";
                         }
                         echo "</tbody></table>";
                         echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarMetodoPagoModal'>Agregar Metodo Pago</a>";

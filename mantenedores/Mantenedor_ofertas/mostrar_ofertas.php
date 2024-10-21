@@ -1,5 +1,9 @@
 <?php
-    include '../conexion.php';
+include '../conexion.php';
+session_start();
+
+$mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : '';
+unset($_SESSION['mensaje']);
 ?>
 
 <!DOCTYPE html>
@@ -81,11 +85,19 @@
 
         <!-- Content Area -->
         <div class="content-area flex-grow-1 p-5 col-4 col-md-10">
+
+            <?php if ($mensaje): ?>
+                <div class="alert alert-info alert-dismissible fade show text-center" role="alert">
+                    <?php echo $mensaje; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
             <h1 class="text-center p-4">Mantenedor de Ofertas</h1>
 
             <div class="table-responsive">
                 <?php
-                    $query = "SELECT o.id_oferta, o.porcentaje_descuento, p.nombre_producto
+                    $query = "SELECT o.id_oferta, o.porcentaje_descuento, p.id_producto, p.nombre_producto
                               FROM oferta o
                               JOIN producto p ON o.id_producto = p.id_producto";
                     $result = $conn->query($query);
@@ -111,21 +123,85 @@
                                             <input type='hidden' name='id_oferta' value='" . $row["id_oferta"] . "'>
                                             <button class='btn btn-danger btn-sm' type='submit'>Eliminar</button>
                                         </form>
-                                        <a class='btn btn-warning btn-sm' href='editar_oferta.php?id_oferta=" . $row["id_oferta"] . "'>Editar</a>
+                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarOfertaModal" . $row["id_oferta"] . "'>Editar</a> |
                                     </td>
                                   </tr>";
+                        
+                            echo "
+                            <div class='modal fade' id='editarOfertaModal" . $row["id_oferta"] . "' tabindex='-1' aria-labelledby='editarOfertaModalLabel' aria-hidden='true'>
+                                <div class='modal-dialog'>
+                                    <div class='modal-content'>
+                                        <div class='modal-header'>
+                                            <h5 class='modal-title' id='editarOfertaModalLabel'>Editar Producto</h5>
+                                            <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                        </div>
+                                        <div class='modal-body'>
+                                            <form action='actualizar_oferta.php' method='post'>
+                                                <input type='hidden' name='id_oferta' value='" . $row['id_oferta'] . "'>
+                                                <div class='mb-3'>
+                                                    <label for='idProducto' class='form-label'>ID Producto</label>
+                                                    <input type='text' id='idProducto' class='form-control' value='" . $row['id_producto'] . "' disabled>
+                                                </div>
+                                                <div class='mb-3'>
+                                                    <label for='porcentajeDescuento' class='form-label'>Porcentaje de Descuento (0 a 1)</label>
+                                                    <input type='number' step='0.01' min='0' max='1' id='porcentajeDescuento' 
+                                                           name='porcentaje_descuento' class='form-control' 
+                                                           value='" . $row['porcentaje_descuento'] . "' required>
+                                                </div>
+                                                <button type='submit' class='btn btn-primary d-block w-100'>Actualizar Descuento</button>
+                                                <a href='mostrar_ofertas.php' class='btn btn-primary mt-3 d-block w-100'>Volver</a>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>";
                         }
                         echo "</tbody></table>";
-                        echo "<a class='btn btn-primary mt-3 d-block' href='agregar_oferta.php'>Agregar nueva oferta</a>";
+                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarOfertaModal'>Agregar Oferta</a>";
                         echo "<a href='../Mantenedor_producto/mostrar_producto.php' class='btn btn-primary mt-3 d-block'>Volver</a>";
                     } else {
                         echo "<p class='text-center'>No hay ofertas disponibles.</p>";
-                        echo "<a class='btn btn-primary mt-3 d-block' href='agregar_oferta.php'>Agregar nueva oferta</a>";
+                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarOfertaModal'>Agregar Oferta</a>";
                         echo "<a href='../Mantenedor_producto/mostrar_producto.php' class='btn btn-primary mt-3 d-block'>Volver</a>";
                     }
                 ?>
             </div>
 
+        </div>
+    </div>
+
+    <div class="modal fade" id="agregarOfertaModal" tabindex="-1" aria-labelledby="agregarOfertaModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="agregarOfertaModalLabel">Agregar Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form action="agregar_ofertas.php" method="post">
+                        <label for="id_producto" class="form-label">Selecciona el producto por ID:</label>
+
+                        <select class="form-select" name="id_producto" required>
+                            <option value="" disabled selected>Selecciona un producto</option>
+                            <?php while ($row = $result->fetch_assoc()): ?>
+                                <option value="<?php echo $row['id_producto']; ?>">
+                                    <?php echo $row['nombre_producto']; ?>
+                                </option>
+                            <?php endwhile; ?>
+                        </select>
+
+                        <label for="porcentaje_descuento" class="form-label mt-3">Porcentaje de descuento (0 a 1):</label>
+
+                        <input class="form-control" type="number" step="0.01" min="0" max="1" name="porcentaje_descuento" required>
+
+                        <input class="form-control btn btn-primary d-block mt-4" type="submit" value="Agregar oferta">
+
+                        <a href="mostrar_ofertas.php" class="btn btn-primary mt-3 d-block">Volver</a>
+
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 

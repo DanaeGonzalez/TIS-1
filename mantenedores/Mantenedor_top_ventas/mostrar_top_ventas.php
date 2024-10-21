@@ -1,5 +1,9 @@
 <?php
-    include '../conexion.php';
+include '../conexion.php';
+session_start();
+
+$mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : '';
+unset($_SESSION['mensaje']);
 ?>
 
 <!DOCTYPE html>
@@ -79,7 +83,16 @@
 
         <!-- Content Area -->
         <div class="content-area flex-grow-1 p-5 col-4 col-md-10">
+
+            <?php if ($mensaje): ?>
+                <div class="alert alert-info alert-dismissible fade show text-center" role="alert">
+                    <?php echo $mensaje; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
             <h1 class="text-center p-4">Mantenedor de Ventas</h1>
+            
             <div class="table-responsive">
                 <?php
                     $query = "SELECT * FROM producto WHERE top_venta = true";
@@ -110,15 +123,41 @@
                                   </tr>";
                         }
                         echo "</tbody></table>";
-                        echo "<a href='agregar_top_ventas.php' class='btn btn-primary mt-3 d-block'>Agregar top ventas</a>";
+                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarTopVentasModal'>Agregar top ventas</a>";
                     } else {
                         echo "<p class='text-center'>No hay productos en top ventas.</p>";
-                        echo "<a href='agregar_top_ventas.php' class='btn btn-primary mt-3 d-block'>Agregar top ventas</a>";
+                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarTopVentasModal'>Agregar top ventas</a>";
                         echo "<a href='../menu/menu.html' class='btn btn-primary mt-3 d-block'>Volver al menú</a>";
                     }
                 ?>
             </div>
         </div>
+
+        <div class="modal fade" id="agregarTopVentasModal" tabindex="-1" aria-labelledby="agregarTopVentasModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="agregarTopVentasModalLabel">Agregar Top Ventas</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form action="agregar_top_ventas.php" method="post">
+
+                            <label>Agregar producto a top ventas ingresando el ID:</label>
+
+                            <input class="form-control" type="number" name="id_producto" required>
+
+                            <input class="form-control btn btn-primary d-block mt-4" type="submit" value="Agregar">
+
+                            <a href="mostrar_top_ventas.php" class='btn btn-primary mt-3 d-block'>Volver</a>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </body>
 </html>
