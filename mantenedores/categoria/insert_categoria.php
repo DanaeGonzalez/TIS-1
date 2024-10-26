@@ -1,20 +1,20 @@
 <?php
-    include '../conexion.php';
-    $mensaje = '';
+include '../conexion.php';
+$mensaje = '';
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $nombre_categoria = $_POST['nombre_categoria'];
-    
-        $sql = "INSERT INTO categoria (nombre_categoria) VALUES ('$nombre_categoria')";
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $nombre_categoria = $_POST['nombre_categoria'];
 
-        if ($conn->query($sql) === TRUE) {
-            $mensaje = "Nueva categoría creada exitosamente";
-        } else {
-            $mensaje = "Error: " . $sql . "<br>" . $conn->error;
-        }
+    $sql = "INSERT INTO categoria (nombre_categoria) VALUES ('$nombre_categoria')";
 
-        $conn->close();
+    if ($conn->query($sql) === TRUE) {
+        $mensaje = "Nueva categoría creada exitosamente";
+    } else {
+        $mensaje = "Error: " . $sql . "<br>" . $conn->error;
     }
+
+    $conn->close();
+}
 ?>
 
 <!DOCTYPE html>
@@ -28,28 +28,95 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../menu/styles.css">
 </head>
 <body>
-    <div class="container border mt-5" style="font-family: 'Newsreader', serif;">
-        <div class="row">
-            <div class="col-lg-6 p-5">
+    <!-- Header/Navbar -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <button class="btn btn-outline border d-lg-none" type="button" data-bs-toggle="collapse" 
+                data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle sidebar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <img width="180px" height="auto" src="../ikat.png" alt="">
 
-                <h1 class="text-center pb-4">Agregar categoria</h1>
+            <button class="navbar-toggler border" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                <?php if ($mensaje != ''): ?>
-                    <p class="text-center"><?php echo $mensaje; ?></p>
-                <?php endif; ?>
-
-                <form action="" method="post">
-                    Nombre: <input class="form-control" type="text" name="nombre_categoria" required><br><br>
-
-                    <input class="form-control btn btn-primary d-block" type="submit" value="Crear categoría">
-                    <a href='mostrar_categoria.php' class='btn btn-primary mt-3 d-block'>Volver</a>
-                </form>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Inicio</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg" 
+                                 alt="User Image" class="user-avatar me-2"> 
+                            Usuario
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="#">Configuraciones</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
+        </div>
+    </nav>
 
-            <div class="col-lg-6">
-                <img src="../ikat.jpg" width="100%" alt="Imagen de Ikat">
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div id="sidebar" class="collapse d-lg-block">
+            <div class="accordion" id="accordionSidebar">
+                <!-- Título: Mantenedores -->
+                <div class="accordion-item">
+                    <h4 class="accordion-header" id="headingMantenedores">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#mantenedoresLinks" aria-expanded="true" aria-controls="mantenedoresLinks">
+                            Mantenedores
+                        </button>
+                    </h4>
+                    <!-- Enlaces de Mantenedores -->
+                    <div id="mantenedoresLinks" class="accordion-collapse collapse show" aria-labelledby="headingMantenedores"
+                         data-bs-parent="#accordionSidebar">
+                        <div class="accordion-body p-0">
+                            <a href="../categoria/mostrar_categoria.php" class="sidebar-link">Categorías</a>
+                            <a href="../Mantenedor_metodo_pago/mostrar_metodo_pago.php" class="sidebar-link">Métodos de pago</a>
+                            <a href="../Mantenedor_producto/mostrar_producto.php" class="sidebar-link">Productos</a>
+                            <a href="../Mantenedor_reseña/mostrar_resenia.php" class="sidebar-link">Reseñas</a>
+                            <a href="../Mantenedor_top_ventas/mostrar_top_ventas.php" class="sidebar-link">Ventas</a>
+                            <a href="../Mantenedor_usuario/mostrar_usuario.php" class="sidebar-link">Usuarios</a>
+                            <a href="../Mantenedor_divisas/mostrar_divisa.php" class="sidebar-link">Divisas</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area flex-grow-1 p-5">
+            <div class="container p-4">
+                <div class="row">
+                    <div class=" col-12">
+
+                        <h1 class="text-center">Agregar categoría</h1>
+
+                        <?php if ($mensaje != ''): ?>
+                            <p class="text-center"><?php echo $mensaje; ?></p>
+                        <?php endif; ?>
+
+                        <form action="" method="post">
+                            Nombre: <input class="form-control" type="text" name="nombre_categoria" required><br><br>
+
+                            <input class="form-control btn btn-primary d-block" type="submit" value="Crear categoría">
+                            <a href='mostrar_categoria.php' class='btn btn-primary mt-3 d-block'>Volver</a>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
