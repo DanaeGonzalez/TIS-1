@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-10-2024 a las 04:50:48
+-- Tiempo de generación: 28-10-2024 a las 04:54:13
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -386,7 +386,8 @@ CREATE TABLE `usuario` (
   `direccion_usuario` varchar(100) DEFAULT NULL,
   `tipo_usuario` enum('Administrador','Registrado') NOT NULL,
   `puntos_totales` bigint(255) NOT NULL,
-  `activo` tinyint(1) NOT NULL
+  `activo` tinyint(1) NOT NULL,
+  `ultima_sesion` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
