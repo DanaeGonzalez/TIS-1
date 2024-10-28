@@ -87,11 +87,11 @@ include '../conexion.php';
                     <?php
                     if (isset($_GET['id'])) {
                         $id = $_GET['id'];
-                        $sql = "DELETE FROM color WHERE id_color = $id";
+                        $sql = "DELETE FROM forma WHERE id_forma = $id";
                     
                         if ($conn->query($sql) === TRUE) {
-                            echo "Categoría eliminada exitosamente <br>";
-                            echo "<a href='mostrar_color.php' class='btn btn-primary mt-3 d-block'>Volver</a>";
+                            echo "Forma eliminada exitosamente <br>";
+                            echo "<a href='mostrar_forma.php' class='btn btn-primary mt-3 d-block'>Volver</a>";
                         } else {
                             echo "Error: " . $sql . "<br>" . $conn->error;
                         }
