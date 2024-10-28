@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IKAT - Nombre del Producto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="..\mantenedores\menu\styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <!-- Header/Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a href="inicio.html">
+                <img width="180px" height="auto" src="../mantenedores/ikat.png" alt="Ikat">
+            </a>
+
+            <div class="d-flex align-items-center justify-content-end gap-3 ms-auto">
+
+                <!-- Botón de búsqueda -->
+                <button class="btn btn-link d-lg-none p-0" data-bs-toggle="modal" data-bs-target="#searchModal">
+                    <i class="bi bi-search fs-4  text-secondary"></i>
+                </button>
+
+                <!-- Botón de catálogo -->
+                <a href="catalogo.html" class="btn btn-link d-lg-none p-0">
+                    <i class="bi bi-bag fs-4 text-secondary"></i>
+                </a>
+
+                <!-- Botón de lista de deseos -->
+                <a href="deseados.html" class="btn btn-link p-0 d-lg-none d-flex">
+                    <i class="bi bi-heart fs-4 text-secondary"></i>
+                </a>
+
+                <!-- Botón del carrito -->
+                <a href="carrito.html" class="btn btn-link p-0 d-lg-none d-flex">
+                    <i class="bi bi-cart fs-4 text-secondary"></i>
+                </a>
+
+                <!-- Botón de menú -->
+                <button class="btn btn-link d-lg-none p-0" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                    <i class="bi bi-list fs-4  text-secondary"></i>
+                </button>
+            </div>
+
+            <!-- Menú de navegación colapsable -->
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto align-items-center text-center">
+
+                    <!-- Botones de lista de deseos y carrito al lado del usuario -->
+                    <li class="nav-item d-flex align-items-center gap-3">
+
+                        <!-- Botón de catálogo -->
+                        <a href="catalogo.html" class="btn btn-link d-none d-lg-flex p-0">
+                            <i class="bi bi-bag fs-4 text-secondary"></i>
+                        </a>
+
+                        <!-- Botón de lista de deseos -->
+                        <a href="deseados.html" class="btn btn-link p-0 d-none d-lg-flex">
+                            <i class="bi bi-heart fs-4 text-secondary"></i>
+                        </a>
+
+                        <!-- Botón del carrito -->
+                        <a href="carrito.html" class="btn btn-link p-0 d-none d-lg-flex">
+                            <i class="bi bi-cart fs-4 text-secondary"></i>
+                        </a>
+
+                        <!-- Menú de usuario -->
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg"
+                                    alt="User Image" class="user-avatar me-2">
+                                Usuario
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="compras.html">Mis Compras</a></li>
+                                <li><a class="dropdown-item" href="perfil.html">Mi Perfil</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Modal para la barra de búsqueda -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="searchModalLabel">Buscar productos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Buscar productos..."
+                                aria-label="Buscar productos">
+                            <button class="btn btn-dark" type="submit">
+                                Buscar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor de la barra de búsqueda -->
+    <div class="d-none d-lg-flex justify-content-center align-items-center mt-4">
+        <div class="search-container col-lg-7 col-10">
+            <div class="input-group">
+                <button class="input-group-text" id="search-addon" type="button">
+                    <i class="bi bi-list"></i>
+                </button>
+                <input type="text" class="form-control p-2" placeholder="Buscar productos..."
+                    aria-label="Buscar productos..." aria-describedby="search-addon">
+                <button class="input-group-text" id="search-addon" type="button">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección del producto -->
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Carrusel de imágenes -->
+                <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner carousel-inner-p">
+                        <div class="carousel-item active">
+                            <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg"
+                                class="d-block w-100" alt="Imagen del Producto 1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg"
+                                class="d-block w-100" alt="Imagen del Producto 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg"
+                                class="d-block w-100" alt="Imagen del Producto 3">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#productCarousel"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <br class="d-md-none">
+                <h1>Nombre del Producto</h1>
+                <h2 class="text-dark mt-2">$777</h2>
+                <hr>
+                <h5>Características</h5>
+                <ul>
+                    <li>Característica 1</li>
+                    <li>Característica 2</li>
+                    <li>Característica 3</li>
+                </ul>
+                <hr>
+                <h5>Cantidad</h5>
+                <div class="input-group" style="width: 130px;">
+                    <button class="btn btn-outline-dark" type="button"
+                        onclick="this.nextElementSibling.stepDown()">-</button>
+                    <input type="number" value="1" min="1" class="form-control text-center custom-input">
+                    <button class="btn btn-outline-dark" type="button"
+                        onclick="this.previousElementSibling.stepUp()">+</button>
+                </div>
+                <button class="btn btn-dark mt-3 w-100 p-2">Añadir al carrito</button>
+                <hr>
+                <h5>Descripción del producto</h5>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quas officia illum, obcaecati unde quod
+                    perferendis laborum minima eos excepturi voluptate quaerat laudantium cumque.</p>
+            </div>
+
+            <div class="row mt-4 mb-3">
+                <div class="col-12">
+                    <h2>Reseñas del Producto (
+                        <i class="bi bi-star-fill fs-4"></i>
+                        <i class="bi bi-star-fill fs-4"></i>
+                        <i class="bi bi-star-fill fs-4"></i>
+                        <i class="bi bi-star-fill fs-4"></i>
+                        <i class="bi bi-star fs-4"></i>)
+                    </h2>
+                    <div class="mb-3">
+                        <strong>Usuario 1</strong>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio iusto modi eum non eligendi
+                            ea impedit voluptatum in commodi labore officia dolor corporis, ipsam nam velit, distinctio
+                            recusandae facere quod.</p>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Usuario 2</strong>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam, perspiciatis? Quasi ad
+                            nulla fugiat! Cumque suscipit nemo eveniet cum tenetur tempora ipsum natus reiciendis labore
+                            quas. Minus laborum fugiat a!.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+                    <h5>¡Únete a la familia IKAT!</h5>
+                    <div class="col-md-9 col-12">
+                        Regístrate y disfruta de la experiencia completa de IKAT.
+                        <form class="text-center">
+                            <button type="submit"
+                                class="btn btn-outline-dark btn-sm mt-3 text-black">Registrarme</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+                    <h5>Servicio</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-black text-decoration-none">Sigue tu pedido</a></li>
+                        <li><a href="#" class="text-black text-decoration-none">IKAT Points</a></li>
+                        <li><a href="#" class="text-black text-decoration-none">Despacho a domicilio</a></li>
+                        <li><a href="#" class="text-black text-decoration-none">Métodos de pago</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+                    <h5>Sobre IKAT</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-black text-decoration-none">Quienes somos</a></li>
+                        <li><a href="#" class="text-black text-decoration-none">Misión y Visión</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+                    <h5>Redes Sociales</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-facebook"></i>
+                                Facebook</a></li>
+                        <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-instagram"></i>
+                                Instagram</a></li>
+                        <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-threads"></i>
+                                Threads</a></li>
+                        <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-twitter-x"></i> X</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
