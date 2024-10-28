@@ -47,11 +47,9 @@
                                 }
                                 echo "</table>";
                                 echo "<a href='insertar_divisa.php'  class='btn btn-primary mt-3 d-block'>Agregar Divisa</a>";
-                                echo "<a href='../menu/menu.html' class='btn btn-primary mt-3 d-block'>Volver al menu</a>";
                             } else {
                                 echo "No hay divisas registradas. <br>";
                                 echo "<a href='insertar_divisa.php'  class='btn btn-primary mt-3 d-block'>Agregar Divisa</a>";
-                                echo "<a href='../menu/menu.html' class='btn btn-primary mt-3 d-block'>Volver al menu</a>";
                             }
                         } else {
                             echo "Error en la consulta: " . $conn->error;

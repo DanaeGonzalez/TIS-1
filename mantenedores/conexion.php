@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "ikat";  // Nombre de tu base de datos
+$dbname = "BD_ikat";  // Nombre de tu base de datos
 
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
