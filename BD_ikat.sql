@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-10-2024 a las 06:50:59
+-- Tiempo de generación: 28-10-2024 a las 04:50:48
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -18,20 +18,8 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `ikat`
+-- Base de datos: `db_ikat`
 --
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `almacena`
---
-
-CREATE TABLE `almacena` (
-  `id_carrito` int(100) NOT NULL,
-  `id_producto` int(10) NOT NULL,
-  `cantidad_producto` int(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -68,6 +56,18 @@ CREATE TABLE `carrito` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `carrito_producto`
+--
+
+CREATE TABLE `carrito_producto` (
+  `id_carrito` int(100) NOT NULL,
+  `id_producto` int(10) NOT NULL,
+  `cantidad_producto` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `categoria`
 --
 
@@ -75,16 +75,6 @@ CREATE TABLE `categoria` (
   `id_categoria` int(10) NOT NULL,
   `nombre_categoria` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `categoria`
---
-
-INSERT INTO `categoria` (`id_categoria`, `nombre_categoria`) VALUES
-(1, 'Mesas'),
-(2, 'Sillas'),
-(3, 'Camas'),
-(4, 'Veladores');
 
 -- --------------------------------------------------------
 
@@ -115,38 +105,6 @@ CREATE TABLE `compra` (
   `id_usuario` int(100) NOT NULL,
   `id_carrito` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `contiene`
---
-
-CREATE TABLE `contiene` (
-  `id_lista_deseos` int(100) NOT NULL,
-  `id_producto` int(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `divisa`
---
-
-CREATE TABLE `divisa` (
-  `id_divisa` int(10) NOT NULL,
-  `codigo_divisa` varchar(7) NOT NULL,
-  `nombre_divisa` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `divisa`
---
-
-INSERT INTO `divisa` (`id_divisa`, `codigo_divisa`, `nombre_divisa`) VALUES
-(1, 'CLP', 'Pesos Chilenos'),
-(2, 'USD', 'Dólares Americanos'),
-(3, 'ARS', 'Pesos Argentinos');
 
 -- --------------------------------------------------------
 
@@ -189,6 +147,17 @@ CREATE TABLE `forma` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `lista_deseos_producto`
+--
+
+CREATE TABLE `lista_deseos_producto` (
+  `id_lista_deseos` int(100) NOT NULL,
+  `id_producto` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `lista_de_deseos`
 --
 
@@ -216,18 +185,9 @@ CREATE TABLE `material` (
 
 CREATE TABLE `metodo_pago` (
   `id_metodo` int(10) NOT NULL,
-  `nombre_metodo` varchar(50) NOT NULL
+  `nombre_metodo` varchar(50) NOT NULL,
+  `activo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `metodo_pago`
---
-
-INSERT INTO `metodo_pago` (`id_metodo`, `nombre_metodo`) VALUES
-(1, 'Efectivo'),
-(2, 'Crédito'),
-(3, 'Paypal'),
-(4, 'Debito');
 
 -- --------------------------------------------------------
 
@@ -271,24 +231,7 @@ CREATE TABLE `n_plazas` (
 CREATE TABLE `oferta` (
   `id_oferta` int(10) NOT NULL,
   `porcentaje_descuento` float NOT NULL,
-  `id_producto` int(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `oferta`
---
-
-INSERT INTO `oferta` (`id_oferta`, `porcentaje_descuento`, `id_producto`) VALUES
-(1, 0.35, 1);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `pertenece`
---
-
-CREATE TABLE `pertenece` (
-  `id_categoria` int(10) NOT NULL,
+  `activo` tinyint(1) NOT NULL,
   `id_producto` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -304,20 +247,12 @@ CREATE TABLE `producto` (
   `precio_unitario` int(11) NOT NULL,
   `stock_producto` int(11) NOT NULL,
   `descripcion_producto` text NOT NULL,
-  `caracteristicas_producto` text NOT NULL,
   `foto_producto` varchar(255) NOT NULL,
   `cantidad_vendida` int(11) NOT NULL,
   `top_venta` tinyint(1) NOT NULL,
-  `activo` tinyint(1) NOT NULL
+  `activo` tinyint(1) NOT NULL,
+  `id_subcategoria` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `producto`
---
-
-INSERT INTO `producto` (`id_producto`, `nombre_producto`, `precio_unitario`, `stock_producto`, `descripcion_producto`, `caracteristicas_producto`, `foto_producto`, `cantidad_vendida`, `top_venta`, `activo`) VALUES
-(1, 'Mesa kawaii', 12990, 11, 'Una mesa muy kawaii', 'Mesa larga y es kawaii', 'https://cdn-icons-png.freepik.com/512/1660/1660256.png', 0, 0, 1),
-(2, 'Silla kawaii', 5990, 0, 'Una silla kawaii', 'Rosadita', 'https://www.ubuy.cl/productimg/?image=aHR0cHM6Ly9tLm1lZGlhLWFtYXpvbi5jb20vaW1hZ2VzL0kvNTErUTVaTHozWkwuX0FDX1NMMTUwMF8uanBn.jpg', 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -417,18 +352,22 @@ CREATE TABLE `resenia` (
   `id_resenia` int(100) NOT NULL,
   `calificacion` int(1) NOT NULL,
   `comentario` text DEFAULT NULL,
+  `activo` tinyint(1) NOT NULL,
   `id_usuario` int(100) NOT NULL,
   `id_producto` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `resenia`
+-- Estructura de tabla para la tabla `subcategoria`
 --
 
-INSERT INTO `resenia` (`id_resenia`, `calificacion`, `comentario`, `id_usuario`, `id_producto`) VALUES
-(1, 5, 'La mejor MESA QUE HE TENIDO OMG!!!!', 1, 1),
-(2, 1, 'MESA SUPER BUENA', 2, 1),
-(3, 2, 'MESA MALA', 3, 1);
+CREATE TABLE `subcategoria` (
+  `id_subcategoria` int(11) NOT NULL,
+  `nombre_subcategoria` varchar(30) NOT NULL,
+  `id_categoria` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -447,29 +386,12 @@ CREATE TABLE `usuario` (
   `direccion_usuario` varchar(100) DEFAULT NULL,
   `tipo_usuario` enum('Administrador','Registrado') NOT NULL,
   `puntos_totales` bigint(255) NOT NULL,
-  `id_divisa` int(10) NOT NULL,
   `activo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `usuario`
---
-
-INSERT INTO `usuario` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `run_usuario`, `correo_usuario`, `numero_usuario`, `contrasenia_usuario`, `direccion_usuario`, `tipo_usuario`, `puntos_totales`, `id_divisa`, `activo`) VALUES
-(1, 'Javier', 'Pino', '208460730', 'jpinoh@ing.ucsc.cl', '+56932365067', '$2y$10$AD05GOBM', 'Concepcion', 'Administrador', 5000, 1, 1),
-(2, 'Camilo', 'Campos', '21243765k', 'ccamposg@ing.ucsc.cl', '+56912345678', '$2y$10$HGCFeNoF', 'Sri lanka', 'Administrador', 1, 1, 1),
-(3, 'Danae', 'González', '20695321k', 'dgonzalezv@ing.ucsc.cl', '+56932361234', '$2y$10$el/Th/a8', 'Lorenzo arenas', 'Administrador', 2, 1, 1);
-
---
 -- Índices para tablas volcadas
 --
-
---
--- Indices de la tabla `almacena`
---
-ALTER TABLE `almacena`
-  ADD PRIMARY KEY (`id_carrito`,`id_producto`),
-  ADD KEY `id_producto` (`id_producto`);
 
 --
 -- Indices de la tabla `ambiente`
@@ -489,6 +411,13 @@ ALTER TABLE `boleta`
 --
 ALTER TABLE `carrito`
   ADD PRIMARY KEY (`id_carrito`);
+
+--
+-- Indices de la tabla `carrito_producto`
+--
+ALTER TABLE `carrito_producto`
+  ADD PRIMARY KEY (`id_carrito`,`id_producto`),
+  ADD KEY `id_producto` (`id_producto`);
 
 --
 -- Indices de la tabla `categoria`
@@ -512,19 +441,6 @@ ALTER TABLE `compra`
   ADD KEY `id_carrito` (`id_carrito`);
 
 --
--- Indices de la tabla `contiene`
---
-ALTER TABLE `contiene`
-  ADD PRIMARY KEY (`id_lista_deseos`,`id_producto`),
-  ADD KEY `id_producto` (`id_producto`);
-
---
--- Indices de la tabla `divisa`
---
-ALTER TABLE `divisa`
-  ADD PRIMARY KEY (`id_divisa`);
-
---
 -- Indices de la tabla `envio`
 --
 ALTER TABLE `envio`
@@ -542,6 +458,13 @@ ALTER TABLE `firmeza`
 --
 ALTER TABLE `forma`
   ADD PRIMARY KEY (`id_forma`);
+
+--
+-- Indices de la tabla `lista_deseos_producto`
+--
+ALTER TABLE `lista_deseos_producto`
+  ADD PRIMARY KEY (`id_lista_deseos`,`id_producto`),
+  ADD KEY `id_producto` (`id_producto`);
 
 --
 -- Indices de la tabla `lista_de_deseos`
@@ -588,17 +511,11 @@ ALTER TABLE `oferta`
   ADD KEY `id_producto` (`id_producto`);
 
 --
--- Indices de la tabla `pertenece`
---
-ALTER TABLE `pertenece`
-  ADD PRIMARY KEY (`id_categoria`,`id_producto`),
-  ADD KEY `id_producto` (`id_producto`);
-
---
 -- Indices de la tabla `producto`
 --
 ALTER TABLE `producto`
-  ADD PRIMARY KEY (`id_producto`);
+  ADD PRIMARY KEY (`id_producto`),
+  ADD KEY `fk_producto_subcategoria` (`id_subcategoria`);
 
 --
 -- Indices de la tabla `producto_ambiente`
@@ -665,11 +582,17 @@ ALTER TABLE `resenia`
   ADD KEY `id_producto` (`id_producto`);
 
 --
+-- Indices de la tabla `subcategoria`
+--
+ALTER TABLE `subcategoria`
+  ADD PRIMARY KEY (`id_subcategoria`),
+  ADD KEY `id_categoria` (`id_categoria`);
+
+--
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`id_usuario`),
-  ADD KEY `id_divisa` (`id_divisa`);
+  ADD PRIMARY KEY (`id_usuario`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -710,12 +633,6 @@ ALTER TABLE `color`
 --
 ALTER TABLE `compra`
   MODIFY `id_compra` int(100) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `divisa`
---
-ALTER TABLE `divisa`
-  MODIFY `id_divisa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `envio`
@@ -790,6 +707,12 @@ ALTER TABLE `resenia`
   MODIFY `id_resenia` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT de la tabla `subcategoria`
+--
+ALTER TABLE `subcategoria`
+  MODIFY `id_subcategoria` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
@@ -800,17 +723,17 @@ ALTER TABLE `usuario`
 --
 
 --
--- Filtros para la tabla `almacena`
---
-ALTER TABLE `almacena`
-  ADD CONSTRAINT `almacena_ibfk_1` FOREIGN KEY (`id_carrito`) REFERENCES `carrito` (`id_carrito`),
-  ADD CONSTRAINT `almacena_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`);
-
---
 -- Filtros para la tabla `boleta`
 --
 ALTER TABLE `boleta`
   ADD CONSTRAINT `boleta_ibfk_1` FOREIGN KEY (`id_compra`) REFERENCES `compra` (`id_compra`);
+
+--
+-- Filtros para la tabla `carrito_producto`
+--
+ALTER TABLE `carrito_producto`
+  ADD CONSTRAINT `carrito_producto_ibfk_1` FOREIGN KEY (`id_carrito`) REFERENCES `carrito` (`id_carrito`),
+  ADD CONSTRAINT `carrito_producto_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`);
 
 --
 -- Filtros para la tabla `compra`
@@ -821,17 +744,17 @@ ALTER TABLE `compra`
   ADD CONSTRAINT `compra_ibfk_3` FOREIGN KEY (`id_carrito`) REFERENCES `carrito` (`id_carrito`);
 
 --
--- Filtros para la tabla `contiene`
---
-ALTER TABLE `contiene`
-  ADD CONSTRAINT `contiene_ibfk_1` FOREIGN KEY (`id_lista_deseos`) REFERENCES `lista_de_deseos` (`id_lista_deseos`),
-  ADD CONSTRAINT `contiene_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`);
-
---
 -- Filtros para la tabla `envio`
 --
 ALTER TABLE `envio`
   ADD CONSTRAINT `envio_ibfk_1` FOREIGN KEY (`id_compra`) REFERENCES `compra` (`id_compra`);
+
+--
+-- Filtros para la tabla `lista_deseos_producto`
+--
+ALTER TABLE `lista_deseos_producto`
+  ADD CONSTRAINT `lista_deseos_producto_ibfk_1` FOREIGN KEY (`id_lista_deseos`) REFERENCES `lista_de_deseos` (`id_lista_deseos`),
+  ADD CONSTRAINT `lista_deseos_producto_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`);
 
 --
 -- Filtros para la tabla `lista_de_deseos`
@@ -846,11 +769,10 @@ ALTER TABLE `oferta`
   ADD CONSTRAINT `oferta_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`);
 
 --
--- Filtros para la tabla `pertenece`
+-- Filtros para la tabla `producto`
 --
-ALTER TABLE `pertenece`
-  ADD CONSTRAINT `pertenece_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id_categoria`),
-  ADD CONSTRAINT `pertenece_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`);
+ALTER TABLE `producto`
+  ADD CONSTRAINT `fk_producto_subcategoria` FOREIGN KEY (`id_subcategoria`) REFERENCES `subcategoria` (`id_subcategoria`) ON DELETE SET NULL;
 
 --
 -- Filtros para la tabla `producto_ambiente`
@@ -916,10 +838,10 @@ ALTER TABLE `resenia`
   ADD CONSTRAINT `resenia_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`);
 
 --
--- Filtros para la tabla `usuario`
+-- Filtros para la tabla `subcategoria`
 --
-ALTER TABLE `usuario`
-  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`id_divisa`) REFERENCES `divisa` (`id_divisa`);
+ALTER TABLE `subcategoria`
+  ADD CONSTRAINT `subcategoria_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id_categoria`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
