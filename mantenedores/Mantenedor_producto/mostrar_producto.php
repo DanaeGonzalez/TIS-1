@@ -5,6 +5,22 @@
     $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : '';
     unset($_SESSION['mensaje']);
 
+    $sqlCategorias = "SELECT * FROM categoria";
+    $resultCategorias = $conn->query($sqlCategorias);
+
+    $categorias = [];
+    if ($resultCategorias->num_rows > 0) {
+        while($rowCategoria = $resultCategorias->fetch_assoc()) {
+            $categorias[] = $rowCategoria;
+        }
+    }
+
+    $opcionesCategoria = "";
+    foreach ($categorias as $categoria) {
+        $opcionesCategoria .= "<option value='" . $categoria['id_categoria'] . "'>" . $categoria['nombre_categoria'] . "</option>";
+    }
+
+
     $sqlColores = "SELECT * FROM color";
     $resultColores = $conn->query($sqlColores);
 
@@ -320,15 +336,12 @@
                                                         <!-- Campo oculto para el ID del producto -->
                                                         <input type='hidden' name='id_producto' value='" . $row['id_producto'] . "'>
                                                             
-                                                        <!-- Selección de tipo de producto -->
+                                                        <!-- Selección de tipo de producto -->  
                                                         <label for='tipoProducto'>Tipo de Producto:</label>
+ 
                                                         <select class='form-select' id='tipoProducto" . $row["id_producto"] . "' name='tipo_producto' required onchange='mostrarCaracteristicas(\"" . $row["id_producto"] . "\")'>
                                                             <option value=''>Seleccione el tipo de producto</option>
-                                                            <option value='silla'>Silla</option>
-                                                            <option value='mesa'>Mesa</option>
-                                                            <option value='sillon'>Sillon</option>
-                                                            <option value='cama'>Cama</option>
-                                                            <option value='almacenamiento/organizacion'>Almacenamiento/organizacion</option>
+                                                            $opcionesCategoria
                                                         </select>
                                                             
                                                         <!-- Formulario de Características para Sillas -->
@@ -600,16 +613,18 @@
         </div>
 
         <script>
-        // Función para mostrar las características específicas de cada producto
-        function mostrarCaracteristicas(idProducto) {
-            const tipoProducto = document.getElementById('tipoProducto' + idProducto).value;
-            document.getElementById('caracteristicasSilla' + idProducto).style.display = tipoProducto === 'silla' ? 'block' : 'none';
-            document.getElementById('caracteristicasMesa' + idProducto).style.display = tipoProducto === 'mesa' ? 'block' : 'none';
-            document.getElementById('caracteristicasSillon' + idProducto).style.display = tipoProducto === 'sillon' ? 'block' : 'none';
-            document.getElementById('caracteristicasCama' + idProducto).style.display = tipoProducto === 'cama' ? 'block' : 'none';
-            document.getElementById('caracteristicasA/O' + idProducto).style.display = tipoProducto === 'almacenamiento/organizacion' ? 'block' : 'none';
-        }
-    </script>
+            // Función para mostrar las características específicas de cada producto
+            function mostrarCaracteristicas(idProducto) {
+                const tipoProducto = document.getElementById('tipoProducto' + idProducto).value;
+            
+                document.getElementById('caracteristicasSilla' + idProducto).style.display = tipoProducto === '5' ? 'block' : 'none';
+                document.getElementById('caracteristicasMesa' + idProducto).style.display = tipoProducto === '6' ? 'block' : 'none';
+                document.getElementById('caracteristicasSillon' + idProducto).style.display = tipoProducto === '7' ? 'block' : 'none';
+                document.getElementById('caracteristicasCama' + idProducto).style.display = tipoProducto === '8' ? 'block' : 'none';
+                document.getElementById('caracteristicasA/O' + idProducto).style.display = tipoProducto === '9' ? 'block' : 'none';
+            }
+        </script>
+
 
 
     </body>
