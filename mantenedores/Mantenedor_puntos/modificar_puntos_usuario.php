@@ -67,12 +67,19 @@
                          data-bs-parent="#accordionSidebar">
                         <div class="accordion-body p-0">
                             <a href="../categoria/mostrar_categoria.php" class="sidebar-link">Categorías</a>
+                            <a href="../Mantenedor_subcategorias/mostrar_subcategoria.php" class="sidebar-link">Subcategorías</a>
                             <a href="../Mantenedor_metodo_pago/mostrar_metodo_pago.php" class="sidebar-link">Métodos de pago</a>
                             <a href="../Mantenedor_producto/mostrar_producto.php" class="sidebar-link">Productos</a>
                             <a href="../Mantenedor_reseña/mostrar_resenia.php" class="sidebar-link">Reseñas</a>
                             <a href="../Mantenedor_top_ventas/mostrar_top_ventas.php" class="sidebar-link">Ventas</a>
                             <a href="../Mantenedor_usuario/mostrar_usuario.php" class="sidebar-link">Usuarios</a>
-                            <a href="../Mantenedor_divisas/mostrar_divisa.php" class="sidebar-link">Divisas</a>
+                            <a href="../Mantenedor_n_asientos/mostrar_n_asientos.php" class="sidebar-link">N°Asientos</a>
+                            <a href="../Mantenedor_n_cajones/mostrar_n_cajones.php" class="sidebar-link">N°Cajones</a>
+                            <a href="../Mantenedor_n_plazas/mostrar_n_plazas.php" class="sidebar-link">N°Plazas</a>
+                            <a href="../Mantenedor_colores/mostrar_color.php" class="sidebar-link">Colores</a>
+                            <a href="../Mantenedor_firmezas/mostrar_firmeza.php" class="sidebar-link">Firmeza</a>
+                            <a href="../Mantenedor_materiales/mostrar_material.php" class="sidebar-link">Materiales</a>
+                            <a href="../Mantenedor_ambientes/mostrar_ambiente.php" class="sidebar-link">Ambientes</a>
                         </div>
                     </div>
                 </div>

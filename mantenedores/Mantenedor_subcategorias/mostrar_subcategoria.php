@@ -71,7 +71,7 @@ unset($_SESSION['mensaje']);
                          data-bs-parent="#accordionSidebar">
                         <div class="accordion-body p-0">
                             <a href="../categoria/mostrar_categoria.php" class="sidebar-link">Categorías</a>
-                            <a href="../subcategoria/mostrar_subcategoria.php" class="sidebar-link">Subcategorías</a>
+                            <a href="../Mantenedor_subcategorias/mostrar_subcategoria.php" class="sidebar-link">Subcategorías</a>
                             <a href="../Mantenedor_metodo_pago/mostrar_metodo_pago.php" class="sidebar-link">Métodos de pago</a>
                             <a href="../Mantenedor_producto/mostrar_producto.php" class="sidebar-link">Productos</a>
                             <a href="../Mantenedor_reseña/mostrar_resenia.php" class="sidebar-link">Reseñas</a>
