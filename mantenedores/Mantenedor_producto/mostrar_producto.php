@@ -128,7 +128,7 @@
     
     $opcionesFirmeza = "";
     foreach ($firmezas as $firmeza) {
-        $opcionesFirmeza .= "<option value='" . $firmeza['id_firmeza'] . "'>" . $firmeza['nombre_firmeza'] . "</option>";
+        $opcionesFirmeza .= "<option value='" . $firmeza['id_firmeza'] . "'>" . $firmeza['nivel_firmeza'] . "</option>";
     }
 
     

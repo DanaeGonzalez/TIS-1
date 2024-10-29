@@ -112,7 +112,6 @@ unset($_SESSION['mensaje']);
                                         <th>Dirección</th>
                                         <th>Tipo</th>
                                         <th>Puntos</th>
-                                        <th>ID Divisa</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -128,7 +127,6 @@ unset($_SESSION['mensaje']);
                                     <td>{$row['direccion_usuario']}</td>
                                     <td>{$row['tipo_usuario']}</td>
                                     <td>{$row['puntos_totales']}</td>
-                                    <td>{$row['id_divisa']}</td>
                                     <td>   
                                         <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarUsuarioModal" . $row["id_usuario"] . "'>Editar</a> |
                                         <a href='borrar_usuario.php?id={$row['id_usuario']}' class='btn btn-danger btn-sm'>Borrar</a>
@@ -161,8 +159,9 @@ unset($_SESSION['mensaje']);
 
                                                 Tipo de Usuario:
                                                 <select name='tipo_usuario' class='form-control'>
-                                                    <option value='Administrador' " . ($row['tipo_usuario'] === 'Administrador' ? 'selected' : '') . ">Administrador</option>
+                                                    <option value='Admin' " . ($row['tipo_usuario'] === 'Admin' ? 'selected' : '') . ">Admin</option>
                                                     <option value='Registrado' " . ($row['tipo_usuario'] === 'Registrado' ? 'selected' : '') . ">Registrado</option>
+                                                    <option value='Superadmin' " . ($row['tipo_usuario'] === 'Superadmin' ? 'selected' : '') . ">Superadmin</option>
                                                 </select><br>
 
                                                 <input class='form-control btn btn-primary d-block' type='submit' value='Actualizar Usuario'>
@@ -213,8 +212,9 @@ unset($_SESSION['mensaje']);
                         Direccion: <input class="form-control" type="text" name="direccion_usuario" placeholder="Dirección" required><br>
 
                         <select class="form-control" name="tipo_usuario" required>
-                            <option value="Administrador">Administrador</option>
+                            <option value="Admin">Administrador</option>
                             <option value="Registrado">Registrado</option>
+                            <option value="Superadmin">Superadmin</option>
                         </select><br>
 
                         <input class="form-control btn btn-primary d-block" type="submit" value="Crear Usuario">
