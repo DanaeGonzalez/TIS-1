@@ -6,11 +6,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $_POST['nombre_producto'];
     $precio = $_POST['precio_unitario'];
     $descripcion = $_POST['descripcion_producto'];
-    $caracteristicas = $_POST['caracteristicas_producto'];
     $foto = $_POST['foto_producto'];
 
-    $sql = "INSERT INTO producto (nombre_producto, precio_unitario, descripcion_producto, caracteristicas_producto, foto_producto, stock_producto, cantidad_vendida, top_venta)
-            VALUES ('$nombre', $precio, '$descripcion', '$caracteristicas', '$foto', 0, 0, false)";
+    $sql = "INSERT INTO producto (nombre_producto, precio_unitario, descripcion_producto, foto_producto, stock_producto, cantidad_vendida, top_venta, activo)
+            VALUES ('$nombre', $precio, '$descripcion', '$foto', 0, 0, false, true)";
 
     if ($conn->query($sql) === TRUE) {
         $_SESSION['mensaje'] = "Producto creado exitosamente";
