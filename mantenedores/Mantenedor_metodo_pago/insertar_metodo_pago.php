@@ -5,9 +5,8 @@ include '../conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $_POST['nombre_metodo'];
-    $activo = 1;
 
-    $sql = "INSERT INTO metodo_pago (nombre_metodo, activo) VALUES ('$nombre', $activo)";
+    $sql = "INSERT INTO metodo_pago (nombre_metodo, activo) VALUES ('$nombre', 1)";
 
     if ($conn->query($sql) === TRUE) {
         $_SESSION['mensaje'] = "Metodo de pago creado exitosamente";

@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $foto = $_POST['foto_producto'];
 
     $sql = "INSERT INTO producto (nombre_producto, precio_unitario, descripcion_producto, foto_producto, stock_producto, cantidad_vendida, top_venta, activo)
-            VALUES ('$nombre', $precio, '$descripcion', '$foto', 0, 0, false, true)";
+            VALUES ('$nombre', $precio, '$descripcion', '$foto', 0, 0, 0, 1)";
 
     if ($conn->query($sql) === TRUE) {
         $_SESSION['mensaje'] = "Producto creado exitosamente";

@@ -152,7 +152,7 @@ unset($_SESSION['mensaje']);
                         echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarMetodoPagoModal'>Agregar Metodo Pago</a>";
                     } else {
                         echo "<p class='text-center'>No hay métodos de pago registrados.</p>";
-                        echo "<a href='insertar_metodo_pago.php' class='btn btn-primary mt-3 d-block'>Agregar Método de Pago</a>";
+                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarMetodoPagoModal'>Agregar Metodo Pago</a>";
                         echo "<a href='../menu/menu.html' class='btn btn-primary mt-3 d-block'>Volver al menú</a>";
                     }
                 ?>
