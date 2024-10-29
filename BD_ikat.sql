@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-10-2024 a las 04:54:13
+-- Tiempo de generación: 29-10-2024 a las 17:32:14
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `db_ikat`
+-- Base de datos: `bd_ikat`
 --
 
 -- --------------------------------------------------------
@@ -31,6 +31,15 @@ CREATE TABLE `ambiente` (
   `id_ambiente` int(11) NOT NULL,
   `nombre_ambiente` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `ambiente`
+--
+
+INSERT INTO `ambiente` (`id_ambiente`, `nombre_ambiente`) VALUES
+(1, 'Cocina'),
+(2, 'Baño'),
+(3, 'Exterior');
 
 -- --------------------------------------------------------
 
@@ -88,6 +97,17 @@ CREATE TABLE `color` (
   `codigo_hex` varchar(7) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `color`
+--
+
+INSERT INTO `color` (`id_color`, `nombre_color`, `codigo_hex`) VALUES
+(1, 'Rojo', NULL),
+(2, 'Azul', NULL),
+(3, 'Negro', NULL),
+(4, 'Blanco', NULL),
+(5, 'Gris', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -133,6 +153,13 @@ CREATE TABLE `firmeza` (
   `nivel_firmeza` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `firmeza`
+--
+
+INSERT INTO `firmeza` (`id_firmeza`, `nivel_firmeza`) VALUES
+(1, 'Suave');
+
 -- --------------------------------------------------------
 
 --
@@ -143,6 +170,13 @@ CREATE TABLE `forma` (
   `id_forma` int(11) NOT NULL,
   `nombre_forma` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `forma`
+--
+
+INSERT INTO `forma` (`id_forma`, `nombre_forma`) VALUES
+(1, 'Cuadrada');
 
 -- --------------------------------------------------------
 
@@ -176,6 +210,14 @@ CREATE TABLE `material` (
   `id_material` int(11) NOT NULL,
   `nombre_material` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `material`
+--
+
+INSERT INTO `material` (`id_material`, `nombre_material`) VALUES
+(1, 'Madera'),
+(2, 'Metal');
 
 -- --------------------------------------------------------
 
@@ -253,6 +295,13 @@ CREATE TABLE `producto` (
   `activo` tinyint(1) NOT NULL,
   `id_subcategoria` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `producto`
+--
+
+INSERT INTO `producto` (`id_producto`, `nombre_producto`, `precio_unitario`, `stock_producto`, `descripcion_producto`, `foto_producto`, `cantidad_vendida`, `top_venta`, `activo`, `id_subcategoria`) VALUES
+(3, 'Cama gato', 25990, 0, 'Una linda camita para tu felino :3 miau', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/127645737_01/w=1500,h=1500,fit=pad', 0, 0, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -382,13 +431,20 @@ CREATE TABLE `usuario` (
   `run_usuario` varchar(9) NOT NULL,
   `correo_usuario` varchar(100) NOT NULL,
   `numero_usuario` varchar(12) NOT NULL,
-  `contrasenia_usuario` varchar(15) NOT NULL,
+  `contrasenia_usuario` varchar(255) NOT NULL,
   `direccion_usuario` varchar(100) DEFAULT NULL,
-  `tipo_usuario` enum('Administrador','Registrado') NOT NULL,
+  `tipo_usuario` enum('Admin','Registrado','Superadmin') NOT NULL,
   `puntos_totales` bigint(255) NOT NULL,
   `activo` tinyint(1) NOT NULL,
   `ultima_sesion` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `run_usuario`, `correo_usuario`, `numero_usuario`, `contrasenia_usuario`, `direccion_usuario`, `tipo_usuario`, `puntos_totales`, `activo`, `ultima_sesion`) VALUES
+(1, 'Javier', 'Pino', '208460730', 'jpinoh@ing.ucsc.cl', '+56932365067', 'password', 'Concepcion', 'Superadmin', 0, 1, '0000-00-00');
 
 --
 -- Índices para tablas volcadas
@@ -603,7 +659,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `ambiente`
 --
 ALTER TABLE `ambiente`
-  MODIFY `id_ambiente` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_ambiente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `boleta`
@@ -627,7 +683,7 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de la tabla `color`
 --
 ALTER TABLE `color`
-  MODIFY `id_color` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_color` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `compra`
@@ -645,13 +701,13 @@ ALTER TABLE `envio`
 -- AUTO_INCREMENT de la tabla `firmeza`
 --
 ALTER TABLE `firmeza`
-  MODIFY `id_firmeza` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_firmeza` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `forma`
 --
 ALTER TABLE `forma`
-  MODIFY `id_forma` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_forma` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `lista_de_deseos`
@@ -663,7 +719,7 @@ ALTER TABLE `lista_de_deseos`
 -- AUTO_INCREMENT de la tabla `material`
 --
 ALTER TABLE `material`
-  MODIFY `id_material` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_material` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `metodo_pago`
@@ -699,7 +755,7 @@ ALTER TABLE `oferta`
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id_producto` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_producto` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `resenia`
@@ -717,7 +773,7 @@ ALTER TABLE `subcategoria`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id_usuario` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_usuario` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restricciones para tablas volcadas
