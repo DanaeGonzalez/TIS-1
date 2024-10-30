@@ -1,6 +1,7 @@
-<?php
-    include 'menu_registro/auth.php'
+<?php 
+  include 'menu_registro/auth.php';
 ?>
+
 <!-- Header/Navbar -->
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
@@ -64,11 +65,7 @@
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg"
                                 alt="User Image" class="user-avatar me-2">
-                            <span>
-                            <?php
-                                echo $_SESSION['nombre_usuario'];
-                            ?>
-                            </span>
+                            <span> <?php echo $_SESSION['nombre_usuario'];?> </span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="..\views\compras.php">Mis Compras</a></li>
