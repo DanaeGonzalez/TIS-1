@@ -1,5 +1,5 @@
 <?php
-include '../../config/conexion.php';
+include '../conexion.php';
 session_start();
 
 $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : '';
@@ -17,7 +17,7 @@ unset($_SESSION['mensaje']);
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="..\..\assets\css\styles.css">
+    <link rel="stylesheet" href="../menu/styles.css">
 
 </head>
 <body>
@@ -29,9 +29,7 @@ unset($_SESSION['mensaje']);
                     data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle sidebar">
                 <span class="navbar-toggler-icon"></span>
             </button>
-                        <a href="../../views/menu_rol/menu_adm.php">
-                <img width="180px" height="auto" src="../../assets/Images/ikat.png" alt="">
-            </a>
+            <img width="180px" height="auto" src="../ikat.png" alt="">
 
             <button class="navbar-toggler border" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
                     aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -152,8 +150,8 @@ unset($_SESSION['mensaje']);
                                                     <input type='text' id='idProducto' class='form-control' value='" . $row['id_producto'] . "' disabled>
                                                 </div>
                                                 <div class='mb-3'>
-                                                    <label for='porcentajeDescuento' class='form-label'>Porcentaje de Descuento (0 a 1)</label>
-                                                    <input type='number' step='0.01' min='0' max='1' id='porcentajeDescuento' 
+                                                    <label for='porcentajeDescuento' class='form-label'>Porcentaje de Descuento (1 a 100%)</label>
+                                                    <input type='number' step='1' min='1' max='100' id='porcentajeDescuento' 
                                                            name='porcentaje_descuento' class='form-control' 
                                                            value='" . $row['porcentaje_descuento'] . "' required>
                                                 </div>
@@ -188,21 +186,23 @@ unset($_SESSION['mensaje']);
                 </div>
                 <div class="modal-body">
 
-                    <form action="agregar_ofertas.php" method="post">
-                        <label for="id_producto" class="form-label">Selecciona el producto por ID:</label>
+                    <form action="agregar_oferta.php" method="post">
+                        <label for="id_producto" class="form-label">Selecciona el producto</label>
 
                         <select class="form-select" name="id_producto" required>
                             <option value="" disabled selected>Selecciona un producto</option>
-                            <?php while ($row = $result->fetch_assoc()): ?>
-                                <option value="<?php echo $row['id_producto']; ?>">
-                                    <?php echo $row['nombre_producto']; ?>
-                                </option>
-                            <?php endwhile; ?>
+                            <?php
+                                $sqlProducto = "SELECT id_producto, nombre_producto FROM producto";
+                                $resultProducto = $conn->query($sqlProducto);
+                                while($producto = $resultProducto->fetch_assoc()) {
+                                    echo "<option value='" . $producto['id_producto'] . "'>" . $producto['nombre_producto'] . "</option>";
+                                }
+                            ?>
                         </select>
 
-                        <label for="porcentaje_descuento" class="form-label mt-3">Porcentaje de descuento (0 a 1):</label>
+                        <label for="porcentaje_descuento" class="form-label mt-3">Porcentaje de descuento (1 a 100%):</label>
 
-                        <input class="form-control" type="number" step="0.01" min="0" max="1" name="porcentaje_descuento" required>
+                        <input class="form-control" type="number" step="1" min="1" max="100" name="porcentaje_descuento" required>
 
                         <input class="form-control btn btn-primary d-block mt-4" type="submit" value="Agregar oferta">
 

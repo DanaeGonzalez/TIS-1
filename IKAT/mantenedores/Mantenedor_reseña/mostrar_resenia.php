@@ -1,5 +1,5 @@
 <?php
-include '../../config/conexion.php';
+include '../conexion.php';
 session_start();
 
 $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : '';
@@ -17,7 +17,7 @@ unset($_SESSION['mensaje']);
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="..\..\assets\css\styles.css">
+    <link rel="stylesheet" href="../menu/styles.css">
 
 </head>
 <body>
@@ -28,9 +28,7 @@ unset($_SESSION['mensaje']);
                     data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle sidebar">
                 <span class="navbar-toggler-icon"></span>
             </button>
-                        <a href="../../views/menu_rol/menu_adm.php">
-                <img width="180px" height="auto" src="../../assets/Images/ikat.png" alt="">
-            </a>
+            <img width="180px" height="auto" src="../ikat.png" alt="">
 
             <button class="navbar-toggler border" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
                     aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">

@@ -1,5 +1,5 @@
 <?php
-    include '../../config/conexion.php';
+    include '../conexion.php';
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="..\..\assets\css\styles.css">
+    <link rel="stylesheet" href="../menu/styles.css">
 
 </head>
 <body>
@@ -25,9 +25,7 @@
                     data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle sidebar">
                 <span class="navbar-toggler-icon"></span>
             </button>
-                        <a href="../../views/menu_rol/menu_adm.php">
-                <img width="180px" height="auto" src="../../assets/Images/ikat.png" alt="">
-            </a>
+            <img width="180px" height="auto" src="../ikat.png" alt="">
 
             <button class="navbar-toggler border" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
                     aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -130,10 +128,19 @@
                     <?php endif; ?>
 
                     <form action="modificar_puntos_usuario.php" method="post">
-                        <label for="id_usuario">ID del Usuario:</label>
-                        <input class="form-control" type="number" name="id_usuario" id="id_usuario" required><br>
+                        <label for="id_usuario" class="mb-2">Seleccione el usuario:</label>
+                        <select class="form-select" name="id_usuario" required>
+                            <option value="" disabled selected>Selecciona un usuario</option>
+                            <?php
+                                $sqlUsuario = "SELECT id_usuario, nombre_usuario FROM usuario";
+                                $resultUsuario = $conn->query($sqlUsuario);
+                                while($usuario = $resultUsuario->fetch_assoc()) {
+                                    echo "<option value='" . $usuario['id_usuario'] . "'>" . $usuario['nombre_usuario'] . "</option>";
+                                }
+                            ?>
+                        </select>
 
-                        <label for="cantidad_modificar">Cantidad a modificar (Negativo para descontar):</label>
+                        <label for="cantidad_modificar" class="form-label mt-3">Cantidad a modificar (Negativo para descontar):</label>
                         <input class="form-control" type="number" name="cantidad_modificar" id="cantidad_modificar" required><br>
 
                         <input class="form-control btn btn-primary d-block" type="submit" value="Modificar puntos">

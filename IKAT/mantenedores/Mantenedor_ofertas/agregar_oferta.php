@@ -1,25 +1,23 @@
 <?php
 session_start();
-include '../../config/conexion.php';
+include '../conexion.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_producto = $_POST["id_producto"];
     $porcentaje_descuento = $_POST["porcentaje_descuento"];
+    $activo = 1; 
 
-    $query = "INSERT INTO oferta (id_producto, porcentaje_descuento) VALUES (?, ?)";
+    $query = "INSERT INTO oferta (id_producto, porcentaje_descuento, activo) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("id", $id_producto, $porcentaje_descuento);
+    $stmt->bind_param("idi", $id_producto, $porcentaje_descuento, $activo);
 
     if ($stmt->execute()) {
         $_SESSION['mensaje'] = "Oferta agregada con éxito.";
     } else {
         $_SESSION['mensaje'] = "Error al agregar la oferta.";
     }
-}
-
-$query = "SELECT id_producto, nombre_producto FROM producto";
-$result = $conn->query($query);
 
     header('Location: mostrar_ofertas.php');
     exit();
+}
 ?>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../../config/conexion.php';
+include '../conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre_ambiente = $_POST['nombre_ambiente'];

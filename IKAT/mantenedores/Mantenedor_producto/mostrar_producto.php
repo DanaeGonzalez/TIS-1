@@ -1,9 +1,25 @@
     <?php
-    include '../../config/conexion.php';
+    include '../conexion.php';
     session_start();
 
     $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : '';
     unset($_SESSION['mensaje']);
+
+    $sqlCategorias = "SELECT * FROM categoria";
+    $resultCategorias = $conn->query($sqlCategorias);
+
+    $categorias = [];
+    if ($resultCategorias->num_rows > 0) {
+        while($rowCategoria = $resultCategorias->fetch_assoc()) {
+            $categorias[] = $rowCategoria;
+        }
+    }
+
+    $opcionesCategoria = "";
+    foreach ($categorias as $categoria) {
+        $opcionesCategoria .= "<option value='" . $categoria['id_categoria'] . "'>" . $categoria['nombre_categoria'] . "</option>";
+    }
+
 
     $sqlColores = "SELECT * FROM color";
     $resultColores = $conn->query($sqlColores);
@@ -158,7 +174,7 @@
         <title>Mantenedor de Productos</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-      <link rel="stylesheet" href="..\..\assets\css\styles.css">
+        <link rel="stylesheet" href="../menu/styles.css">
     </head>
     <body>
         <nav class="navbar navbar-expand-lg">
@@ -167,9 +183,7 @@
                     data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle sidebar">
             <span class="navbar-toggler-icon"></span>
             </button>
-                        <a href="../../views/menu_rol/menu_adm.php">
-                <img width="180px" height="auto" src="../../assets/Images/ikat.png" alt="">
-            </a>
+            <img width="180px" height="auto" src="../ikat.png" alt="">
 
             <button class="navbar-toggler border" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
                     aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -323,15 +337,12 @@
                                                         <!-- Campo oculto para el ID del producto -->
                                                         <input type='hidden' name='id_producto' value='" . $row['id_producto'] . "'>
                                                             
-                                                        <!-- Selección de tipo de producto -->
+                                                        <!-- Selección de tipo de producto -->  
                                                         <label for='tipoProducto'>Tipo de Producto:</label>
-                                                        <select class='form-select' id='tipoProducto" . $row["id_producto"] . "' name='tipo_producto' required onchange='mostrarCaracteristicas(\"" . $row["id_producto"] . "\")'>
+ 
+                                                        <select class='form-select' id='tipoProducto" . $row["id_producto"] . "' name='categoria' required onchange='mostrarCaracteristicas(\"" . $row["id_producto"] . "\")'>
                                                             <option value=''>Seleccione el tipo de producto</option>
-                                                            <option value='silla'>Silla</option>
-                                                            <option value='mesa'>Mesa</option>
-                                                            <option value='sillon'>Sillon</option>
-                                                            <option value='cama'>Cama</option>
-                                                            <option value='almacenamiento/organizacion'>Almacenamiento/organizacion</option>
+                                                            $opcionesCategoria
                                                         </select>
                                                             
                                                         <!-- Formulario de Características para Sillas -->
@@ -603,16 +614,18 @@
         </div>
 
         <script>
-        // Función para mostrar las características específicas de cada producto
-        function mostrarCaracteristicas(idProducto) {
-            const tipoProducto = document.getElementById('tipoProducto' + idProducto).value;
-            document.getElementById('caracteristicasSilla' + idProducto).style.display = tipoProducto === 'silla' ? 'block' : 'none';
-            document.getElementById('caracteristicasMesa' + idProducto).style.display = tipoProducto === 'mesa' ? 'block' : 'none';
-            document.getElementById('caracteristicasSillon' + idProducto).style.display = tipoProducto === 'sillon' ? 'block' : 'none';
-            document.getElementById('caracteristicasCama' + idProducto).style.display = tipoProducto === 'cama' ? 'block' : 'none';
-            document.getElementById('caracteristicasA/O' + idProducto).style.display = tipoProducto === 'almacenamiento/organizacion' ? 'block' : 'none';
-        }
-    </script>
+            // Función para mostrar las características específicas de cada producto
+            function mostrarCaracteristicas(idProducto) {
+                const tipoProducto = document.getElementById('tipoProducto' + idProducto).value;
+            
+                document.getElementById('caracteristicasSilla' + idProducto).style.display = tipoProducto === '5' ? 'block' : 'none';
+                document.getElementById('caracteristicasMesa' + idProducto).style.display = tipoProducto === '6' ? 'block' : 'none';
+                document.getElementById('caracteristicasSillon' + idProducto).style.display = tipoProducto === '7' ? 'block' : 'none';
+                document.getElementById('caracteristicasCama' + idProducto).style.display = tipoProducto === '8' ? 'block' : 'none';
+                document.getElementById('caracteristicasA/O' + idProducto).style.display = tipoProducto === '9' ? 'block' : 'none';
+            }
+        </script>
+
 
 
     </body>

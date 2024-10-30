@@ -1,5 +1,5 @@
 <?php
-include '../../config/conexion.php';
+include '../conexion.php';
 session_start();
 
 $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : '';
@@ -13,7 +13,7 @@ unset($_SESSION['mensaje']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mantenedor de Ventas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" href="..\..\assets\css\styles.css">
+    <link rel="stylesheet" href="../menu/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -24,9 +24,7 @@ unset($_SESSION['mensaje']);
                     data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle sidebar">
                 <span class="navbar-toggler-icon"></span>
             </button>
-                        <a href="../../views/menu_rol/menu_adm.php">
-                <img width="180px" height="auto" src="../../assets/Images/ikat.png" alt="">
-            </a>
+            <img width="180px" height="auto" src="../ikat.png" alt="">
 
             <button class="navbar-toggler border" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
                     aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">

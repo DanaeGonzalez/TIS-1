@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include '../../config/conexion.php';
+    include '../conexion.php';
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $id_n_cajones = $_POST['id_n_cajones'];
