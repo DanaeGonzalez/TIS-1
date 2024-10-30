@@ -7,7 +7,7 @@
         <title>IKAT - Catálogo</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link rel="stylesheet" href="..\assets\css\styles.css">
+        <link rel="stylesheet" href="..\..\assets\css\styles.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     </head>
@@ -15,8 +15,87 @@
     <body>
 
         <div class="container-f">
-            <!-- Header -->
-            <?php include '../templates/header.php'; ?>
+            <!-- Header/Navbar -->
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <a href="..\..\index.php">
+                        <img width="180px" height="auto" src="..\..\assets\images\ikat.png" alt="Ikat">
+                    </a>
+
+                    <div class="d-flex align-items-center justify-content-end gap-3 ms-auto">
+
+                        <!-- Botón de búsqueda -->
+                        <button class="btn btn-link d-lg-none p-0" data-bs-toggle="modal" data-bs-target="#searchModal">
+                            <i class="bi bi-search fs-4  text-secondary"></i>
+                        </button>
+
+                        <!-- Botón de catálogo -->
+                        <a href="..\..\views\catalogo.php" class="btn btn-link d-lg-none p-0">
+                            <i class="bi bi-bag fs-4 text-secondary"></i>
+                        </a>
+
+                        <!-- Botón de lista de deseos -->
+                        <a href="..\..\views\deseados.php" class="btn btn-link p-0 d-lg-none d-flex">
+                            <i class="bi bi-heart fs-4 text-secondary"></i>
+                        </a>
+
+                        <!-- Botón del carrito -->
+                        <a href="..\..\views\carrito.php" class="btn btn-link p-0 d-lg-none d-flex">
+                            <i class="bi bi-cart fs-4 text-secondary"></i>
+                        </a>
+
+                        <!-- Botón de menú -->
+                        <button class="btn btn-link d-lg-none p-0" data-bs-toggle="collapse"
+                            data-bs-target="#navbarContent">
+                            <i class="bi bi-list fs-4  text-secondary"></i>
+                        </button>
+                    </div>
+
+                    <!-- Menú de navegación colapsable -->
+                    <div class="collapse navbar-collapse" id="navbarContent">
+                        <ul class="navbar-nav ms-auto align-items-center text-center">
+
+                            <!-- Botones de lista de deseos y carrito al lado del usuario -->
+                            <li class="nav-item d-flex align-items-center gap-3">
+
+                                <!-- Botón de catálogo -->
+                                <a href="..\..\views\catalogo.php" class="btn btn-link d-none d-lg-flex p-0">
+                                    <i class="bi bi-bag fs-4 text-secondary"></i>
+                                </a>
+
+                                <!-- Botón de lista de deseos -->
+                                <a href="..\..\views\deseados.php" class="btn btn-link p-0 d-none d-lg-flex">
+                                    <i class="bi bi-heart fs-4 text-secondary"></i>
+                                </a>
+
+                                <!-- Botón del carrito -->
+                                <a href="..\..\views\carrito.php" class="btn btn-link p-0 d-none d-lg-flex">
+                                    <i class="bi bi-cart fs-4 text-secondary"></i>
+                                </a>
+
+                                <!-- Menú de usuario -->
+                                <div class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img src="https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg"
+                                            alt="User Image" class="user-avatar me-2">
+                                        Usuario
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="..\..\views\compras.php">Mis Compras</a></li>
+                                        <li><a class="dropdown-item" href="..\..\views\perfil.php">Mi Perfil</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item" href="..\..\views\menu_registro\logout.php">Cerrar
+                                                Sesión</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
 
             <!-- Main -->
             <div class="nain">
@@ -135,6 +214,32 @@
                             </div>
                         </div>
 
+                        <!-- Filtro de Número de Asientos -->
+                        <div class="col-auto mb-3">
+                            <div class="dropdown">
+                                <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
+                                    id="dropdownSeats" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Asientos
+                                </button>
+                                <div class="dropdown-menu p-2" aria-labelledby="dropdownSeats">
+                                    <label class="dropdown-item"><input type="checkbox" name="asientos" value="1">
+                                        1</label>
+                                    <label class="dropdown-item"><input type="checkbox" name="asientos" value="2">
+                                        2</label>
+                                    <label class="dropdown-item"><input type="checkbox" name="asientos" value="3">
+                                        3</label>
+                                    <label class="dropdown-item"><input type="checkbox" name="asientos" value="4">
+                                        4</label>
+                                    <label class="dropdown-item"><input type="checkbox" name="asientos" value="6">
+                                        6</label>
+                                    <label class="dropdown-item"><input type="checkbox" name="asientos" value="8">
+                                        8</label>
+                                    <label class="dropdown-item"><input type="checkbox" name="asientos" value="10">
+                                        10</label>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Filtro de Material -->
                         <div class="col-auto mb-3">
                             <div class="dropdown">
@@ -154,8 +259,52 @@
                             </div>
                         </div>
 
+                        <!-- Filtro de Forma -->
+                        <div class="col-auto mb-3">
+                            <div class="dropdown">
+                                <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
+                                    id="dropdownForma" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Forma
+                                </button>
+                                <div class="dropdown-menu p-2" aria-labelledby="dropdownForma">
+                                    <label class="dropdown-item"><input type="checkbox" name="forma" value="Cuadrada">
+                                        Cuadrada</label>
+                                    <label class="dropdown-item"><input type="checkbox" name="forma"
+                                            value="Rectangular">
+                                        Rectangular</label>
+                                    <label class="dropdown-item"><input type="checkbox" name="forma" value="Circular">
+                                        Circular</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Filtro de Ambiente -->
+                        <div class="col-auto mb-3">
+                            <div class="dropdown">
+                                <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
+                                    id="dropdownAmbiente" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Ambiente
+                                </button>
+                                <div class="dropdown-menu p-2" aria-labelledby="dropdownAmbiente">
+                                    <label class="dropdown-item"><input type="checkbox" name="ambiente" value="Cocina">
+                                        Cocina</label>
+                                    <label class="dropdown-item"><input type="checkbox" name="ambiente" value="Comedor">
+                                        Comedor</label>
+                                    <label class="dropdown-item"><input type="checkbox" name="ambiente" value="Pieza">
+                                        Pieza</label>
+                                    <label class="dropdown-item"><input type="checkbox" name="ambiente" value="Baño">
+                                        Baño</label>
+                                    <label class="dropdown-item"><input type="checkbox" name="ambiente"
+                                            value="Exterior">
+                                        Exterior</label>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
+
+
 
                 <!-- Contenedor de la barra de etiquetas -->
                 <div class="container mt-3">
@@ -168,7 +317,7 @@
 
                 <?php
                 // Incluir la conexión
-                include_once '..\config\conexion.php';
+                include_once '..\..\config\conexion.php';
 
                 // Consulta para obtener los productos activos
                 $sql = "SELECT * FROM producto WHERE activo = 1";
@@ -234,13 +383,60 @@
             </div>
 
             <!-- Footer -->
-            <?php include '../templates/footer.php'; ?>
+            <footer class="py-4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+                            <h5>¡Únete a la familia IKAT!</h5>
+                            <div class="col-md-9 col-12">
+                                Regístrate y disfruta de la experiencia completa de IKAT.
+                                <div class="text-center">
+                                    <a href="..\..\views\registro.php"
+                                        class="btn btn-light border-dark btn-sm mt-3 text-black text-decoration-none">
+                                        Registrarme
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+                            <h5>Servicio</h5>
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-black text-decoration-none">Sigue tu pedido</a></li>
+                                <li><a href="#" class="text-black text-decoration-none">IKAT Points</a></li>
+                                <li><a href="#" class="text-black text-decoration-none">Despacho a domicilio</a></li>
+                                <li><a href="#" class="text-black text-decoration-none">Métodos de pago</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+                            <h5>Sobre IKAT</h5>
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-black text-decoration-none">Quienes somos</a></li>
+                                <li><a href="#" class="text-black text-decoration-none">Misión y Visión</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+                            <h5>Redes Sociales</h5>
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-facebook"></i>
+                                        Facebook</a></li>
+                                <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-instagram"></i>
+                                        Instagram</a></li>
+                                <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-threads"></i>
+                                        Threads</a></li>
+                                <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-twitter-x"></i>
+                                        X</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
-        <script src="..\assets\js\filtros.js"></script>
+        <script src="..\..\assets\js\filtros.js"></script>
     </body>
 
 </php>
