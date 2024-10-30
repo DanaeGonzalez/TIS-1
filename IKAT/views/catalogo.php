@@ -91,28 +91,6 @@
                             </div>
                         </div>
 
-                        <!-- Filtro de Subcategoría -->
-                        <div class="col-auto mb-3">
-                            <div class="dropdown">
-                                <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                    id="dropdownSubcategory" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Subcategoría
-                                </button>
-                                <div class="dropdown-menu p-2" aria-labelledby="dropdownSubcategory">
-                                    <label class="dropdown-item"><input type="checkbox" name="subcategoría" value="A">
-                                        A</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="subcategoría" value="B">
-                                        B</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="subcategoría" value="C">
-                                        C</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="subcategoría" value="D">
-                                        D</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="subcategoría" value="E">
-                                        E</label>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Filtro de Color -->
                         <div class="col-auto mb-3">
                             <div class="dropdown">

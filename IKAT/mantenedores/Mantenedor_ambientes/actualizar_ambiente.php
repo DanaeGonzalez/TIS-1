@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include '../conexion.php';
+    include '../../config/conexion.php';
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $id_ambiente = $_POST['id_ambiente'];
