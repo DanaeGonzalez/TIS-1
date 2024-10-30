@@ -21,7 +21,28 @@
         $sql .= " AND id_producto IN (SELECT id_producto FROM producto_color JOIN color USING (id_color) WHERE nombre_color = '$color')";
     }
     if (!empty($material)) {
-        $sql .= " AND id_producto IN (SELECT id_producto FROM producto_material JOIN material USING (id material) WHERE nombre_material = '$material')";
+        $sql .= " AND id_producto IN (SELECT id_producto FROM producto_material JOIN material USING (id_material) WHERE nombre_material = '$material')";
+    }
+    if (!empty($ambiente)) {
+        $sql .= " AND id_producto IN (SELECT id_producto FROM producto_ambiente JOIN ambiente USING (id_ambiente) WHERE nombre_ambiente = '$ambiente')";
+    }
+    if (!empty($forma)) {
+        $sql .= " AND id_producto IN (SELECT id_producto FROM producto_forma JOIN forma USING (id_forma) WHERE nombre_forma = '$forma')";
+    }
+    if (!empty($firmeza)) {
+        $sql .= " AND id_producto IN (SELECT id_producto FROM producto_firmeza JOIN firmeza USING (id_firmeza) WHERE nombre_firmeza = '$firmeza')";
+    }
+    if (!empty($n_asientos)) {
+        $sql .= " AND id_producto IN (SELECT id_producto FROM producto_n_asientos JOIN n_asientos USING (id_n_asientos) WHERE nombre_n_asientos = '$n_asientos')";
+    }
+    if (!empty($n_cajones)) {
+        $sql .= " AND id_producto IN (SELECT id_producto FROM producto_n_cajones JOIN n_cajones USING (id_n_cajones) WHERE nombre_n_cajones = '$n_cajones')";
+    }
+    if (!empty($n_plazas)) {
+        $sql .= " AND id_producto IN (SELECT id_producto FROM producto_n_plazas JOIN n_plazas USING (id n_plazas) WHERE nombre_n_plazas = '$n_plazas')";
+    }
+    if (!empty($subcategoria)) {
+        $sql .= " AND id_producto IN (SELECT id_producto FROM producto_subcategoria JOIN subcategoria USING (id_subcategoria) WHERE nombre_subcategoria = '$subcategoria')";
     }
     // Ejecutar la consulta
     $result = $conn->query($sql);
