@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-10-2024 a las 17:32:14
+-- Tiempo de generación: 30-10-2024 a las 20:20:53
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -59,7 +59,7 @@ CREATE TABLE `boleta` (
 --
 
 CREATE TABLE `carrito` (
-  `id_carrito` int(100) NOT NULL
+  `id_carrito` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -85,6 +85,17 @@ CREATE TABLE `categoria` (
   `nombre_categoria` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `categoria`
+--
+
+INSERT INTO `categoria` (`id_categoria`, `nombre_categoria`) VALUES
+(5, 'Silla'),
+(6, 'Mesa'),
+(7, 'Sillon'),
+(8, 'Cama'),
+(9, 'Almacenamiento  y Organización');
+
 -- --------------------------------------------------------
 
 --
@@ -106,7 +117,8 @@ INSERT INTO `color` (`id_color`, `nombre_color`, `codigo_hex`) VALUES
 (2, 'Azul', NULL),
 (3, 'Negro', NULL),
 (4, 'Blanco', NULL),
-(5, 'Gris', NULL);
+(5, 'Gris', NULL),
+(6, 'Cafe', NULL);
 
 -- --------------------------------------------------------
 
@@ -121,9 +133,9 @@ CREATE TABLE `compra` (
   `puntos_ganados` int(11) NOT NULL,
   `tipo_estado` enum('Preparando pedido','En reparto','Entregado','Intento de entrega fallido','Devuelto a origen') NOT NULL,
   `direccion_pedido` varchar(255) NOT NULL,
-  `id_metodo` int(10) NOT NULL,
+  `id_metodo` int(10) DEFAULT NULL,
   `id_usuario` int(100) NOT NULL,
-  `id_carrito` int(100) NOT NULL
+  `id_carrito` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -231,6 +243,13 @@ CREATE TABLE `metodo_pago` (
   `activo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `metodo_pago`
+--
+
+INSERT INTO `metodo_pago` (`id_metodo`, `nombre_metodo`, `activo`) VALUES
+(5, 'Paypal', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -277,6 +296,13 @@ CREATE TABLE `oferta` (
   `id_producto` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `oferta`
+--
+
+INSERT INTO `oferta` (`id_oferta`, `porcentaje_descuento`, `activo`, `id_producto`) VALUES
+(2, 30, 1, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -301,7 +327,10 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`id_producto`, `nombre_producto`, `precio_unitario`, `stock_producto`, `descripcion_producto`, `foto_producto`, `cantidad_vendida`, `top_venta`, `activo`, `id_subcategoria`) VALUES
-(3, 'Cama gato', 25990, 0, 'Una linda camita para tu felino :3 miau', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/127645737_01/w=1500,h=1500,fit=pad', 0, 0, 1, NULL);
+(3, 'Cama gato', 25990, 10, 'Una linda camita para tu felino :3 miau', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/127645737_01/w=1500,h=1500,fit=pad', 0, 0, 1, NULL),
+(5, 'Mesa roble', 30990, 0, 'Una mesa de roble barnizada', 'https://www.cic.cl/dw/image/v2/BDXB_PRD/on/demandware.static/-/Sites-masterCatalog_CIC/es_CL/dw742de45c/original/images/products/mesa-centro-nuble-caramelo-110x70x40-cm-01.jpg?sw=1500&sh=1500&sm=fit', 0, 0, 1, NULL),
+(6, 'Pluma Silla de Cuero y Madera', 19990, 0, 'Una silla de madera con sillones de cuero', 'https://www.cueroydiseno.cl/wp-content/uploads/2021/04/sillapluma-scaled.jpg', 0, 0, 1, NULL),
+(7, 'cama estructural con 2 cajones MALM', 369980, 0, 'Una elegante cama de color con dos cajones en la parte de abajo', 'https://www.ikea.com/cl/es/images/products/malm-cama-estructural-con-2-cajones-negro-loenset__1101552_pe866728_s5.jpg?f=s', 0, 0, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -418,6 +447,13 @@ CREATE TABLE `subcategoria` (
   `id_categoria` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `subcategoria`
+--
+
+INSERT INTO `subcategoria` (`id_subcategoria`, `nombre_subcategoria`, `id_categoria`) VALUES
+(1, 'Escritorio', 5);
+
 -- --------------------------------------------------------
 
 --
@@ -435,16 +471,10 @@ CREATE TABLE `usuario` (
   `direccion_usuario` varchar(100) DEFAULT NULL,
   `tipo_usuario` enum('Admin','Registrado','Superadmin') NOT NULL,
   `puntos_totales` bigint(255) NOT NULL,
-  `activo` tinyint(1) NOT NULL,
-  `ultima_sesion` date DEFAULT NULL
+  `activo` tinyint(1) NOT NULL DEFAULT 1,
+  `ultima_sesion` date DEFAULT NULL,
+  `id_carrito` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `usuario`
---
-
-INSERT INTO `usuario` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `run_usuario`, `correo_usuario`, `numero_usuario`, `contrasenia_usuario`, `direccion_usuario`, `tipo_usuario`, `puntos_totales`, `activo`, `ultima_sesion`) VALUES
-(1, 'Javier', 'Pino', '208460730', 'jpinoh@ing.ucsc.cl', '+56932365067', 'password', 'Concepcion', 'Superadmin', 0, 1, '0000-00-00');
 
 --
 -- Índices para tablas volcadas
@@ -649,7 +679,8 @@ ALTER TABLE `subcategoria`
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`id_usuario`);
+  ADD PRIMARY KEY (`id_usuario`),
+  ADD KEY `fk_usuario_carrito` (`id_carrito`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -671,19 +702,19 @@ ALTER TABLE `boleta`
 -- AUTO_INCREMENT de la tabla `carrito`
 --
 ALTER TABLE `carrito`
-  MODIFY `id_carrito` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_carrito` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `id_categoria` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_categoria` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `color`
 --
 ALTER TABLE `color`
-  MODIFY `id_color` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_color` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `compra`
@@ -725,7 +756,7 @@ ALTER TABLE `material`
 -- AUTO_INCREMENT de la tabla `metodo_pago`
 --
 ALTER TABLE `metodo_pago`
-  MODIFY `id_metodo` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_metodo` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `n_asientos`
@@ -749,31 +780,31 @@ ALTER TABLE `n_plazas`
 -- AUTO_INCREMENT de la tabla `oferta`
 --
 ALTER TABLE `oferta`
-  MODIFY `id_oferta` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_oferta` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id_producto` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_producto` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `resenia`
 --
 ALTER TABLE `resenia`
-  MODIFY `id_resenia` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_resenia` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `subcategoria`
 --
 ALTER TABLE `subcategoria`
-  MODIFY `id_subcategoria` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_subcategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id_usuario` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_usuario` int(100) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
@@ -899,6 +930,12 @@ ALTER TABLE `resenia`
 --
 ALTER TABLE `subcategoria`
   ADD CONSTRAINT `subcategoria_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id_categoria`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `fk_usuario_carrito` FOREIGN KEY (`id_carrito`) REFERENCES `carrito` (`id_carrito`) ON DELETE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

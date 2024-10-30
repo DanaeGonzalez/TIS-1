@@ -91,28 +91,6 @@
                             </div>
                         </div>
 
-                        <!-- Filtro de Subcategoría -->
-                        <div class="col-auto mb-3">
-                            <div class="dropdown">
-                                <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                    id="dropdownSubcategory" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Subcategoría
-                                </button>
-                                <div class="dropdown-menu p-2" aria-labelledby="dropdownSubcategory">
-                                    <label class="dropdown-item"><input type="checkbox" name="subcategoría" value="A">
-                                        A</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="subcategoría" value="B">
-                                        B</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="subcategoría" value="C">
-                                        C</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="subcategoría" value="D">
-                                        D</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="subcategoría" value="E">
-                                        E</label>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Filtro de Color -->
                         <div class="col-auto mb-3">
                             <div class="dropdown">
@@ -131,33 +109,6 @@
                                         Gris</label>
                                     <label class="dropdown-item"><input type="checkbox" name="color" value="Café">
                                         Café</label>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <!-- Filtro de Número de Asientos -->
-                        <div class="col-auto mb-3">
-                            <div class="dropdown">
-                                <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                    id="dropdownSeats" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Asientos
-                                </button>
-                                <div class="dropdown-menu p-2" aria-labelledby="dropdownSeats">
-                                    <label class="dropdown-item"><input type="checkbox" name="asientos" value="1">
-                                        1</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="asientos" value="2">
-                                        2</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="asientos" value="3">
-                                        3</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="asientos" value="4">
-                                        4</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="asientos" value="6">
-                                        6</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="asientos" value="8">
-                                        8</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="asientos" value="10">
-                                        10</label>
                                 </div>
                             </div>
                         </div>
@@ -181,122 +132,6 @@
                             </div>
                         </div>
 
-                        <!-- Filtro de Plazas -->
-                        <div class="col-auto mb-3">
-                            <div class="dropdown">
-                                <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                    id="dropdownPlazas" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Plazas
-                                </button>
-                                <div class="dropdown-menu p-2" aria-labelledby="dropdownPlazas">
-                                    <label class="dropdown-item"><input type="checkbox" name="plazas" value="1">
-                                        1</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="plazas" value="1 1/2"> 1
-                                        1/2</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="plazas" value="2">
-                                        2</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="plazas" value="King">
-                                        King</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="plazas" value="Queen">
-                                        Queen</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Filtro de Forma -->
-                        <div class="col-auto mb-3">
-                            <div class="dropdown">
-                                <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                    id="dropdownForma" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Forma
-                                </button>
-                                <div class="dropdown-menu p-2" aria-labelledby="dropdownForma">
-                                    <label class="dropdown-item"><input type="checkbox" name="forma" value="Cuadrada">
-                                        Cuadrada</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="forma"
-                                            value="Rectangular">
-                                        Rectangular</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="forma" value="Circular">
-                                        Circular</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Filtro de Ambiente -->
-                        <div class="col-auto mb-3">
-                            <div class="dropdown">
-                                <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                    id="dropdownAmbiente" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Ambiente
-                                </button>
-                                <div class="dropdown-menu p-2" aria-labelledby="dropdownAmbiente">
-                                    <label class="dropdown-item"><input type="checkbox" name="ambiente" value="Cocina">
-                                        Cocina</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="ambiente" value="Comedor">
-                                        Comedor</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="ambiente" value="Pieza">
-                                        Pieza</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="ambiente" value="Baño">
-                                        Baño</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="ambiente"
-                                            value="Exterior">
-                                        Exterior</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Filtro de Firmeza -->
-                        <div class="col-auto mb-3">
-                            <div class="dropdown">
-                                <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                    id="dropdownFirmeza" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Firmeza
-                                </button>
-                                <div class="dropdown-menu p-2" aria-labelledby="dropdownFirmeza">
-                                    <label class="dropdown-item"><input type="checkbox" name="firmeza" value="Suave">
-                                        Suave</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="firmeza"
-                                            value="Extra suave">
-                                        Extra
-                                        suave</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="firmeza" value="Media">
-                                        Media</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="firmeza" value="Firme">
-                                        Firme</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-auto mb-3">
-                            <div class="dropdown">
-                                <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                    id="dropdownCajones" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Cajones
-                                </button>
-                                <div class="dropdown-menu p-2" aria-labelledby="dropdownCajones">
-                                    <label class="dropdown-item"><input type="checkbox" name="cajones" value="1">
-                                        1</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="cajones" value="2">
-                                        2</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="cajones" value="3">
-                                        3</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="cajones" value="4">
-                                        4</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="cajones" value="5">
-                                        5</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="cajones" value="6">
-                                        6</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="cajones" value="7">
-                                        7</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="cajones" value="8">
-                                        8</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="cajones" value="9">
-                                        9</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="cajones" value="10">
-                                        10</label>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
