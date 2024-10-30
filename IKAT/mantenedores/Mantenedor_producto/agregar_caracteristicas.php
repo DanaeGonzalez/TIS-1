@@ -1,6 +1,6 @@
 <?php
 // Conectar a la base de datos
-require_once 'conexion.php';
+require_once '../../config/conexion.php';
 
 // Obtener ID del producto y categoría del producto
 $id_producto = $_POST['id_producto'];

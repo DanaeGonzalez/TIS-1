@@ -1,5 +1,5 @@
 <?php
-include '../conexion.php';
+include '../../config/conexion.php';
 session_start();
 
 $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : '';
