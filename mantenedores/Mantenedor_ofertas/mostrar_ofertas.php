@@ -150,8 +150,8 @@ unset($_SESSION['mensaje']);
                                                     <input type='text' id='idProducto' class='form-control' value='" . $row['id_producto'] . "' disabled>
                                                 </div>
                                                 <div class='mb-3'>
-                                                    <label for='porcentajeDescuento' class='form-label'>Porcentaje de Descuento (0 a 1)</label>
-                                                    <input type='number' step='0.01' min='0' max='1' id='porcentajeDescuento' 
+                                                    <label for='porcentajeDescuento' class='form-label'>Porcentaje de Descuento (1 a 100%)</label>
+                                                    <input type='number' step='1' min='1' max='100' id='porcentajeDescuento' 
                                                            name='porcentaje_descuento' class='form-control' 
                                                            value='" . $row['porcentaje_descuento'] . "' required>
                                                 </div>
@@ -186,21 +186,23 @@ unset($_SESSION['mensaje']);
                 </div>
                 <div class="modal-body">
 
-                    <form action="agregar_ofertas.php" method="post">
-                        <label for="id_producto" class="form-label">Selecciona el producto por ID:</label>
+                    <form action="agregar_oferta.php" method="post">
+                        <label for="id_producto" class="form-label">Selecciona el producto</label>
 
                         <select class="form-select" name="id_producto" required>
                             <option value="" disabled selected>Selecciona un producto</option>
-                            <?php while ($row = $result->fetch_assoc()): ?>
-                                <option value="<?php echo $row['id_producto']; ?>">
-                                    <?php echo $row['nombre_producto']; ?>
-                                </option>
-                            <?php endwhile; ?>
+                            <?php
+                                $sqlProducto = "SELECT id_producto, nombre_producto FROM producto";
+                                $resultProducto = $conn->query($sqlProducto);
+                                while($producto = $resultProducto->fetch_assoc()) {
+                                    echo "<option value='" . $producto['id_producto'] . "'>" . $producto['nombre_producto'] . "</option>";
+                                }
+                            ?>
                         </select>
 
-                        <label for="porcentaje_descuento" class="form-label mt-3">Porcentaje de descuento (0 a 1):</label>
+                        <label for="porcentaje_descuento" class="form-label mt-3">Porcentaje de descuento (1 a 100%):</label>
 
-                        <input class="form-control" type="number" step="0.01" min="0" max="1" name="porcentaje_descuento" required>
+                        <input class="form-control" type="number" step="1" min="1" max="100" name="porcentaje_descuento" required>
 
                         <input class="form-control btn btn-primary d-block mt-4" type="submit" value="Agregar oferta">
 

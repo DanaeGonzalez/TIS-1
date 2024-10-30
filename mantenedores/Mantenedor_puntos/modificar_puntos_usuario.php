@@ -128,10 +128,19 @@
                     <?php endif; ?>
 
                     <form action="modificar_puntos_usuario.php" method="post">
-                        <label for="id_usuario">ID del Usuario:</label>
-                        <input class="form-control" type="number" name="id_usuario" id="id_usuario" required><br>
+                        <label for="id_usuario" class="mb-2">Seleccione el usuario:</label>
+                        <select class="form-select" name="id_usuario" required>
+                            <option value="" disabled selected>Selecciona un usuario</option>
+                            <?php
+                                $sqlUsuario = "SELECT id_usuario, nombre_usuario FROM usuario";
+                                $resultUsuario = $conn->query($sqlUsuario);
+                                while($usuario = $resultUsuario->fetch_assoc()) {
+                                    echo "<option value='" . $usuario['id_usuario'] . "'>" . $usuario['nombre_usuario'] . "</option>";
+                                }
+                            ?>
+                        </select>
 
-                        <label for="cantidad_modificar">Cantidad a modificar (Negativo para descontar):</label>
+                        <label for="cantidad_modificar" class="form-label mt-3">Cantidad a modificar (Negativo para descontar):</label>
                         <input class="form-control" type="number" name="cantidad_modificar" id="cantidad_modificar" required><br>
 
                         <input class="form-control btn btn-primary d-block" type="submit" value="Modificar puntos">
