@@ -339,7 +339,7 @@
                                                         <!-- Selección de tipo de producto -->  
                                                         <label for='tipoProducto'>Tipo de Producto:</label>
  
-                                                        <select class='form-select' id='tipoProducto" . $row["id_producto"] . "' name='tipo_producto' required onchange='mostrarCaracteristicas(\"" . $row["id_producto"] . "\")'>
+                                                        <select class='form-select' id='tipoProducto" . $row["id_producto"] . "' name='categoria' required onchange='mostrarCaracteristicas(\"" . $row["id_producto"] . "\")'>
                                                             <option value=''>Seleccione el tipo de producto</option>
                                                             $opcionesCategoria
                                                         </select>
