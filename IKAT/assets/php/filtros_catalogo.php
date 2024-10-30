@@ -15,7 +15,7 @@
     $sql = "SELECT * FROM producto WHERE activo = 1";
     // Aplicar filtros si están seleccionados
     if (!empty($categoria)) {
-        $sql .= " AND id_subcategoria IN (SELECT id_subcategoria FROM subcategoria WHERE id_categoria = '$categoria')";
+        $sql .= " AND id_subcategoria IN (SELECT id_subcategoria FROM subcategoria JOIN categoria USING (id_categoria) WHERE nombre_categoria = '$categoria')";
     }
     if (!empty($color)) {
         $sql .= " AND id_producto IN (SELECT id_producto FROM producto_color JOIN color USING (id_color) WHERE nombre_color = '$color')";
@@ -39,10 +39,10 @@
         $sql .= " AND id_producto IN (SELECT id_producto FROM producto_n_cajones JOIN n_cajones USING (id_n_cajones) WHERE nombre_n_cajones = '$n_cajones')";
     }
     if (!empty($n_plazas)) {
-        $sql .= " AND id_producto IN (SELECT id_producto FROM producto_n_plazas JOIN n_plazas USING (id n_plazas) WHERE nombre_n_plazas = '$n_plazas')";
+        $sql .= " AND id_producto IN (SELECT id_producto FROM producto_n_plazas JOIN n_plazas USING (id_n_plazas) WHERE nombre_n_plazas = '$n_plazas')";
     }
     if (!empty($subcategoria)) {
-        $sql .= " AND id_producto IN (SELECT id_producto FROM producto_subcategoria JOIN subcategoria USING (id_subcategoria) WHERE nombre_subcategoria = '$subcategoria')";
+        $sql .= " AND id_subcategoria IN (SELECT id_subcategoria FROM subcategoria WHERE nombre_subcategoria = '$subcategoria')";
     }
     // Ejecutar la consulta
     $result = $conn->query($sql);
