@@ -309,217 +309,57 @@
                     </div>
                 </div>
 
-                <!-- Contenedor catálogo -->
-                <div class="container mt-4">
-                    <div class="row justify-content-center">
-                        <div class="col-6 col-md-4 mb-4">
-                            <a href="producto.php" class="text-decoration-none">
-                                <div class="card" style="width: 100%;">
-                                    <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg"
-                                        class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Nombre producto</h5>
-                                        <h6 class="card-text">$777</h6>
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <button type="button" class="btn btn-outline-secondary">
-                                                    <i class="bi bi-cart-plus "></i>
-                                                </button>
-                                                <button type="button" class="btn btn-outline-secondary">
-                                                    <i class="bi bi-heart "></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+                <?php
+                // Incluir la conexión
+                include_once '..\config\conexion.php';
 
-                        <div class="col-6 col-md-4 mb-4">
-                            <a href="#" class="text-decoration-none">
-                                <div class="card" style="width: 100%;">
-                                    <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg"
-                                        class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Nombre producto</h5>
-                                        <h6 class="card-text">$777</h6>
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <button type="button" class="btn btn-outline-secondary">
-                                                    <i class="bi bi-cart-plus "></i>
-                                                </button>
-                                                <button type="button" class="btn btn-outline-secondary">
-                                                    <i class="bi bi-heart "></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+                // Consulta para obtener los productos activos
+                $sql = "SELECT * FROM producto WHERE activo = 1";
+                $result = $conn->query($sql);
 
-                        <div class="col-6 col-md-4 mb-4">
-                            <a href="#" class="text-decoration-none">
-                                <div class="card" style="width: 100%;">
-                                    <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg"
-                                        class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Nombre producto</h5>
-                                        <h6 class="card-text">$777</h6>
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <button type="button" class="btn btn-outline-secondary">
-                                                    <i class="bi bi-cart-plus "></i>
-                                                </button>
-                                                <button type="button" class="btn btn-outline-secondary">
-                                                    <i class="bi bi-heart "></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+                // Verificar si hay resultados
+                if ($result->num_rows > 0):
+                    ?>
 
-                        <div class="col-6 col-md-4 mb-4">
-                            <a href="#" class="text-decoration-none">
-                                <div class="card" style="width: 100%;">
-                                    <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg"
-                                        class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Nombre producto</h5>
-                                        <h6 class="card-text">$777</h6>
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <button type="button" class="btn btn-outline-secondary">
-                                                    <i class="bi bi-cart-plus "></i>
-                                                </button>
-                                                <button type="button" class="btn btn-outline-secondary">
-                                                    <i class="bi bi-heart "></i>
-                                                </button>
+                    <!-- Contenedor catálogo -->
+                    <div class="container mt-4">
+                        <div class="row justify-content-center">
+                            <?php while ($producto = $result->fetch_assoc()): ?>
+                                <div class="col-6 col-md-4 mb-4">
+                                    <a href="producto.php?id=<?= $producto['id_producto'] ?>" class="text-decoration-none">
+                                        <div class="card" style="width: 100%;">
+                                            <img src="<?= $producto['foto_producto'] ?>" class="card-img-top" alt="...">
+                                            <div class="card-body">
+                                                <h5 class="card-title"><?= htmlspecialchars($producto['nombre_producto']) ?>
+                                                </h5>
+                                                <h6 class="card-text">
+                                                    $<?= number_format($producto['precio_unitario'], 0, ',', '.') ?></h6>
+                                                <div class="d-flex align-items-center">
+                                                    <div>
+                                                        <button type="button" class="btn btn-outline-secondary">
+                                                            <i class="bi bi-cart-plus"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-outline-secondary">
+                                                            <i class="bi bi-heart"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
-                            </a>
-                        </div>
-
-                        <div class="col-6 col-md-4 mb-4">
-                            <a href="#" class="text-decoration-none">
-                                <div class="card" style="width: 100%;">
-                                    <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg"
-                                        class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Nombre producto</h5>
-                                        <h6 class="card-text">$777</h6>
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <button type="button" class="btn btn-outline-secondary">
-                                                    <i class="bi bi-cart-plus "></i>
-                                                </button>
-                                                <button type="button" class="btn btn-outline-secondary">
-                                                    <i class="bi bi-heart "></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="col-6 col-md-4 mb-4">
-                            <a href="#" class="text-decoration-none">
-                                <div class="card" style="width: 100%;">
-                                    <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg"
-                                        class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Nombre producto</h5>
-                                        <h6 class="card-text">$777</h6>
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <button type="button" class="btn btn-outline-secondary">
-                                                    <i class="bi bi-cart-plus "></i>
-                                                </button>
-                                                <button type="button" class="btn btn-outline-secondary">
-                                                    <i class="bi bi-heart "></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="col-6 col-md-4 mb-4">
-                            <a href="#" class="text-decoration-none">
-                                <div class="card" style="width: 100%;">
-                                    <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg"
-                                        class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Nombre producto</h5>
-                                        <h6 class="card-text">$777</h6>
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <button type="button" class="btn btn-outline-secondary">
-                                                    <i class="bi bi-cart-plus "></i>
-                                                </button>
-                                                <button type="button" class="btn btn-outline-secondary">
-                                                    <i class="bi bi-heart "></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="col-6 col-md-4 mb-4">
-                            <a href="#" class="text-decoration-none">
-                                <div class="card" style="width: 100%;">
-                                    <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg"
-                                        class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Nombre producto</h5>
-                                        <h6 class="card-text">$777</h6>
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <button type="button" class="btn btn-outline-secondary">
-                                                    <i class="bi bi-cart-plus "></i>
-                                                </button>
-                                                <button type="button" class="btn btn-outline-secondary">
-                                                    <i class="bi bi-heart "></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="col-6 col-md-4 mb-4">
-                            <a href="#" class="text-decoration-none">
-                                <div class="card" style="width: 100%;">
-                                    <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg"
-                                        class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Nombre producto</h5>
-                                        <h6 class="card-text">$777</h6>
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <button type="button" class="btn btn-outline-secondary">
-                                                    <i class="bi bi-cart-plus "></i>
-                                                </button>
-                                                <button type="button" class="btn btn-outline-secondary">
-                                                    <i class="bi bi-heart "></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
+                            <?php endwhile; ?>
                         </div>
                     </div>
-                </div>
+
+                    <?php
+                else:
+                    echo "<p>No se encontraron productos.</p>";
+                endif;
+
+                // Cerrar la conexión
+                $conn->close();
+                ?>
 
                 <!-- Paginación -->
                 <nav aria-label="Page navigation example">

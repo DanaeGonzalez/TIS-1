@@ -62,45 +62,47 @@
                 </div>
 
                 <!-- Sección del producto -->
+                <?php
+                include_once '..\config\conexion.php';
+                if (isset($_GET['id'])) {
+                    $id_producto = (int) $_GET['id'];
+
+
+                    $sql = "SELECT * FROM producto WHERE id_producto = ? AND activo = 1";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("i", $id_producto);
+                    $stmt->execute();
+                    $resultado = $stmt->get_result();
+
+
+                    if ($resultado->num_rows > 0) {
+                        $producto = $resultado->fetch_assoc();
+                    } else {
+                        echo "<p>Producto no encontrado.</p>";
+                        exit();
+                    }
+                } else {
+                    echo "<p>Falta el ID del producto.</p>";
+                    exit();
+                }
+                ?>
+
                 <div class="container mt-4">
                     <div class="row">
-                        <div class="col-md-6">
-                            <!-- Carrusel de imágenes -->
-                            <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-inner carousel-inner-p">
-                                    <div class="carousel-item active">
-                                        <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg"
-                                            class="d-block w-100" alt="Imagen del Producto 1">
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg"
-                                            class="d-block w-100" alt="Imagen del Producto 2">
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg"
-                                            class="d-block w-100" alt="Imagen del Producto 3">
-                                    </div>
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
-                                    data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Anterior</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#productCarousel"
-                                    data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Siguiente</span>
-                                </button>
-                            </div>
+                        <div class="col-md-6 text-center">
+                            <img width="90%" src="<?= $producto['foto_producto'] ?>"
+                                class="img-fluid rounded product-image" style="border: 1px solid #f0f0f0;"
+                                alt="Imagen del Producto">
                         </div>
 
                         <div class="col-md-6">
-                            <br class="d-md-none">
-                            <h1>Nombre del Producto</h1>
-                            <h2 class="text-dark mt-2">$777</h2>
+                            <h1><?= htmlspecialchars($producto['nombre_producto']) ?></h1>
+                            <h2 class="text-dark mt-2">$<?= number_format($producto['precio_unitario'], 0, ',', '.') ?>
+                            </h2>
                             <hr>
                             <h5>Características</h5>
                             <ul>
+                                <li>Falta esto ---------</li>
                                 <li>Característica 1</li>
                                 <li>Característica 2</li>
                                 <li>Característica 3</li>
@@ -117,45 +119,29 @@
                             <button class="btn btn-dark mt-3 w-100 p-2">Añadir al carrito</button>
                             <hr>
                             <h5>Descripción del producto</h5>
-                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quas officia illum, obcaecati
-                                unde
-                                quod
-                                perferendis laborum minima eos excepturi voluptate quaerat laudantium cumque.</p>
+                            <p><?= htmlspecialchars($producto['descripcion_producto']) ?></p>
                         </div>
+                    </div>
 
-                        <div class="row mt-4 mb-3">
-                            <div class="col-12">
-                                <h2>Reseñas del Producto (
-                                    <i class="bi bi-star-fill fs-4"></i>
-                                    <i class="bi bi-star-fill fs-4"></i>
-                                    <i class="bi bi-star-fill fs-4"></i>
-                                    <i class="bi bi-star-fill fs-4"></i>
-                                    <i class="bi bi-star fs-4"></i>)
-                                </h2>
-                                <div class="mb-3">
-                                    <strong>Usuario 1</strong>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio iusto modi eum
-                                        non
-                                        eligendi
-                                        ea impedit voluptatum in commodi labore officia dolor corporis, ipsam nam velit,
-                                        distinctio
-                                        recusandae facere quod.</p>
-                                </div>
-                                <div class="mb-3">
-                                    <strong>Usuario 2</strong>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam,
-                                        perspiciatis?
-                                        Quasi
-                                        ad
-                                        nulla fugiat! Cumque suscipit nemo eveniet cum tenetur tempora ipsum natus
-                                        reiciendis
-                                        labore
-                                        quas. Minus laborum fugiat a!.</p>
-                                </div>
+                    <div class="row mt-4 mb-3">
+                        <div class="col-12">
+                            <h2>Reseñas del Producto</h2>
+                            <div class="mb-3">
+                                <strong>Usuario 1</strong>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Usuario 2</strong>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <?php
+                $conn->close();
+                ?>
+
             </div>
 
             <!-- Footer -->
