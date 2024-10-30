@@ -4,6 +4,13 @@
     $categoria = isset($_GET['categoria']) ? $_GET['categoria'] : '';
     $color = isset($_GET['color']) ? $_GET['color'] : '';
     $material = isset($_GET['material']) ? $_GET['material'] : '';
+    $ambiente = isset($_GET['ambiente']) ? $_GET['ambiente'] : '';
+    $forma = isset($_GET['forma']) ? $_GET['forma'] : '';
+    $firmeza = isset($_GET['firmeza']) ? $_GET['firmeza'] : '';
+    $n_asientos = isset($_GET['n_asientos']) ? $_GET['n_asientos'] : '';
+    $n_cajones = isset($_GET['n_cajones']) ? $_GET['n_cajones'] : '';
+    $n_plazas = isset($_GET['n_plazas']) ? $_GET['n_plazas'] : '';
+    $subcategoria = isset($_GET['subcategoria']) ? $_GET['subcategoria'] : '';
     // Construir la consulta SQL con los filtros aplicados
     $sql = "SELECT * FROM producto WHERE activo = 1";
     // Aplicar filtros si están seleccionados

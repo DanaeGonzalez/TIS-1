@@ -8,7 +8,7 @@ if (!isset($_SESSION['identificador']) || !isset($_SESSION['tipo_usuario'])) {
 
 $current_page = basename($_SERVER['PHP_SELF']);
 
-if ($current_page === 'menu_adm.php' && $_SESSION['tipo_usuario'] !== 'Administrador') {
+if ($current_page === 'menu_adm.php' && $_SESSION['tipo_usuario'] !== 'Admin') {
     header("Location: ../menu_registro/menu_adm.php");
     exit();
 }

@@ -20,6 +20,7 @@ if (isset($_POST['identificador'])) {
         if (password_verify($contrasenia, $user['contrasenia_usuario'])) {
             $_SESSION['identificador'] = $identificador;
             $_SESSION['tipo_usuario'] = $user['tipo_usuario'];
+            $_SESSION['nombre_usuario'] = $user['nombre_usuario'];
 
             // Redireccionar según el tipo de usuario
             if ($_SESSION['tipo_usuario'] == 'Registrado') {
