@@ -30,7 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
+<<<<<<< Updated upstream
   <link rel="stylesheet" href="..\..\assets\css\styles.css">
+=======
+<link rel="stylesheet" href="../../assets/css/styles.css">
+>>>>>>> Stashed changes
 </head>
 <body>
     <!-- Header/Navbar -->
@@ -40,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle sidebar">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <img width="180px" height="auto" src="../ikat.png" alt="">
+        <img width="180px" height="auto" src="../../assets/images/ikat.png" alt="">
 
             <button class="navbar-toggler border" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
                     aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
