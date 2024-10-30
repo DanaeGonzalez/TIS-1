@@ -21,7 +21,9 @@ include '../../config/conexion.php';
                     data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle sidebar">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <img width="180px" height="auto" src="../ikat.png" alt="">
+                        <a href="../../views/menu_rol/menu_adm.php">
+                <img width="180px" height="auto" src="../../assets/Images/ikat.png" alt="">
+            </a>
 
             <button class="navbar-toggler border" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
                     aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">

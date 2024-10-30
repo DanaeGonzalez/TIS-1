@@ -69,7 +69,7 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="..\views\logout.php">Cerrar Sesión</a></li>
+                            <li><a class="dropdown-item" href="..\views\menu_registro\logout.php">Cerrar Sesión</a></li>
                         </ul>
                     </div>
                 </li>
