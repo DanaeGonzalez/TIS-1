@@ -63,77 +63,82 @@
 
                 <!-- Contenedor de filtros -->
                 <div class="container mt-3">
-                    <div class="row justify-content-center">
-                        <h1 class="text-center mb-3">Productos</h1>
-                        <hr class="mb-4">
+                    <form method="GET" action="../assets/php/filtros_catalogo.php"> <!-- Añadimos el formulario -->
+                        <div class="row justify-content-center">
+                            <h1 class="text-center mb-3">Productos</h1>
+                            <hr class="mb-4">
 
-                        <!-- Filtro de Categoría -->
-                        <div class="col-auto mb-3">
-                            <div class="dropdown">
-                                <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                    id="dropdownCategory" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Categoría
-                                </button>
-                                <div class="dropdown-menu p-2" aria-labelledby="dropdownCategory">
-                                    <label class="dropdown-item"><input type="checkbox" name="categoría" value="Mesa">
-                                        Mesa</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="categoría" value="Sillas">
-                                        Sillas</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="categoría" value="Camas">
-                                        Camas</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="categoría"
-                                            value="Sillones">
-                                        Sillones</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="categoría"
-                                            value="Organización">
-                                        Organización</label>
+                            <!-- Filtro de Categoría -->
+                            <div class="col-auto mb-3">
+                                <div class="dropdown">
+                                    <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
+                                        id="dropdownCategory" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Categoría
+                                    </button>
+                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownCategory">
+                                        <label class="dropdown-item">
+                                            <input type="checkbox" name="categoria[]" value="Mesa"> Mesa
+                                        </label>
+                                        <label class="dropdown-item">
+                                            <input type="checkbox" name="categoria[]" value="Sillas"> Sillas
+                                        </label>
+                                        <label class="dropdown-item">
+                                            <input type="checkbox" name="categoria[]" value="Camas"> Camas
+                                        </label>
+                                        <label class="dropdown-item">
+                                            <input type="checkbox" name="categoria[]" value="Sillones"> Sillones
+                                        </label>
+                                        <label class="dropdown-item">
+                                            <input type="checkbox" name="categoria[]" value="Organización"> Organización
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Filtro de Color -->
-                        <div class="col-auto mb-3">
-                            <div class="dropdown">
-                                <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                    id="dropdownColor" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Color
-                                </button>
-                                <div class="dropdown-menu p-2" aria-labelledby="dropdownColor">
-                                    <label class="dropdown-item"><input type="checkbox" name="color" value="Rojo">
-                                        Rojo</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="color" value="Negro">
-                                        Negro</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="color" value="Blanco">
-                                        Blanco</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="color" value="Gris">
-                                        Gris</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="color" value="Café">
-                                        Café</label>
+                            <!-- Filtro de Color -->
+                            <div class="col-auto mb-3">
+                                <div class="dropdown">
+                                    <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
+                                        id="dropdownColor" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Color
+                                    </button>
+                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownColor">
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Rojo"> Rojo</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Negro"> Negro</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Blanco"> Blanco</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Gris"> Gris</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Café"> Café</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Filtro de Material -->
-                        <div class="col-auto mb-3">
-                            <div class="dropdown">
-                                <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                    id="dropdownMaterial" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Material
-                                </button>
-                                <div class="dropdown-menu p-2" aria-labelledby="dropdownMaterial">
-                                    <label class="dropdown-item"><input type="checkbox" name="material" value="Madera">
-                                        Madera</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="material" value="Metal">
-                                        Metal</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="material"
-                                            value="Plástico">
-                                        Plástico</label>
+                            <!-- Filtro de Material -->
+                            <div class="col-auto mb-3">
+                                <div class="dropdown">
+                                    <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
+                                        id="dropdownMaterial" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Material
+                                    </button>
+                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownMaterial">
+                                        <label class="dropdown-item"><input type="checkbox" name="material" value="Madera"> Madera</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="material" value="Metal"> Metal</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="material" value="Plástico"> Plástico</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                    </div>
+                            <!-- Botón para aplicar los filtros -->
+                            <div class="col-auto mb-3">
+                                <button type="submit" class="btn btn-dark rounded-pill">Aplicar filtros</button>
+                            </div>
+
+                        </div>
+                    </form> <!-- Fin del formulario -->
                 </div>
+
+
+                    
+                
 
                 <!-- Contenedor de la barra de etiquetas -->
                 <div class="container mt-3">
