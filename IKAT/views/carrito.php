@@ -55,10 +55,8 @@
                                 echo "<h6 class='text-dark'>\$" . number_format(floor($row['precio_unitario']), 0, '', '.') . "</h6>";
 
                                 echo "<div class='d-flex align-items-center'>";
-                                echo "<div class='input-group input-group-sm' style='width: 100px;'>";
-                                echo "<button class='btn border btn-sm' type='button' onclick='this.nextElementSibling.stepDown()'>-</button>";
-                                echo "<input type='number' value='{$row['cantidad_producto']}' min='1' class='form-control text-center' style='width: 40px;'>";
-                                echo "<button class='btn border btn-sm' type='button' onclick='this.previousElementSibling.stepUp()'>+</button>";
+                                echo "<div class='input-group input-group-sm' style='width: 40px;'>";
+                                echo "<input type='text' value='{$row['cantidad_producto']}' min='1' class='form-control text-center' readonly>";
                                 echo "</div></div></div></label></div>";
                                 echo "<p class='mb-0 fw-bold fs-5 text-dark'>\$" . number_format(floor($subtotal), 0, '', '.') . "</p>";
                                 echo "</div>";
@@ -76,11 +74,11 @@
                             </li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Envío<span>$0.0777</span>
+                                Envío<span>$0.00</span>
                             </li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Impuestos<span>$0.0777</span>
+                                Impuestos<span>$0.00</span>
                             </li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
