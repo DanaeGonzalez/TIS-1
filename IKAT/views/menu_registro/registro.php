@@ -66,8 +66,10 @@ include '..\..\config\conexion.php';
                                         Usuario
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="..\menu_registro\registro.php">Registrarse</a></li>
-                                    <li><a class="dropdown-item" href="..\menu_registro\login.php">Iniciar sesión</a></li>
+                                        <li><a class="dropdown-item"
+                                                href="..\menu_registro\registro.php">Registrarse</a></li>
+                                        <li><a class="dropdown-item" href="..\menu_registro\login.php">Iniciar
+                                                sesión</a></li>
                                     </ul>
                                 </div>
                             </li>
@@ -151,28 +153,29 @@ include '..\..\config\conexion.php';
                             if (strlen($contrasenia) >= 8 && strlen($contrasenia) <= 15 && !preg_match('/\s/', $contrasenia)) {
                                 $contrasenia = password_hash($contrasenia, PASSWORD_BCRYPT);
 
-                                $query = "INSERT INTO usuario (nombre_usuario, apellido_usuario, run_usuario, correo_usuario, numero_usuario, contrasenia_usuario, tipo_usuario, puntos_totales, activo, ultima_sesion)
-                                VALUES ('$nombre', '$apellido', '$run', '$correo', '$numero', '$contrasenia', 'Registrado', '0', '1', NOW())";
+                                // Crear un nuevo carrito
+                                $query_carrito = "INSERT INTO carrito () VALUES ()"; // Agrega campos si es necesario
+                                if (mysqli_query($conn, $query_carrito)) {
+                                    // Obtener el id_carrito del carrito creado
+                                    $new_id_carrito = mysqli_insert_id($conn);
 
+                                    // Inserción en la tabla usuario
+                                    $query_usuario = "INSERT INTO usuario (nombre_usuario, apellido_usuario, run_usuario, correo_usuario, numero_usuario, contrasenia_usuario, tipo_usuario, puntos_totales, activo, ultima_sesion, id_carrito)
+                                VALUES ('$nombre', '$apellido', '$run', '$correo', '$numero', '$contrasenia', 'Registrado', '0', '1', NOW(), '$new_id_carrito')";
 
-                                $result = mysqli_query($conn, $query);
-
-                                if ($result) {
-                                    echo "
-                                <div class='container-fluid d-flex justify-content-center align-items-center bg-light' style='height: 100vh;'>
-                                    <div class='alert alert-success text-center shadow-lg p-5 rounded-3' role='alert' style='max-width: 500px;'>
-                                        <h3 class='fw-bold'>¡Te has registrado correctamente!</h3>
-                                        <p>Haz clic aquí para <a href='login.php' class='alert-link'>Iniciar sesión</a></p>
-                                    </div>
-                                </div>";
+                                    if (mysqli_query($conn, $query_usuario)) {
+                                        echo "
+                                    <div class='container-fluid d-flex justify-content-center align-items-center bg-light' style='height: 100vh;'>
+                                        <div class='alert alert-success text-center shadow-lg p-5 rounded-3' role='alert' style='max-width: 500px;'>
+                                            <h3 class='fw-bold'>¡Te has registrado correctamente!</h3>
+                                            <p>Haz clic aquí para <a href='login.php' class='alert-link'>Iniciar sesión</a></p>
+                                        </div>
+                                    </div>";
+                                    } else {
+                                        die("Error en la inserción de usuario: " . mysqli_error($conn));
+                                    }
                                 } else {
-                                    echo "
-                                <div class='container-fluid d-flex justify-content-center align-items-center bg-light' style='height: 100vh;'>
-                                    <div class='alert alert-danger text-center shadow-lg p-5 rounded-3' role='alert' style='max-width: 500px;'>
-                                        <h3>Error al registrarse</h3>
-                                        <p>Inténtalo más tarde.</p>
-                                    </div>
-                                </div>";
+                                    die("Error en la creación del carrito: " . mysqli_error($conn));
                                 }
                             } else {
                                 echo "
@@ -213,7 +216,8 @@ include '..\..\config\conexion.php';
                                     <div class="mb-4">
                                         <label for="numero" class="form-label ms-1 fw-semibold">Número de Teléfono</label>
                                         <input type="tel" id="numero" name="numero" class="form-control border-dark"
-                                            placeholder="+569" value="+569" required pattern="^\+569\d{8}$" title="Debe ser un número chileno de 11 dígitos, comenzando con +569" required>
+                                            placeholder="+569" value="+569" required pattern="^\+569\d{8}$"
+                                            title="Debe ser un número chileno de 11 dígitos, comenzando con +569" required>
                                     </div>
                                     <div class="mb-4">
                                         <label for="correo" class="form-label ms-1 fw-semibold">Correo Electrónico</label>
