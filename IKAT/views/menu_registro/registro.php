@@ -153,33 +153,29 @@ include '..\..\config\conexion.php';
                             if (strlen($contrasenia) >= 8 && strlen($contrasenia) <= 15 && !preg_match('/\s/', $contrasenia)) {
                                 $contrasenia = password_hash($contrasenia, PASSWORD_BCRYPT);
 
-                                // Obtener el último id_carrito
-                                $result = mysqli_query($conn, "SELECT MAX(id_carrito) AS max_carrito FROM usuario");
-                                $row = mysqli_fetch_assoc($result);
-                                $new_id_carrito = $row['max_carrito'] + 1;
+                                // Crear un nuevo carrito
+                                $query_carrito = "INSERT INTO carrito () VALUES ()"; // Agrega campos si es necesario
+                                if (mysqli_query($conn, $query_carrito)) {
+                                    // Obtener el id_carrito del carrito creado
+                                    $new_id_carrito = mysqli_insert_id($conn);
 
-                                // Inserción con el nuevo id_carrito
-                                $query = "INSERT INTO usuario (nombre_usuario, apellido_usuario, run_usuario, correo_usuario, numero_usuario, contrasenia_usuario, tipo_usuario, puntos_totales, activo, ultima_sesion, id_carrito)
+                                    // Inserción en la tabla usuario
+                                    $query_usuario = "INSERT INTO usuario (nombre_usuario, apellido_usuario, run_usuario, correo_usuario, numero_usuario, contrasenia_usuario, tipo_usuario, puntos_totales, activo, ultima_sesion, id_carrito)
                                 VALUES ('$nombre', '$apellido', '$run', '$correo', '$numero', '$contrasenia', 'Registrado', '0', '1', NOW(), '$new_id_carrito')";
 
-                                $result = mysqli_query($conn, $query);
-
-                                if ($result) {
-                                    echo "
-                                <div class='container-fluid d-flex justify-content-center align-items-center bg-light' style='height: 100vh;'>
-                                    <div class='alert alert-success text-center shadow-lg p-5 rounded-3' role='alert' style='max-width: 500px;'>
-                                        <h3 class='fw-bold'>¡Te has registrado correctamente!</h3>
-                                        <p>Haz clic aquí para <a href='login.php' class='alert-link'>Iniciar sesión</a></p>
-                                    </div>
-                                </div>";
+                                    if (mysqli_query($conn, $query_usuario)) {
+                                        echo "
+                                    <div class='container-fluid d-flex justify-content-center align-items-center bg-light' style='height: 100vh;'>
+                                        <div class='alert alert-success text-center shadow-lg p-5 rounded-3' role='alert' style='max-width: 500px;'>
+                                            <h3 class='fw-bold'>¡Te has registrado correctamente!</h3>
+                                            <p>Haz clic aquí para <a href='login.php' class='alert-link'>Iniciar sesión</a></p>
+                                        </div>
+                                    </div>";
+                                    } else {
+                                        die("Error en la inserción de usuario: " . mysqli_error($conn));
+                                    }
                                 } else {
-                                    echo "
-                                <div class='container-fluid d-flex justify-content-center align-items-center bg-light' style='height: 100vh;'>
-                                    <div class='alert alert-danger text-center shadow-lg p-5 rounded-3' role='alert' style='max-width: 500px;'>
-                                        <h3>Error al registrarse</h3>
-                                        <p>Inténtalo más tarde.</p>
-                                    </div>
-                                </div>";
+                                    die("Error en la creación del carrito: " . mysqli_error($conn));
                                 }
                             } else {
                                 echo "
