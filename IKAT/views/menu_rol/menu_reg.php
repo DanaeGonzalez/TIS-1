@@ -1,3 +1,7 @@
+<?php 
+  include '../menu_registro/auth.php';
+?>
+
 <!doctype php>
 <php lang="es">
 
@@ -76,7 +80,7 @@
                   <img
                     src="https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg"
                     alt="User Image" class="user-avatar me-2">
-                  Usuario
+                  <span> <?php echo $_SESSION['nombre_usuario'];?> </span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                   <li><a class="dropdown-item" href="..\compras.php">Mis Compras</a></li>

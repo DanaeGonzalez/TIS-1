@@ -1,150 +1,284 @@
-<!doctype html>
-<html lang="en">
+<?php 
+  include '../menu_registro/auth.php';
+?>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bootstrap Sidebar Layout</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" href="..\..\assets\css\styles.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<!doctype php>
+<php lang="es">
 
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap Sidebar </title>
+    <link rel="stylesheet" href="..\..\assets\css\styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  </head>
 
-</head>
-
-<body>
-  <!-- Header/Navbar -->
-  <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-      <a href="..\index.php">
-        <img width="180px" height="auto" src="..\..\assets\images\ikat.png" alt="Ikat">
-      </a>
-
-      <div class="d-flex align-items-center justify-content-end gap-3 ms-auto">
-
-        <!-- Botón de búsqueda -->
-        <button class="btn btn-link d-lg-none p-0" data-bs-toggle="modal" data-bs-target="#searchModal">
-          <i class="bi bi-search fs-4  text-secondary"></i>
-        </button>
-
-        <!-- Botón de catálogo -->
-        <a href="..\catalogo.php" class="btn btn-link d-lg-none p-0">
-          <i class="bi bi-bag fs-4 text-secondary"></i>
+  <body>
+    <!-- Header/Navbar -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <a href="..\index.php">
+          <img width="180px" height="auto" src="..\..\assets\images\ikat.png" alt="Ikat">
         </a>
 
-        <!-- Botón de lista de deseos -->
-        <a href="..\deseados.php" class="btn btn-link p-0 d-lg-none d-flex">
-          <i class="bi bi-heart fs-4 text-secondary"></i>
-        </a>
+        <div class="d-flex align-items-center justify-content-end gap-3 ms-auto">
 
-        <!-- Botón del carrito -->
-        <a href="..\carrito.php" class="btn btn-link p-0 d-lg-none d-flex">
-          <i class="bi bi-cart fs-4 text-secondary"></i>
-        </a>
+          <!-- Botón de búsqueda -->
+          <button class="btn btn-link d-lg-none p-0" data-bs-toggle="modal" data-bs-target="#searchModal">
+            <i class="bi bi-search fs-4  text-secondary"></i>
+          </button>
 
-        <!-- Botón de menú -->
-        <button class="btn btn-link d-lg-none p-0" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-          <i class="bi bi-list fs-4  text-secondary"></i>
-        </button>
-      </div>
+          <!-- Botón de catálogo -->
+          <a href="../catalogo.php" class="btn btn-link d-lg-none p-0">
+            <i class="bi bi-bag fs-4 text-secondary"></i>
+          </a>
 
-      <!-- Menú de navegación colapsable -->
-      <div class="collapse navbar-collapse" id="navbarContent">
-        <ul class="navbar-nav ms-auto align-items-center text-center">
+          <!-- Botón de lista de deseos -->
+          <a href="..\deseados.php" class="btn btn-link p-0 d-lg-none d-flex">
+            <i class="bi bi-heart fs-4 text-secondary"></i>
+          </a>
 
-          <!-- Botones de lista de deseos y carrito al lado del usuario -->
-          <li class="nav-item d-flex align-items-center gap-3">
+          <!-- Botón del carrito -->
+          <a href="..\carrito.php" class="btn btn-link p-0 d-lg-none d-flex">
+            <i class="bi bi-cart fs-4 text-secondary"></i>
+          </a>
 
-            <!-- Botón de catálogo -->
-            <a href="..\catalogo.php" class="btn btn-link d-none d-lg-flex p-0">
-              <i class="bi bi-bag fs-4 text-secondary"></i>
-            </a>
+          <!-- Botón de menú -->
+          <button class="btn btn-link d-lg-none p-0" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <i class="bi bi-list fs-4  text-secondary"></i>
+          </button>
+        </div>
 
-            <!-- Botón de lista de deseos -->
-            <a href="..\deseados.php" class="btn btn-link p-0 d-none d-lg-flex">
-              <i class="bi bi-heart fs-4 text-secondary"></i>
-            </a>
+        <!-- Menú de navegación colapsable -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav ms-auto align-items-center text-center">
 
-            <!-- Botón del carrito -->
-            <a href="..\carrito.php" class="btn btn-link p-0 d-none d-lg-flex">
-              <i class="bi bi-cart fs-4 text-secondary"></i>
-            </a>
+            <!-- Botones de lista de deseos y carrito al lado del usuario -->
+            <li class="nav-item d-flex align-items-center gap-3">
 
-            <!-- Menú de usuario -->
-            <div class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                <img
-                  src="https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg"
-                  alt="User Image" class="user-avatar me-2">
-                Usuario
+              <!-- Botón de catálogo -->
+              <a href="..\catalogo.php" class="btn btn-link d-none d-lg-flex p-0">
+                <i class="bi bi-bag fs-4 text-secondary"></i>
               </a>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="..\compras.php">Mis Compras</a></li>
-                <li><a class="dropdown-item" href="..\perfil.php">Mi Perfil</a></li>
-                <li><a class="dropdown-item" href="menu_adm.php">Mantenedores</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" href="../menu_registro/logout.php">Cerrar Sesión</a></li>
-              </ul>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
 
-  <div class="d-flex">
-    <!-- Sidebar -->
-    <div id="sidebar" class="collapse d-lg-block">
-      <div class="accordion" id="accordionSidebar">
-        <!-- Título: Mantenedores -->
-        <div class="accordion-item">
-          <h4 class="accordion-header" id="headingMantenedores">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#mantenedoresLinks"
-              aria-expanded="true" aria-controls="mantenedoresLinks">
-              Mantenedores
-            </button>
-          </h4>
-          <!-- Enlaces de Mantenedores -->
-          <div id="mantenedoresLinks" class="accordion-collapse collapse show" aria-labelledby="headingMantenedores"
-            data-bs-parent="#accordionSidebar">
-            <div class="accordion-body p-0">
-              <a href="../../mantenedores/categoria/mostrar_categoria.php" class="sidebar-link">Categorías</a>
-              <a href="../../mantenedores/Mantenedor_subcategorias/mostrar_subcategoria.php"
-                class="sidebar-link">Subcategorías</a>
-              <a href="../../mantenedores/Mantenedor_metodo_pago/mostrar_metodo_pago.php" class="sidebar-link">Métodos
-                de pago</a>
-              <a href="../../mantenedores/Mantenedor_producto/mostrar_producto.php" class="sidebar-link">Productos</a>
-              <a href="../../mantenedores/Mantenedor_reseña/mostrar_resenia.php" class="sidebar-link">Reseñas</a>
-              <a href="../../mantenedores/Mantenedor_top_ventas/mostrar_top_ventas.php" class="sidebar-link">Ventas</a>
-              <a href="../../mantenedores/Mantenedor_usuario/mostrar_usuario.php" class="sidebar-link">Usuarios</a>
-              <a href="../../mantenedores/Mantenedor_n_asientos/mostrar_n_asientos.php"
-                class="sidebar-link">N°Asientos</a>
-              <a href="../../mantenedores/Mantenedor_n_cajones/mostrar_n_cajones.php" class="sidebar-link">N°Cajones</a>
-              <a href="../../mantenedores/Mantenedor_n_plazas/mostrar_n_plazas.php" class="sidebar-link">N°Plazas</a>
-              <a href="../../mantenedores/Mantenedor_colores/mostrar_color.php" class="sidebar-link">Colores</a>
-              <a href="../../mantenedores/Mantenedor_firmezas/mostrar_firmeza.php" class="sidebar-link">Firmeza</a>
-              <a href="../../mantenedores/Mantenedor_materiales/mostrar_material.php"
-                class="sidebar-link">Materiales</a>
-              <a href="../../mantenedores/Mantenedor_ambientes/mostrar_ambiente.php" class="sidebar-link">Ambientes</a>
+              <!-- Botón de lista de deseos -->
+              <a href="..\deseados.php" class="btn btn-link p-0 d-none d-lg-flex">
+                <i class="bi bi-heart fs-4 text-secondary"></i>
+              </a>
+
+              <!-- Botón del carrito -->
+              <a href="..\carrito.php" class="btn btn-link p-0 d-none d-lg-flex">
+                <i class="bi bi-cart fs-4 text-secondary"></i>
+              </a>
+
+              <!-- Menú de usuario -->
+              <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  <img
+                    src="https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg"
+                    alt="User Image" class="user-avatar me-2">
+                  <span> <?php echo $_SESSION['nombre_usuario'];?> </span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="..\compras.php">Mis Compras</a></li>
+                  <li><a class="dropdown-item" href="..\perfil.php">Mi Perfil</a></li>
+                  <li><a class="dropdown-item" href="mantenedores.php">Mantenedores</a></li>
+                  <li>
+                    <hr class="dropdown-divider">
+                  </li>
+                  <li><a class="dropdown-item" href="..\menu_registro\logout.php">Cerrar Sesión</a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main -->
+    <div class="main">
+      <!-- Modal para la barra de búsqueda -->
+      <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="searchModalLabel">Buscar productos</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body">
+              <form>
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Buscar productos..."
+                    aria-label="Buscar productos">
+                  <button class="btn btn-dark" type="submit">
+                    Buscar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenedor de la barra de búsqueda sobre el carrusel -->
+      <div class="search-bar-container d-none d-lg-flex">
+        <input class="form-control d-inline w-75" type="text" placeholder="Buscar productos...">
+        <button class="btn btn-dark d-inline" type="submit">
+          <i class="bi bi-search"></i>
+        </button>
+
+        <!-- Boton de busqueda -->
+        <div class="explore-button">
+          <a href="..\catalogo.php" class="btn btn-dark text-white fw-medium rounded-pill" role="button">Explorar
+            productos</a>
+        </div>
+      </div>
+
+      <!-- Carousel -->
+      <div id="carouselExampleIndicators" class="carousel slide">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+            aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+            aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+            aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg" alt="...">
+            <div class="carousel-caption">
+              <h5>Muebles ideales para tu hogar</h5>
+              <p>Some representative placeholder content for the first slide.</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img
+              src="https://images.pexels.com/photos/6969995/pexels-photo-6969995.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=5"
+              class="d-block w-100 img-fluid" alt="...">
+            <div class="carousel-caption">
+              <h5>Muebles ideales para tu hogar</h5>
+              <p>Some representative placeholder content for the first slide.</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img
+              src="https://images.pexels.com/photos/1571463/pexels-photo-1571463.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2   "
+              class="d-block w-100 img-fluid" alt="...">
+            <div class="carousel-caption">
+              <h5>Muebles ideales para tu hogar</h5>
+              <p>Some representative placeholder content for the first slide.</p>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+          data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+          data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+      <!-- Contenedor inicio -->
+      <div class="container inicio mt-5">
+        <div class="row justify-content-center">
+          <div class="col-10 col-md-4 mb-4">
+            <a href="#">
+              <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg" class="img-fluid"
+                alt="Imagen 1">
+            </a>
+          </div>
+          <div class="col-10 col-md-4 mb-4">
+            <a href="#">
+              <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg" class="img-fluid"
+                alt="Imagen 2">
+            </a>
+          </div>
+          <div class="col-10 col-md-4 mb-4">
+            <a href="#">
+              <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg" class="img-fluid"
+                alt="Imagen 3">
+            </a>
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-10 col-md-4 mb-4">
+            <a href="#">
+              <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg" class="img-fluid"
+                alt="Imagen 4">
+            </a>
+          </div>
+          <div class="col-10 col-md-4 mb-5">
+            <a href="#">
+              <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg" class="img-fluid"
+                alt="Imagen 5">
+            </a>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Content Area -->
-    <div class="content-area">
-      <h1></h1>
-    </div>
-  </div>
+    <!-- Footer -->
+    <footer class="py-4">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+            <h5>¡Únete a la familia IKAT!</h5>
+            <div class="col-md-9 col-12">
+              Regístrate y disfruta de la experiencia completa de IKAT.
+              <div class="text-center">
+                <a href="..\menu_regisotroregistro.php"
+                  class="btn btn-light border-dark btn-sm mt-3 text-black text-decoration-none">
+                  Registrarme
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+            <h5>Servicio</h5>
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-black text-decoration-none">Sigue tu pedido</a></li>
+              <li><a href="#" class="text-black text-decoration-none">IKAT Points</a></li>
+              <li><a href="#" class="text-black text-decoration-none">Despacho a domicilio</a></li>
+              <li><a href="#" class="text-black text-decoration-none">Métodos de pago</a></li>
+            </ul>
+          </div>
+          <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+            <h5>Sobre IKAT</h5>
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-black text-decoration-none">Quienes somos</a></li>
+              <li><a href="#" class="text-black text-decoration-none">Misión y Visión</a></li>
+            </ul>
+          </div>
+          <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+            <h5>Redes Sociales</h5>
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-facebook"></i>
+                  Facebook</a></li>
+              <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-instagram"></i>
+                  Instagram</a></li>
+              <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-threads"></i>
+                  Threads</a></li>
+              <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-twitter-x"></i>
+                  X</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"></script>
+  </body>
 
-</html>
+</php>
