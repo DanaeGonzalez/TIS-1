@@ -21,6 +21,7 @@ if (isset($_POST['identificador'])) {
             $_SESSION['identificador'] = $identificador;
             $_SESSION['tipo_usuario'] = $user['tipo_usuario'];
             $_SESSION['nombre_usuario'] = $user['nombre_usuario'];
+            $_SESSION['id_carrito'] = $user['id_carrito'];
 
             // Redireccionar según el tipo de usuario
             if ($_SESSION['tipo_usuario'] == 'Registrado') {
