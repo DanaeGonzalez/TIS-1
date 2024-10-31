@@ -1,4 +1,5 @@
 <?php
+    header('Content-Type: application/json');
     include '../../config/conexion.php';
     // Obtener valores de los filtros de la URL (GET) o por otro método
     $categoria = isset($_GET['categoria']) ? $_GET['categoria'] : '';
@@ -47,5 +48,12 @@
     // Ejecutar la consulta
     $result = $conn->query($sql);
 
+    $productos = [];
+    if ($result->num_rows > 0) {
+        while ($producto = $result->fetch_assoc()) {
+            $productos[] = $producto;
+        }
+    }
+    echo json_encode($productos);
 
 ?>

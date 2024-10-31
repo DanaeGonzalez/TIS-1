@@ -63,7 +63,7 @@
 
                 <!-- Contenedor de filtros -->
                 <div class="container mt-3">
-                    <form method="GET" action="../assets/php/filtros_catalogo.php"> <!-- Añadimos el formulario -->
+                    <form id="form-filtros" method="GET" action="javascript:void(0);"> <!-- Añadimos el formulario -->
                         <div class="row justify-content-center">
                             <h1 class="text-center mb-3">Productos</h1>
                             <hr class="mb-4">
@@ -137,8 +137,8 @@
                 </div>
 
 
-                    
-                
+
+
 
                 <!-- Contenedor de la barra de etiquetas -->
                 <div class="container mt-3">
@@ -159,7 +159,7 @@
 
                 // Verificar si hay resultados
                 if ($result->num_rows > 0):
-                    ?>
+                ?>
 
                     <!-- Contenedor catálogo -->
                     <div class="container mt-4">
@@ -192,7 +192,7 @@
                         </div>
                     </div>
 
-                    <?php
+                <?php
                 else:
                     echo "<p>No se encontraron productos.</p>";
                 endif;
@@ -224,6 +224,61 @@
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
         <script src="..\assets\js\filtros.js"></script>
+
+        <script>
+            document.getElementById("form-filtros").addEventListener("submit", function(event) {
+                event.preventDefault(); // Evita que el formulario se envíe de la forma tradicional
+
+                const formData = new FormData(this);
+                const queryString = new URLSearchParams(formData).toString();
+
+                fetch(`../assets/php/filtros_catalogo.php?${queryString}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Error en la respuesta del servidor");
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const productContainer = document.querySelector(".row.justify-content-center");
+                        productContainer.innerHTML = ""; // Limpia el área de productos
+
+                        if (data.length === 0) {
+                            productContainer.innerHTML = "<p>No se encontraron productos.</p>";
+                        } else {
+                            data.forEach(product => {
+                                productContainer.innerHTML += `
+                           <div class="col-6 col-md-4 mb-4">
+                               <a href="producto.php?id=${product.id_producto}" class="text-decoration-none">
+                                   <div class="card" style="width: 100%;">
+                                       <img src="${product.foto_producto}" class="card-img-top" alt="${product.nombre_producto}">
+                                       <div class="card-body">
+                                           <h5 class="card-title">${product.nombre_producto}</h5>
+                                           <h6 class="card-text">$${new Intl.NumberFormat().format(product.precio_unitario)}</h6>
+                                           <div class="d-flex align-items-center">
+                                               <div>
+                                                   <button type="button" class="btn btn-outline-secondary">
+                                                       <i class="bi bi-cart-plus"></i>
+                                                   </button>
+                                                   <button type="button" class="btn btn-outline-secondary">
+                                                       <i class="bi bi-heart"></i>
+                                                   </button>
+                                               </div>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </a>
+                           </div>`;
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error en la solicitud AJAX:", error);
+                    });
+            });
+        </script>
+
+
     </body>
 
 </php>
