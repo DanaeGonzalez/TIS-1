@@ -1,6 +1,6 @@
 /*NAVBAR*/
 .navbar {
-  background-color: #f54646;
+  background-color: #d5d5d5;
 }
 
 .container-f{
@@ -127,6 +127,5 @@ button.btn.btn-outline-dark:hover {
 }
 
 .resumen-compra {
-  max-height: 300px; /* Ajusta la altura máxima según tus necesidades */
-  overflow-y: auto; /* Habilita el desplazamiento vertical si es necesario */
+  max-height: 400px; /* Ajusta la altura máxima según tus necesidades */
 }

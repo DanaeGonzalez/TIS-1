@@ -188,6 +188,7 @@
                                                     <button type="button" class="btn btn-outline-secondary"
                                                         onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">
                                                         <i class="bi bi-cart-plus"></i>
+
                                                     </button>
                                                     <button type="button" class="btn btn-outline-secondary">
                                                         <i class="bi bi-heart"></i>
