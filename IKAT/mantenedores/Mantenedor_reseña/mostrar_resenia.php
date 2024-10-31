@@ -1,5 +1,5 @@
 <?php
-include '../conexion.php';
+include '../../config/conexion.php';
 session_start();
 
 $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : '';
@@ -17,7 +17,7 @@ unset($_SESSION['mensaje']);
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../menu/styles.css">
+    <link rel="stylesheet" href="..\..\assets\css\styles.css">
 
 </head>
 <body>
