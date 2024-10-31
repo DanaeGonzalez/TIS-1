@@ -103,11 +103,16 @@
                                         Color
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownColor">
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Rojo"> Rojo</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Negro"> Negro</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Blanco"> Blanco</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Gris"> Gris</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Café"> Café</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Rojo">
+                                            Rojo</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Negro">
+                                            Negro</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Blanco">
+                                            Blanco</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Gris">
+                                            Gris</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Café">
+                                            Café</label>
                                     </div>
                                 </div>
                             </div>
@@ -120,9 +125,12 @@
                                         Material
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownMaterial">
-                                        <label class="dropdown-item"><input type="checkbox" name="material" value="Madera"> Madera</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="material" value="Metal"> Metal</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="material" value="Plástico"> Plástico</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="material"
+                                                value="Madera"> Madera</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="material"
+                                                value="Metal"> Metal</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="material"
+                                                value="Plástico"> Plástico</label>
                                     </div>
                                 </div>
                             </div>
@@ -159,40 +167,42 @@
 
                 // Verificar si hay resultados
                 if ($result->num_rows > 0):
-                ?>
+                    ?>
 
                     <!-- Contenedor catálogo -->
                     <div class="container mt-4">
                         <div class="row justify-content-center">
                             <?php while ($producto = $result->fetch_assoc()): ?>
                                 <div class="col-6 col-md-4 mb-4">
-                                    <a href="producto.php?id=<?= $producto['id_producto'] ?>" class="text-decoration-none">
-                                        <div class="card" style="width: 100%;">
+                                    <div class="card" style="width: 100%;">
+                                        <a href="producto.php?id=<?= $producto['id_producto'] ?>" class="text-decoration-none">
                                             <img src="<?= $producto['foto_producto'] ?>" class="card-img-top" alt="...">
-                                            <div class="card-body">
-                                                <h5 class="card-title"><?= htmlspecialchars($producto['nombre_producto']) ?>
-                                                </h5>
-                                                <h6 class="card-text">
-                                                    $<?= number_format($producto['precio_unitario'], 0, ',', '.') ?></h6>
-                                                <div class="d-flex align-items-center">
-                                                    <div>
-                                                        <button type="button" class="btn btn-outline-secondary">
-                                                            <i class="bi bi-cart-plus"></i>
-                                                        </button>
-                                                        <button type="button" class="btn btn-outline-secondary">
-                                                            <i class="bi bi-heart"></i>
-                                                        </button>
-                                                    </div>
+                                        </a>
+                                        <div class="card-body">
+                                            <h5 class="card-title"><?= htmlspecialchars($producto['nombre_producto']) ?>
+                                            </h5>
+                                            <h6 class="card-text">
+                                                $<?= number_format($producto['precio_unitario'], 0, ',', '.') ?></h6>
+                                            <div class="d-flex align-items-center">
+                                                <div>
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">
+                                                        <i class="bi bi-cart-plus"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-secondary">
+                                                        <i class="bi bi-heart"></i>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
-                                    </a>
+                                    </div>
+
                                 </div>
                             <?php endwhile; ?>
                         </div>
                     </div>
 
-                <?php
+                    <?php
                 else:
                     echo "<p>No se encontraron productos.</p>";
                 endif;
@@ -223,10 +233,11 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
+
         <script src="..\assets\js\filtros.js"></script>
 
         <script>
-            document.getElementById("form-filtros").addEventListener("submit", function(event) {
+            document.getElementById("form-filtros").addEventListener("submit", function (event) {
                 event.preventDefault(); // Evita que el formulario se envíe de la forma tradicional
 
                 const formData = new FormData(this);
@@ -277,6 +288,30 @@
                     });
             });
         </script>
+
+        <script>
+            function agregarAlCarrito(productId) {
+                fetch('agregarAlCarrito.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id_producto: productId, cantidad: 1 })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Producto agregado al carrito!');
+                        } else {
+                            alert('Error al agregar el producto al carrito.');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            }
+        </script>
+
 
 
     </body>
