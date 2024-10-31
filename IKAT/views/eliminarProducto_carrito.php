@@ -13,8 +13,7 @@ if (isset($_POST['product_ids'])) {
         $stmt = $conn->prepare($sql);
 
         // Combina los IDs de productos con el ID del carrito
-        $id_carrito = 1; // Cambia esto por la lógica para obtener el ID del carrito del usuario actual
-        $params = array_merge($product_ids, [$id_carrito]);
+        $params = array_merge($product_ids, [$_SESSION['id_carrito']]);
         $stmt->bind_param(str_repeat('i', count($product_ids)) . 'i', ...$params); // Bind de todos los IDs
 
         if ($stmt->execute()) {
