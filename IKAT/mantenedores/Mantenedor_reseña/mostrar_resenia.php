@@ -47,10 +47,10 @@ unset($_SESSION['mensaje']);
                             Usuario
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="../../views/perfil.php">Mi Perfil</a></li>
                             <li><a class="dropdown-item" href="#">Configuraciones</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+                            <li><a class="dropdown-item" href="../../views/menu_registro/logout.php">Cerrar Sesión</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -80,7 +80,9 @@ unset($_SESSION['mensaje']);
                             <a href="../Mantenedor_producto/mostrar_producto.php" class="sidebar-link">Productos</a>
                             <a href="../Mantenedor_reseña/mostrar_resenia.php" class="sidebar-link">Reseñas</a>
                             <a href="../Mantenedor_top_ventas/mostrar_top_ventas.php" class="sidebar-link">Ventas</a>
-                            <a href="../Mantenedor_usuario/mostrar_usuario.php" class="sidebar-link">Usuarios</a>
+                            <?php if ($_SESSION['tipo_usuario'] == 'Superadmin'): ?>
+                                <a href="../Mantenedor_usuario/mostrar_usuario.php" class="sidebar-link">Usuarios</a> <?php
+                            endif; ?>
                             <a href="../Mantenedor_n_asientos/mostrar_n_asientos.php" class="sidebar-link">N°Asientos</a>
                             <a href="../Mantenedor_n_cajones/mostrar_n_cajones.php" class="sidebar-link">N°Cajones</a>
                             <a href="../Mantenedor_n_plazas/mostrar_n_plazas.php" class="sidebar-link">N°Plazas</a>
