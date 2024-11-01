@@ -28,6 +28,9 @@ if (isset($_POST['identificador'])) {
             $_SESSION['direccion_usuario'] = $user['direccion_usuario'];
             $_SESSION['puntos'] = $user['puntos_totales'];
 
+            $_SESSION['id_carrito'] = $user['id_carrito'];
+
+
             // Redireccionar según el tipo de usuario
             if ($_SESSION['tipo_usuario'] == 'Registrado') {
                 header("Location: ../menu_rol/menu_reg.php");
