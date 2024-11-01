@@ -308,7 +308,7 @@
                                             <td>
                                                 <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarProductoModal" . $row["id_producto"] . "'>Editar</a> |
                                                 <a class='btn btn-info btn-sm' data-bs-toggle='modal' data-bs-target='#agregarCaracteristicasModal" . $row["id_producto"] . "'>Agregar Características</a> |
-                                                <a href='borrar_producto.php?id=" . $row["id_producto"] . "' class='btn btn-danger btn-sm'>Borrar</a>
+                                                <a href='cambiar_estado_producto.php?id=" . $row["id_producto"] . "' class='btn btn-danger btn-sm'>Modificar estado</a>
                                             </td>
                                         </tr>";
 
