@@ -64,6 +64,7 @@
                 <!-- Sección del producto -->
                 <?php
                 include_once '..\config\conexion.php';
+                require 'menu_registro\auth.php';
                 if (isset($_GET['id'])) {
                     $id_producto = (int) $_GET['id'];
 
@@ -112,7 +113,8 @@
                             <div class="input-group" style="width: 130px;">
                                 <button class="btn btn-outline-dark" type="button"
                                     onclick="this.nextElementSibling.stepDown()">-</button>
-                                <input type="number" id="cantidadInput" value="1" min="1" class="form-control text-center custom-input">
+                                <input type="number" id="cantidadInput" value="1" min="1"
+                                    class="form-control text-center custom-input">
                                 <button class="btn btn-outline-dark" type="button"
                                     onclick="this.previousElementSibling.stepUp()">+</button>
                             </div>
@@ -140,6 +142,12 @@
                 </div>
 
                 <?php
+                if (isset($_SESSION['id_carrito'])) {
+                    echo "ID del carrito: " . $_SESSION['id_carrito'];
+                } else {
+                    echo "El carrito no está inicializado en la sesión" . $_SESSION['identificador'];
+                }
+
                 $conn->close();
                 ?>
 

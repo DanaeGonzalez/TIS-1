@@ -82,16 +82,6 @@
                                             <div>
                                                 <h4 class="mb-1 text-dark">Nombre del Producto 1</h4>
                                                 <h6 class="text-dark">$777</h6>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="input-group input-group-sm" style="width: 100px;">
-                                                        <button class="btn border btn-sm" type="button"
-                                                            onclick="this.nextElementSibling.stepDown()">-</button>
-                                                        <input type="number" value="1" min="1"
-                                                            class="form-control text-center" style="width: 40px;">
-                                                        <button class="btn border btn-sm" type="button"
-                                                            onclick="this.previousElementSibling.stepUp()">+</button>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </label>
                                     </div>
@@ -113,16 +103,6 @@
                                             <div>
                                                 <h4 class="mb-1 text-dark">Nombre del Producto 2</h4>
                                                 <h6 class="text-dark">$777</h6>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="input-group input-group-sm" style="width: 100px;">
-                                                        <button class="btn border btn-sm" type="button"
-                                                            onclick="this.nextElementSibling.stepDown()">-</button>
-                                                        <input type="number" value="1" min="1"
-                                                            class="form-control text-center" style="width: 40px;">
-                                                        <button class="btn border btn-sm" type="button"
-                                                            onclick="this.previousElementSibling.stepUp()">+</button>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </label>
                                     </div>

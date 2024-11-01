@@ -12,7 +12,7 @@ if (isset($data['id_producto']) && isset($data['cantidad'])) {
     $cantidad = $data['cantidad'];
 
     // Obtén el ID del carrito de la sesión del usuario
-    $id_carrito = $_SESSION['id_carrito']; // Asegúrate de que este valor se haya establecido previamente en la sesión
+    $id_carrito = $_SESSION['id_carrito']; 
 
     // Verifica que el id_carrito esté definido
     if (!isset($id_carrito)) {
