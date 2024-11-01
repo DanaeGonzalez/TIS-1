@@ -1,85 +1,116 @@
 <?php
-session_start();
-include 'conexion.php';
+    session_start();
+    include '../conexion.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $_SESSION['mensaje'] = ''; // Inicializar el mensaje de sesión
-    
-    // Validación y asignación de variables
+    #print_r($_POST); // depuracion
+
     $id_producto = $_POST['id_producto'] ?? null;
     $categoria = $_POST['categoria'] ?? null;
     $color = $_POST['color'] ?? null;
     $material = $_POST['material'] ?? null;
     $ambiente = $_POST['ambiente'] ?? null;
     $subcategoria = $_POST['subcategoria'] ?? null;
-    
-    // Comprobar que todos los campos obligatorios estén presentes
-    if (!$id_producto || !$categoria || !$color || !$material || !$ambiente || !$subcategoria) {
-        $_SESSION['mensaje'] = "Error: Todos los campos son obligatorios.";
-        header('Location: mostrar_producto.php');
-        exit();
+
+    function verificarExistencia($conn, $tabla, $columna, $valor) {
+        $sql = "SELECT COUNT(*) FROM $tabla WHERE $columna = ?";
+        $stmt = $conn->prepare($sql);
+
+        if (!$stmt) {
+            throw new Exception("Error en la preparación de la consulta de verificación: " . $conn->error);
+        }
+
+        $stmt->bind_param("i", $valor);
+        $stmt->execute();
+        $stmt->bind_result($count);
+        $stmt->fetch();
+        $stmt->close(); 
+        return $count > 0;
     }
 
-    // Obtener IDs correspondientes de subcategoría, color, material y ambiente
-    $id_subcategoria = $conn->query("SELECT id_subcategoria FROM subcategoria WHERE nombre_subcategoria = '$subcategoria'")->fetch_assoc()['id_subcategoria'] ?? null;
-    $id_color = $conn->query("SELECT id_color FROM color WHERE nombre_color = '$color'")->fetch_assoc()['id_color'] ?? null;
-    $id_material = $conn->query("SELECT id_material FROM material WHERE nombre_material = '$material'")->fetch_assoc()['id_material'] ?? null;
-    $id_ambiente = $conn->query("SELECT id_ambiente FROM ambiente WHERE nombre_ambiente = '$ambiente'")->fetch_assoc()['id_ambiente'] ?? null;
+    function insertarCaracteristica($conn, $id_producto, $nombre_tabla, $nombre_columna, $valor, $nombre_caracteristica) {
+        if (!verificarExistencia($conn, substr($nombre_tabla, 9), $nombre_columna, $valor)) {
+            throw new Exception("El valor de $nombre_caracteristica ($valor) no existe en la tabla correspondiente.");
+        }
 
-    // Verificar que se hayan obtenido los IDs correspondientes
-    if (!$id_subcategoria || !$id_color || !$id_material || !$id_ambiente) {
-        $_SESSION['mensaje'] .= "Error: No se pudieron obtener todos los IDs necesarios para realizar la inserción.<br>";
-        header('Location: mostrar_producto.php');
-        exit();
+        $sql = "INSERT INTO $nombre_tabla (id_producto, $nombre_columna) VALUES (?, ?)";
+        $stmt = $conn->prepare($sql);
+
+        if (!$stmt) {
+            throw new Exception("Error en la preparación de la consulta para $nombre_caracteristica: " . $conn->error);
+        }
+
+        $stmt->bind_param("ii", $id_producto, $valor);
+        if (!$stmt->execute()) {
+            throw new Exception("Error al insertar en $nombre_tabla para $nombre_caracteristica: " . $stmt->error);
+        }
+        $stmt->close();
     }
 
-    // Preparar consultas de inserción
-    $sql_subcategoria = "INSERT INTO producto (id_subcategoria) VALUES ($id_subcategoria)";
-    $sql_color = "INSERT INTO producto_color (id_producto, id_color) VALUES ($id_producto, $id_color)";
-    $sql_material = "INSERT INTO producto_material (id_producto, id_material) VALUES ($id_producto, $id_material)";
-    $sql_ambiente = "INSERT INTO producto_ambiente (id_producto, id_ambiente) VALUES ($id_producto, $id_ambiente)";
+    try {
+        $conn->autocommit(false);
 
-    // Ejecutar consultas según la categoría
-    switch($categoria) {
-        case 'silla':
-            // Insertar en producto
-            if ($conn->query($sql_subcategoria) === TRUE) {
-                $_SESSION['mensaje'] .= "Registro en 'producto' insertado correctamente.<br>";
-            } else {
-                $_SESSION['mensaje'] .= "Error en 'producto': " . $conn->error . "<br>";
-            }
+        $sql = "UPDATE producto SET id_subcategoria = ? WHERE id_producto = ?";
+        $stmt = $conn->prepare($sql);
 
-            // Insertar en producto_color
-            if ($conn->query($sql_color) === TRUE) {
-                $_SESSION['mensaje'] .= "Registro en 'producto_color' insertado correctamente.<br>";
-            } else {
-                $_SESSION['mensaje'] .= "Error en 'producto_color': " . $conn->error . "<br>";
-            }
+        if (!$stmt) {
+            throw new Exception("Error en la preparación de la consulta de actualización de subcategoría: " . $conn->error);
+        }
 
-            // Insertar en producto_material
-            if ($conn->query($sql_material) === TRUE) {
-                $_SESSION['mensaje'] .= "Registro en 'producto_material' insertado correctamente.<br>";
-            } else {
-                $_SESSION['mensaje'] .= "Error en 'producto_material': " . $conn->error . "<br>";
-            }
+        $stmt->bind_param("ii", $subcategoria, $id_producto);
+        $stmt->execute();
+        $stmt->close();
 
-            // Insertar en producto_ambiente
-            if ($conn->query($sql_ambiente) === TRUE) {
-                $_SESSION['mensaje'] .= "Registro en 'producto_ambiente' insertado correctamente.<br>";
-            } else {
-                $_SESSION['mensaje'] .= "Error en 'producto_ambiente': " . $conn->error . "<br>";
-            }
-            break;
+        insertarCaracteristica($conn, $id_producto, 'producto_color', 'id_color', $color, 'color');
+        insertarCaracteristica($conn, $id_producto, 'producto_material', 'id_material', $material, 'material');
+        insertarCaracteristica($conn, $id_producto, 'producto_ambiente', 'id_ambiente', $ambiente, 'ambiente');
 
-        default:
-            $_SESSION['mensaje'] .= "Error: Tipo de producto no reconocido.";
-            header('Location: mostrar_producto.php');
-            exit();
+        switch ($categoria) {
+            case '5':
+                break;
+
+            case '6':
+                $n_asientos = $_POST['n_asientos'] ?? null;
+                $forma = $_POST['forma'] ?? null;
+                insertarCaracteristica($conn, $id_producto, 'producto_n_asientos', 'id_n_asientos', $n_asientos, 'n_asientos');
+                insertarCaracteristica($conn, $id_producto, 'producto_forma', 'id_forma', $forma, 'forma');
+                break;
+
+            case '7':
+                $n_asientos = $_POST['n_asientos'] ?? null;
+                $forma = $_POST['forma'] ?? null;
+                $firmeza = $_POST['firmeza'] ?? null;
+                insertarCaracteristica($conn, $id_producto, 'producto_n_asientos', 'id_n_asientos', $n_asientos, 'n_asientos');
+                insertarCaracteristica($conn, $id_producto, 'producto_forma', 'id_forma', $forma, 'forma');
+                insertarCaracteristica($conn, $id_producto, 'producto_firmeza', 'id_firmeza', $firmeza, 'firmeza');
+                break;
+
+            case '8':
+                $n_plazas = $_POST['n_plazas'] ?? null;
+                insertarCaracteristica($conn, $id_producto, 'producto_n_plazas', 'id_n_plazas', $n_plazas, 'n_plazas');
+                break;
+
+            case '9':
+                $n_cajones = $_POST['n_cajones'] ?? null;
+                insertarCaracteristica($conn, $id_producto, 'producto_n_cajones', 'id_n_cajones', $n_cajones, 'n_cajones');
+                break;
+
+            default:
+                throw new Exception("Categoría no válida: " . htmlspecialchars($categoria));
+        }
+
+        $conn->commit();
+        $_SESSION['mensaje'] = "Características agregadas exitosamente.";
+
+    } catch (Exception $e) {
+        $conn->rollback();
+        $_SESSION['mensaje'] = "Error al agregar características: " . $e->getMessage();
+
+    } finally {
+        $conn->autocommit(true);
+
     }
 
-    // Cerrar conexión y redirigir
-    $conn->close();
     header('Location: mostrar_producto.php');
     exit();
-}
+
 ?>

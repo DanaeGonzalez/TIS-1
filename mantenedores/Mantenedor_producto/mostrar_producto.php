@@ -613,17 +613,37 @@
         </div>
 
         <script>
-            // Función para mostrar las características específicas de cada producto
             function mostrarCaracteristicas(idProducto) {
                 const tipoProducto = document.getElementById('tipoProducto' + idProducto).value;
+
+                const formularios = ['caracteristicasSilla', 'caracteristicasMesa', 'caracteristicasSillon', 'caracteristicasCama', 'caracteristicasA/O'];
+                const valores = ['5', '6', '7', '8', '9'];
+
+                formularios.forEach(form => {
+                    const elemento = document.getElementById(form + idProducto);
+                    if (elemento) {
+                        elemento.style.display = 'none';
+                        Array.from(elemento.querySelectorAll("[required]")).forEach(input => {
+                            input.disabled = true;
+                        });
+                    }
+                });
             
-                document.getElementById('caracteristicasSilla' + idProducto).style.display = tipoProducto === '5' ? 'block' : 'none';
-                document.getElementById('caracteristicasMesa' + idProducto).style.display = tipoProducto === '6' ? 'block' : 'none';
-                document.getElementById('caracteristicasSillon' + idProducto).style.display = tipoProducto === '7' ? 'block' : 'none';
-                document.getElementById('caracteristicasCama' + idProducto).style.display = tipoProducto === '8' ? 'block' : 'none';
-                document.getElementById('caracteristicasA/O' + idProducto).style.display = tipoProducto === '9' ? 'block' : 'none';
+                const index = valores.indexOf(tipoProducto);
+                if (index !== -1) {
+                    const formSeleccionado = document.getElementById(formularios[index] + idProducto);
+                    if (formSeleccionado) {
+                        formSeleccionado.style.display = 'block';
+                        Array.from(formSeleccionado.querySelectorAll("select")).forEach(input => {
+                            input.disabled = false;
+                            input.setAttribute("required", "required");
+                        });
+                    }
+                }
             }
         </script>
+
+
 
 
 
