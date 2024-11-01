@@ -25,35 +25,31 @@
                         <form>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Puntos Totales</label>
-                                <input type="number" class="form-control bg-light" value="150" readonly>
+                                <input type="number" class="form-control bg-light" value="<?php echo htmlspecialchars($_SESSION['puntos']);?>" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Nombre</label>
-                                <input type="text" class="form-control" value="Juan" required>
+                                <input type="text" class="form-control" value="<?php echo htmlspecialchars($_SESSION['nombre_usuario']);?>" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Apellido</label>
-                                <input type="text" class="form-control" value="Pérez" required>
+                                <input type="text" class="form-control" value="<?php echo htmlspecialchars($_SESSION['apellido_usuario']);?>" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">RUN</label>
-                                <input type="text" class="form-control bg-light" value="12345678-9" readonly>
+                                <input type="text" class="form-control bg-light" value="<?php echo htmlspecialchars($_SESSION['run_usuario']);?>" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Correo Electrónico</label>
-                                <input type="email" class="form-control bg-light" value="juan.perez@gmail.com" readonly>
+                                <input type="email" class="form-control bg-light" value="<?php echo htmlspecialchars($_SESSION['correo_usuario']);?>" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Número de Teléfono</label>
-                                <input type="tel" class="form-control" value="+56912345678" required>
+                                <input type="tel" class="form-control" value="<?php echo htmlspecialchars($_SESSION['numero_usuario']);?>" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Dirección</label>
-                                <input type="text" class="form-control" value="Av. Siempre Viva 742" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Contraseña</label>
-                                <input type="password" class="form-control" value="123456" required>
+                                <input type="text" class="form-control" value="<?php echo htmlspecialchars($_SESSION['direccion_usuario']);?>">
                             </div>
 
                             <!-- Botón Guardar Cambios -->

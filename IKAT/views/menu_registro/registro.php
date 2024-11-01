@@ -208,12 +208,12 @@ include '..\..\config\conexion.php';
                                     <div class="mb-4">
                                         <label for="run" class="form-label ms-1 fw-semibold">RUT</label>
                                         <input type="text" id="run" name="run" class="form-control border-dark"
-                                            placeholder="123456789" required>
+                                            size="9" placeholder="123456789" required>
                                     </div>
                                     <div class="mb-4">
                                         <label for="numero" class="form-label ms-1 fw-semibold">Número de Teléfono</label>
                                         <input type="tel" id="numero" name="numero" class="form-control border-dark"
-                                            placeholder="+569" value="+569" required pattern="^\+569\d{8}$" title="Debe ser un número chileno de 11 dígitos, comenzando con +569" required>
+                                            size="12" placeholder="+569" value="+569" required pattern="^\+569\d{8}$" title="Debe ser un número chileno de 11 dígitos, comenzando con +569" required>
                                     </div>
                                     <div class="mb-4">
                                         <label for="correo" class="form-label ms-1 fw-semibold">Correo Electrónico</label>
