@@ -9,6 +9,11 @@
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="..\assets\css\styles.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
     </head>
 
     <body>
@@ -51,7 +56,6 @@
                                 <label class="form-label fw-bold">Contraseña</label>
                                 <input type="password" class="form-control" value="123456" required>
                             </div>
-                            <!-- Dirección y Ubicación -->
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Dirección</label>
                                 <input type="text" id="direccion" class="form-control"
@@ -59,7 +63,13 @@
                                 <button type="button" onclick="buscarDireccion()" class="btn btn-primary mt-2">Buscar en
                                     el Mapa</button>
                             </div>
-                            <div id="mapa" style="width: 100%; height: 500px;" class="my-3"></div>
+                            <div id="map" style="width: 100%; height: 500px;"></div>
+                            <!-- Área para mostrar coordenadas -->
+                            <div id="coordenadas" class="mt-3">
+                                <h5>Coordenadas (esto lo saco despues):</h5>
+                                <p id="latitud">Latitud: </p>
+                                <p id="longitud">Longitud: </p>
+                            </div>
 
                             <!-- Botón Guardar Cambios -->
                             <div class="text-center">
@@ -72,70 +82,49 @@
 
             <!-- Footer -->
             <?php include '../templates/footer.php'; ?>
+
         </div>
-
-        <script>
-            let mapa;
-            let marcador;
-            let geocoder;
-            let latitudActual, longitudActual;
-
-            function iniciarMapa() {
-                const coordenadas = { lat: -36.79849246501831, lng: -73.05592193108434 };
-                geocoder = new google.maps.Geocoder();
-                generarMapa(coordenadas);
-            }
-
-            function generarMapa(coordenadas) {
-                mapa = new google.maps.Map(document.getElementById('mapa'), {
-                    zoom: 12,
-                    center: new google.maps.LatLng(coordenadas.lat, coordenadas.lng)
-                });
-
-                marcador = new google.maps.Marker({
-                    map: mapa,
-                    draggable: true,
-                    position: new google.maps.LatLng(coordenadas.lat, coordenadas.lng)
-                });
-
-                // Guardar coordenadas iniciales
-                latitudActual = coordenadas.lat;
-                longitudActual = coordenadas.lng;
-
-                marcador.addListener('dragend', function () {
-                    actualizarCoordenadas(this.getPosition().lat(), this.getPosition().lng());
-                });
-            }
-
-            function buscarDireccion() {
-                const direccion = document.getElementById('direccion').value;
-                geocoder.geocode({ 'address': direccion }, function (results, status) {
-                    if (status === 'OK') {
-                        const ubicacion = results[0].geometry.location;
-                        mapa.setCenter(ubicacion);
-                        marcador.setPosition(ubicacion);
-                        actualizarCoordenadas(ubicacion.lat(), ubicacion.lng());
-                    } else {
-                        alert('No se pudo encontrar la dirección: ' + status);
-                    }
-                });
-            }
-
-            function actualizarCoordenadas(lat, lng) {
-                latitudActual = lat;
-                longitudActual = lng;
-                document.getElementById('latitud').value = latitudActual;
-                document.getElementById('longitud').value = longitudActual;
-            }
-        </script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
-        <script
-            src="https://maps.googleapis.com/maps/api/js?key=&callback=iniciarMapa"
-            async defer></script>
 
+        <script>
+            let map = L.map('map').setView([-36.79849246501831, -73.05592193108434], 12);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                Zoom: 15,
+            }).addTo(map);
+
+            let marker = L.marker([-36.79849246501831, -73.05592193108434]).addTo(map);
+
+            function buscarDireccion() {
+                const direccion = document.getElementById('direccion').value;
+                const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}`;
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.length > 0) {
+                            const ubicacion = data[0];
+                            const lat = ubicacion.lat;
+                            const lng = ubicacion.lon;
+
+                            map.setView([lat, lng], 12);
+                            marker.setLatLng([lat, lng]);
+
+                            // Mostrar latitud y longitud
+                            document.getElementById('latitud').textContent = `Latitud: ${lat}`;
+                            document.getElementById('longitud').textContent = `Longitud: ${lng}`;
+                        } else {
+                            alert('No se pudo encontrar la dirección.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Ocurrió un error al buscar la dirección.');
+                    });
+            }
+        </script>
     </body>
 
 </php>
