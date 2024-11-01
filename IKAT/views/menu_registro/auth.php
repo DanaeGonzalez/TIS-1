@@ -12,11 +12,16 @@ exit();
 $current_page = basename($_SERVER['PHP_SELF']);
 
 if ($current_page === 'menu_adm.php' && $_SESSION['tipo_usuario'] !== 'Admin') {
-header("Location: ../menu_registro/menu_adm.php");
-exit();
+    header("Location: ../menu_rol/menu_adm.php");
+    exit();
 }
 
 if ($current_page === 'menu_reg.php' && $_SESSION['tipo_usuario'] !== 'Registrado') {
-header("Location: ../menu_registro/menu_reg.php");
-exit();
+    header("Location: ../menu_rol/menu_reg.php");
+    exit();
+}
+
+if ($current_page === 'menu_supadm.php' && $_SESSION['tipo_usuario'] !== 'Superadmin') {
+    header("Location: ../menu_rol/menu_supadm.php");
+    exit();
 }
