@@ -64,6 +64,7 @@
                 <!-- Sección del producto -->
                 <?php
                 include_once '..\config\conexion.php';
+                require 'menu_registro\auth.php';
                 if (isset($_GET['id'])) {
                     $id_producto = (int) $_GET['id'];
 
@@ -112,11 +113,13 @@
                             <div class="input-group" style="width: 130px;">
                                 <button class="btn btn-outline-dark" type="button"
                                     onclick="this.nextElementSibling.stepDown()">-</button>
-                                <input type="number" value="1" min="1" class="form-control text-center custom-input">
+                                <input type="number" id="cantidadInput" value="1" min="1"
+                                    class="form-control text-center custom-input">
                                 <button class="btn btn-outline-dark" type="button"
                                     onclick="this.previousElementSibling.stepUp()">+</button>
                             </div>
-                            <button class="btn btn-dark mt-3 w-100 p-2">Añadir al carrito</button>
+                            <button class="btn btn-dark mt-3 w-100 p-2"
+                                onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">Añadir al carrito</button>
                             <hr>
                             <h5>Descripción del producto</h5>
                             <p><?= htmlspecialchars($producto['descripcion_producto']) ?></p>
@@ -139,6 +142,12 @@
                 </div>
 
                 <?php
+                if (isset($_SESSION['id_carrito'])) {
+                    echo "ID del carrito: " . $_SESSION['id_carrito'];
+                } else {
+                    echo "El carrito no está inicializado en la sesión" . $_SESSION['identificador'];
+                }
+
                 $conn->close();
                 ?>
 
@@ -153,6 +162,33 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
+
+        <script>
+            function agregarAlCarrito(productId) {
+
+                // Obtén el valor de la cantidad desde el input
+                const cantidad = document.getElementById('cantidadInput').value;
+
+                fetch('agregarAlCarrito.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id_producto: productId, cantidad: parseInt(cantidad) })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Producto agregado al carrito!');
+                        } else {
+                            alert('Error al agregar el producto al carrito.');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            }
+        </script>
     </body>
 
 </php>

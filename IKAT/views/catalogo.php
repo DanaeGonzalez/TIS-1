@@ -63,77 +63,90 @@
 
                 <!-- Contenedor de filtros -->
                 <div class="container mt-3">
-                    <div class="row justify-content-center">
-                        <h1 class="text-center mb-3">Productos</h1>
-                        <hr class="mb-4">
+                    <form id="form-filtros" method="GET" action="javascript:void(0);"> <!-- Añadimos el formulario -->
+                        <div class="row justify-content-center">
+                            <h1 class="text-center mb-3">Productos</h1>
+                            <hr class="mb-4">
 
-                        <!-- Filtro de Categoría -->
-                        <div class="col-auto mb-3">
-                            <div class="dropdown">
-                                <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                    id="dropdownCategory" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Categoría
-                                </button>
-                                <div class="dropdown-menu p-2" aria-labelledby="dropdownCategory">
-                                    <label class="dropdown-item"><input type="checkbox" name="categoría" value="Mesa">
-                                        Mesa</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="categoría" value="Sillas">
-                                        Sillas</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="categoría" value="Camas">
-                                        Camas</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="categoría"
-                                            value="Sillones">
-                                        Sillones</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="categoría"
-                                            value="Organización">
-                                        Organización</label>
+                            <!-- Filtro de Categoría -->
+                            <div class="col-auto mb-3">
+                                <div class="dropdown">
+                                    <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
+                                        id="dropdownCategory" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Categoría
+                                    </button>
+                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownCategory">
+                                        <label class="dropdown-item">
+                                            <input type="checkbox" name="categoria[]" value="Mesa"> Mesa
+                                        </label>
+                                        <label class="dropdown-item">
+                                            <input type="checkbox" name="categoria[]" value="Sillas"> Sillas
+                                        </label>
+                                        <label class="dropdown-item">
+                                            <input type="checkbox" name="categoria[]" value="Camas"> Camas
+                                        </label>
+                                        <label class="dropdown-item">
+                                            <input type="checkbox" name="categoria[]" value="Sillones"> Sillones
+                                        </label>
+                                        <label class="dropdown-item">
+                                            <input type="checkbox" name="categoria[]" value="Organización"> Organización
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Filtro de Color -->
-                        <div class="col-auto mb-3">
-                            <div class="dropdown">
-                                <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                    id="dropdownColor" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Color
-                                </button>
-                                <div class="dropdown-menu p-2" aria-labelledby="dropdownColor">
-                                    <label class="dropdown-item"><input type="checkbox" name="color" value="Rojo">
-                                        Rojo</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="color" value="Negro">
-                                        Negro</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="color" value="Blanco">
-                                        Blanco</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="color" value="Gris">
-                                        Gris</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="color" value="Café">
-                                        Café</label>
+                            <!-- Filtro de Color -->
+                            <div class="col-auto mb-3">
+                                <div class="dropdown">
+                                    <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
+                                        id="dropdownColor" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Color
+                                    </button>
+                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownColor">
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Rojo">
+                                            Rojo</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Negro">
+                                            Negro</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Blanco">
+                                            Blanco</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Gris">
+                                            Gris</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Café">
+                                            Café</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Filtro de Material -->
-                        <div class="col-auto mb-3">
-                            <div class="dropdown">
-                                <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                    id="dropdownMaterial" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Material
-                                </button>
-                                <div class="dropdown-menu p-2" aria-labelledby="dropdownMaterial">
-                                    <label class="dropdown-item"><input type="checkbox" name="material" value="Madera">
-                                        Madera</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="material" value="Metal">
-                                        Metal</label>
-                                    <label class="dropdown-item"><input type="checkbox" name="material"
-                                            value="Plástico">
-                                        Plástico</label>
+                            <!-- Filtro de Material -->
+                            <div class="col-auto mb-3">
+                                <div class="dropdown">
+                                    <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
+                                        id="dropdownMaterial" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Material
+                                    </button>
+                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownMaterial">
+                                        <label class="dropdown-item"><input type="checkbox" name="material"
+                                                value="Madera"> Madera</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="material"
+                                                value="Metal"> Metal</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="material"
+                                                value="Plástico"> Plástico</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                    </div>
+                            <!-- Botón para aplicar los filtros -->
+                            <div class="col-auto mb-3">
+                                <button type="submit" class="btn btn-dark rounded-pill">Aplicar filtros</button>
+                            </div>
+
+                        </div>
+                    </form> <!-- Fin del formulario -->
                 </div>
+
+
+
+
 
                 <!-- Contenedor de la barra de etiquetas -->
                 <div class="container mt-3">
@@ -158,30 +171,33 @@
 
                     <!-- Contenedor catálogo -->
                     <div class="container mt-4">
-                        <div class="row justify-content-center">
+                        <div id="product-container" class="row justify-content-center">
                             <?php while ($producto = $result->fetch_assoc()): ?>
                                 <div class="col-6 col-md-4 mb-4">
-                                    <a href="producto.php?id=<?= $producto['id_producto'] ?>" class="text-decoration-none">
-                                        <div class="card" style="width: 100%;">
+                                    <div class="card" style="width: 100%;">
+                                        <a href="producto.php?id=<?= $producto['id_producto'] ?>" class="text-decoration-none">
                                             <img src="<?= $producto['foto_producto'] ?>" class="card-img-top" alt="...">
-                                            <div class="card-body">
-                                                <h5 class="card-title"><?= htmlspecialchars($producto['nombre_producto']) ?>
-                                                </h5>
-                                                <h6 class="card-text">
-                                                    $<?= number_format($producto['precio_unitario'], 0, ',', '.') ?></h6>
-                                                <div class="d-flex align-items-center">
-                                                    <div>
-                                                        <button type="button" class="btn btn-outline-secondary">
-                                                            <i class="bi bi-cart-plus"></i>
-                                                        </button>
-                                                        <button type="button" class="btn btn-outline-secondary">
-                                                            <i class="bi bi-heart"></i>
-                                                        </button>
-                                                    </div>
+                                        </a>
+                                        <div class="card-body">
+                                            <h5 class="card-title"><?= htmlspecialchars($producto['nombre_producto']) ?>
+                                            </h5>
+                                            <h6 class="card-text">
+                                                $<?= number_format($producto['precio_unitario'], 0, ',', '.') ?></h6>
+                                            <div class="d-flex align-items-center">
+                                                <div>
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">
+                                                        <i class="bi bi-cart-plus"></i>
+
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-secondary">
+                                                        <i class="bi bi-heart"></i>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
-                                    </a>
+                                    </div>
+
                                 </div>
                             <?php endwhile; ?>
                         </div>
@@ -218,7 +234,89 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
+
         <script src="..\assets\js\filtros.js"></script>
+
+        <script>
+           document.getElementById("form-filtros").addEventListener("submit", function(event) {
+               event.preventDefault(); // Evita el envío tradicional del formulario
+        
+               const formData = new FormData(this);
+               const queryString = new URLSearchParams(formData).toString();
+        
+               fetch(`../assets/php/filtros_catalogo.php?${queryString}`)
+                   .then(response => {
+                       if (!response.ok) {
+                           throw new Error("Error en la respuesta del servidor");
+                       }
+                       return response.json();
+                   })
+                   .then(data => {
+                       // Selecciona solo el contenedor de los productos
+                       const productContainer = document.getElementById("product-container");
+                       productContainer.innerHTML = ""; // Limpia solo el área de productos, manteniendo la barra de filtros
+                
+                       if (data.length === 0) {
+                           productContainer.innerHTML = "<p>No se encontraron productos.</p>";
+                       } else {
+                           data.forEach(product => {
+                               productContainer.innerHTML += `
+                                   <div class="col-6 col-md-4 mb-4">
+                                       <a href="producto.php?id=${product.id_producto}" class="text-decoration-none">
+                                           <div class="card" style="width: 100%;">
+                                               <img src="${product.foto_producto}" class="card-img-top" alt="${product.nombre_producto}">
+                                               <div class="card-body">
+                                                   <h5 class="card-title">${product.nombre_producto}</h5>
+                                                   <h6 class="card-text">$${new Intl.NumberFormat().format(product.precio_unitario)}</h6>
+                                                   <div class="d-flex align-items-center">
+                                                       <div>
+                                                           <button type="button" class="btn btn-outline-secondary">
+                                                               <i class="bi bi-cart-plus"></i>
+                                                           </button>
+                                                           <button type="button" class="btn btn-outline-secondary">
+                                                               <i class="bi bi-heart"></i>
+                                                           </button>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </a>
+                                   </div>`;
+                           });
+                       }
+                   })
+                   .catch(error => {
+                       console.error("Error en la solicitud AJAX:", error);
+                   });
+           });
+        </script>
+
+
+        <script>
+            function agregarAlCarrito(productId) {
+                fetch('agregarAlCarrito.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id_producto: productId, cantidad: 1 })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Producto agregado al carrito!');
+                        } else {
+                            alert('Error al agregar el producto al carrito.');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            }
+        </script>
+
+
+
     </body>
 
 </php>

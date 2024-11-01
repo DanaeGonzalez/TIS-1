@@ -1,9 +1,12 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 
 if (!isset($_SESSION['identificador']) || !isset($_SESSION['tipo_usuario'])) {
-    header("Location: login.php");
-    exit();
+header("Location: login.php");
+exit();
 }
 
 $current_page = basename($_SERVER['PHP_SELF']);
