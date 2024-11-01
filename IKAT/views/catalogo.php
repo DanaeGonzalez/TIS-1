@@ -77,19 +77,19 @@
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownCategory">
                                         <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria[]" value="Mesa"> Mesa
+                                            <input type="checkbox" name="categoria" value="Mesa"> Mesa
                                         </label>
                                         <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria[]" value="Sillas"> Sillas
+                                            <input type="checkbox" name="categoria" value="Silla"> Silla
                                         </label>
                                         <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria[]" value="Camas"> Camas
+                                            <input type="checkbox" name="categoria" value="Cama"> Cama
                                         </label>
                                         <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria[]" value="Sillones"> Sillones
+                                            <input type="checkbox" name="categoria" value="Sillon"> Sillon
                                         </label>
                                         <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria[]" value="Organización"> Organización
+                                            <input type="checkbox" name="categoria" value="Almacenamiento y Organización"> Almacenamiento y Organización
                                         </label>
                                     </div>
                                 </div>
@@ -131,6 +131,8 @@
                                                 value="Metal"> Metal</label>
                                         <label class="dropdown-item"><input type="checkbox" name="material"
                                                 value="Plástico"> Plástico</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="material"
+                                                value="Felpa"> Felpa</label>
                                     </div>
                                 </div>
                             </div>
