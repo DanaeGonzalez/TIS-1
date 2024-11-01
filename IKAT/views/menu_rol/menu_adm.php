@@ -85,7 +85,7 @@
                 <ul class="dropdown-menu dropdown-menu-end">
                   <li><a class="dropdown-item" href="..\compras.php">Mis Compras</a></li>
                   <li><a class="dropdown-item" href="..\perfil.php">Mi Perfil</a></li>
-                  <li><a class="dropdown-item" href="mantenedores.php">Mantenedores</a></li>
+                  <li><a class="dropdown-item" href="mantenedores_adm.php">Mantenedores</a></li>
                   <li>
                     <hr class="dropdown-divider">
                   </li>

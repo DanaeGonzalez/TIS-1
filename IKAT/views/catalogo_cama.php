@@ -68,29 +68,29 @@
                             <h1 class="text-center mb-3">Productos</h1>
                             <hr class="mb-4">
 
-                            <!-- Filtro de Categoría -->
+                            <!-- Filtro de Subcategoría -->
                             <div class="col-auto mb-3">
                                 <div class="dropdown">
                                     <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                        id="dropdownCategory" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Categoría
+                                        id="dropdownSubcategory" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Subcategoría
                                     </button>
-                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownCategory">
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria" value="Mesa"> Mesa
-                                        </label>
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria" value="Silla"> Silla
-                                        </label>
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria" value="Cama"> Cama
-                                        </label>
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria" value="Sillon"> Sillon
-                                        </label>
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria" value="Almacenamiento y Organización"> Almacenamiento y Organización
-                                        </label>
+                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownSubcategory">
+                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
+                                                value="A">
+                                            A</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
+                                                value="B">
+                                            B</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
+                                                value="C">
+                                            C</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
+                                                value="D">
+                                            D</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
+                                                value="E">
+                                            E</label>
                                     </div>
                                 </div>
                             </div>
@@ -126,13 +126,37 @@
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownMaterial">
                                         <label class="dropdown-item"><input type="checkbox" name="material"
-                                                value="Madera"> Madera</label>
+                                                value="Madera">
+                                            Madera</label>
                                         <label class="dropdown-item"><input type="checkbox" name="material"
-                                                value="Metal"> Metal</label>
+                                                value="Metal">
+                                            Metal</label>
                                         <label class="dropdown-item"><input type="checkbox" name="material"
-                                                value="Plástico"> Plástico</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="material"
-                                                value="Felpa"> Felpa</label>
+                                                value="Plástico">
+                                            Plástico</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Filtro de Plazas -->
+                            <div class="col-auto mb-3">
+                                <div class="dropdown">
+                                    <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
+                                        id="dropdownPlazas" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Plazas
+                                    </button>
+                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownPlazas">
+                                        <label class="dropdown-item"><input type="checkbox" name="plazas" value="1">
+                                            1</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="plazas" value="1 1/2">
+                                            1
+                                            1/2</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="plazas" value="2">
+                                            2</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="plazas" value="King">
+                                            King</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="plazas" value="Queen">
+                                            Queen</label>
                                     </div>
                                 </div>
                             </div>
@@ -163,8 +187,10 @@
                 // Incluir la conexión
                 include_once '..\config\conexion.php';
 
-                // Consulta para obtener los productos activos
-                $sql = "SELECT * FROM producto WHERE activo = 1";
+                // Consulta para obtener los productos activos que sean camas
+                $sql = "SELECT * FROM producto WHERE activo = 1  AND id_subcategoria IN 
+                (SELECT id_subcategoria FROM subcategoria JOIN categoria USING (id_categoria) 
+                WHERE nombre_categoria = 'Cama')";
                 $result = $conn->query($sql);
 
                 // Verificar si hay resultados
@@ -240,29 +266,29 @@
         <script src="..\assets\js\filtros.js"></script>
 
         <script>
-           document.getElementById("form-filtros").addEventListener("submit", function(event) {
-               event.preventDefault(); // Evita el envío tradicional del formulario
-        
-               const formData = new FormData(this);
-               const queryString = new URLSearchParams(formData).toString();
-        
-               fetch(`../assets/php/filtros_catalogo.php?${queryString}`)
-                   .then(response => {
-                       if (!response.ok) {
-                           throw new Error("Error en la respuesta del servidor");
-                       }
-                       return response.json();
-                   })
-                   .then(data => {
-                       // Selecciona solo el contenedor de los productos
-                       const productContainer = document.getElementById("product-container");
-                       productContainer.innerHTML = ""; // Limpia solo el área de productos, manteniendo la barra de filtros
-                
-                       if (data.length === 0) {
-                           productContainer.innerHTML = "<p>No se encontraron productos.</p>";
-                       } else {
-                           data.forEach(product => {
-                               productContainer.innerHTML += `
+            document.getElementById("form-filtros").addEventListener("submit", function (event) {
+                event.preventDefault(); // Evita el envío tradicional del formulario
+
+                const formData = new FormData(this);
+                const queryString = new URLSearchParams(formData).toString();
+
+                fetch(`../assets/php/filtros_catalogo.php?${queryString}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Error en la respuesta del servidor");
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Selecciona solo el contenedor de los productos
+                        const productContainer = document.getElementById("product-container");
+                        productContainer.innerHTML = ""; // Limpia solo el área de productos, manteniendo la barra de filtros
+
+                        if (data.length === 0) {
+                            productContainer.innerHTML = "<p>No se encontraron productos.</p>";
+                        } else {
+                            data.forEach(product => {
+                                productContainer.innerHTML += `
                                    <div class="col-6 col-md-4 mb-4">
                                        <a href="producto.php?id=${product.id_producto}" class="text-decoration-none">
                                            <div class="card" style="width: 100%;">
@@ -284,13 +310,13 @@
                                            </div>
                                        </a>
                                    </div>`;
-                           });
-                       }
-                   })
-                   .catch(error => {
-                       console.error("Error en la solicitud AJAX:", error);
-                   });
-           });
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error en la solicitud AJAX:", error);
+                    });
+            });
         </script>
 
 

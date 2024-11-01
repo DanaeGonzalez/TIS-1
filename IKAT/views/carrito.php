@@ -1,3 +1,7 @@
+<?php
+include 'menu_registro\auth.php';
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -25,8 +29,7 @@
                         <div class="list-group me-3">
                             <?php
                             include_once '..\config\conexion.php';
-                            $id_carrito = 1; // Cambia esto por el ID del carrito del usuario actual
-                            
+                                                        
                             // Consulta para obtener los productos del carrito
                             $sql = "SELECT p.*, cp.cantidad_producto 
                                 FROM carrito_producto cp 
@@ -34,7 +37,7 @@
                                 WHERE cp.id_carrito = ?";
 
                             $stmt = $conn->prepare($sql);
-                            $stmt->bind_param("i", $id_carrito); // Bind del id_carrito como entero
+                            $stmt->bind_param("i", $_SESSION['id_carrito']); // Bind del id_carrito como entero
                             $stmt->execute();
                             $result = $stmt->get_result();
 
