@@ -162,6 +162,21 @@
     foreach ($formas as $forma) {
         $opcionesForma .= "<option value='" . $forma['id_forma'] . "'>" . $forma['nombre_forma'] . "</option>";
     }
+
+    $sqlProducto = "SELECT id_producto, nombre_producto FROM producto";
+    $resultProductos = $conn->query($sqlProducto);
+
+    $productos = [];
+    if ($resultProductos->num_rows > 0) {
+        while($rowProducto = $resultProductos->fetch_assoc()) {
+            $productos[] = $rowProducto;
+        }
+    }
+
+    $opcionesProducto = "";
+    foreach ($productos as $producto) {
+        $opcionesProducto .= "<option value='" . $producto['id_producto'] . "'>" . $producto['nombre_producto'] . "</option>";
+    }
     
     
     ?>
@@ -574,7 +589,7 @@
                                 }
                                 echo "</tbody></table>";
                                 echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarProductoModal'>Agregar Producto</a>";
-                                echo "<a href='../Mantenedor_stock/modificar_stock_producto.php' class='btn btn-primary mt-3 d-block'>Mantenedor Stock</a>";
+                                echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#modificarProductoStockModal'>Modificar Stock</a>";
                                 echo "<a href='../Mantenedor_ofertas/mostrar_ofertas.php' class='btn btn-primary mt-3 d-block'>Mantenedor Ofertas</a>";
                             } else {
                                 echo "<p class='text-center'>No hay productos registrados.</p>";
@@ -608,6 +623,58 @@
 
                             <button type="submit" class="btn btn-primary">Guardar Producto</button>
                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modificarProductoStockModal" tabindex="-1" aria-labelledby="modificarProductoStockModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modificarProductoStockModalLabel">Agregar Producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                    <form action="actualizar_stock.php" method="POST">
+
+                        <!-- ID del Producto -->
+                        <div class="mb-3">
+                            <label for="id_producto" class="form-label">Selecciona el producto</label>
+                            <select class="form-select" name="id_producto" required>
+                                <option value="" disabled selected>Selecciona un producto</option>
+                                <?php
+                                    echo $opcionesProducto;
+                                ?>
+                            </select>
+                        </div>
+
+                        <!-- Cantidad -->
+                        <div class="mb-3">
+                            <label for="cantidad" class="form-label">Cantidad</label>
+                            <input type="number" class="form-control" id="cantidad" name="cantidad" required>
+                        </div>
+
+                        <!-- Motivo -->
+                        <div class="mb-3">
+                            <label for="motivo" class="form-label">Motivo</label>
+                            <select class="form-select" id="motivo" name="motivo" required>
+                                <option value="" disabled selected>Seleccione el motivo</option>
+                                <option value="Ingreso">Ingreso</option>
+                                <option value="Salida">Salida</option>
+                            </select>
+                        </div>
+
+                        <!-- Explicación -->
+                        <div class="mb-3">
+                            <label for="explicacion" class="form-label">Explicación</label>
+                            <textarea class="form-control" id="explicacion" name="explicacion" rows="3" required></textarea>
+                        </div>
+
+                        <!-- Botón de Envío -->
+                        <button type="submit" class='btn btn-primary'>Guardar Cambio de Stock</button>
+                    </form>
                     </div>
                 </div>
             </div>
