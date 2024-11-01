@@ -18,7 +18,6 @@ unset($_SESSION['mensaje']);
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="..\..\assets\css\styles.css">
-
 </head>
 <body>
 
@@ -56,19 +55,18 @@ unset($_SESSION['mensaje']);
         </div>
     </nav>
 
-    <!-- Main Layout -->
     <div class="d-flex">
-        <!-- Sidebar -->
         <div id="sidebar" class="collapse d-lg-block">
             <div class="accordion" id="accordionSidebar">
                 <div class="accordion-item">
                     <h4 class="accordion-header" id="headingMantenedores">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#mantenedoresLinks" aria-expanded="true">
+                                data-bs-target="#mantenedoresLinks" aria-expanded="true" aria-controls="mantenedoresLinks">
                             Mantenedores
                         </button>
                     </h4>
-                    <div id="mantenedoresLinks" class="accordion-collapse collapse show">
+                    <div id="mantenedoresLinks" class="accordion-collapse collapse show" aria-labelledby="headingMantenedores"
+                        data-bs-parent="#accordionSidebar">
                         <div class="accordion-body p-0">
                         <a href="../categoria/mostrar_categoria.php" class="sidebar-link">Categorías</a>
                             <a href="../Mantenedor_subcategorias/mostrar_subcategoria.php" class="sidebar-link">Subcategorías</a>
