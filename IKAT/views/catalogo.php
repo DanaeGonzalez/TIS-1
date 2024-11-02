@@ -8,6 +8,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="..\assets\css\styles.css">
+        <script src="../assets/js/filtros.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     </head>
@@ -31,19 +32,20 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form>
+                                <form id="searchForm" onsubmit="return buscarProductos()">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Buscar productos..."
-                                            aria-label="Buscar productos">
-                                        <button class="btn btn-dark" type="submit">
-                                            Buscar
-                                        </button>
+                                        <input type="text" class="form-control" id="buscarInput"
+                                            placeholder="Buscar productos..." aria-label="Buscar productos">
+                                        <button class="btn btn-dark" type="submit">Buscar</button>
                                     </div>
                                 </form>
+                                <div id="resultadosBusqueda" class="mt-3"></div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
 
                 <!-- Contenedor de la barra de búsqueda -->
                 <div class="d-none d-lg-flex justify-content-center align-items-center mt-4">
@@ -238,29 +240,29 @@
         <script src="..\assets\js\filtros.js"></script>
 
         <script>
-           document.getElementById("form-filtros").addEventListener("submit", function(event) {
-               event.preventDefault(); // Evita el envío tradicional del formulario
-        
-               const formData = new FormData(this);
-               const queryString = new URLSearchParams(formData).toString();
-        
-               fetch(`../assets/php/filtros_catalogo.php?${queryString}`)
-                   .then(response => {
-                       if (!response.ok) {
-                           throw new Error("Error en la respuesta del servidor");
-                       }
-                       return response.json();
-                   })
-                   .then(data => {
-                       // Selecciona solo el contenedor de los productos
-                       const productContainer = document.getElementById("product-container");
-                       productContainer.innerHTML = ""; // Limpia solo el área de productos, manteniendo la barra de filtros
-                
-                       if (data.length === 0) {
-                           productContainer.innerHTML = "<p>No se encontraron productos.</p>";
-                       } else {
-                           data.forEach(product => {
-                               productContainer.innerHTML += `
+            document.getElementById("form-filtros").addEventListener("submit", function (event) {
+                event.preventDefault(); // Evita el envío tradicional del formulario
+
+                const formData = new FormData(this);
+                const queryString = new URLSearchParams(formData).toString();
+
+                fetch(`../assets/php/filtros_catalogo.php?${queryString}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Error en la respuesta del servidor");
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Selecciona solo el contenedor de los productos
+                        const productContainer = document.getElementById("product-container");
+                        productContainer.innerHTML = ""; // Limpia solo el área de productos, manteniendo la barra de filtros
+
+                        if (data.length === 0) {
+                            productContainer.innerHTML = "<p>No se encontraron productos.</p>";
+                        } else {
+                            data.forEach(product => {
+                                productContainer.innerHTML += `
                                    <div class="col-6 col-md-4 mb-4">
                                        <a href="producto.php?id=${product.id_producto}" class="text-decoration-none">
                                            <div class="card" style="width: 100%;">
@@ -282,13 +284,13 @@
                                            </div>
                                        </a>
                                    </div>`;
-                           });
-                       }
-                   })
-                   .catch(error => {
-                       console.error("Error en la solicitud AJAX:", error);
-                   });
-           });
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error en la solicitud AJAX:", error);
+                    });
+            });
         </script>
 
 
@@ -315,6 +317,36 @@
             }
         </script>
 
+        <script>
+            function buscarProductos() {
+                const buscar = document.getElementById('buscarInput').value;
+                const resultadosDiv = document.getElementById('resultadosBusqueda');
+                resultadosDiv.innerHTML = 'Buscando...';
+
+                fetch(`busqueda_catalogo.php?buscar=${encodeURIComponent(buscar)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        resultadosDiv.innerHTML = ''; // Limpia resultados previos
+
+                        if (data.length > 0) {
+                            data.forEach(producto => {
+                                const item = document.createElement('div');
+                                item.classList.add('producto-item');
+                                item.innerHTML = `<strong>${producto.nombre_producto}</strong> - ${producto.precio} USD`;
+                                resultadosDiv.appendChild(item);
+                            });
+                        } else {
+                            resultadosDiv.innerHTML = 'No se encontraron productos.';
+                        }
+                    })
+                    .catch(error => {
+                        resultadosDiv.innerHTML = 'Error en la búsqueda. Intenta nuevamente.';
+                        console.error('Error en la búsqueda:', error);
+                    });
+
+                return false; // Evita el envío del formulario
+            }
+        </script>
 
 
     </body>
