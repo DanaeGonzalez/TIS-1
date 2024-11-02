@@ -27,7 +27,7 @@ if (isset($_POST['identificador'])) {
             $_SESSION['numero_usuario'] = $user['numero_usuario'];
             $_SESSION['direccion_usuario'] = $user['direccion_usuario'];
             $_SESSION['puntos'] = $user['puntos_totales'];
-
+            $_SESSION['activo'] = $user['activo'];
             $_SESSION['id_carrito'] = $user['id_carrito'];
 
 
