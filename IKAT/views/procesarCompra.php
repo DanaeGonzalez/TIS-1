@@ -18,6 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
     if ($conn->query($query) === TRUE) {
         echo "Compra registrada exitosamente.";
+        header("Location: https://localhost/xampp/TIS-1/IKAT/vendor/transbank/transbank-sdk/examples/webpay-plus/index.php?action=create");
+        exit;
+                
+
+
 
         // Redirigir a la página de pago o mostrar confirmación
     } else {
@@ -54,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                         <h2 class="text-center mb-3">Completa tu Compra</h2>
                         <hr>
                         <div class="col-md-8">
-                            
+
                             <form method="POST" action="procesarCompra.php">
                                 <!-- Campo oculto para enviar el total de la compra -->
                                 <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
@@ -76,7 +81,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                     </select>
                                 </div>
 
-                                <button type="submit" class="btn btn-dark w-100 mt-3 mb-4">Continuar con el pago</button>
+                                <form action="../vendor/transbank/transbank-sdk/examples/index.php?action=create"
+                                    method="post">
+                                    <!-- Agrega campos adicionales aquí, si necesitas pasar más información -->
+
+                                    <!-- Botón para continuar con el pago -->
+                                    <button type="submit" class="btn btn-dark w-100 mt-3 mb-4">Continuar con el
+                                        pago</button>
+                                </form>
+
                             </form>
                         </div>
 
