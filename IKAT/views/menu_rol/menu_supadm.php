@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IKAT - Página de Inicio </title>
+    <title>IKAT - Página de Inicio</title>
     <link rel="stylesheet" href="..\..\assets\css\styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -19,7 +19,7 @@
     <!-- Header/Navbar -->
     <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
-        <a href="menu_adm.php">
+        <a href="menu_supadm.php">
           <img width="180px" height="auto" src="..\..\assets\images\ikat.png" alt="Ikat">
         </a>
 
@@ -85,7 +85,7 @@
                 <ul class="dropdown-menu dropdown-menu-end">
                   <li><a class="dropdown-item" href="..\compras.php">Mis Compras</a></li>
                   <li><a class="dropdown-item" href="..\perfil.php">Mi Perfil</a></li>
-                  <li><a class="dropdown-item" href="mantenedores_adm.php">Mantenedores</a></li>
+                  <li><a class="dropdown-item" href="mantenedores_supadm.php">Mantenedores</a></li>
                   <li>
                     <hr class="dropdown-divider">
                   </li>

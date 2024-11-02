@@ -8,7 +8,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>IKAT - Mantenedores</title>
+  <title>IKAT - Mantenedor Administrador</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="..\..\assets\css\styles.css">
@@ -21,7 +21,7 @@
   <!-- Header/Navbar -->
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a href="..\..\index.php">
+      <a href="menu_adm.php">
         <img width="180px" height="auto" src="..\..\assets\images\ikat.png" alt="Ikat">
       </a>
 
@@ -88,7 +88,7 @@
               <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="..\compras.php">Mis Compras</a></li>
                 <li><a class="dropdown-item" href="..\perfil.php">Mi Perfil</a></li>
-                <li><a class="dropdown-item" href="mantenedores.php">Mantenedores</a></li>
+                <li><a class="dropdown-item" href="mantenedores_adm.php">Mantenedores</a></li>
                 <li>
                   <hr class="dropdown-divider">
                 </li>
@@ -125,7 +125,6 @@
               <a href="../../mantenedores/Mantenedor_producto/mostrar_producto.php" class="sidebar-link">Productos</a>
               <a href="../../mantenedores/Mantenedor_reseña/mostrar_resenia.php" class="sidebar-link">Reseñas</a>
               <a href="../../mantenedores/Mantenedor_top_ventas/mostrar_top_ventas.php" class="sidebar-link">Ventas</a>
-              <a href="../../mantenedores/Mantenedor_usuario/mostrar_usuario.php" class="sidebar-link">Usuarios</a>
               <a href="../../mantenedores/Mantenedor_n_asientos/mostrar_n_asientos.php"
                 class="sidebar-link">N°Asientos</a>
               <a href="../../mantenedores/Mantenedor_n_cajones/mostrar_n_cajones.php" class="sidebar-link">N°Cajones</a>

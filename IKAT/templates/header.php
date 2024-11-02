@@ -1,13 +1,29 @@
-<?php 
+<?php
   include 'menu_registro/auth.php';
 ?>
 
 <!-- Header/Navbar -->
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-        <a href="..\index.php">
-            <img width="180px" height="auto" src="..\assets\images\ikat.png" alt="Ikat">
-        </a>
+        <?php if (isset($_SESSION['tipo_usuario'])) {
+            if ($_SESSION['tipo_usuario'] === 'Superadmin') { ?>
+                <a href="../views/menu_rol/menu_supadm.php">
+                    <img width="180px" height="auto" src="..\assets\images\ikat.png" alt="Ikat">
+                </a> <?php
+            } elseif ($_SESSION['tipo_usuario'] === 'Admin') { ?>
+                <a href="../views/menu_rol/menu_adm.php">
+                    <img width="180px" height="auto" src="..\assets\images\ikat.png" alt="Ikat">
+                </a> <?php
+            } elseif ($_SESSION['tipo_usuario'] === 'Registrado') { ?>
+                <a href="../views/menu_rol/menu_reg.php">
+                    <img width="180px" height="auto" src="..\assets\images\ikat.png" alt="Ikat">
+                </a> <?php
+            }
+        } else { ?>
+            <a href="../index.php">
+                <img width="180px" height="auto" src="..\assets\images\ikat.png" alt="Ikat">
+            </a> <?php
+        } ?>
 
         <div class="d-flex align-items-center justify-content-end gap-3 ms-auto">
 

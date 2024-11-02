@@ -162,6 +162,21 @@
     foreach ($formas as $forma) {
         $opcionesForma .= "<option value='" . $forma['id_forma'] . "'>" . $forma['nombre_forma'] . "</option>";
     }
+
+    $sqlProducto = "SELECT id_producto, nombre_producto FROM producto";
+    $resultProductos = $conn->query($sqlProducto);
+
+    $productos = [];
+    if ($resultProductos->num_rows > 0) {
+        while($rowProducto = $resultProductos->fetch_assoc()) {
+            $productos[] = $rowProducto;
+        }
+    }
+
+    $opcionesProducto = "";
+    foreach ($productos as $producto) {
+        $opcionesProducto .= "<option value='" . $producto['id_producto'] . "'>" . $producto['nombre_producto'] . "</option>";
+    }
     
     
     ?>
@@ -171,7 +186,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Mantenedor de Productos</title>
+        <title>IKAT - Mantenedor de Productos</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="..\..\assets\css\styles.css">
@@ -202,10 +217,10 @@
                             Usuario
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="../../views/perfil.php">Mi Perfil</a></li>
                             <li><a class="dropdown-item" href="#">Configuraciones</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+                            <li><a class="dropdown-item" href="../../views/menu_registro/logout.php">Cerrar Sesión</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -231,7 +246,9 @@
                             <a href="../Mantenedor_producto/mostrar_producto.php" class="sidebar-link">Productos</a>
                             <a href="../Mantenedor_reseña/mostrar_resenia.php" class="sidebar-link">Reseñas</a>
                             <a href="../Mantenedor_top_ventas/mostrar_top_ventas.php" class="sidebar-link">Ventas</a>
-                            <a href="../Mantenedor_usuario/mostrar_usuario.php" class="sidebar-link">Usuarios</a>
+                            <?php if ($_SESSION['tipo_usuario'] == 'Superadmin'): ?>
+                                <a href="../Mantenedor_usuario/mostrar_usuario.php" class="sidebar-link">Usuarios</a> <?php
+                            endif; ?>
                             <a href="../Mantenedor_n_asientos/mostrar_n_asientos.php" class="sidebar-link">N°Asientos</a>
                             <a href="../Mantenedor_n_cajones/mostrar_n_cajones.php" class="sidebar-link">N°Cajones</a>
                             <a href="../Mantenedor_n_plazas/mostrar_n_plazas.php" class="sidebar-link">N°Plazas</a>
@@ -293,7 +310,7 @@
                                             <td>
                                                 <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarProductoModal" . $row["id_producto"] . "'>Editar</a> |
                                                 <a class='btn btn-info btn-sm' data-bs-toggle='modal' data-bs-target='#agregarCaracteristicasModal" . $row["id_producto"] . "'>Agregar Características</a> |
-                                                <a href='borrar_producto.php?id=" . $row["id_producto"] . "' class='btn btn-danger btn-sm'>Borrar</a>
+                                                <a href='cambiar_estado_producto.php?id=" . $row["id_producto"] . "' class='btn btn-danger btn-sm'>Modificar estado</a>
                                             </td>
                                         </tr>";
 
@@ -574,7 +591,7 @@
                                 }
                                 echo "</tbody></table>";
                                 echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarProductoModal'>Agregar Producto</a>";
-                                echo "<a href='../Mantenedor_stock/modificar_stock_producto.php' class='btn btn-primary mt-3 d-block'>Mantenedor Stock</a>";
+                                echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#modificarProductoStockModal'>Modificar Stock</a>";
                                 echo "<a href='../Mantenedor_ofertas/mostrar_ofertas.php' class='btn btn-primary mt-3 d-block'>Mantenedor Ofertas</a>";
                             } else {
                                 echo "<p class='text-center'>No hay productos registrados.</p>";
@@ -613,18 +630,90 @@
             </div>
         </div>
 
+        <div class="modal fade" id="modificarProductoStockModal" tabindex="-1" aria-labelledby="modificarProductoStockModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modificarProductoStockModalLabel">Agregar Producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                    <form action="actualizar_stock.php" method="POST">
+
+                        <!-- ID del Producto -->
+                        <div class="mb-3">
+                            <label for="id_producto" class="form-label">Selecciona el producto</label>
+                            <select class="form-select" name="id_producto" required>
+                                <option value="" disabled selected>Selecciona un producto</option>
+                                <?php
+                                    echo $opcionesProducto;
+                                ?>
+                            </select>
+                        </div>
+
+                        <!-- Cantidad -->
+                        <div class="mb-3">
+                            <label for="cantidad" class="form-label">Cantidad</label>
+                            <input type="number" class="form-control" id="cantidad" name="cantidad" required>
+                        </div>
+
+                        <!-- Motivo -->
+                        <div class="mb-3">
+                            <label for="motivo" class="form-label">Motivo</label>
+                            <select class="form-select" id="motivo" name="motivo" required>
+                                <option value="" disabled selected>Seleccione el motivo</option>
+                                <option value="Ingreso">Ingreso</option>
+                                <option value="Salida">Salida</option>
+                            </select>
+                        </div>
+
+                        <!-- Explicación -->
+                        <div class="mb-3">
+                            <label for="explicacion" class="form-label">Explicación</label>
+                            <textarea class="form-control" id="explicacion" name="explicacion" rows="3" required></textarea>
+                        </div>
+
+                        <!-- Botón de Envío -->
+                        <button type="submit" class='btn btn-primary'>Guardar Cambio de Stock</button>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script>
-            // Función para mostrar las características específicas de cada producto
             function mostrarCaracteristicas(idProducto) {
                 const tipoProducto = document.getElementById('tipoProducto' + idProducto).value;
+
+                const formularios = ['caracteristicasSilla', 'caracteristicasMesa', 'caracteristicasSillon', 'caracteristicasCama', 'caracteristicasA/O'];
+                const valores = ['5', '6', '7', '8', '9'];
+
+                formularios.forEach(form => {
+                    const elemento = document.getElementById(form + idProducto);
+                    if (elemento) {
+                        elemento.style.display = 'none';
+                        Array.from(elemento.querySelectorAll("[required]")).forEach(input => {
+                            input.disabled = true;
+                        });
+                    }
+                });
             
-                document.getElementById('caracteristicasSilla' + idProducto).style.display = tipoProducto === '5' ? 'block' : 'none';
-                document.getElementById('caracteristicasMesa' + idProducto).style.display = tipoProducto === '6' ? 'block' : 'none';
-                document.getElementById('caracteristicasSillon' + idProducto).style.display = tipoProducto === '7' ? 'block' : 'none';
-                document.getElementById('caracteristicasCama' + idProducto).style.display = tipoProducto === '8' ? 'block' : 'none';
-                document.getElementById('caracteristicasA/O' + idProducto).style.display = tipoProducto === '9' ? 'block' : 'none';
+                const index = valores.indexOf(tipoProducto);
+                if (index !== -1) {
+                    const formSeleccionado = document.getElementById(formularios[index] + idProducto);
+                    if (formSeleccionado) {
+                        formSeleccionado.style.display = 'block';
+                        Array.from(formSeleccionado.querySelectorAll("select")).forEach(input => {
+                            input.disabled = false;
+                            input.setAttribute("required", "required");
+                        });
+                    }
+                }
             }
         </script>
+
+
 
 
 

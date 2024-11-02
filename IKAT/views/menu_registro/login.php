@@ -19,15 +19,26 @@ if (isset($_POST['identificador'])) {
         // Verificación de la contraseña usando password_verify
         if (password_verify($contrasenia, $user['contrasenia_usuario'])) {
             $_SESSION['identificador'] = $identificador;
+            $_SESSION['id_usuario'] = $user['id_usuario'];
             $_SESSION['tipo_usuario'] = $user['tipo_usuario'];
             $_SESSION['nombre_usuario'] = $user['nombre_usuario'];
+            $_SESSION['apellido_usuario'] = $user['apellido_usuario'];
+            $_SESSION['run_usuario'] = $user['run_usuario'];
+            $_SESSION['correo_usuario'] = $user['correo_usuario'];
+            $_SESSION['numero_usuario'] = $user['numero_usuario'];
+            $_SESSION['direccion_usuario'] = $user['direccion_usuario'];
+            $_SESSION['puntos'] = $user['puntos_totales'];
+            $_SESSION['activo'] = $user['activo'];
             $_SESSION['id_carrito'] = $user['id_carrito'];
+
 
             // Redireccionar según el tipo de usuario
             if ($_SESSION['tipo_usuario'] == 'Registrado') {
                 header("Location: ../menu_rol/menu_reg.php");
             } else if ($_SESSION['tipo_usuario'] == 'Admin') {
                 header("Location: ../menu_rol/menu_adm.php");
+            } else if ($_SESSION['tipo_usuario'] == 'Superadmin') {
+                header("Location: ../menu_rol/menu_supadm.php");
             }
             exit(); // Importante para detener la ejecución del script después de redirigir
         } else {
