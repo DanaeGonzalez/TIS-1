@@ -21,7 +21,7 @@
   <!-- Header/Navbar -->
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a href="..\index.php">
+      <a href="menu_adm.php">
         <img width="180px" height="auto" src="..\..\assets\images\ikat.png" alt="Ikat">
       </a>
 
