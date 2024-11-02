@@ -8,12 +8,11 @@ session_start();
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IKAT - Mantenedor de Formas</title>
+    <title>Mantenedor de Categorías</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="..\..\assets\css\styles.css">
-
 </head>
 <body>
     <!-- Header/Navbar -->
@@ -75,7 +74,7 @@ session_start();
                             <a href="../Mantenedor_top_ventas/mostrar_top_ventas.php" class="sidebar-link">Ventas</a>
                             <?php if ($_SESSION['tipo_usuario'] == 'Superadmin'): ?>
                                 <a href="../Mantenedor_usuario/mostrar_usuario.php" class="sidebar-link">Usuarios</a> <?php
-                            endif; ?>                            
+                            endif; ?>
                             <a href="../Mantenedor_n_asientos/mostrar_n_asientos.php" class="sidebar-link">N°Asientos</a>
                             <a href="../Mantenedor_n_cajones/mostrar_n_cajones.php" class="sidebar-link">N°Cajones</a>
                             <a href="../Mantenedor_n_plazas/mostrar_n_plazas.php" class="sidebar-link">N°Plazas</a>
@@ -92,23 +91,23 @@ session_start();
         <!-- Content Area -->
         <div class="content-area flex-grow-1 p-5">
             <div class="row">
-                <div class="col-12 p-4 d-flex flex-column justify-content-center align-items-center">
+                <div class="col-12 p-5 d-flex flex-column justify-content-center align-items-center">
 
                     <?php
                     if (isset($_GET['id'])) {
                         $id = $_GET['id'];
-                        $sql = "DELETE FROM forma WHERE id_forma = $id";
-                    
+                        $sql = "DELETE FROM usuario WHERE id_usuario = $id";                    
+
                         if ($conn->query($sql) === TRUE) {
-                            echo "Forma eliminada exitosamente <br>";
-                            echo "<a href='mostrar_forma.php' class='btn btn-primary mt-3 d-block'>Volver</a>";
+                            echo "Usuario eliminado exitosamente <br>";
+                            echo "<a href='mostrar_usuario.php' class='btn btn-primary mt-3 d-block'>Volver</a>";
                         } else {
-                            echo "Error: " . $sql . "<br>" . $conn->error;
+                            echo "<div class='alert alert-danger' role='alert'>Error: " . $sql . "<br>" . $conn->error . "</div>";
+                            echo "<a href='mostrar_usuario.php' class='btn btn-primary mt-3 d-block'>Volver</a>";
                         }
                     }
                     ?>
                 </div>
-
             </div>
         </div>
     </div>

@@ -1,23 +1,26 @@
+    
 <?php
-include '../../config/conexion.php';
-session_start();
+    include '../../config/conexion.php';
+    session_start();
 ?>
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IKAT - Mantenedor de Formas</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mantenedor de Stock</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="..\..\assets\css\styles.css">
 
 </head>
 <body>
-    <!-- Header/Navbar -->
-    <nav class="navbar navbar-expand-lg">
+        <!-- Header/Navbar -->
+        <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <button class="btn btn-outline border d-lg-none" type="button" data-bs-toggle="collapse" 
                     data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle sidebar">
@@ -75,7 +78,7 @@ session_start();
                             <a href="../Mantenedor_top_ventas/mostrar_top_ventas.php" class="sidebar-link">Ventas</a>
                             <?php if ($_SESSION['tipo_usuario'] == 'Superadmin'): ?>
                                 <a href="../Mantenedor_usuario/mostrar_usuario.php" class="sidebar-link">Usuarios</a> <?php
-                            endif; ?>                            
+                            endif; ?>
                             <a href="../Mantenedor_n_asientos/mostrar_n_asientos.php" class="sidebar-link">N°Asientos</a>
                             <a href="../Mantenedor_n_cajones/mostrar_n_cajones.php" class="sidebar-link">N°Cajones</a>
                             <a href="../Mantenedor_n_plazas/mostrar_n_plazas.php" class="sidebar-link">N°Plazas</a>
@@ -88,33 +91,73 @@ session_start();
                 </div>
             </div>
         </div>
-
-        <!-- Content Area -->
         <div class="content-area flex-grow-1 p-5">
-            <div class="row">
-                <div class="col-12 p-4 d-flex flex-column justify-content-center align-items-center">
+        <h1 class="text-center p-4">Modificar Stock de un Producto</h1>
+        <div class="row">
+            <div class="col-12">
 
-                    <?php
-                    if (isset($_GET['id'])) {
-                        $id = $_GET['id'];
-                        $sql = "DELETE FROM forma WHERE id_forma = $id";
+                <?php
+                    $mensaje = '';
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        $id_producto = $_POST['id_producto'];
+                        $cantidad_modificar = $_POST['cantidad_modificar'];
                     
-                        if ($conn->query($sql) === TRUE) {
-                            echo "Forma eliminada exitosamente <br>";
-                            echo "<a href='mostrar_forma.php' class='btn btn-primary mt-3 d-block'>Volver</a>";
+                        $sql = "SELECT stock_producto FROM producto WHERE id_producto = $id_producto";
+                        $result = $conn->query($sql);
+                    
+                        if ($result && $result->num_rows > 0) {
+                            $row = $result->fetch_assoc();
+                            $stock_actual = $row['stock_producto'];
+                    
+                            $nuevo_stock = $stock_actual + $cantidad_modificar;
+                    
+                            if ($nuevo_stock < 0) {
+                                $mensaje = "Error: No se puede tener stock negativo.";
+                            } else {
+                                
+                                $sql_update = "UPDATE producto SET stock_producto = $nuevo_stock WHERE id_producto = $id_producto";
+                    
+                                if ($conn->query($sql_update) === TRUE) {
+                                    $mensaje = "Stock actualizado exitosamente.";
+                                } else {
+                                    $mensaje = "Error al actualizar el stock: " . $conn->error;
+                                }
+                            }
                         } else {
-                            echo "Error: " . $sql . "<br>" . $conn->error;
+                            $mensaje = "Error: Producto no encontrado.";
                         }
                     }
-                    ?>
-                </div>
+                ?>
+
+                <?php if ($mensaje != ''): ?>
+                    <p class="text-center"><?php echo $mensaje; ?></p>
+                <?php endif; ?>
+
+
+                <form action="modificar_stock_producto.php" method="post">
+
+                    <label for="id_producto" class="form-label">Selecciona el producto</label>
+                    <select class="form-select" name="id_producto" required>
+                        <option value="" disabled selected>Selecciona un producto</option>
+                        <?php
+                            $sqlProducto = "SELECT id_producto, nombre_producto FROM producto";
+                            $resultProducto = $conn->query($sqlProducto);
+                            while($producto = $resultProducto->fetch_assoc()) {
+                                echo "<option value='" . $producto['id_producto'] . "'>" . $producto['nombre_producto'] . "</option>";
+                            }
+                        ?>
+                    </select>
+
+                    <label for="stock" class="form-label mt-3">Cantidad a modificar (Negativo para descontar):</label>
+                    <input class="form-control" type="number" name="cantidad_modificar" required><br><br>
+
+                    <input class="form-control btn btn-primary d-block" type="submit" value="Modificar Stock">
+                    <a href="../Mantenedor_producto/mostrar_producto.php" class='btn btn-primary mt-3 d-block'>Volver</a>
+                </form>
 
             </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous"></script>
+    
 </body>
 </html>
