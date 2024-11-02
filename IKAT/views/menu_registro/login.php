@@ -19,6 +19,7 @@ if (isset($_POST['identificador'])) {
         // Verificación de la contraseña usando password_verify
         if (password_verify($contrasenia, $user['contrasenia_usuario'])) {
             $_SESSION['identificador'] = $identificador;
+            $_SESSION['id_usuario'] = $user['id_usuario'];
             $_SESSION['tipo_usuario'] = $user['tipo_usuario'];
             $_SESSION['nombre_usuario'] = $user['nombre_usuario'];
             $_SESSION['apellido_usuario'] = $user['apellido_usuario'];
