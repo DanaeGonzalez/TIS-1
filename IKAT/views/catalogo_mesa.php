@@ -8,7 +8,6 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="..\assets\css\styles.css">
-        <script src="../assets/js/filtros.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     </head>
@@ -32,20 +31,19 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form id="searchForm" onsubmit="return buscarProductos()">
+                                <form>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="buscarInput"
-                                            placeholder="Buscar productos..." aria-label="Buscar productos">
-                                        <button class="btn btn-dark" type="submit">Buscar</button>
+                                        <input type="text" class="form-control" placeholder="Buscar productos..."
+                                            aria-label="Buscar productos">
+                                        <button class="btn btn-dark" type="submit">
+                                            Buscar
+                                        </button>
                                     </div>
                                 </form>
-                                <div id="resultadosBusqueda" class="mt-3"></div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
 
                 <!-- Contenedor de la barra de búsqueda -->
                 <div class="d-none d-lg-flex justify-content-center align-items-center mt-4">
@@ -70,29 +68,29 @@
                             <h1 class="text-center mb-3">Productos</h1>
                             <hr class="mb-4">
 
-                            <!-- Filtro de Categoría -->
+                            <!-- Filtro de Subcategoría -->
                             <div class="col-auto mb-3">
                                 <div class="dropdown">
                                     <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                        id="dropdownCategory" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Categoría
+                                        id="dropdownSubcategory" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Subcategoría
                                     </button>
-                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownCategory">
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria[]" value="Mesa"> Mesa
-                                        </label>
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria[]" value="Sillas"> Sillas
-                                        </label>
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria[]" value="Camas"> Camas
-                                        </label>
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria[]" value="Sillones"> Sillones
-                                        </label>
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria[]" value="Organización"> Organización
-                                        </label>
+                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownSubcategory">
+                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
+                                                value="A">
+                                            A</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
+                                                value="B">
+                                            B</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
+                                                value="C">
+                                            C</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
+                                                value="D">
+                                            D</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
+                                                value="E">
+                                            E</label>
                                     </div>
                                 </div>
                             </div>
@@ -119,6 +117,32 @@
                                 </div>
                             </div>
 
+                            <!-- Filtro de Número de Asientos -->
+                            <div class="col-auto mb-3">
+                                <div class="dropdown">
+                                    <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
+                                        id="dropdownSeats" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Asientos
+                                    </button>
+                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownSeats">
+                                        <label class="dropdown-item"><input type="checkbox" name="asientos" value="1">
+                                            1</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="asientos" value="2">
+                                            2</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="asientos" value="3">
+                                            3</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="asientos" value="4">
+                                            4</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="asientos" value="6">
+                                            6</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="asientos" value="8">
+                                            8</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="asientos" value="10">
+                                            10</label>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Filtro de Material -->
                             <div class="col-auto mb-3">
                                 <div class="dropdown">
@@ -128,11 +152,62 @@
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownMaterial">
                                         <label class="dropdown-item"><input type="checkbox" name="material"
-                                                value="Madera"> Madera</label>
+                                                value="Madera">
+                                            Madera</label>
                                         <label class="dropdown-item"><input type="checkbox" name="material"
-                                                value="Metal"> Metal</label>
+                                                value="Metal">
+                                            Metal</label>
                                         <label class="dropdown-item"><input type="checkbox" name="material"
-                                                value="Plástico"> Plástico</label>
+                                                value="Plástico">
+                                            Plástico</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Filtro de Forma -->
+                            <div class="col-auto mb-3">
+                                <div class="dropdown">
+                                    <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
+                                        id="dropdownForma" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Forma
+                                    </button>
+                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownForma">
+                                        <label class="dropdown-item"><input type="checkbox" name="forma"
+                                                value="Cuadrada">
+                                            Cuadrada</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="forma"
+                                                value="Rectangular">
+                                            Rectangular</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="forma"
+                                                value="Circular">
+                                            Circular</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Filtro de Ambiente -->
+                            <div class="col-auto mb-3">
+                                <div class="dropdown">
+                                    <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
+                                        id="dropdownAmbiente" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Ambiente
+                                    </button>
+                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownAmbiente">
+                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
+                                                value="Cocina">
+                                            Cocina</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
+                                                value="Comedor">
+                                            Comedor</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
+                                                value="Pieza">
+                                            Pieza</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
+                                                value="Baño">
+                                            Baño</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
+                                                value="Exterior">
+                                            Exterior</label>
                                     </div>
                                 </div>
                             </div>
@@ -163,8 +238,10 @@
                 // Incluir la conexión
                 include_once '..\config\conexion.php';
 
-                // Consulta para obtener los productos activos
-                $sql = "SELECT * FROM producto WHERE activo = 1";
+                // Consulta para obtener los productos activos que sean mesas
+                $sql = "SELECT * FROM producto WHERE activo = 1  AND id_subcategoria IN 
+                (SELECT id_subcategoria FROM subcategoria JOIN categoria USING (id_categoria) 
+                WHERE nombre_categoria = 'Mesa')";
                 $result = $conn->query($sql);
 
                 // Verificar si hay resultados
@@ -317,36 +394,6 @@
             }
         </script>
 
-        <script>
-            function buscarProductos() {
-                const buscar = document.getElementById('buscarInput').value;
-                const resultadosDiv = document.getElementById('resultadosBusqueda');
-                resultadosDiv.innerHTML = 'Buscando...';
-
-                fetch(`busqueda_catalogo.php?buscar=${encodeURIComponent(buscar)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        resultadosDiv.innerHTML = ''; // Limpia resultados previos
-
-                        if (data.length > 0) {
-                            data.forEach(producto => {
-                                const item = document.createElement('div');
-                                item.classList.add('producto-item');
-                                item.innerHTML = `<strong>${producto.nombre_producto}</strong> - ${producto.precio} USD`;
-                                resultadosDiv.appendChild(item);
-                            });
-                        } else {
-                            resultadosDiv.innerHTML = 'No se encontraron productos.';
-                        }
-                    })
-                    .catch(error => {
-                        resultadosDiv.innerHTML = 'Error en la búsqueda. Intenta nuevamente.';
-                        console.error('Error en la búsqueda:', error);
-                    });
-
-                return false; // Evita el envío del formulario
-            }
-        </script>
 
 
     </body>
