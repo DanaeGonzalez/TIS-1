@@ -52,10 +52,7 @@
                                 <label class="form-label fw-bold">Número de Teléfono</label>
                                 <input type="tel" class="form-control" value="<?php echo htmlspecialchars($_SESSION['numero_usuario']);?>" required>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Dirección</label>
-                                <input type="text" class="form-control" value="<?php echo htmlspecialchars($_SESSION['direccion_usuario']);?>">
-                            </div>
+                        
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Dirección</label>
                                 <input type="text" id="direccion" class="form-control"
@@ -66,7 +63,7 @@
                             <div id="map" style="width: 100%; height: 500px;"></div>
                             <!-- Área para mostrar coordenadas -->
                             <div id="coordenadas" class="mt-3">
-                                <h5>Coordenadas (esto lo saco despues):</h5>
+                                <h5>Coordenadas (esto lo saco despues):</h5>  <!-- Estas coordenadas nos servirán para hacer el cálculo del envio-->
                                 <p id="latitud">Latitud: </p>
                                 <p id="longitud">Longitud: </p>
                             </div>

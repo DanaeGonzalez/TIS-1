@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap Sidebar </title>
+    <title>IKAT - Página de Inicio</title>
     <link rel="stylesheet" href="..\..\assets\css\styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -19,7 +19,7 @@
     <!-- Header/Navbar -->
     <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
-        <a href="..\index.php">
+        <a href="menu_supadm.php">
           <img width="180px" height="auto" src="..\..\assets\images\ikat.png" alt="Ikat">
         </a>
 
@@ -188,42 +188,42 @@
 
       <!-- Contenedor inicio -->
       <div class="container inicio mt-5">
-        <div class="row justify-content-center">
-          <div class="col-10 col-md-4 mb-4">
-            <a href="#">
-              <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg" class="img-fluid"
-                alt="Imagen 1">
-            </a>
+          <div class="row justify-content-center">
+            <div class="col-10 col-md-4 mb-4">
+              <a href="../catalogo_silla.php">
+                <img src="../../assets/images/categoria_silla.png" class="img-fluid"
+                  alt="Imagen 1">
+              </a>
+            </div>
+            <div class="col-10 col-md-4 mb-4">
+              <a href="../catalogo_mesa.php">
+                <img src="../../assets/images/categoria_mesa.png" class="img-fluid"
+                  alt="Imagen 2">
+              </a>
+            </div>
+            <div class="col-10 col-md-4 mb-4">
+              <a href="../catalogo_sillon.php">
+                <img src="../../assets/images/categoria_sillon.png" class="img-fluid"
+                  alt="Imagen 3">
+              </a>
+            </div>
           </div>
-          <div class="col-10 col-md-4 mb-4">
-            <a href="#">
-              <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg" class="img-fluid"
-                alt="Imagen 2">
-            </a>
-          </div>
-          <div class="col-10 col-md-4 mb-4">
-            <a href="#">
-              <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg" class="img-fluid"
-                alt="Imagen 3">
-            </a>
-          </div>
-        </div>
 
-        <div class="row justify-content-center">
-          <div class="col-10 col-md-4 mb-4">
-            <a href="#">
-              <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg" class="img-fluid"
-                alt="Imagen 4">
-            </a>
-          </div>
-          <div class="col-10 col-md-4 mb-5">
-            <a href="#">
-              <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg" class="img-fluid"
-                alt="Imagen 5">
-            </a>
+          <div class="row justify-content-center">
+            <div class="col-10 col-md-4 mb-4">
+              <a href="../catalogo_organizacion.php">
+                <img src="../../assets/images/categoria_organizacion.png" class="img-fluid"
+                  alt="Imagen 4">
+              </a>
+            </div>
+            <div class="col-10 col-md-4 mb-5">
+              <a href="../catalogo_cama.php">
+                <img src="../../assets/images/categoria_cama.png" class="img-fluid"
+                  alt="Imagen 5">
+              </a>
+            </div>
           </div>
         </div>
-      </div>
     </div>
 
     <!-- Footer -->

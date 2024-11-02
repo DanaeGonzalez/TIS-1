@@ -19,6 +19,7 @@ if (isset($_POST['identificador'])) {
         // Verificación de la contraseña usando password_verify
         if (password_verify($contrasenia, $user['contrasenia_usuario'])) {
             $_SESSION['identificador'] = $identificador;
+            $_SESSION['id_usuario'] = $user['id_usuario'];
             $_SESSION['tipo_usuario'] = $user['tipo_usuario'];
             $_SESSION['nombre_usuario'] = $user['nombre_usuario'];
             $_SESSION['apellido_usuario'] = $user['apellido_usuario'];
@@ -27,6 +28,7 @@ if (isset($_POST['identificador'])) {
             $_SESSION['numero_usuario'] = $user['numero_usuario'];
             $_SESSION['direccion_usuario'] = $user['direccion_usuario'];
             $_SESSION['puntos'] = $user['puntos_totales'];
+            $_SESSION['activo'] = $user['activo'];
             $_SESSION['id_carrito'] = $user['id_carrito'];
             $_SESSION['id_usuario'] = $user['id_usuario'];
 
