@@ -50,3 +50,4 @@ function handleFilterChange(event) {
 document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
     checkbox.addEventListener("change", handleFilterChange);
 });
+
