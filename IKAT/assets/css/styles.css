@@ -1,3 +1,26 @@
+body{
+  cursor: url("../../assets/images/cathand.png"),auto;
+}
+
+a.btn, a.nav-link, a.link-primary, button, [type="button"], [type="submit"] {
+  cursor: url("../../assets/images/fish_bone.png"), pointer;
+}
+
+a, button.btn{
+  cursor: url("../../assets/images/fish_bone.png"), pointer;
+}
+
+.carousel-item a, 
+.carousel-item button, 
+.carousel-item [type="button"], 
+.carousel-item [type="submit"],
+button.carousel-control-prev,
+button.carousel-control-next {
+  cursor: url("../../assets/images/fish_bone.png"), pointer !important;
+}
+
+
+
 /*NAVBAR*/
 .navbar {
   background-color: #d5d5d5;
