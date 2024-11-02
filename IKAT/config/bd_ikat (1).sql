@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-10-2024 a las 20:20:53
+-- Tiempo de generación: 02-11-2024 a las 21:15:29
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -61,6 +61,14 @@ CREATE TABLE `boleta` (
 CREATE TABLE `carrito` (
   `id_carrito` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `carrito`
+--
+
+INSERT INTO `carrito` (`id_carrito`) VALUES
+(1),
+(2);
 
 -- --------------------------------------------------------
 
@@ -137,6 +145,36 @@ CREATE TABLE `compra` (
   `id_usuario` int(100) NOT NULL,
   `id_carrito` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `control_stock`
+--
+
+CREATE TABLE `control_stock` (
+  `id_control` int(11) NOT NULL,
+  `id_producto` int(11) DEFAULT NULL,
+  `cantidad` int(11) DEFAULT NULL,
+  `motivo` enum('Ingreso','Salida') DEFAULT NULL,
+  `explicacion` text DEFAULT NULL,
+  `fecha` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `control_stock`
+--
+
+INSERT INTO `control_stock` (`id_control`, `id_producto`, `cantidad`, `motivo`, `explicacion`, `fecha`) VALUES
+(1, 3, 1, 'Ingreso', 'a', '2024-11-01 19:15:27'),
+(2, 3, 10, 'Salida', 'a', '2024-11-01 19:16:12'),
+(3, 3, 5, 'Ingreso', 'a', '2024-11-01 19:16:41'),
+(4, 3, 1, 'Ingreso', 'a', '2024-11-01 19:21:35'),
+(5, 3, 1, 'Ingreso', 'a', '2024-11-01 19:27:09'),
+(6, 3, 1, 'Ingreso', 'a', '2024-11-01 19:27:21'),
+(7, 3, 14, 'Salida', 'a', '2024-11-01 19:28:09'),
+(8, 3, 10, 'Ingreso', 'a', '2024-11-01 19:30:15'),
+(9, 3, 12, 'Ingreso', 'qweqwe', '2024-11-02 19:59:05');
 
 -- --------------------------------------------------------
 
@@ -327,7 +365,7 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`id_producto`, `nombre_producto`, `precio_unitario`, `stock_producto`, `descripcion_producto`, `foto_producto`, `cantidad_vendida`, `top_venta`, `activo`, `id_subcategoria`) VALUES
-(3, 'Cama gato', 25990, 10, 'Una linda camita para tu felino :3 miau', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/127645737_01/w=1500,h=1500,fit=pad', 0, 0, 1, NULL),
+(3, 'Cama gato', 25990, 21, 'Una linda camita para tu felino :3 miau', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/127645737_01/w=1500,h=1500,fit=pad', 0, 0, 1, NULL),
 (5, 'Mesa roble', 30990, 0, 'Una mesa de roble barnizada', 'https://www.cic.cl/dw/image/v2/BDXB_PRD/on/demandware.static/-/Sites-masterCatalog_CIC/es_CL/dw742de45c/original/images/products/mesa-centro-nuble-caramelo-110x70x40-cm-01.jpg?sw=1500&sh=1500&sm=fit', 0, 0, 1, NULL),
 (6, 'Pluma Silla de Cuero y Madera', 19990, 0, 'Una silla de madera con sillones de cuero', 'https://www.cueroydiseno.cl/wp-content/uploads/2021/04/sillapluma-scaled.jpg', 0, 0, 1, NULL),
 (7, 'cama estructural con 2 cajones MALM', 369980, 0, 'Una elegante cama de color con dos cajones en la parte de abajo', 'https://www.ikea.com/cl/es/images/products/malm-cama-estructural-con-2-cajones-negro-loenset__1101552_pe866728_s5.jpg?f=s', 0, 0, 1, NULL);
@@ -477,6 +515,13 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `run_usuario`, `correo_usuario`, `numero_usuario`, `contrasenia_usuario`, `direccion_usuario`, `tipo_usuario`, `puntos_totales`, `activo`, `ultima_sesion`, `id_carrito`) VALUES
+(2, 'camilo', 'campos', '21233765k', 'ccamposg@ing.ucsc.cl', '+56988275096', '$2y$10$vdc6IbNRDuUpqntNaj8lJeU6hU9cuGIcV9t0BGrkXZEoWmrYmlzUq', NULL, 'Superadmin', 0, 1, '2024-11-01', 2);
+
+--
 -- Índices para tablas volcadas
 --
 
@@ -526,6 +571,13 @@ ALTER TABLE `compra`
   ADD KEY `id_usuario` (`id_usuario`),
   ADD KEY `id_metodo` (`id_metodo`),
   ADD KEY `id_carrito` (`id_carrito`);
+
+--
+-- Indices de la tabla `control_stock`
+--
+ALTER TABLE `control_stock`
+  ADD PRIMARY KEY (`id_control`),
+  ADD KEY `id_producto` (`id_producto`);
 
 --
 -- Indices de la tabla `envio`
@@ -702,7 +754,7 @@ ALTER TABLE `boleta`
 -- AUTO_INCREMENT de la tabla `carrito`
 --
 ALTER TABLE `carrito`
-  MODIFY `id_carrito` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_carrito` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `categoria`
@@ -721,6 +773,12 @@ ALTER TABLE `color`
 --
 ALTER TABLE `compra`
   MODIFY `id_compra` int(100) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `control_stock`
+--
+ALTER TABLE `control_stock`
+  MODIFY `id_control` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `envio`
@@ -786,7 +844,7 @@ ALTER TABLE `oferta`
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id_producto` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_producto` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `resenia`
@@ -804,7 +862,7 @@ ALTER TABLE `subcategoria`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id_usuario` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_usuario` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
@@ -830,6 +888,12 @@ ALTER TABLE `compra`
   ADD CONSTRAINT `compra_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`),
   ADD CONSTRAINT `compra_ibfk_2` FOREIGN KEY (`id_metodo`) REFERENCES `metodo_pago` (`id_metodo`),
   ADD CONSTRAINT `compra_ibfk_3` FOREIGN KEY (`id_carrito`) REFERENCES `carrito` (`id_carrito`);
+
+--
+-- Filtros para la tabla `control_stock`
+--
+ALTER TABLE `control_stock`
+  ADD CONSTRAINT `control_stock_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `envio`
