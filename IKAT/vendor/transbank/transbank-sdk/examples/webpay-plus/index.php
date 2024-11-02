@@ -2,7 +2,7 @@
 
 require '../../../../autoload.php';
 require '../../../../../views/menu_registro/auth.php';
-include_once '../../../../../config/conexion.php';
+include '../../../../../config/conexion.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +38,7 @@ if ($action === 'create') {
     }
 
     // Crear el buyOrder basado en el id_compra
-    $buyOrder = 'buyOrder_' . $id_compra;
+    $buyOrder = $id_compra;
 
     // Crear transacción con Webpay
     $createResponse = $transaction->create(
@@ -95,20 +95,114 @@ if ($_GET['action'] === 'result') {
 
 function cancelOrder($response = null)
 {
-    // Acá has lo que tengas que hacer para marcar la orden como fallida o cancelada
+    // Marcar la orden como fallida o cancelada aquí
     if ($response) {
         echo '<pre>' . print_r($response, true) . '</pre>';
     }
-    echo 'La orden ha sido RECHAZADA';
-    echo '<br><a href="../../../../../index.php" class="btn btn-primary">Volver al Inicio</a>'; // Cambia la ruta según corresponda
+
+    echo '
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f8f9fa; font-family: Arial, sans-serif;">
+        <div style="text-align: center; padding: 40px 30px; border-radius: 15px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); max-width: 500px; background-color: #ffffff;">
+            <h1 style="color: #dc3545; font-size: 2.5em; font-weight: bold; margin-bottom: 10px;">¡Orden Rechazada!</h1>
+            
+            <p style="color: #333333; font-size: 1.2em; line-height: 1.5; margin-bottom: 25px;">
+                Lo sentimos, tu transacción no pudo ser completada. <br>
+                Por favor, intenta nuevamente o contacta a soporte si el problema persiste.
+            </p>
+            
+            <div style="background-color: #f8d7da; padding: 15px; border-radius: 10px; margin-bottom: 25px; color: #721c24; font-size: 1.1em;">
+                <p style="margin: 0;"><strong>ID de Transacción:</strong> ' . ($response ? htmlspecialchars($response->getBuyOrder()) : 'N/A') . '</p>
+                <p style="margin: 0; margin-top: 8px;"><strong>Motivo:</strong> ' . ($response ? htmlspecialchars($response->getStatus()) : 'Desconocido') . '</p>
+            </div>
+            
+            <a href="../../../../../views/menu_rol/' .
+        ($_SESSION['tipo_usuario'] === "Admin" ? "menu_adm.php" : ($_SESSION['tipo_usuario'] === "Registrado" ? "menu_reg.php" : "menu_supadm.php")) . '" 
+               class="btn" style="display: inline-block; text-decoration: none; color: #ffffff; background-color: #dc3545; padding: 12px 25px; border-radius: 5px; font-size: 1.1em; font-weight: bold; transition: background-color 0.3s; box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);">
+               Volver al Inicio
+            </a>
+        </div>
+    </div>';
 }
+
 
 function approveOrder($response)
 {
+
+    global $conn;
+    
+    // Asumiendo que tienes el ID del carrito de compras en la sesión
+    $id_carrito = $_SESSION['id_carrito'];
+
+    // Paso 1: Obtener los productos y cantidades del carrito de compras
+    $query = "SELECT id_producto, cantidad_producto FROM carrito_producto WHERE id_carrito = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $id_carrito);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Paso 2: Iterar por cada producto en el carrito y actualizar el stock y cantidad vendida
+    while ($row = $result->fetch_assoc()) {
+        $id_producto = $row['id_producto'];
+        $cantidad_comprada = $row['cantidad_producto'];
+
+        // Actualizar el stock y cantidad vendida en la tabla producto
+        $updateQuery = "
+                UPDATE producto 
+                SET stock_producto = stock_producto - ?, 
+                    cantidad_vendida = cantidad_vendida + ? 
+                WHERE id_producto = ? AND stock_producto >= ?";
+
+        $updateStmt = $conn->prepare($updateQuery);
+        $updateStmt->bind_param("iiii", $cantidad_comprada, $cantidad_comprada, $id_producto, $cantidad_comprada);
+
+        // Ejecutar la actualización y verificar que se realizó correctamente
+        if (!$updateStmt->execute()) {
+            echo "Error al actualizar el producto ID " . $id_producto . ": " . $updateStmt->error;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     // Acá has lo que tengas que hacer para marcar la orden como aprobada o finalizada
-    echo 'La orden ha sido APROBADA';
-    echo '<pre>' . print_r($response, true) . '</pre>';
-    echo '<br><a href="../../../../../index.php" class="btn btn-primary">Volver al Inicio</a>'; // Cambia la ruta según corresponda
+    echo '
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f2f5f7; font-family: Arial, sans-serif;">
+        <div style="text-align: center; padding: 40px 30px; border-radius: 15px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); max-width: 500px; background-color: #ffffff;">
+            <h1 style="color: #28a745; font-size: 2.5em; font-weight: bold; margin-bottom: 10px;">¡Compra realizada con éxito!</h1>
+            
+            <p style="color: #333333; font-size: 1.2em; line-height: 1.5; margin-bottom: 25px;">
+                Muchas gracias por tu compra, <strong>' . htmlspecialchars($_SESSION['nombre_usuario']) . '</strong>. <br>
+                Tu transacción ha sido aprobada y procesada con éxito.
+            </p>
+            
+            <div style="background-color: #e9ecef; padding: 15px; border-radius: 10px; margin-bottom: 25px; color: #555555; font-size: 1.1em;">
+                <p style="margin: 0;"><strong>ID de Transacción:</strong> ' . htmlspecialchars($response->getBuyOrder()) . '</p>
+                <p style="margin: 0; margin-top: 8px;"><strong>Total de la compra:</strong> $' . number_format($response->getAmount()) . '</p>
+            </div>
+            
+            <a href="../../../../../views/menu_rol/' .
+        ($_SESSION['tipo_usuario'] === "Admin" ? "menu_adm.php" : ($_SESSION['tipo_usuario'] === "Registrado" ? "menu_reg.php" : "menu_supadm.php")) . '" 
+               class="btn" style="display: inline-block; text-decoration: none; color: #ffffff; background-color: #007bff; padding: 12px 25px; border-radius: 5px; font-size: 1.1em; font-weight: bold; transition: background-color 0.3s; box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);">
+               Volver al Inicio
+            </a>
+        </div>
+    </div>';
+
+
+
+
+
+
+
+
 }
 
 
