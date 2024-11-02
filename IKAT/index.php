@@ -124,7 +124,7 @@
 
           <!-- Boton de busqueda -->
           <div class="explore-button">
-            <a href="views\catalogo.php" class="btn btn-dark text-white fw-medium rounded-pill" role="button">Explorar
+            <a href="views\catalogo.php" class="btn btn-dark text-white fw-medium rounded-pill" role="button" id="boton_explorar">Explorar
               productos</a>
           </div>
         </div>
@@ -272,6 +272,21 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"></script>
+
+
+      <script>
+      // Selecciona el botón de explorar productos
+        document.getElementById('boton_explorar').addEventListener('click', function(event) {
+      // Evita que el enlace redirija inmediatamente
+        event.preventDefault();
+    
+      // Muestra el mensaje de alerta
+        alert('Bienvenido a IKAT\nDebes Iniciar Sesión para poder realizar compras');
+
+      // Redirige al catálogo después de cerrar el mensaje de alerta
+        window.location.href = this.href;
+      });
+      </script>
   </body>
 
 </php>
