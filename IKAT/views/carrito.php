@@ -29,7 +29,7 @@ include 'menu_registro\auth.php';
                         <div class="list-group me-3">
                             <?php
                             include_once '..\config\conexion.php';
-                                                        
+
                             // Consulta para obtener los productos del carrito
                             $sql = "SELECT p.*, cp.cantidad_producto 
                                 FROM carrito_producto cp 
@@ -88,7 +88,12 @@ include 'menu_registro\auth.php';
                                 Total<span>$<?= number_format(floor($total), 0, '', '.') ?></span>
                             </li>
                         </ul>
-                        <a href="#" class="btn btn-dark mt-4 w-100">Continuar con el Pago</a>
+                        <form action="procesarCompra.php" method="POST">
+                            <input type="hidden" name="total" value="<?= $total ?>">
+                            <button type="submit" class="btn btn-dark mt-4 w-100">Procesar compra</button>
+                        </form>
+
+
                     </div>
 
                 </div>
