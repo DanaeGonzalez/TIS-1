@@ -46,7 +46,6 @@
                 </div>
 
 
-
                 <!-- Contenedor de la barra de búsqueda -->
                 <div class="d-none d-lg-flex justify-content-center align-items-center mt-4">
                     <div class="search-container col-lg-7 col-10">
@@ -147,8 +146,6 @@
                         </div>
                     </form> <!-- Fin del formulario -->
                 </div>
-
-
 
 
 

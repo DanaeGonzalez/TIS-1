@@ -3,11 +3,12 @@ body{
 }
 
 a.btn, a.nav-link, a.link-primary, button, [type="button"], [type="submit"] {
-  cursor: url("../../assets/images/fish_bone.png"), pointer;
+  cursor: url("../../assets/images/pointer.png"), pointer;
 }
 
-a, button.btn{
-  cursor: url("../../assets/images/fish_bone.png"), pointer;
+a, button.btn, .input-group-text,
+button.input-group-text{
+  cursor: url("../../assets/images/pointer.png"), pointer !important;
 }
 
 .carousel-item a, 
@@ -15,11 +16,15 @@ a, button.btn{
 .carousel-item [type="button"], 
 .carousel-item [type="submit"],
 button.carousel-control-prev,
-button.carousel-control-next {
-  cursor: url("../../assets/images/fish_bone.png"), pointer !important;
+button.carousel-control-next{
+  cursor: url("../../assets/images/pointer.png"), pointer !important;
 }
 
-
+.container button,
+.container .dropdown-item,
+.container input[type="checkbox"] {
+  cursor: url("../../assets/images/pointer.png"), pointer !important;
+}
 
 /*NAVBAR*/
 .navbar {
