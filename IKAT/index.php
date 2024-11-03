@@ -30,7 +30,7 @@
             </button>
 
             <!-- Botón de catálogo -->
-            <a href=" views\catalogo.php" class="btn btn-link d-lg-none p-0">
+            <a href="views\catalogo.php" class="btn btn-link d-lg-none p-0">
               <i class="bi bi-bag fs-4 text-secondary"></i>
             </a>
 
