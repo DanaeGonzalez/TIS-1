@@ -322,7 +322,7 @@
 
         <script>
             function agregarAlCarrito(productId) {
-                fetch('agregarAlCarrito.php', {
+                       fetch('../assets/php/agregarAlCarrito.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
