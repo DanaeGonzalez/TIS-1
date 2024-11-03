@@ -1,6 +1,6 @@
 <?php
 function validateCaptcha($responseKey) {
-    $secretKey = "6LdqJ28qAAAAAO9hF1_jguw5CTtBDFELmFIG6Xlj"; // clave secreta
+    $secretKey = "6LdqJ28qAAAAAO9hF1_jguw5CTtBDFELmFIG6Xlj";
     $userIP = $_SERVER['REMOTE_ADDR'];
 
     $url = "https://www.google.com/recaptcha/api/siteverify";
