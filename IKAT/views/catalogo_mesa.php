@@ -11,7 +11,10 @@
         <script src="../assets/js/filtros.js"></script>
         <script src="../assets/js/etiquetas.js"></script>
         <script src="../assets/js/carrito.js"></script>
+<<<<<<< HEAD
         <?php include '../assets/php/dropdowns.php'; ?>
+=======
+>>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier)
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     </head>
@@ -68,8 +71,12 @@
 
                 <!-- Contenedor de filtros -->
                 <div class="container mt-3">
+<<<<<<< HEAD
                     <form id="form-filtros" method="GET" action="javascript:void(0);"
                         onsubmit="return filtrarProductos()"> <!-- Añadimos el formulario -->
+=======
+                    <form id="form-filtros" method="GET" action="javascript:void(0);" onsubmit="return filtrarProductos()"> <!-- Añadimos el formulario -->
+>>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier)
                         <div class="row justify-content-center">
                             <h1 class="text-center mb-3">Productos</h1>
                             <hr class="mb-4">
@@ -82,7 +89,21 @@
                                         Subcategoría
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownSubcategory">
-                                        <?php generarDropdown('Subcategoria', 'subcategoria', 'id_subcategoria', 'nombre_subcategoria'); ?>
+                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
+                                                value="A">
+                                            A</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
+                                                value="B">
+                                            B</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
+                                                value="C">
+                                            C</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
+                                                value="D">
+                                            D</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
+                                                value="E">
+                                            E</label>
                                     </div>
                                 </div>
                             </div>
@@ -95,20 +116,16 @@
                                         Color
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownColor">
-                                        <?php generarDropdown('color', 'color', 'id_color', 'nombre_color'); ?>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Filtro de Material -->
-                            <div class="col-auto mb-3">
-                                <div class="dropdown">
-                                    <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                        id="dropdownMaterial" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Material
-                                    </button>
-                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownMaterial">
-                                        <?php generarDropdown('material', 'material', 'id_material', 'nombre_material'); ?>
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Rojo">
+                                            Rojo</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Negro">
+                                            Negro</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Blanco">
+                                            Blanco</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Gris">
+                                            Gris</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Café">
+                                            Café</label>
                                     </div>
                                 </div>
                             </div>
@@ -121,7 +138,41 @@
                                         Asientos
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownSeats">
-                                        <?php generarDropdown('N° de asientos', 'n_asientos', 'id_n_asientos', 'cantidad_asientos'); ?>
+                                        <label class="dropdown-item"><input type="checkbox" name="asientos" value="1">
+                                            1</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="asientos" value="2">
+                                            2</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="asientos" value="3">
+                                            3</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="asientos" value="4">
+                                            4</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="asientos" value="6">
+                                            6</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="asientos" value="8">
+                                            8</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="asientos" value="10">
+                                            10</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Filtro de Material -->
+                            <div class="col-auto mb-3">
+                                <div class="dropdown">
+                                    <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
+                                        id="dropdownMaterial" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Material
+                                    </button>
+                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownMaterial">
+                                        <label class="dropdown-item"><input type="checkbox" name="material"
+                                                value="Madera">
+                                            Madera</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="material"
+                                                value="Metal">
+                                            Metal</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="material"
+                                                value="Plástico">
+                                            Plástico</label>
                                     </div>
                                 </div>
                             </div>
@@ -134,7 +185,15 @@
                                         Forma
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownForma">
-                                        <?php generarDropdown('Forma', 'forma', 'id_forma', 'nombre_forma'); ?>
+                                        <label class="dropdown-item"><input type="checkbox" name="forma"
+                                                value="Cuadrada">
+                                            Cuadrada</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="forma"
+                                                value="Rectangular">
+                                            Rectangular</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="forma"
+                                                value="Circular">
+                                            Circular</label>
                                     </div>
                                 </div>
                             </div>
@@ -147,7 +206,21 @@
                                         Ambiente
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownAmbiente">
-                                        <?php generarDropdown('Ambiente', 'ambiente', 'id_ambiente', 'nombre_ambiente'); ?>
+                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
+                                                value="Cocina">
+                                            Cocina</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
+                                                value="Comedor">
+                                            Comedor</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
+                                                value="Pieza">
+                                            Pieza</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
+                                                value="Baño">
+                                            Baño</label>
+                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
+                                                value="Exterior">
+                                            Exterior</label>
                                     </div>
                                 </div>
                             </div>
@@ -175,27 +248,14 @@
                 </div>
 
                 <?php
-                // Conectar a la base de datos
-                include_once '../config/conexion.php';
+                // Incluir la conexión
+                include_once '..\config\conexion.php';
 
-                // Configuración de paginación
-                $productosPorPagina = 6; 
-                $paginaActual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
-                $offset = ($paginaActual - 1) * $productosPorPagina;
-
-                // Consulta con LIMIT y OFFSET
+                // Consulta para obtener los productos activos que sean mesas
                 $sql = "SELECT * FROM producto WHERE activo = 1  AND id_subcategoria IN 
                 (SELECT id_subcategoria FROM subcategoria JOIN categoria USING (id_categoria) 
-                WHERE nombre_categoria = 'Mesa') $productosPorPagina OFFSET $offset";
+                WHERE nombre_categoria = 'Mesa')";
                 $result = $conn->query($sql);
-
-                // Consulta para contar el total de productos activos
-                $sqlTotal = "SELECT COUNT(*) as total FROM producto WHERE activo = 1";
-                $totalProductosResult = $conn->query($sqlTotal);
-                $totalProductos = $totalProductosResult->fetch_assoc()['total'];
-
-                // Calcular el total de páginas
-                $totalPaginas = ceil($totalProductos / $productosPorPagina);
 
                 // Verificar si hay resultados
                 if ($result->num_rows > 0):
@@ -247,34 +307,16 @@
                 <!-- Paginación -->
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
-                        <?php if ($paginaActual > 1): ?>
-                            <li class="page-item">
-                                <a class="page-link" href="?pagina=<?= $paginaActual - 1 ?>">Previous</a>
-                            </li>
-                        <?php else: ?>
-                            <li class="page-item disabled">
-                                <a class="page-link">Previous</a>
-                            </li>
-                        <?php endif; ?>
-
-                        <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
-                            <li class="page-item <?= $i === $paginaActual ? 'active' : '' ?>">
-                                <a class="page-link" href="?pagina=<?= $i ?>"><?= $i ?></a>
-                            </li>
-                        <?php endfor; ?>
-
-                        <?php if ($paginaActual < $totalPaginas): ?>
-                            <li class="page-item">
-                                <a class="page-link" href="?pagina=<?= $paginaActual + 1 ?>">Next</a>
-                            </li>
-                        <?php else: ?>
-                            <li class="page-item disabled">
-                                <a class="page-link">Next</a>
-                            </li>
-                        <?php endif; ?>
+                        <li class="page-item disabled">
+                            <a class="page-link">Previous</a>
+                        </li>
+                        <li class="page-item"><a class="page-link text-black" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link text-black" href="#">2</a></li>
+                        <li class="page-item">
+                            <a class="page-link text-black" href="#">Next</a>
+                        </li>
                     </ul>
                 </nav>
-
             </div>
 
             <!-- Footer -->
@@ -282,8 +324,14 @@
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+<<<<<<< HEAD
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
             </script>
+=======
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous">
+        </script>
+>>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier)
 
     </body>
 
