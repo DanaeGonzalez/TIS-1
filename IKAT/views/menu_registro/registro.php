@@ -20,7 +20,7 @@ include '/xampp/IKAT/config/conexion.php';
 
         <div class="container-f">
             <!-- Header -->
-            <?php include '/xampp/IKAT/templates/header.php'; ?>
+            <?php include $_SERVER['DOCUMENT_ROOT'] . '/xampp/IKAT/templates/header.php';?>
 
             <!-- Main -->
             <div class="main">

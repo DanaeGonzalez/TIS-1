@@ -66,7 +66,7 @@ if (isset($_POST['identificador'])) {
 <body>
     <div class="container-f">
         <!-- Header -->
-        <?php include '/xampp/IKAT/templates/header.php'; ?>
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/xampp/IKAT/templates/header.php';?>
 
         <!-- Main -->
         <div class="container mt-4 mb-5">
