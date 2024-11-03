@@ -11,6 +11,7 @@
         <script src="../assets/js/filtros.js"></script>
         <script src="../assets/js/etiquetas.js"></script>
         <script src="../assets/js/carrito.js"></script>
+        <?php include '../assets/php/dropdowns.php'; ?>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     </head>
@@ -80,21 +81,7 @@
                                         Subcategoría
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownSubcategory">
-                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
-                                                value="A">
-                                            A</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
-                                                value="B">
-                                            B</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
-                                                value="C">
-                                            C</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
-                                                value="D">
-                                            D</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
-                                                value="E">
-                                            E</label>
+                                    <?php generarDropdown('Subcategoria', 'subcategoria', 'id_subcategoria', 'nombre_subcategoria'); ?>
                                     </div>
                                 </div>
                             </div>
@@ -107,20 +94,10 @@
                                         Color
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownColor">
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Rojo">
-                                            Rojo</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Negro">
-                                            Negro</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Blanco">
-                                            Blanco</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Gris">
-                                            Gris</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Café">
-                                            Café</label>
+                                    <?php generarDropdown('color', 'color', 'id_color', 'nombre_color'); ?>
                                     </div>
                                 </div>
                             </div>
-
 
                             <!-- Filtro de Material -->
                             <div class="col-auto mb-3">
@@ -130,15 +107,7 @@
                                         Material
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownMaterial">
-                                        <label class="dropdown-item"><input type="checkbox" name="material"
-                                                value="Madera">
-                                            Madera</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="material"
-                                                value="Metal">
-                                            Metal</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="material"
-                                                value="Plástico">
-                                            Plástico</label>
+                                    <?php generarDropdown('material', 'material', 'id_material', 'nombre_material'); ?>
                                     </div>
                                 </div>
                             </div>
@@ -151,21 +120,7 @@
                                         Ambiente
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownAmbiente">
-                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
-                                                value="Cocina">
-                                            Cocina</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
-                                                value="Comedor">
-                                            Comedor</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
-                                                value="Pieza">
-                                            Pieza</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
-                                                value="Baño">
-                                            Baño</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
-                                                value="Exterior">
-                                            Exterior</label>
+                                    <?php generarDropdown('Ambiente', 'ambiente', 'id_ambiente', 'nombre_ambiente'); ?>
                                     </div>
                                 </div>
                             </div>
