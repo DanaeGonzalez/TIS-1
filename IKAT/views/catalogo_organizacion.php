@@ -12,7 +12,10 @@
         <script src="../assets/js/etiquetas.js"></script>
         <script src="../assets/js/carrito.js"></script>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <?php include '../assets/php/dropdowns.php'; ?>
+=======
+>>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier)
 =======
 >>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier)
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -76,6 +79,9 @@
                         onsubmit="return filtrarProductos()"> <!-- Añadimos el formulario -->
 =======
                     <form id="form-filtros" method="GET" action="javascript:void(0);" onsubmit="return filtrarProductos()"> <!-- Añadimos el formulario -->
+<<<<<<< HEAD
+>>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier)
+=======
 >>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier)
                         <div class="row justify-content-center">
                             <h1 class="text-center mb-3">Productos</h1>
@@ -331,8 +337,14 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 <<<<<<< HEAD
+<<<<<<< HEAD
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
             </script>
+=======
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous">
+        </script>
+>>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier)
 =======
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous">
