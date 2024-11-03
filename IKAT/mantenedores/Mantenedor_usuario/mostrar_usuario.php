@@ -131,7 +131,7 @@ unset($_SESSION['mensaje']);
                                     <td>{$row['direccion_usuario']}</td>
                                     <td>{$row['tipo_usuario']}</td>
                                     <td>{$row['puntos_totales']}</td>
-                                    <td>{$row['activo']}</td>
+                                    <td>" . ($row["activo"] ? "Sí" : "No") . "</td>
                                     <td>   
                                         <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarUsuarioModal" . $row["id_usuario"] . "'>Editar</a> |
                                         <a href='cambiar_estado_producto.php?id=" . $row["id_usuario"] . "' class='btn btn-danger btn-sm'>Modificar estado</a>
