@@ -5,9 +5,8 @@ include '../../config/conexion.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_subcategoria = $_POST['id_subcategoria'];
     $nombre_subcategoria = $_POST['nombre_subcategoria'];
-    $id_categoria = $_POST['id_categoria'];  //Actualiza también la categoría asociada si es necesario
 
-    $sql = "UPDATE subcategoria SET nombre_subcategoria='$nombre_subcategoria', id_categoria='$id_categoria' WHERE id_subcategoria=$id_subcategoria";
+    $sql = "UPDATE subcategoria SET nombre_subcategoria='$nombre_subcategoria' WHERE id_subcategoria=$id_subcategoria";
 
     if ($conn->query($sql) === TRUE) {
         $_SESSION['mensaje'] = "Subcategoría editada exitosamente";
