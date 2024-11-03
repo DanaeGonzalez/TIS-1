@@ -103,7 +103,7 @@ unset($_SESSION['mensaje']);
                                     <td>{$row['activo']}</td>
                                     <td>   
                                         <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarUsuarioModal" . $row["id_usuario"] . "'>Editar</a> |
-                                        <a href='cambiar_estado_producto.php?id=" . $row["id_usuario"] . "' class='btn btn-danger btn-sm'>Modificar estado</a>
+                                        <a href='cambiar_estado_usuario.php?id=" . $row["id_usuario"] . "' class='btn btn-danger btn-sm'>Modificar estado</a>
                                     </td>
                                   </tr>";
 
