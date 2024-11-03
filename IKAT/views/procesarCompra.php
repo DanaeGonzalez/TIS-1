@@ -51,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
     <body>
         <div class="container-f">
+            <!-- Header -->
             <?php include '../templates/header.php'; ?>
 
             <div class="main">

@@ -3,23 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD:IKAT/config/bd_ikat.sql
-<<<<<<<< HEAD:IKAT/config/bd_ikat.sql
--- Tiempo de generación: 03-11-2024 a las 06:15:49
-========
 -- Tiempo de generación: 02-11-2024 a las 21:15:29
->>>>>>>> parent of f8a6fb3 (Merge branch 'camilo' into Danae):IKAT/config/bd_ikat (1).sql
-=======
--- Tiempo de generación: 02-11-2024 a las 21:15:29
->>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier):IKAT/config/bd_ikat (1).sql
-=======
--- Tiempo de generación: 02-11-2024 a las 21:15:29
->>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier)
-=======
--- Tiempo de generación: 02-11-2024 a las 21:15:29
->>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier)
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -381,39 +365,10 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`id_producto`, `nombre_producto`, `precio_unitario`, `stock_producto`, `descripcion_producto`, `foto_producto`, `cantidad_vendida`, `top_venta`, `activo`, `id_subcategoria`) VALUES
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD:IKAT/config/bd_ikat.sql
-<<<<<<<< HEAD:IKAT/config/bd_ikat.sql
-(3, 'Cama gato', 25990, 10, 'Una linda camita para tu felino :3 miau', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/127645737_01/w=1500,h=1500,fit=pad', 0, 0, 1, 5),
-(5, 'Mesa roble', 30990, 0, 'Una mesa de roble barnizada', 'https://www.cic.cl/dw/image/v2/BDXB_PRD/on/demandware.static/-/Sites-masterCatalog_CIC/es_CL/dw742de45c/original/images/products/mesa-centro-nuble-caramelo-110x70x40-cm-01.jpg?sw=1500&sh=1500&sm=fit', 0, 0, 1, 3),
-(6, 'Pluma Silla de Cuero y Madera', 19990, 0, 'Una silla de madera con sillones de cuero', 'https://www.cueroydiseno.cl/wp-content/uploads/2021/04/sillapluma-scaled.jpg', 0, 0, 1, 2),
-(7, 'cama estructural con 2 cajones MALM', 369980, 0, 'Una elegante cama de color con dos cajones en la parte de abajo', 'https://www.ikea.com/cl/es/images/products/malm-cama-estructural-con-2-cajones-negro-loenset__1101552_pe866728_s5.jpg?f=s', 0, 0, 1, 4),
-(8, 'Cajonera Alex', 79990, 0, 'Una cajonera muy elegante.', 'https://www.ikea.com/cl/es/images/products/alex-cajonera-negro__0977786_pe813770_s5.jpg?f=s', 0, 0, 1, 6),
-(9, 'Silla de escritorio MARKUS', 119990, 0, 'Una elegante silla de color blanco ideal para tu escritorio de trabajo.', 'https://www.ikea.com/cl/es/images/products/markus-silla-escritorio-vissle-gris-claro__1101440_pe866425_s5.jpg?f=s', 0, 0, 1, 7),
-(10, 'Clóset Rakkestad', 119990, 0, 'Sencillo y práctico. Un clóset que ofrece todas las funciones básicas. Y si te falta espacio de almacenaje, puedes añadir otro clóset de la serie RAKKESTAD.', 'https://www.ikea.com/cl/es/images/products/rakkestad-closet-con-2-puertas-negro__0780372_pe760493_s5.jpg?f=s', 0, 0, 1, 8),
-(11, 'Buffet blanco VIHALS', 159990, 0, 'Los dos cajones te permiten organizar tus cosas fácilmente, y tienes más espacio en las repisas detrás de las puertas.', 'https://www.ikea.com/cl/es/images/products/vihals-buffet-blanco__1035578_pe838113_s5.jpg?f=s', 0, 0, 1, 9);
-========
-=======
->>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier):IKAT/config/bd_ikat (1).sql
-=======
->>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier)
-=======
->>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier)
 (3, 'Cama gato', 25990, 21, 'Una linda camita para tu felino :3 miau', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/127645737_01/w=1500,h=1500,fit=pad', 0, 0, 1, NULL),
 (5, 'Mesa roble', 30990, 0, 'Una mesa de roble barnizada', 'https://www.cic.cl/dw/image/v2/BDXB_PRD/on/demandware.static/-/Sites-masterCatalog_CIC/es_CL/dw742de45c/original/images/products/mesa-centro-nuble-caramelo-110x70x40-cm-01.jpg?sw=1500&sh=1500&sm=fit', 0, 0, 1, NULL),
 (6, 'Pluma Silla de Cuero y Madera', 19990, 0, 'Una silla de madera con sillones de cuero', 'https://www.cueroydiseno.cl/wp-content/uploads/2021/04/sillapluma-scaled.jpg', 0, 0, 1, NULL),
 (7, 'cama estructural con 2 cajones MALM', 369980, 0, 'Una elegante cama de color con dos cajones en la parte de abajo', 'https://www.ikea.com/cl/es/images/products/malm-cama-estructural-con-2-cajones-negro-loenset__1101552_pe866728_s5.jpg?f=s', 0, 0, 1, NULL);
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD:IKAT/config/bd_ikat.sql
->>>>>>>> parent of f8a6fb3 (Merge branch 'camilo' into Danae):IKAT/config/bd_ikat (1).sql
-=======
->>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier):IKAT/config/bd_ikat (1).sql
-=======
->>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier)
-=======
->>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier)
 
 -- --------------------------------------------------------
 
@@ -564,23 +519,7 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `run_usuario`, `correo_usuario`, `numero_usuario`, `contrasenia_usuario`, `direccion_usuario`, `tipo_usuario`, `puntos_totales`, `activo`, `ultima_sesion`, `id_carrito`) VALUES
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD:IKAT/config/bd_ikat.sql
-<<<<<<<< HEAD:IKAT/config/bd_ikat.sql
-(1, 'Javier', 'Pino', '208460730', 'jpinoh@ing.ucsc.cl', '+56932365067', '$2y$10$FleiHYb0jPoueiI064rr1O92e30.3Ss5imRAI1yxRsqm4wEW47Qle', NULL, 'Superadmin', 0, 1, '2024-11-02', 1);
-========
 (2, 'camilo', 'campos', '21233765k', 'ccamposg@ing.ucsc.cl', '+56988275096', '$2y$10$vdc6IbNRDuUpqntNaj8lJeU6hU9cuGIcV9t0BGrkXZEoWmrYmlzUq', NULL, 'Superadmin', 0, 1, '2024-11-01', 2);
->>>>>>>> parent of f8a6fb3 (Merge branch 'camilo' into Danae):IKAT/config/bd_ikat (1).sql
-=======
-(2, 'camilo', 'campos', '21233765k', 'ccamposg@ing.ucsc.cl', '+56988275096', '$2y$10$vdc6IbNRDuUpqntNaj8lJeU6hU9cuGIcV9t0BGrkXZEoWmrYmlzUq', NULL, 'Superadmin', 0, 1, '2024-11-01', 2);
->>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier):IKAT/config/bd_ikat (1).sql
-=======
-(2, 'camilo', 'campos', '21233765k', 'ccamposg@ing.ucsc.cl', '+56988275096', '$2y$10$vdc6IbNRDuUpqntNaj8lJeU6hU9cuGIcV9t0BGrkXZEoWmrYmlzUq', NULL, 'Superadmin', 0, 1, '2024-11-01', 2);
->>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier)
-=======
-(2, 'camilo', 'campos', '21233765k', 'ccamposg@ing.ucsc.cl', '+56988275096', '$2y$10$vdc6IbNRDuUpqntNaj8lJeU6hU9cuGIcV9t0BGrkXZEoWmrYmlzUq', NULL, 'Superadmin', 0, 1, '2024-11-01', 2);
->>>>>>> parent of 3474882 (Merge pull request #20 from DanaeGonzalez/Javier)
 
 --
 -- Índices para tablas volcadas
