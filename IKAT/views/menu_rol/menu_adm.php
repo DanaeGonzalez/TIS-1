@@ -190,17 +190,17 @@
         <div class="container inicio mt-5">
           <div class="row justify-content-center text-center">
             <div class="col-10 col-md-5 col-lg-4 mb-4">
-              <a href="views/catalogo_silla.php">
+              <a href="../catalogo_silla.php">
                 <img src="../assets/images/categoria_silla.png" class="img-fluid categoria-img" alt="Imagen 1">
               </a>
             </div>
             <div class="col-10 col-md-5 col-lg-4 mb-4">
-              <a href="views/catalogo_mesa.php">
+              <a href="../catalogo_mesa.php">
                 <img src="../../assets/images/categoria_mesa.png" class="img-fluid categoria-img" alt="Imagen 2">
               </a>
             </div>
             <div class="col-10 col-md-5 col-lg-4 mb-4">
-              <a href="views/catalogo_sillon.php">
+              <a href="../catalogo_sillon.php">
                 <img src="../../assets/images/categoria_sillon.png" class="img-fluid categoria-img" alt="Imagen 3">
               </a>
             </div>
@@ -208,12 +208,12 @@
 
           <div class="row justify-content-center text-center">
             <div class="col-10 col-md-6 col-lg-6 mb-4">
-              <a href="views/catalogo_organizacion.php">
+              <a href="../catalogo_organizacion.php">
                 <img src="../../assets/images/categoria_organizacion.png" class="img-fluid categoria-img" alt="Imagen 4">
               </a>
             </div>
             <div class="col-10 col-md-6 col-lg-6 mb-5">
-              <a href="views/catalogo_cama.php">
+              <a href="../catalogo_cama.php">
                 <img src="../../assets/images/categoria_cama.png" class="img-fluid categoria-img" alt="Imagen 5">
               </a>
             </div>
