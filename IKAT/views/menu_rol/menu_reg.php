@@ -151,7 +151,7 @@
             <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg" alt="...">
             <div class="carousel-caption">
               <h5>Muebles ideales para tu hogar</h5>
-              <p>Some representative placeholder content for the first slide.</p>
+              <p>Transforma cada espacio en un rincón único y acogedor.</p>
             </div>
           </div>
           <div class="carousel-item">
@@ -160,7 +160,7 @@
               class="d-block w-100 img-fluid" alt="...">
             <div class="carousel-caption">
               <h5>Muebles ideales para tu hogar</h5>
-              <p>Some representative placeholder content for the first slide.</p>
+              <p>Transforma cada espacio en un rincón único y acogedor.</p>
             </div>
           </div>
           <div class="carousel-item">
@@ -169,7 +169,7 @@
               class="d-block w-100 img-fluid" alt="...">
             <div class="carousel-caption">
               <h5>Muebles ideales para tu hogar</h5>
-              <p>Some representative placeholder content for the first slide.</p>
+              <p>Transforma cada espacio en un rincón único y acogedor.</p>
             </div>
           </div>
         </div>
@@ -185,40 +185,35 @@
         </button>
       </div>
 
-      <!-- Contenedor inicio -->
+        <!-- Contenedor inicio -->
         <div class="container inicio mt-5">
-          <div class="row justify-content-center">
-            <div class="col-10 col-md-4 mb-4">
-              <a href="../catalogo_silla.php">
-                <img src="../../assets/images/categoria_silla.png" class="img-fluid"
-                  alt="Imagen 1">
+          <div class="row justify-content-center text-center">
+            <div class="col-10 col-md-5 col-lg-4 mb-4">
+              <a href="views/catalogo_silla.php">
+                <img src="../../assets/images/categoria_silla.png" class="img-fluid categoria-img" alt="Imagen 1">
               </a>
             </div>
-            <div class="col-10 col-md-4 mb-4">
-              <a href="../catalogo_mesa.php">
-                <img src="../../assets/images/categoria_mesa.png" class="img-fluid"
-                  alt="Imagen 2">
+            <div class="col-10 col-md-5 col-lg-4 mb-4">
+              <a href="views/catalogo_mesa.php">
+                <img src="../../assets/images/categoria_mesa.png" class="img-fluid categoria-img" alt="Imagen 2">
               </a>
             </div>
-            <div class="col-10 col-md-4 mb-4">
-              <a href="../catalogo_sillon.php">
-                <img src="../../assets/images/categoria_sillon.png" class="img-fluid"
-                  alt="Imagen 3">
+            <div class="col-10 col-md-5 col-lg-4 mb-4">
+              <a href="views/catalogo_sillon.php">
+                <img src="../../assets/images/categoria_sillon.png" class="img-fluid categoria-img" alt="Imagen 3">
               </a>
             </div>
           </div>
 
-          <div class="row justify-content-center">
-            <div class="col-10 col-md-4 mb-4">
-              <a href="../catalogo_organizacion.php">
-                <img src="../../assets/images/categoria_organizacion.png" class="img-fluid"
-                  alt="Imagen 4">
+          <div class="row justify-content-center text-center">
+            <div class="col-10 col-md-6 col-lg-6 mb-4">
+              <a href="views/catalogo_organizacion.php">
+                <img src="../../assets/images/categoria_organizacion.png" class="img-fluid categoria-img" alt="Imagen 4">
               </a>
             </div>
-            <div class="col-10 col-md-4 mb-5">
-              <a href="../catalogo_cama.php">
-                <img src="../../assets/images/categoria_cama.png" class="img-fluid"
-                  alt="Imagen 5">
+            <div class="col-10 col-md-6 col-lg-6 mb-5">
+              <a href="views/catalogo_cama.php">
+                <img src="../../assets/images/categoria_cama.png" class="img-fluid categoria-img" alt="Imagen 5">
               </a>
             </div>
           </div>
