@@ -11,6 +11,8 @@
         <script src="../assets/js/filtros.js"></script>
         <script src="../assets/js/etiquetas.js"></script>
         <script src="../assets/js/carrito.js"></script>
+        <?php include '../assets/php/dropdowns.php'; ?>
+
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     </head>
@@ -80,21 +82,7 @@
                                         Subcategoría
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownSubcategory">
-                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
-                                                value="A">
-                                            A</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
-                                                value="B">
-                                            B</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
-                                                value="C">
-                                            C</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
-                                                value="D">
-                                            D</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="subcategoría"
-                                                value="E">
-                                            E</label>
+                                        <?php generarDropdown('Subcategoria', 'subcategoria', 'id_subcategoria', 'nombre_subcategoria'); ?>
                                     </div>
                                 </div>
                             </div>
@@ -107,20 +95,10 @@
                                         Color
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownColor">
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Rojo">
-                                            Rojo</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Negro">
-                                            Negro</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Blanco">
-                                            Blanco</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Gris">
-                                            Gris</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Café">
-                                            Café</label>
+                                        <?php generarDropdown('color', 'color', 'id_color', 'nombre_color'); ?>
                                     </div>
                                 </div>
                             </div>
-
 
                             <!-- Filtro de Material -->
                             <div class="col-auto mb-3">
@@ -130,15 +108,7 @@
                                         Material
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownMaterial">
-                                        <label class="dropdown-item"><input type="checkbox" name="material"
-                                                value="Madera">
-                                            Madera</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="material"
-                                                value="Metal">
-                                            Metal</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="material"
-                                                value="Plástico">
-                                            Plástico</label>
+                                        <?php generarDropdown('material', 'material', 'id_material', 'nombre_material'); ?>
                                     </div>
                                 </div>
                             </div>
@@ -151,21 +121,7 @@
                                         Ambiente
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownAmbiente">
-                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
-                                                value="Cocina">
-                                            Cocina</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
-                                                value="Comedor">
-                                            Comedor</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
-                                                value="Pieza">
-                                            Pieza</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
-                                                value="Baño">
-                                            Baño</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="ambiente"
-                                                value="Exterior">
-                                            Exterior</label>
+                                        <?php generarDropdown('Ambiente', 'ambiente', 'id_ambiente', 'nombre_ambiente'); ?>
                                     </div>
                                 </div>
                             </div>
@@ -193,14 +149,27 @@
                 </div>
 
                 <?php
-                // Incluir la conexión
-                include_once '..\config\conexion.php';
+                // Conectar a la base de datos
+                include_once '../config/conexion.php';
 
-                // Consulta para obtener los productos activos que sean sillas
+                // Configuración de paginación
+                $productosPorPagina = 6; 
+                $paginaActual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+                $offset = ($paginaActual - 1) * $productosPorPagina;
+
+                // Consulta con LIMIT y OFFSET
                 $sql = "SELECT * FROM producto WHERE activo = 1  AND id_subcategoria IN 
                 (SELECT id_subcategoria FROM subcategoria JOIN categoria USING (id_categoria) 
-                WHERE nombre_categoria = 'Silla')";
+                WHERE nombre_categoria = 'Silla') LIMIT $productosPorPagina OFFSET $offset";
                 $result = $conn->query($sql);
+
+                // Consulta para contar el total de productos activos
+                $sqlTotal = "SELECT COUNT(*) as total FROM producto WHERE activo = 1";
+                $totalProductosResult = $conn->query($sqlTotal);
+                $totalProductos = $totalProductosResult->fetch_assoc()['total'];
+
+                // Calcular el total de páginas
+                $totalPaginas = ceil($totalProductos / $productosPorPagina);
 
                 // Verificar si hay resultados
                 if ($result->num_rows > 0):
@@ -252,16 +221,34 @@
                 <!-- Paginación -->
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item disabled">
-                            <a class="page-link">Previous</a>
-                        </li>
-                        <li class="page-item"><a class="page-link text-black" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link text-black" href="#">2</a></li>
-                        <li class="page-item">
-                            <a class="page-link text-black" href="#">Next</a>
-                        </li>
+                        <?php if ($paginaActual > 1): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?pagina=<?= $paginaActual - 1 ?>">Previous</a>
+                            </li>
+                        <?php else: ?>
+                            <li class="page-item disabled">
+                                <a class="page-link">Previous</a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
+                            <li class="page-item <?= $i === $paginaActual ? 'active' : '' ?>">
+                                <a class="page-link" href="?pagina=<?= $i ?>"><?= $i ?></a>
+                            </li>
+                        <?php endfor; ?>
+
+                        <?php if ($paginaActual < $totalPaginas): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?pagina=<?= $paginaActual + 1 ?>">Next</a>
+                            </li>
+                        <?php else: ?>
+                            <li class="page-item disabled">
+                                <a class="page-link">Next</a>
+                            </li>
+                        <?php endif; ?>
                     </ul>
                 </nav>
+
             </div>
 
             <!-- Footer -->
@@ -269,9 +256,9 @@
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous">
-        </script>
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+            </script>
+
 
     </body>
 
