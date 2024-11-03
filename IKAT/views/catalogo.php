@@ -9,6 +9,8 @@
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="..\assets\css\styles.css">
         <script src="../assets/js/filtros.js"></script>
+        <script src="../assets/js/etiquetas.js"></script>
+        <script src="../assets/js/carrito.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     </head>
@@ -34,7 +36,7 @@
                             <div class="modal-body">
                                 <form id="searchForm" onsubmit="return buscarProductos()">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="buscarInput"
+                                        <input type="text" class="form-control" id="buscarInputModal"
                                             placeholder="Buscar productos..." aria-label="Buscar productos">
                                         <button class="btn btn-dark" type="submit">Buscar</button>
                                     </div>
@@ -45,8 +47,6 @@
                     </div>
                 </div>
 
-
-
                 <!-- Contenedor de la barra de búsqueda -->
                 <div class="d-none d-lg-flex justify-content-center align-items-center mt-4">
                     <div class="search-container col-lg-7 col-10">
@@ -54,9 +54,11 @@
                             <button class="input-group-text" id="search-addon" type="button">
                                 <i class="bi bi-list"></i>
                             </button>
-                            <input type="text" class="form-control p-2" placeholder="Buscar productos..."
-                                aria-label="Buscar productos..." aria-describedby="search-addon">
-                            <button class="input-group-text" id="search-addon" type="button">
+                            <input type="text" class="form-control p-2" id="buscarInputMain"
+                                placeholder="Buscar productos..." aria-label="Buscar productos..."
+                                aria-describedby="search-addon">
+                            <button class="input-group-text" id="search-addon" type="button"
+                                onclick="buscarProductos()">
                                 <i class="bi bi-search"></i>
                             </button>
                         </div>
@@ -65,7 +67,7 @@
 
                 <!-- Contenedor de filtros -->
                 <div class="container mt-3">
-                    <form id="form-filtros" method="GET" action="javascript:void(0);"> <!-- Añadimos el formulario -->
+                    <form id="form-filtros" method="GET" action="javascript:void(0); " onsubmit="return filtrarProductos()"> <!-- Añadimos el formulario -->
                         <div class="row justify-content-center">
                             <h1 class="text-center mb-3">Productos</h1>
                             <hr class="mb-4">
@@ -91,7 +93,8 @@
                                             <input type="checkbox" name="categoria" value="Sillon"> Sillon
                                         </label>
                                         <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria" value="Almacenamiento y Organización"> Almacenamiento y Organización
+                                            <input type="checkbox" name="categoria"
+                                                value="Almacenamiento y Organización"> Almacenamiento y Organización
                                         </label>
                                     </div>
                                 </div>
@@ -147,10 +150,6 @@
                         </div>
                     </form> <!-- Fin del formulario -->
                 </div>
-
-
-
-
 
                 <!-- Contenedor de la barra de etiquetas -->
                 <div class="container mt-3">
@@ -237,119 +236,8 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous"></script>
-
-        <script src="..\assets\js\filtros.js"></script>
-
-        <script>
-            document.getElementById("form-filtros").addEventListener("submit", function (event) {
-                event.preventDefault(); // Evita el envío tradicional del formulario
-
-                const formData = new FormData(this);
-                const queryString = new URLSearchParams(formData).toString();
-
-                fetch(`../assets/php/filtros_catalogo.php?${queryString}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error("Error en la respuesta del servidor");
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        // Selecciona solo el contenedor de los productos
-                        const productContainer = document.getElementById("product-container");
-                        productContainer.innerHTML = ""; // Limpia solo el área de productos, manteniendo la barra de filtros
-
-                        if (data.length === 0) {
-                            productContainer.innerHTML = "<p>No se encontraron productos.</p>";
-                        } else {
-                            data.forEach(product => {
-                                productContainer.innerHTML += `
-                                   <div class="col-6 col-md-4 mb-4">
-                                       <a href="producto.php?id=${product.id_producto}" class="text-decoration-none">
-                                           <div class="card" style="width: 100%;">
-                                               <img src="${product.foto_producto}" class="card-img-top" alt="${product.nombre_producto}">
-                                               <div class="card-body">
-                                                   <h5 class="card-title">${product.nombre_producto}</h5>
-                                                   <h6 class="card-text">$${new Intl.NumberFormat().format(product.precio_unitario)}</h6>
-                                                   <div class="d-flex align-items-center">
-                                                       <div>
-                                                           <button type="button" class="btn btn-outline-secondary">
-                                                               <i class="bi bi-cart-plus"></i>
-                                                           </button>
-                                                           <button type="button" class="btn btn-outline-secondary">
-                                                               <i class="bi bi-heart"></i>
-                                                           </button>
-                                                       </div>
-                                                   </div>
-                                               </div>
-                                           </div>
-                                       </a>
-                                   </div>`;
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error en la solicitud AJAX:", error);
-                    });
-            });
+            crossorigin="anonymous">
         </script>
-
-
-        <script>
-            function agregarAlCarrito(productId) {
-                fetch('agregarAlCarrito.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ id_producto: productId, cantidad: 1 })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('Producto agregado al carrito!');
-                        } else {
-                            alert('Error al agregar el producto al carrito.');
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
-            }
-        </script>
-
-        <script>
-            function buscarProductos() {
-                const buscar = document.getElementById('buscarInput').value;
-                const resultadosDiv = document.getElementById('resultadosBusqueda');
-                resultadosDiv.innerHTML = 'Buscando...';
-
-                fetch(`busqueda_catalogo.php?buscar=${encodeURIComponent(buscar)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        resultadosDiv.innerHTML = ''; // Limpia resultados previos
-
-                        if (data.length > 0) {
-                            data.forEach(producto => {
-                                const item = document.createElement('div');
-                                item.classList.add('producto-item');
-                                item.innerHTML = `<strong>${producto.nombre_producto}</strong> - ${producto.precio} USD`;
-                                resultadosDiv.appendChild(item);
-                            });
-                        } else {
-                            resultadosDiv.innerHTML = 'No se encontraron productos.';
-                        }
-                    })
-                    .catch(error => {
-                        resultadosDiv.innerHTML = 'Error en la búsqueda. Intenta nuevamente.';
-                        console.error('Error en la búsqueda:', error);
-                    });
-
-                return false; // Evita el envío del formulario
-            }
-        </script>
-
 
     </body>
 
