@@ -1,4 +1,8 @@
 <?php
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+    
     header('Content-Type: application/json');
     include '../../config/conexion.php';
     // Obtener valores de los filtros de la URL (GET) o por otro método
@@ -54,6 +58,12 @@
             $productos[] = $producto;
         }
     }
+
+    if (!$result) {
+        echo json_encode(['error' => 'Error en la consulta: ' . $conn->error]);
+        exit;
+    }    
+
     echo json_encode($productos);
 
 ?>

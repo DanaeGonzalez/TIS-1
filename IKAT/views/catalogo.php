@@ -68,7 +68,7 @@
 
                 <!-- Contenedor de filtros -->
                 <div class="container mt-3">
-                    <form id="form-filtros" method="GET" action="javascript:void(0); "
+                    <form id="form-filtros" method="GET" action="javascript:void(0);"
                         onsubmit="return filtrarProductos()"> <!-- Añadimos el formulario -->
                         <div class="row justify-content-center">
                             <h1 class="text-center mb-3">Productos</h1>
@@ -239,6 +239,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
             </script>
+            
 
     </body>
 
