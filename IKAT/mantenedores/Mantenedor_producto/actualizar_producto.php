@@ -7,10 +7,9 @@
         $nombre = $_POST['nombre_producto'];
         $precio = $_POST['precio_unitario'];
         $descripcion = $_POST['descripcion_producto'];
-        $caracteristicas = $_POST['caracteristicas_producto'];
         $foto = $_POST['foto_producto'];
 
-        $sql = "UPDATE producto SET nombre_producto='$nombre', precio_unitario=$precio, descripcion_producto='$descripcion', caracteristicas_producto='$caracteristicas', foto_producto='$foto' WHERE id_producto=$id";
+        $sql = "UPDATE producto SET nombre_producto='$nombre', precio_unitario=$precio, descripcion_producto='$descripcion', foto_producto='$foto' WHERE id_producto=$id";
 
         if ($conn->query($sql) === TRUE) {
             $_SESSION['mensaje'] = "Producto actualizado exitosamente";
