@@ -68,7 +68,8 @@
 
                 <!-- Contenedor de filtros -->
                 <div class="container mt-3">
-                    <form id="form-filtros" method="GET" action="javascript:void(0);" onsubmit="return filtrarProductos()"> <!-- Añadimos el formulario -->
+                    <form id="form-filtros" method="GET" action="javascript:void(0);"
+                        onsubmit="return filtrarProductos()"> <!-- Añadimos el formulario -->
                         <div class="row justify-content-center">
                             <h1 class="text-center mb-3">Productos</h1>
                             <hr class="mb-4">
@@ -81,7 +82,7 @@
                                         Subcategoría
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownSubcategory">
-                                    <?php generarDropdown('Subcategoria', 'subcategoria', 'id_subcategoria', 'nombre_subcategoria'); ?>
+                                        <?php generarDropdown('Subcategoria', 'subcategoria', 'id_subcategoria', 'nombre_subcategoria'); ?>
                                     </div>
                                 </div>
                             </div>
@@ -94,7 +95,7 @@
                                         Color
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownColor">
-                                    <?php generarDropdown('color', 'color', 'id_color', 'nombre_color'); ?>
+                                        <?php generarDropdown('color', 'color', 'id_color', 'nombre_color'); ?>
                                     </div>
                                 </div>
                             </div>
@@ -107,7 +108,7 @@
                                         Material
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownMaterial">
-                                    <?php generarDropdown('material', 'material', 'id_material', 'nombre_material'); ?>
+                                        <?php generarDropdown('material', 'material', 'id_material', 'nombre_material'); ?>
                                     </div>
                                 </div>
                             </div>
@@ -120,7 +121,7 @@
                                         Forma
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownForma">
-                                    <?php generarDropdown('Forma', 'forma', 'id_forma', 'nombre_forma'); ?>
+                                        <?php generarDropdown('Forma', 'forma', 'id_forma', 'nombre_forma'); ?>
                                     </div>
                                 </div>
                             </div>
@@ -133,20 +134,20 @@
                                         Ambiente
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownAmbiente">
-                                    <?php generarDropdown('Ambiente', 'ambiente', 'id_ambiente', 'nombre_ambiente'); ?>
+                                        <?php generarDropdown('Ambiente', 'ambiente', 'id_ambiente', 'nombre_ambiente'); ?>
                                     </div>
                                 </div>
                             </div>
 
-                           <!-- Filtro de Número de Asientos -->
-                           <div class="col-auto mb-3">
+                            <!-- Filtro de Número de Asientos -->
+                            <div class="col-auto mb-3">
                                 <div class="dropdown">
                                     <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
                                         id="dropdownSeats" data-bs-toggle="dropdown" aria-expanded="false">
                                         Asientos
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownSeats">
-                                    <?php generarDropdown('N° de asientos', 'n_asientos', 'id_n_asientos', 'cantidad_asientos'); ?>
+                                        <?php generarDropdown('N° de asientos', 'n_asientos', 'id_n_asientos', 'cantidad_asientos'); ?>
                                     </div>
                                 </div>
                             </div>
@@ -174,14 +175,27 @@
                 </div>
 
                 <?php
-                // Incluir la conexión
-                include_once '..\config\conexion.php';
+                // Conectar a la base de datos
+                include_once '../config/conexion.php';
 
-                // Consulta para obtener los productos activos que sean sillones
+                // Configuración de paginación
+                $productosPorPagina = 6; 
+                $paginaActual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+                $offset = ($paginaActual - 1) * $productosPorPagina;
+
+                // Consulta con LIMIT y OFFSET
                 $sql = "SELECT * FROM producto WHERE activo = 1  AND id_subcategoria IN 
                 (SELECT id_subcategoria FROM subcategoria JOIN categoria USING (id_categoria) 
-                WHERE nombre_categoria = 'Sillon')";
+                WHERE nombre_categoria = 'Sillon') LIMIT $productosPorPagina OFFSET $offset";
                 $result = $conn->query($sql);
+
+                // Consulta para contar el total de productos activos
+                $sqlTotal = "SELECT COUNT(*) as total FROM producto WHERE activo = 1";
+                $totalProductosResult = $conn->query($sqlTotal);
+                $totalProductos = $totalProductosResult->fetch_assoc()['total'];
+
+                // Calcular el total de páginas
+                $totalPaginas = ceil($totalProductos / $productosPorPagina);
 
                 // Verificar si hay resultados
                 if ($result->num_rows > 0):
@@ -233,16 +247,34 @@
                 <!-- Paginación -->
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item disabled">
-                            <a class="page-link">Previous</a>
-                        </li>
-                        <li class="page-item"><a class="page-link text-black" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link text-black" href="#">2</a></li>
-                        <li class="page-item">
-                            <a class="page-link text-black" href="#">Next</a>
-                        </li>
+                        <?php if ($paginaActual > 1): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?pagina=<?= $paginaActual - 1 ?>">Previous</a>
+                            </li>
+                        <?php else: ?>
+                            <li class="page-item disabled">
+                                <a class="page-link">Previous</a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
+                            <li class="page-item <?= $i === $paginaActual ? 'active' : '' ?>">
+                                <a class="page-link" href="?pagina=<?= $i ?>"><?= $i ?></a>
+                            </li>
+                        <?php endfor; ?>
+
+                        <?php if ($paginaActual < $totalPaginas): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?pagina=<?= $paginaActual + 1 ?>">Next</a>
+                            </li>
+                        <?php else: ?>
+                            <li class="page-item disabled">
+                                <a class="page-link">Next</a>
+                            </li>
+                        <?php endif; ?>
                     </ul>
                 </nav>
+
             </div>
 
             <!-- Footer -->
@@ -250,9 +282,8 @@
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous">
-        </script>
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+            </script>
 
     </body>
 

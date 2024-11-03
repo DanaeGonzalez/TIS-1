@@ -132,12 +132,25 @@
                 </div>
 
                 <?php
-                // Incluir la conexión
-                include_once '..\config\conexion.php';
+                // Conectar a la base de datos
+                include_once '../config/conexion.php';
 
-                // Consulta para obtener los productos activos
-                $sql = "SELECT * FROM producto WHERE activo = 1";
+                // Configuración de paginación
+                $productosPorPagina = 6; 
+                $paginaActual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+                $offset = ($paginaActual - 1) * $productosPorPagina;
+
+                // Consulta con LIMIT y OFFSET
+                $sql = "SELECT * FROM producto WHERE activo = 1 LIMIT $productosPorPagina OFFSET $offset";
                 $result = $conn->query($sql);
+
+                // Consulta para contar el total de productos activos
+                $sqlTotal = "SELECT COUNT(*) as total FROM producto WHERE activo = 1";
+                $totalProductosResult = $conn->query($sqlTotal);
+                $totalProductos = $totalProductosResult->fetch_assoc()['total'];
+
+                // Calcular el total de páginas
+                $totalPaginas = ceil($totalProductos / $productosPorPagina);
 
                 // Verificar si hay resultados
                 if ($result->num_rows > 0):
@@ -189,16 +202,34 @@
                 <!-- Paginación -->
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item disabled">
-                            <a class="page-link">Previous</a>
-                        </li>
-                        <li class="page-item"><a class="page-link text-black" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link text-black" href="#">2</a></li>
-                        <li class="page-item">
-                            <a class="page-link text-black" href="#">Next</a>
-                        </li>
+                        <?php if ($paginaActual > 1): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?pagina=<?= $paginaActual - 1 ?>">Previous</a>
+                            </li>
+                        <?php else: ?>
+                            <li class="page-item disabled">
+                                <a class="page-link">Previous</a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
+                            <li class="page-item <?= $i === $paginaActual ? 'active' : '' ?>">
+                                <a class="page-link" href="?pagina=<?= $i ?>"><?= $i ?></a>
+                            </li>
+                        <?php endfor; ?>
+
+                        <?php if ($paginaActual < $totalPaginas): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?pagina=<?= $paginaActual + 1 ?>">Next</a>
+                            </li>
+                        <?php else: ?>
+                            <li class="page-item disabled">
+                                <a class="page-link">Next</a>
+                            </li>
+                        <?php endif; ?>
                     </ul>
                 </nav>
+
             </div>
 
             <!-- Footer -->
