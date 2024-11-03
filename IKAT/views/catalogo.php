@@ -67,7 +67,8 @@
 
                 <!-- Contenedor de filtros -->
                 <div class="container mt-3">
-                    <form id="form-filtros" method="GET" action="javascript:void(0); " onsubmit="return filtrarProductos()"> <!-- Añadimos el formulario -->
+                    <form id="form-filtros" method="GET" action="javascript:void(0); "
+                        onsubmit="return filtrarProductos()"> <!-- Añadimos el formulario -->
                         <div class="row justify-content-center">
                             <h1 class="text-center mb-3">Productos</h1>
                             <hr class="mb-4">
@@ -80,25 +81,30 @@
                                         Categoría
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownCategory">
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria" value="Mesa"> Mesa
-                                        </label>
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria" value="Silla"> Silla
-                                        </label>
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria" value="Cama"> Cama
-                                        </label>
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria" value="Sillon"> Sillon
-                                        </label>
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria"
-                                                value="Almacenamiento y Organización"> Almacenamiento y Organización
-                                        </label>
+                                        <?php
+                                        include_once '..\config\conexion.php';
+                                        // Comprobar si la conexión está establecida
+                                        if (!$conn) {
+                                            echo "<span class='dropdown-item text-danger'>Error de conexión</span>";
+                                        } else {
+                                            // Conexión y consulta de categorías
+                                            $sqlCategoria = "SELECT id_categoria, nombre_categoria FROM categoria";
+                                            $resultCategoria = $conn->query($sqlCategoria);
+
+                                            // Mensaje de prueba para verificar resultados
+                                            if ($resultCategoria && $resultCategoria->num_rows > 0) {
+                                                while ($categoria = $resultCategoria->fetch_assoc()) {
+                                                    echo "<label class='dropdown-item'><input type='checkbox' name='categoria[]' value='" . $categoria['id_categoria'] . "'> " . $categoria['nombre_categoria'] . "</label>";
+                                                }
+                                            } else {
+                                                echo "<span class='dropdown-item text-muted'>No hay categorías disponibles o hubo un error en la consulta</span>";
+                                            }
+                                        }
+                                        ?>
                                     </div>
                                 </div>
                             </div>
+
 
                             <!-- Filtro de Color -->
                             <div class="col-auto mb-3">
@@ -108,16 +114,26 @@
                                         Color
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownColor">
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Rojo">
-                                            Rojo</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Negro">
-                                            Negro</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Blanco">
-                                            Blanco</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Gris">
-                                            Gris</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Café">
-                                            Café</label>
+                                        <?php
+                                        include_once '..\config\conexion.php';
+                                        // Comprobar si la conexión está establecida
+                                        if (!$conn) {
+                                            echo "<span class='dropdown-item text-danger'>Error de conexión</span>";
+                                        } else {
+                                            // Conexión y consulta de categorías
+                                            $sqlColor = "SELECT id_color, nombre_color FROM color";
+                                            $resultColor = $conn->query($sqlColor);
+
+                                            // Mensaje de prueba para verificar resultados
+                                            if ($resultColor && $resultColor->num_rows > 0) {
+                                                while ($color = $resultColor->fetch_assoc()) {
+                                                    echo "<label class='dropdown-item'><input type='checkbox' name='color[]' value='" . $color['id_color'] . "'> " . $color['nombre_color'] . "</label>";
+                                                }
+                                            } else {
+                                                echo "<span class='dropdown-item text-muted'>No hay categorías disponibles o hubo un error en la consulta</span>";
+                                            }
+                                        }
+                                        ?>
                                     </div>
                                 </div>
                             </div>
@@ -235,9 +251,8 @@
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous">
-        </script>
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+            </script>
 
     </body>
 
