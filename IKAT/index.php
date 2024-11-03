@@ -35,12 +35,12 @@
             </a>
 
             <!-- Botón de lista de deseos -->
-            <a href="views\deseados.php" class="btn btn-link p-0 d-lg-none d-flex">
+            <a href="..\deseados.php" class="btn btn-link p-0 d-lg-none d-flex">
               <i class="bi bi-heart fs-4 text-secondary"></i>
             </a>
 
             <!-- Botón del carrito -->
-            <a href="views\carrito.php" class="btn btn-link p-0 d-lg-none d-flex">
+            <a href="..\carrito.php" class="btn btn-link p-0 d-lg-none d-flex">
               <i class="bi bi-cart fs-4 text-secondary"></i>
             </a>
 
@@ -57,17 +57,17 @@
               <li class="nav-item d-flex align-items-center gap-3">
 
                 <!-- Botón de catálogo -->
-                <a href="views\catalogo.php" class="btn btn-link d-none d-lg-flex p-0">
+                <a href="..\catalogo.php" class="btn btn-link d-none d-lg-flex p-0">
                   <i class="bi bi-bag fs-4 text-secondary"></i>
                 </a>
 
                 <!-- Botón de lista de deseos -->
-                <a href="views\deseados.php" class="btn btn-link p-0 d-none d-lg-flex">
+                <a href="..\deseados.php" class="btn btn-link p-0 d-none d-lg-flex">
                   <i class="bi bi-heart fs-4 text-secondary"></i>
                 </a>
 
                 <!-- Botón del carrito -->
-                <a href="views\carrito.php" class="btn btn-link p-0 d-none d-lg-flex">
+                <a href="..\carrito.php" class="btn btn-link p-0 d-none d-lg-flex">
                   <i class="bi bi-cart fs-4 text-secondary"></i>
                 </a>
                 <!-- Menú de usuario -->
@@ -124,7 +124,7 @@
 
           <!-- Boton de busqueda -->
           <div class="explore-button">
-            <a href="views\catalogo.php" class="btn btn-dark text-white fw-medium rounded-pill" role="button" id="boton_explorar">Explorar
+            <a href="views\catalogo.php" class="btn btn-dark text-white fw-medium rounded-pill" role="button">Explorar
               productos</a>
           </div>
         </div>
@@ -144,7 +144,7 @@
               <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg" alt="...">
               <div class="carousel-caption">
                 <h5>Muebles ideales para tu hogar</h5>
-                <p>Some representative placeholder content for the first slide.</p>
+                <p>Transforma cada espacio en un rincón único y acogedor.</p>
               </div>
             </div>
             <div class="carousel-item">
@@ -153,7 +153,7 @@
                 class="d-block w-100 img-fluid" alt="...">
               <div class="carousel-caption">
                 <h5>Muebles ideales para tu hogar</h5>
-                <p>Some representative placeholder content for the first slide.</p>
+                <p>Transforma cada espacio en un rincón único y acogedor.</p>
               </div>
             </div>
             <div class="carousel-item">
@@ -162,7 +162,7 @@
                 class="d-block w-100 img-fluid" alt="...">
               <div class="carousel-caption">
                 <h5>Muebles ideales para tu hogar</h5>
-                <p>Some representative placeholder content for the first slide.</p>
+                <p>Transforma cada espacio en un rincón único y acogedor.</p>
               </div>
             </div>
           </div>
@@ -180,42 +180,38 @@
 
         <!-- Contenedor inicio -->
         <div class="container inicio mt-5">
-          <div class="row justify-content-center">
-            <div class="col-10 col-md-4 mb-4">
+          <div class="row justify-content-center text-center">
+            <div class="col-10 col-md-5 col-lg-4 mb-4">
               <a href="views/catalogo_silla.php">
-                <img src="assets/images/categoria_silla.png" class="img-fluid"
-                  alt="Imagen 1">
+                <img src="assets/images/categoria_silla.png" class="img-fluid categoria-img" alt="Imagen 1">
               </a>
             </div>
-            <div class="col-10 col-md-4 mb-4">
+            <div class="col-10 col-md-5 col-lg-4 mb-4">
               <a href="views/catalogo_mesa.php">
-                <img src="assets/images/categoria_mesa.png" class="img-fluid"
-                  alt="Imagen 2">
+                <img src="assets/images/categoria_mesa.png" class="img-fluid categoria-img" alt="Imagen 2">
               </a>
             </div>
-            <div class="col-10 col-md-4 mb-4">
+            <div class="col-10 col-md-5 col-lg-4 mb-4">
               <a href="views/catalogo_sillon.php">
-                <img src="assets/images/categoria_sillon.png" class="img-fluid"
-                  alt="Imagen 3">
+                <img src="assets/images/categoria_sillon.png" class="img-fluid categoria-img" alt="Imagen 3">
               </a>
             </div>
           </div>
 
-          <div class="row justify-content-center">
-            <div class="col-10 col-md-4 mb-4">
+          <div class="row justify-content-center text-center">
+            <div class="col-10 col-md-6 col-lg-6 mb-4">
               <a href="views/catalogo_organizacion.php">
-                <img src="assets/images/categoria_organizacion.png" class="img-fluid"
-                  alt="Imagen 4">
+                <img src="assets/images/categoria_organizacion.png" class="img-fluid categoria-img" alt="Imagen 4">
               </a>
             </div>
-            <div class="col-10 col-md-4 mb-5">
+            <div class="col-10 col-md-6 col-lg-6 mb-5">
               <a href="views/catalogo_cama.php">
-                <img src="assets/images/categoria_cama.png" class="img-fluid"
-                  alt="Imagen 5">
+                <img src="assets/images/categoria_cama.png" class="img-fluid categoria-img" alt="Imagen 5">
               </a>
             </div>
           </div>
         </div>
+
       </div>
 
       <!-- Footer -->
@@ -272,21 +268,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"></script>
-
-
-      <script>
-      // Selecciona el botón de explorar productos
-        document.getElementById('boton_explorar').addEventListener('click', function(event) {
-      // Evita que el enlace redirija inmediatamente
-        event.preventDefault();
-    
-      // Muestra el mensaje de alerta
-        alert('Bienvenido a IKAT\nDebes Iniciar Sesión para poder realizar compras');
-
-      // Redirige al catálogo después de cerrar el mensaje de alerta
-        window.location.href = this.href;
-      });
-      </script>
   </body>
 
 </php>

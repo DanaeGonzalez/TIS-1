@@ -155,5 +155,19 @@ button.btn.btn-outline-dark:hover {
 }
 
 .resumen-compra {
-  max-height: 400px; /* Ajusta la altura máxima según tus necesidades */
+  max-height: 400px;
+}
+
+
+.categoria-img {
+  width: 300px;
+  height: auto;
+  transition: transform 0.2s ease-in-out;
+}
+
+.container.inicio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
