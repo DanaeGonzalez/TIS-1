@@ -67,7 +67,7 @@ session_start();
                     
                         if ($conn->query($sql) === TRUE) {
                             echo "Plazas eliminado exitosamente <br>";
-                            echo "<a href='mostrar_n_cajones.php' class='btn btn-primary mt-3 d-block'>Volver</a>";
+                            echo "<a href='mostrar_n_plazas.php' class='btn btn-primary mt-3 d-block'>Volver</a>";
                         } else {
                             echo "Error: " . $sql . "<br>" . $conn->error;
                         }

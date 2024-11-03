@@ -120,7 +120,6 @@ unset($_SESSION['mensaje']);
                     } else {
                         echo "<p class='text-center'>No hay cajones registrados.</p>";
                         echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarNcajonesModal'>Agregar N°Cajones</a>";
-                        echo "<a href='../menu/menu.html' class='btn btn-primary mt-3 d-block'>Volver al menú</a>";
                     }
                 ?>
             </div>
