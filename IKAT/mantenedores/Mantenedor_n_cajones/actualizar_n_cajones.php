@@ -6,7 +6,7 @@
         $id_n_cajones = $_POST['id_n_cajones'];
         $cantidad_cajones = $_POST['cantidad_cajones'];
 
-        $sql = "UPDATE n_asientos SET cantidad_cajones='$cantidad_cajones' WHERE id_n_cajones= $id_n_cajones";
+        $sql = "UPDATE n_cajones SET cantidad_cajones='$cantidad_cajones' WHERE id_n_cajones= $id_n_cajones";
 
         if ($conn->query($sql) === TRUE) {
             $_SESSION['mensaje'] = "Cajones editados exitosamente";
