@@ -1,6 +1,6 @@
 <?php
 include '../../config/conexion.php'; // Cambia la ruta si es necesario
-
+header('Content-Type: application/json');
 // Verifica si se ha enviado una búsqueda
 if (isset($_GET['buscar'])) {
     $buscar = $_GET['buscar'];
@@ -14,9 +14,15 @@ if (isset($_GET['buscar'])) {
     $result = $stmt->get_result();
 
     $productos = [];
-    while ($producto = $result->fetch_assoc()) {
-        $productos[] = $producto;
+
+    if ($result->num_rows > 0) {
+        while ($producto = $result->fetch_assoc()) {
+            $productos[] = $producto;
+        }
+        echo json_encode($productos);
+    } else {
+        echo json_encode(["error" => "No se encontraron productos."]);
     }
-    echo json_encode($productos);
+    
 }
 ?>
