@@ -18,7 +18,6 @@ include 'menu_registro\auth.php';
 <body>
 
     <div class="container-f">
-        <!-- Header -->
         <?php include '../templates/header.php'; ?>
 
         <div class="main">
@@ -38,7 +37,7 @@ include 'menu_registro\auth.php';
                                 WHERE cp.id_carrito = ?";
 
                             $stmt = $conn->prepare($sql);
-                            $stmt->bind_param("i", $_SESSION['id_carrito']);
+                            $stmt->bind_param("i", $_SESSION['id_carrito']); // Bind del id_carrito como entero
                             $stmt->execute();
                             $result = $stmt->get_result();
 
@@ -47,7 +46,7 @@ include 'menu_registro\auth.php';
                             // Mostrar productos en el carrito
                             while ($row = $result->fetch_assoc()) {
                                 $subtotal = $row['precio_unitario'] * $row['cantidad_producto'];
-                                $total += $subtotal;
+                                $total += $subtotal; //envio + impuesto falta
                             
                                 echo "<div class='list-group-item d-flex justify-content-between align-items-center bg-light border mb-4 rounded shadow-sm p-3'>";
                                 echo "<div class='d-flex align-items-center'>";
@@ -98,7 +97,7 @@ include 'menu_registro\auth.php';
                     </div>
 
                 </div>
-                <form id="eliminar-form" method="POST" action="..\assets\php\eliminarProducto_carrito.php">
+                <form id="eliminar-form" method="POST" action="eliminarProducto_carrito.php">
                     <div class="row">
                         <div class="col-12 col-md-8">
                             <button type="submit" class="btn btn-dark mb-4 w-100">Eliminar producto</button>
@@ -122,13 +121,13 @@ include 'menu_registro\auth.php';
 
     <script>
         document.getElementById('eliminar-form').addEventListener('submit', function (e) {
-            e.preventDefault();
+            e.preventDefault(); // Evita el envío del formulario por defecto
 
             const selectedProducts = [];
             const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
 
             checkboxes.forEach(checkbox => {
-                const productId = checkbox.id.replace('checkbox', '');
+                const productId = checkbox.id.replace('checkbox', ''); // Obtiene el ID del producto
                 selectedProducts.push(productId);
             });
 
@@ -136,11 +135,11 @@ include 'menu_registro\auth.php';
                 // Crea un campo oculto para enviar los IDs de los productos
                 const input = document.createElement('input');
                 input.type = 'hidden';
-                input.name = 'product_ids';
-                input.value = JSON.stringify(selectedProducts); 
+                input.name = 'product_ids'; // Nombre del campo en el servidor
+                input.value = JSON.stringify(selectedProducts); // Convierte el array a JSON
 
-                this.appendChild(input);
-                this.submit();
+                this.appendChild(input); // Agrega el campo al formulario
+                this.submit(); // Envía el formulario
             } else {
                 alert('Por favor, selecciona al menos un producto para eliminar.');
             }

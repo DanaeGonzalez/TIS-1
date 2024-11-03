@@ -14,7 +14,7 @@
     <body>
 
         <div class="container-f">
-            <!-- Header -->
+            <!-- Header/Navbar -->
             <?php include '../templates/header.php'; ?>
 
 
@@ -169,7 +169,7 @@
                 // Obtén el valor de la cantidad desde el input
                 const cantidad = document.getElementById('cantidadInput').value;
 
-                       fetch('../assets/php/agregarAlCarrito.php', {
+                fetch('agregarAlCarrito.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

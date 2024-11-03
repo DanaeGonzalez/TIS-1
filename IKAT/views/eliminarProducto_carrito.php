@@ -1,6 +1,6 @@
 <?php
-include_once '../../config/conexion.php';
-include '../../views/menu_registro/auth.php';
+include_once '../config/conexion.php';
+include 'menu_registro/auth.php';
 
 session_start(); // Inicia o reanuda la sesión
 
@@ -40,6 +40,6 @@ if (isset($_POST['product_ids'])) {
 $conn->close();
 
 // Redirige de vuelta al carrito de compras
-header('Location: ../../views/carrito.php');
+header('Location: carrito.php');
 exit();
 ?>

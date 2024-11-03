@@ -7,7 +7,7 @@
                 <div class="col-md-9 col-12">
                     Regístrate y disfruta de la experiencia completa de IKAT.
                     <div class="text-center">
-                        <a href="/xampp/IKAT/views/menu_registro/registro.php"
+                        <a href="..\views\registro.php"
                             class="btn btn-light border-dark btn-sm mt-3 text-black text-decoration-none">
                             Registrarme
                         </a>
