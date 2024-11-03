@@ -30,17 +30,17 @@
             </button>
 
             <!-- Botón de catálogo -->
-            <a href="views\catalogo.php" class="btn btn-link d-lg-none p-0">
+            <a href=" views\catalogo.php" class="btn btn-link d-lg-none p-0">
               <i class="bi bi-bag fs-4 text-secondary"></i>
             </a>
 
             <!-- Botón de lista de deseos -->
-            <a href="..\deseados.php" class="btn btn-link p-0 d-lg-none d-flex">
+            <a href="views\deseados.php" class="btn btn-link p-0 d-lg-none d-flex">
               <i class="bi bi-heart fs-4 text-secondary"></i>
             </a>
 
             <!-- Botón del carrito -->
-            <a href="..\carrito.php" class="btn btn-link p-0 d-lg-none d-flex">
+            <a href="views\carrito.php" class="btn btn-link p-0 d-lg-none d-flex">
               <i class="bi bi-cart fs-4 text-secondary"></i>
             </a>
 
@@ -57,17 +57,17 @@
               <li class="nav-item d-flex align-items-center gap-3">
 
                 <!-- Botón de catálogo -->
-                <a href="..\catalogo.php" class="btn btn-link d-none d-lg-flex p-0">
+                <a href="views\catalogo.php" class="btn btn-link d-none d-lg-flex p-0">
                   <i class="bi bi-bag fs-4 text-secondary"></i>
                 </a>
 
                 <!-- Botón de lista de deseos -->
-                <a href="..\deseados.php" class="btn btn-link p-0 d-none d-lg-flex">
+                <a href="views\deseados.php" class="btn btn-link p-0 d-none d-lg-flex">
                   <i class="bi bi-heart fs-4 text-secondary"></i>
                 </a>
 
                 <!-- Botón del carrito -->
-                <a href="..\carrito.php" class="btn btn-link p-0 d-none d-lg-flex">
+                <a href="views\carrito.php" class="btn btn-link p-0 d-none d-lg-flex">
                   <i class="bi bi-cart fs-4 text-secondary"></i>
                 </a>
                 <!-- Menú de usuario -->
@@ -124,7 +124,7 @@
 
           <!-- Boton de busqueda -->
           <div class="explore-button">
-            <a href="views\catalogo.php" class="btn btn-dark text-white fw-medium rounded-pill" role="button">Explorar
+            <a href="views\catalogo.php" class="btn btn-dark text-white fw-medium rounded-pill" role="button" id="boton_explorar">Explorar
               productos</a>
           </div>
         </div>
@@ -272,6 +272,21 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"></script>
+
+
+      <script>
+      // Selecciona el botón de explorar productos
+        document.getElementById('boton_explorar').addEventListener('click', function(event) {
+      // Evita que el enlace redirija inmediatamente
+        event.preventDefault();
+    
+      // Muestra el mensaje de alerta
+        alert('Bienvenido a IKAT\nDebes Iniciar Sesión para poder realizar compras');
+
+      // Redirige al catálogo después de cerrar el mensaje de alerta
+        window.location.href = this.href;
+      });
+      </script>
   </body>
 
 </php>

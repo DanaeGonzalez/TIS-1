@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 
 if (!isset($_SESSION['identificador']) || !isset($_SESSION['tipo_usuario'])) {
-header("Location: login.php");
+header("Location: menu_registro/login.php");
 exit();
 }
 
