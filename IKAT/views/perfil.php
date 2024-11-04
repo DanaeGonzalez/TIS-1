@@ -18,7 +18,7 @@
 
     <body>
         <div class="container-f">
-            <!-- Header/Navbar -->
+            <!-- Header -->
             <?php include '../templates/header.php'; ?>
 
             <!-- Sección Perfil del Usuario -->
