@@ -65,12 +65,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                             <form method="POST" action="procesarCompra.php">
                                 <!-- Campo oculto para enviar el total de la compra -->
                                 <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
+                                <!-- Campo oculto para enviar el valor de envío -->
+                                <input type="hidden" id="valorEnvioHidden" name="valor_envio" value="0">
 
-                                <!-- Dirección de Envío -->
+                                <!-- Campo de Dirección -->
                                 <div class="mb-3">
-                                    <label for="direccion_pedido" class="form-label ">Dirección de Envío</label>
-                                    <input type="text" class="form-control" id="direccion_pedido" name="direccion_pedido"
-                                        required>
+                                    <label class="form-label fw-bold">Dirección</label>
+                                    <input type="text" id="direccion" name="direccion_pedido" class="form-control"
+                                        placeholder="Ingresa tu dirección" required>
+                                    <button type="button" onclick="buscarDireccion()" class="btn btn-primary mt-2">Buscar en
+                                        el Mapa</button>
                                 </div>
 
                                 <!-- Mapa -->
@@ -99,7 +103,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                     <button type="submit" class="btn btn-dark w-100 mt-3 mb-4">Continuar con el
                                         pago</button>
                                 </form>
-
                             </form>
                         </div>
 
