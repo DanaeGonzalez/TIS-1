@@ -158,12 +158,6 @@
                 </div>
 
                 <?php
-                if (isset($_SESSION['id_carrito'])) {
-                    echo "ID del carrito: " . $_SESSION['id_carrito'];
-                } else {
-                    echo "El carrito no está inicializado en la sesión" . $_SESSION['identificador'];
-                }
-
                 $conn->close();
                 ?>
 
