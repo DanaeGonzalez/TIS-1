@@ -8,11 +8,8 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="..\assets\css\styles.css">
-<<<<<<< HEAD
         <script src="../assets/js/filtros.js"></script>
         <script src="../assets/js/etiquetas.js"></script>
-=======
->>>>>>> parent of 66013ba (borre todo)
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     </head>
@@ -36,7 +33,6 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-<<<<<<< HEAD
                                 <form id="searchForm" onsubmit="return buscarProductos()">
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="buscarInputModal"
@@ -45,17 +41,6 @@
                                     </div>
                                 </form>
                                 <div id="resultadosBusqueda" class="mt-3"></div>
-=======
-                                <form>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Buscar productos..."
-                                            aria-label="Buscar productos">
-                                        <button class="btn btn-dark" type="submit">
-                                            Buscar
-                                        </button>
-                                    </div>
-                                </form>
->>>>>>> parent of 66013ba (borre todo)
                             </div>
                         </div>
                     </div>
@@ -68,17 +53,11 @@
                             <button class="input-group-text" id="search-addon" type="button">
                                 <i class="bi bi-list"></i>
                             </button>
-<<<<<<< HEAD
                             <input type="text" class="form-control p-2" id="buscarInputMain"
                                 placeholder="Buscar productos..." aria-label="Buscar productos..."
                                 aria-describedby="search-addon">
                             <button class="input-group-text" id="search-addon" type="button"
                                 onclick="buscarProductos()">
-=======
-                            <input type="text" class="form-control p-2" placeholder="Buscar productos..."
-                                aria-label="Buscar productos..." aria-describedby="search-addon">
-                            <button class="input-group-text" id="search-addon" type="button">
->>>>>>> parent of 66013ba (borre todo)
                                 <i class="bi bi-search"></i>
                             </button>
                         </div>
@@ -87,12 +66,8 @@
 
                 <!-- Contenedor de filtros -->
                 <div class="container mt-3">
-<<<<<<< HEAD
                     <form id="form-filtros" method="GET" action="javascript:void(0); "
                         onsubmit="return filtrarProductos()"> <!-- Añadimos el formulario -->
-=======
-                    <form id="form-filtros" method="GET" action="javascript:void(0);"> <!-- Añadimos el formulario -->
->>>>>>> parent of 66013ba (borre todo)
                         <div class="row justify-content-center">
                             <h1 class="text-center mb-3">Productos</h1>
                             <hr class="mb-4">
@@ -118,12 +93,8 @@
                                             <input type="checkbox" name="categoria" value="Sillon"> Sillon
                                         </label>
                                         <label class="dropdown-item">
-<<<<<<< HEAD
                                             <input type="checkbox" name="categoria"
-                                                value="Almacenamiento y Organización"> Almacenamiento y Organización
-=======
-                                            <input type="checkbox" name="categoria" value="Almacenamiento y Organización"> Almacenamiento y Organización
->>>>>>> parent of 66013ba (borre todo)
+                                                value="Almacenamiento  y Organización"> Almacenamiento  y Organización
                                         </label>
                                     </div>
                                 </div>
@@ -180,13 +151,6 @@
                     </form> <!-- Fin del formulario -->
                 </div>
 
-<<<<<<< HEAD
-=======
-
-
-
-
->>>>>>> parent of 66013ba (borre todo)
                 <!-- Contenedor de la barra de etiquetas -->
                 <div class="container mt-3">
                     <div class="row">
@@ -271,78 +235,12 @@
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-<<<<<<< HEAD
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
             </script>
 
         <script>
             function agregarAlCarrito(productId) {
                 fetch('../assets/php/agregaralCarrito.php', {
-=======
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous"></script>
-
-        <script src="..\assets\js\filtros.js"></script>
-
-        <script>
-           document.getElementById("form-filtros").addEventListener("submit", function(event) {
-               event.preventDefault(); // Evita el envío tradicional del formulario
-        
-               const formData = new FormData(this);
-               const queryString = new URLSearchParams(formData).toString();
-        
-               fetch(`../assets/php/filtros_catalogo.php?${queryString}`)
-                   .then(response => {
-                       if (!response.ok) {
-                           throw new Error("Error en la respuesta del servidor");
-                       }
-                       return response.json();
-                   })
-                   .then(data => {
-                       // Selecciona solo el contenedor de los productos
-                       const productContainer = document.getElementById("product-container");
-                       productContainer.innerHTML = ""; // Limpia solo el área de productos, manteniendo la barra de filtros
-                
-                       if (data.length === 0) {
-                           productContainer.innerHTML = "<p>No se encontraron productos.</p>";
-                       } else {
-                           data.forEach(product => {
-                               productContainer.innerHTML += `
-                                   <div class="col-6 col-md-4 mb-4">
-                                       <a href="producto.php?id=${product.id_producto}" class="text-decoration-none">
-                                           <div class="card" style="width: 100%;">
-                                               <img src="${product.foto_producto}" class="card-img-top" alt="${product.nombre_producto}">
-                                               <div class="card-body">
-                                                   <h5 class="card-title">${product.nombre_producto}</h5>
-                                                   <h6 class="card-text">$${new Intl.NumberFormat().format(product.precio_unitario)}</h6>
-                                                   <div class="d-flex align-items-center">
-                                                       <div>
-                                                           <button type="button" class="btn btn-outline-secondary">
-                                                               <i class="bi bi-cart-plus"></i>
-                                                           </button>
-                                                           <button type="button" class="btn btn-outline-secondary">
-                                                               <i class="bi bi-heart"></i>
-                                                           </button>
-                                                       </div>
-                                                   </div>
-                                               </div>
-                                           </div>
-                                       </a>
-                                   </div>`;
-                           });
-                       }
-                   })
-                   .catch(error => {
-                       console.error("Error en la solicitud AJAX:", error);
-                   });
-           });
-        </script>
-
-
-        <script>
-            function agregarAlCarrito(productId) {
-                fetch('agregarAlCarrito.php', {
->>>>>>> parent of 66013ba (borre todo)
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -363,11 +261,6 @@
             }
         </script>
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> parent of 66013ba (borre todo)
     </body>
 
 </php>
