@@ -102,7 +102,6 @@ unset($_SESSION['mensaje']);
                     } else {
                         echo "<p class='text-center'>No hay productos en top ventas.</p>";
                         echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarTopVentasModal'>Agregar top ventas</a>";
-                        echo "<a href='../menu/menu.html' class='btn btn-primary mt-3 d-block'>Volver al menú</a>";
                     }
                 ?>
             </div>
@@ -119,14 +118,20 @@ unset($_SESSION['mensaje']);
 
                         <form action="agregar_top_ventas.php" method="post">
 
-                            <label>Agregar producto a top ventas ingresando el ID:</label>
+                            <label>Agregar producto a top ventas:</label>
 
-                            <input class="form-control" type="number" name="id_producto" required>
+                            <select class="form-select" name="id_producto" required>
+                            <option value="" disabled selected>Selecciona un producto</option>
+                            <?php
+                                $sqlProducto = "SELECT id_producto, nombre_producto FROM producto";
+                                $resultProducto = $conn->query($sqlProducto);
+                                while($producto = $resultProducto->fetch_assoc()) {
+                                    echo "<option value='" . $producto['id_producto'] . "'>" . $producto['nombre_producto'] . "</option>";
+                                }
+                            ?>
+                        </select>
 
                             <input class="form-control btn btn-primary d-block mt-4" type="submit" value="Agregar">
-
-                            <a href="mostrar_top_ventas.php" class='btn btn-primary mt-3 d-block'>Volver</a>
-
                         </form>
                     </div>
                 </div>
