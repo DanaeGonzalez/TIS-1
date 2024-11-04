@@ -30,7 +30,7 @@ if (isset($_POST['identificador'])) {
             $_SESSION['puntos'] = $user['puntos_totales'];
             $_SESSION['activo'] = $user['activo'];
             $_SESSION['id_carrito'] = $user['id_carrito'];
-
+            $_SESSION['id_usuario'] = $user['id_usuario'];
 
             // Redireccionar según el tipo de usuario
             if ($_SESSION['tipo_usuario'] == 'Registrado') {

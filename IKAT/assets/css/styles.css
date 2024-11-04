@@ -1,3 +1,31 @@
+body{
+  cursor: url("../../assets/images/cathand.png"),auto;
+}
+
+a.btn, a.nav-link, a.link-primary, button, [type="button"], [type="submit"] {
+  cursor: url("../../assets/images/pointer.png"), pointer;
+}
+
+a, button.btn, .input-group-text,
+button.input-group-text{
+  cursor: url("../../assets/images/pointer.png"), pointer !important;
+}
+
+.carousel-item a, 
+.carousel-item button, 
+.carousel-item [type="button"], 
+.carousel-item [type="submit"],
+button.carousel-control-prev,
+button.carousel-control-next{
+  cursor: url("../../assets/images/pointer.png"), pointer !important;
+}
+
+.container button,
+.container .dropdown-item,
+.container input[type="checkbox"] {
+  cursor: url("../../assets/images/pointer.png"), pointer !important;
+}
+
 /*NAVBAR*/
 .navbar {
   background-color: #d5d5d5;
@@ -127,5 +155,19 @@ button.btn.btn-outline-dark:hover {
 }
 
 .resumen-compra {
-  max-height: 400px; /* Ajusta la altura máxima según tus necesidades */
+  max-height: 400px;
+}
+
+
+.categoria-img {
+  width: 300px;
+  height: auto;
+  transition: transform 0.2s ease-in-out;
+}
+
+.container.inicio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
