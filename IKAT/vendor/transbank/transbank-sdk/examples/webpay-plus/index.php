@@ -26,7 +26,7 @@ if (!$action) {
 
 if ($action === 'create') {
     // Consulta para obtener el `id_compra` y `total_compra` desde la tabla `compra`
-    $query = "SELECT id_compra, total_compra FROM compra WHERE id_usuario = $id_usuario ORDER BY fecha_compra DESC LIMIT 1";
+    $query = "SELECT id_compra, total_compra FROM compra WHERE id_usuario = $id_usuario ORDER BY id_compra DESC LIMIT 1";
     $result = $conn->query($query);
 
     if ($result && $result->num_rows > 0) {
