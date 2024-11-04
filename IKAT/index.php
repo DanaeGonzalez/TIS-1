@@ -62,12 +62,12 @@
                 </a>
 
                 <!-- Botón de lista de deseos -->
-                <a href="..\deseados.php" class="btn btn-link p-0 d-none d-lg-flex">
+                <a href="/xampp/TIS-1/IKAT/views/deseados.php" class="btn btn-link p-0 d-none d-lg-flex">
                   <i class="bi bi-heart fs-4 text-secondary"></i>
                 </a>
 
                 <!-- Botón del carrito -->
-                <a href="..\carrito.php" class="btn btn-link p-0 d-none d-lg-flex">
+                <a href="./xampp/TIS-1/IKAT/views/carrito.php" class="btn btn-link p-0 d-none d-lg-flex">
                   <i class="bi bi-cart fs-4 text-secondary"></i>
                 </a>
                 <!-- Menú de usuario -->
