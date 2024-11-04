@@ -65,13 +65,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                             <form method="POST" action="procesarCompra.php">
                                 <!-- Campo oculto para enviar el total de la compra -->
                                 <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
-
-                                <!-- Dirección de Envío -->
-                                <div class="mb-3">
-                                    <label for="direccion_pedido" class="form-label ">Dirección de Envío</label>
-                                    <input type="text" class="form-control" id="direccion_pedido" name="direccion_pedido"
-                                        required>
-                                </div>
+                            
+                                <!-- Campo oculto para el subtotal original -->
+                                <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
+                                <!-- Campo de Dirección -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Dirección</label>
+                                <input type="text" id="direccion" name="direccion_pedido" class="form-control" placeholder="Ingresa tu dirección" required>
+                                <button type="button" onclick="buscarDireccion()" class="btn btn-primary mt-2">Buscar en el Mapa</button>
+                            </div>
 
                                 <!-- Mapa -->
                                 <div id="map" style="width: 100%; height: 300px;"></div>
@@ -133,9 +135,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
             <?php include '../templates/footer.php'; ?>
         </div>
-
+        <?php
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_POST['id_metodo'], $_POST['total_calculado'])) {
+            // Capturar datos del formulario
+            $id_usuario = $_SESSION['id_usuario'];
+            $id_carrito = $_SESSION['id_carrito'];
+            $direccion_pedido = $_POST['direccion_pedido'];
+            $id_metodo = $_POST['id_metodo'];
+            $total_compra = $_POST['total_calculado']; // Usa el total calculado
+            $fecha_compra = date('Y-m-d H:i:s'); // Fecha actual
+            $puntos_ganados = $total_compra * 0.1; // (10% del total)
+        
+            // Insertar en la base de datos
+            $query = "INSERT INTO compra (id_compra, fecha_compra, total_compra, puntos_ganados, tipo_estado, direccion_pedido, id_metodo, id_usuario, id_carrito) 
+                      VALUES (NULL, '$fecha_compra', '$total_compra', '$puntos_ganados', '', '$direccion_pedido', '$id_metodo', '$id_usuario', '$id_carrito')";
+        
+            if ($conn->query($query) === TRUE) {
+                echo "Compra registrada exitosamente.";
+                header("Location: https://localhost/xampp/TIS-1/IKAT/vendor/transbank/transbank-sdk/examples/webpay-plus/index.php?action=create");
+                exit;
+            } else {
+                echo "Error: " . $query . "<br>" . $conn->error;
+            }
+        }
+        ?>        
         <?php $conn->close();
-} ?>
+    }      ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -231,16 +256,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
 
         function calcularTotal() {
-            const subtotal = parseFloat('<?= number_format(floor($total), 0, '', '.') ?>'.replace(/\./g, '').replace('$', '')); // Obtiene el subtotal desde PHP
-            const impuestos = 0;
-            const totalFinal = subtotal + costoEnvio + impuestos;
+    const subtotal = parseFloat('<?= number_format(floor($total), 0, '', '.') ?>'.replace(/\./g, '').replace('$', '')); // Obtiene el subtotal desde PHP
+    const impuestos = 0; 
+    const totalFinal = subtotal + costoEnvio + impuestos;
 
-            // Actualiza el total 
-            const totalElement = document.querySelector('.resumen-compra .list-group-item:last-child span');
-            if (totalElement) {
-                totalElement.textContent = `$ ${totalFinal.toLocaleString('es-CL')}`; // Formato para total
-            }
-        }
+    // Actualiza el total 
+    const totalElement = document.querySelector('.resumen-compra .list-group-item:last-child span');
+    if (totalElement) {
+        totalElement.textContent = `$ ${totalFinal.toLocaleString('es-CL')}`; // Formato para total
+    }
+
+    // Guarda el total calculado 
+    const totalInput = document.getElementById('total_calculado');
+    if (totalInput) {
+        totalInput.value = totalFinal;
+    }
+}
+
 
     </script>
 </body>
