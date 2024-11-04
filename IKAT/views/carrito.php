@@ -18,7 +18,6 @@ include 'menu_registro\auth.php';
 <body>
 
     <div class="container-f">
-        <!-- Header -->
         <?php include '../templates/header.php'; ?>
 
         <div class="main">

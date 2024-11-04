@@ -192,8 +192,40 @@
         <link rel="stylesheet" href="..\..\assets\css\styles.css">
     </head>
     <body>
-        <!-- Header -->
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/xampp/IKAT/templates/header.php';?>
+        <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <button class="btn btn-outline border d-lg-none" type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle sidebar">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <img width="180px" height="auto" src="../ikat.png" alt="">
+
+            <button class="navbar-toggler border" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Inicio</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg" 
+                                alt="User Image" class="user-avatar me-2"> 
+                            Usuario
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="../../views/perfil.php">Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="#">Configuraciones</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="../../views/menu_registro/logout.php">Cerrar Sesión</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
         <div class="d-flex">
             <div id="sidebar" class="collapse d-lg-block">
@@ -561,6 +593,7 @@
                                 echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarProductoModal'>Agregar Producto</a>";
                                 echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#modificarProductoStockModal'>Modificar Stock</a>";
                                 echo "<a href='../Mantenedor_ofertas/mostrar_ofertas.php' class='btn btn-primary mt-3 d-block'>Mantenedor Ofertas</a>";
+                                echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#historialProductoModal'>Ver Historial de Producto</a>";
                             } else {
                                 echo "<p class='text-center'>No hay productos registrados.</p>";
                                 echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarProductoModal'>Agregar Producto</a>";
@@ -609,7 +642,6 @@
 
                     <form action="actualizar_stock.php" method="POST">
 
-                        <!-- ID del Producto -->
                         <div class="mb-3">
                             <label for="id_producto" class="form-label">Selecciona el producto</label>
                             <select class="form-select" name="id_producto" required>
@@ -620,13 +652,11 @@
                             </select>
                         </div>
 
-                        <!-- Cantidad -->
                         <div class="mb-3">
                             <label for="cantidad" class="form-label">Cantidad</label>
                             <input type="number" class="form-control" id="cantidad" name="cantidad" required>
                         </div>
 
-                        <!-- Motivo -->
                         <div class="mb-3">
                             <label for="motivo" class="form-label">Motivo</label>
                             <select class="form-select" id="motivo" name="motivo" required>
@@ -636,19 +666,45 @@
                             </select>
                         </div>
 
-                        <!-- Explicación -->
                         <div class="mb-3">
                             <label for="explicacion" class="form-label">Explicación</label>
                             <textarea class="form-control" id="explicacion" name="explicacion" rows="3" required></textarea>
                         </div>
 
-                        <!-- Botón de Envío -->
                         <button type="submit" class='btn btn-primary'>Guardar Cambio de Stock</button>
                     </form>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="historialProductoModal" tabindex="-1" aria-labelledby="historialProductoModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="historialProductoModalLabel">Historial de Producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="historial_producto.php" method="get">
+                            <div class="mb-3">
+                                <label for="id_producto" class="form-label">Selecciona el producto</label>
+                                <select class="form-select" name="id_producto" required>
+                                    <option value="" disabled selected>Selecciona un producto</option>
+                                    <?php
+                                        echo $opcionesProducto;
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Ver Historial</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <script>
             function mostrarCaracteristicas(idProducto) {

@@ -14,7 +14,7 @@
     <body>
 
         <div class="container-f">
-            <!-- Header -->
+            <!-- Header/Navbar -->
             <?php include '../templates/header.php'; ?>
 
 

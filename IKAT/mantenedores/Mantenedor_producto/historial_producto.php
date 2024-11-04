@@ -105,76 +105,49 @@ unset($_SESSION['mensaje']);
             <h1 class="text-center p-4">Mantenedor de Categorías</h1>
             <div class="table-responsive">
                 <?php
-                    $sql = "SELECT * FROM categoria";
-                    $result = $conn->query($sql);
-
-                    if ($result->num_rows > 0) {
-                        echo "<table class='table table-bordered table-striped'>
-                                <thead class='thead-dark'>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Nombre</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>";
-                        while($row = $result->fetch_assoc()) {
-                            echo "<tr>
-                                    <td>" . $row["id_categoria"] . "</td>
-                                    <td>" . $row["nombre_categoria"] . "</td>
-                                    <td>
-                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarCategoriaModal" . $row["id_categoria"] . "'>Editar</a> |
-                                        <a href='borrar_categoria.php?id=" . $row["id_categoria"] . "' class='btn btn-danger btn-sm'>Borrar</a>
-                                    </td>
-                                  </tr>";
-
-                            echo "
-                            <div class='modal fade' id='editarCategoriaModal" . $row["id_categoria"] . "' tabindex='-1' aria-labelledby='editarCategoriaModalLabel' aria-hidden='true'>
-                                <div class='modal-dialog'>
-                                    <div class='modal-content'>
-                                        <div class='modal-header'>
-                                            <h5 class='modal-title' id='editarCategoriaModalLabel'>Editar Producto</h5>
-                                            <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-                                        </div>
-                                        <div class='modal-body'>
-                                            <form action='actualizar_categoria.php' method='post'>
-                                                <input type='hidden' name='id_categoria' value='" . $row['id_categoria'] ."'>
-                                                Nombre: <input type='text' class='form-control' required name='nombre_categoria' value='" . $row['nombre_categoria'] . "'><br>
-
-                                                <input class='form-control btn btn-primary d-block' type='submit' value='Actualizar Categoría'>
-                                                <a href='mostrar_categoria.php' class='btn btn-primary mt-3 d-block'>Volver</a>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>";
+                    if (isset($_GET['id_producto'])) {
+                        $id_producto = intval($_GET['id_producto']);
+                    
+                        $sql = "SELECT * FROM control_stock WHERE id_producto = $id_producto ORDER BY fecha DESC";
+                        $result = $conn->query($sql);
+                    
+                        echo "<h2>Historial del Producto ID: $id_producto</h2>";
+                        
+                        if ($result && $result->num_rows > 0) {
+                            echo "<table class='table table-bordered'>
+                                    <thead>
+                                        <tr>
+                                            <th>ID Control</th>
+                                            <th>ID Producto</th>
+                                            <th>Cantidad</th>
+                                            <th>Motivo</th>
+                                            <th>Explicación</th>
+                                            <th>Fecha</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>";
+                                    
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<tr>
+                                        <td>" . $row["id_control"] . "</td>
+                                        <td>" . $row["id_producto"] . "</td>
+                                        <td>" . $row["cantidad"] . "</td>
+                                        <td>" . $row["motivo"] . "</td>
+                                        <td>" . $row["explicacion"] . "</td>
+                                        <td>" . $row["fecha"] . "</td>
+                                      </tr>";
+                            }
+                            
+                            echo "</tbody></table>";
+                        } else {
+                            echo "<p>No se encontraron registros de historial para este producto.</p>";
                         }
-                        echo "</tbody></table>";
-                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarCategoriaModal'>Agregar categoría</a>";
+                        echo "<a href='mostrar_producto.php' class='btn btn-primary mt-3 d-block'>Volver</a>";
                     } else {
-                        echo "<p class='text-center'>No hay categorías registradas.</p>";
-                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarCategoriaModal'>Agregar categoría</a>";
-                        echo "<a href='../menu/menu.html' class='btn btn-primary mt-3 d-block'>Volver al menú</a>";
+                        echo "<p>ID de producto no especificado.</p>";
+                        echo "<a href='mostrar_producto.php' class='btn btn-primary mt-3 d-block'>Volver</a>";
                     }
                 ?>
-            </div>
-
-            <div class="modal fade" id="agregarCategoriaModal" tabindex="-1" aria-labelledby="agregarCategoriaModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="agregarCategoriaModalLabel">Agregar Categoria</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="insert_categoria.php" method="post">
-                                Nombre: <input class="form-control" type="text" name="nombre_categoria" required><br><br>
-
-                                <input class="form-control btn btn-primary d-block" type="submit" value="Crear categoría">
-                            </form>
-                        </div>
-                    </div>
-                </div>
             </div>
 
         </div>
@@ -182,3 +155,4 @@ unset($_SESSION['mensaje']);
     
 </body>
 </html>
+

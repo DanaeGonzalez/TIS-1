@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-11-2024 a las 21:15:29
+-- Tiempo de generación: 03-11-2024 a las 02:44:08
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -174,7 +174,8 @@ INSERT INTO `control_stock` (`id_control`, `id_producto`, `cantidad`, `motivo`, 
 (6, 3, 1, 'Ingreso', 'a', '2024-11-01 19:27:21'),
 (7, 3, 14, 'Salida', 'a', '2024-11-01 19:28:09'),
 (8, 3, 10, 'Ingreso', 'a', '2024-11-01 19:30:15'),
-(9, 3, 12, 'Ingreso', 'qweqwe', '2024-11-02 19:59:05');
+(9, 3, 12, 'Ingreso', 'qweqwe', '2024-11-02 19:59:05'),
+(10, 3, 1, 'Ingreso', 'a', '2024-11-03 01:16:14');
 
 -- --------------------------------------------------------
 
@@ -365,7 +366,7 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`id_producto`, `nombre_producto`, `precio_unitario`, `stock_producto`, `descripcion_producto`, `foto_producto`, `cantidad_vendida`, `top_venta`, `activo`, `id_subcategoria`) VALUES
-(3, 'Cama gato', 25990, 21, 'Una linda camita para tu felino :3 miau', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/127645737_01/w=1500,h=1500,fit=pad', 0, 0, 1, NULL),
+(3, 'Cama gato', 25990, 22, 'Una linda camita para tu felino :3 miau', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/127645737_01/w=1500,h=1500,fit=pad', 0, 0, 1, NULL),
 (5, 'Mesa roble', 30990, 0, 'Una mesa de roble barnizada', 'https://www.cic.cl/dw/image/v2/BDXB_PRD/on/demandware.static/-/Sites-masterCatalog_CIC/es_CL/dw742de45c/original/images/products/mesa-centro-nuble-caramelo-110x70x40-cm-01.jpg?sw=1500&sh=1500&sm=fit', 0, 0, 1, NULL),
 (6, 'Pluma Silla de Cuero y Madera', 19990, 0, 'Una silla de madera con sillones de cuero', 'https://www.cueroydiseno.cl/wp-content/uploads/2021/04/sillapluma-scaled.jpg', 0, 0, 1, NULL),
 (7, 'cama estructural con 2 cajones MALM', 369980, 0, 'Una elegante cama de color con dos cajones en la parte de abajo', 'https://www.ikea.com/cl/es/images/products/malm-cama-estructural-con-2-cajones-negro-loenset__1101552_pe866728_s5.jpg?f=s', 0, 0, 1, NULL);
@@ -470,8 +471,16 @@ CREATE TABLE `resenia` (
   `comentario` text DEFAULT NULL,
   `activo` tinyint(1) NOT NULL,
   `id_usuario` int(100) NOT NULL,
-  `id_producto` int(10) NOT NULL
+  `id_producto` int(10) NOT NULL,
+  `razon` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `resenia`
+--
+
+INSERT INTO `resenia` (`id_resenia`, `calificacion`, `comentario`, `activo`, `id_usuario`, `id_producto`, `razon`) VALUES
+(5, 2, 'b', 1, 2, 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -519,7 +528,7 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `run_usuario`, `correo_usuario`, `numero_usuario`, `contrasenia_usuario`, `direccion_usuario`, `tipo_usuario`, `puntos_totales`, `activo`, `ultima_sesion`, `id_carrito`) VALUES
-(2, 'camilo', 'campos', '21233765k', 'ccamposg@ing.ucsc.cl', '+56988275096', '$2y$10$vdc6IbNRDuUpqntNaj8lJeU6hU9cuGIcV9t0BGrkXZEoWmrYmlzUq', NULL, 'Superadmin', 0, 1, '2024-11-01', 2);
+(2, 'camilo', 'campos', '21233765k', 'ccamposg@ing.ucsc.cl', '+56988275096', '$2y$10$vdc6IbNRDuUpqntNaj8lJeU6hU9cuGIcV9t0BGrkXZEoWmrYmlzUq', NULL, 'Admin', 0, 1, '2024-11-02', 2);
 
 --
 -- Índices para tablas volcadas
@@ -778,7 +787,7 @@ ALTER TABLE `compra`
 -- AUTO_INCREMENT de la tabla `control_stock`
 --
 ALTER TABLE `control_stock`
-  MODIFY `id_control` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_control` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `envio`
@@ -850,7 +859,7 @@ ALTER TABLE `producto`
 -- AUTO_INCREMENT de la tabla `resenia`
 --
 ALTER TABLE `resenia`
-  MODIFY `id_resenia` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_resenia` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `subcategoria`

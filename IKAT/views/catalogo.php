@@ -94,7 +94,7 @@
                                         </label>
                                         <label class="dropdown-item">
                                             <input type="checkbox" name="categoria"
-                                                value="Almacenamiento  y Organización"> Almacenamiento  y Organización
+                                                value="Almacenamiento y Organización"> Almacenamiento y Organización
                                         </label>
                                     </div>
                                 </div>
