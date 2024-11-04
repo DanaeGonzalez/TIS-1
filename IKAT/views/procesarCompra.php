@@ -101,7 +101,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                     <button type="submit" class="btn btn-dark w-100 mt-3 mb-4">Continuar con el
                                         pago</button>
                                 </form>
-
                             </form>
                         </div>
 
