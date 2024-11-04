@@ -15,12 +15,12 @@
                 </a> 
                 <?php
                 } elseif ($_SESSION['tipo_usuario'] === 'Admin') { ?>
-                <a href="../views/menu_rol/menu_adm.php">
+                <a href="/xampp/IKAT/views/menu_rol/menu_adm.php">
                     <img width="180px" height="auto" src="/xampp/IKAT/assets/images/ikat.png" alt="Ikat">
                 </a> 
                 <?php
                 } elseif ($_SESSION['tipo_usuario'] === 'Registrado') { ?>
-                <a href="../views/menu_rol/menu_reg.php">
+                <a href="/xampp/IKAT/views/menu_rol/menu_reg.php">
                     <img width="180px" height="auto" src="/xampp/IKAT/assets/images/ikat.png" alt="Ikat">
                 </a> 
                 <?php
