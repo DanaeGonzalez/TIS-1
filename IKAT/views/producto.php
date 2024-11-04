@@ -8,13 +8,15 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="..\assets\css\styles.css">
+        <?php include '../assets/php/ver_caracteristicas.php'; ?>
+        <?php include '../assets/php/ver_resenias.php'; ?>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     </head>
 
     <body>
 
         <div class="container-f">
-            <!-- Header -->
+            <!-- Header/Navbar -->
             <?php include '../templates/header.php'; ?>
 
 
@@ -61,6 +63,7 @@
                     </div>
                 </div>
 
+
                 <!-- Sección del producto -->
                 <?php
                 include_once '..\config\conexion.php';
@@ -103,10 +106,18 @@
                             <hr>
                             <h5>Características</h5>
                             <ul>
-                                <li>Falta esto ---------</li>
-                                <li>Característica 1</li>
-                                <li>Característica 2</li>
-                                <li>Característica 3</li>
+                                <?php
+                                // Obtener las características del producto
+                                $caracteristicas = obtenerCaracteristicasProducto($conn, $producto['id_producto']);
+
+                                if (!empty($caracteristicas)) {
+                                    foreach ($caracteristicas as $caracteristica) {
+                                        echo "<li>" . htmlspecialchars($caracteristica) . "</li>";
+                                    }
+                                } else {
+                                    echo "<li>No hay características disponibles</li>";
+                                }
+                                ?>
                             </ul>
                             <hr>
                             <h5>Cantidad</h5>
@@ -129,25 +140,24 @@
                     <div class="row mt-4 mb-3">
                         <div class="col-12">
                             <h2>Reseñas del Producto</h2>
-                            <div class="mb-3">
-                                <strong>Usuario 1</strong>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                            </div>
-                            <div class="mb-3">
-                                <strong>Usuario 2</strong>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                            </div>
+                            <?php $resenias = obtenerReseniasProducto($conn, $producto['id_producto']);?>
+                            <?php if (empty($resenias)): ?>
+                                <p>No hay reseñas para este producto.</p>
+                            <?php else: ?>
+                                <?php foreach ($resenias as $resenia): ?>
+                                    <div class="mb-3">
+                                        <strong><?= htmlspecialchars($resenia['nombre_usuario']) ?></strong>
+                                        <p>Calificación: <?= htmlspecialchars($resenia['calificacion']) ?>/5</p>
+                                        <p><?= htmlspecialchars($resenia['comentario']) ?></p>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
+
                 </div>
 
                 <?php
-                if (isset($_SESSION['id_carrito'])) {
-                    echo "ID del carrito: " . $_SESSION['id_carrito'];
-                } else {
-                    echo "El carrito no está inicializado en la sesión" . $_SESSION['identificador'];
-                }
-
                 $conn->close();
                 ?>
 
@@ -169,7 +179,7 @@
                 // Obtén el valor de la cantidad desde el input
                 const cantidad = document.getElementById('cantidadInput').value;
 
-                       fetch('../assets/php/agregarAlCarrito.php', {
+                fetch('agregarAlCarrito.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
