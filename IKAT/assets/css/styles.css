@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 body{
   cursor: url("../../assets/images/cathand.png"),auto;
 }
@@ -26,6 +27,8 @@ button.carousel-control-next{
   cursor: url("../../assets/images/pointer.png"), pointer !important;
 }
 
+=======
+>>>>>>> parent of 66013ba (borre todo)
 /*NAVBAR*/
 .navbar {
   background-color: #d5d5d5;
@@ -164,6 +167,7 @@ button.btn.btn-outline-dark:hover {
 }
 
 .resumen-compra {
+<<<<<<< HEAD
   max-height: 400px;
 }
 
@@ -180,3 +184,7 @@ button.btn.btn-outline-dark:hover {
   align-items: center;
   justify-content: center;
 }
+=======
+  max-height: 400px; /* Ajusta la altura máxima según tus necesidades */
+}
+>>>>>>> parent of 66013ba (borre todo)
