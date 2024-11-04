@@ -3,7 +3,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-
 if (!isset($_SESSION['identificador']) || !isset($_SESSION['tipo_usuario'])) {
 header("Location: /xampp/IKAT/views/menu_registro/login.php");
 exit();
