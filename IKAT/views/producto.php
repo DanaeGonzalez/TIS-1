@@ -9,6 +9,7 @@
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="..\assets\css\styles.css">
         <?php include '../assets/php/ver_caracteristicas.php'; ?>
+        <?php include '../assets/php/ver_resenias.php'; ?>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     </head>
 
@@ -139,16 +140,21 @@
                     <div class="row mt-4 mb-3">
                         <div class="col-12">
                             <h2>Reseñas del Producto</h2>
-                            <div class="mb-3">
-                                <strong>Usuario 1</strong>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                            </div>
-                            <div class="mb-3">
-                                <strong>Usuario 2</strong>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                            </div>
+                            <?php $resenias = obtenerReseniasProducto($conn, $producto['id_producto']);?>
+                            <?php if (empty($resenias)): ?>
+                                <p>No hay reseñas para este producto.</p>
+                            <?php else: ?>
+                                <?php foreach ($resenias as $resenia): ?>
+                                    <div class="mb-3">
+                                        <strong><?= htmlspecialchars($resenia['nombre_usuario']) ?></strong>
+                                        <p>Calificación: <?= htmlspecialchars($resenia['calificacion']) ?>/5</p>
+                                        <p><?= htmlspecialchars($resenia['comentario']) ?></p>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
+
                 </div>
 
                 <?php
