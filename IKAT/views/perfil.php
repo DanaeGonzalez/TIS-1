@@ -1,34 +1,59 @@
-<!doctype html>
-<html lang="en">
+<!doctype php>
+<php lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IKAT - Perfil</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="..\assets\css\styles.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-</head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>IKAT - Perfil</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="..\assets\css\styles.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-<body>
-    <div class="container-f">
-        <!-- Header -->
-        <?php include '../templates/header.php'; ?>
+    </head>
 
-        <!-- Sección Perfil del Usuario -->
-        <div class="container mt-4 mb-3">
-            <h2 class="text-center mb-4">Perfil de Usuario</h2>
-            <hr>
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <form>
-                        <!-- Contenido del formulario con información del usuario -->
-                        <!-- Campo de Dirección -->
+    <body>
+        <div class="container-f">
+            <!-- Header -->
+            <?php include '../templates/header.php'; ?>
+
+            <!-- Sección Perfil del Usuario -->
+            <div class="container mt-4 mb-3">
+                <h2 class="text-center mb-4">Perfil de Usuario</h2>
+                <hr>
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Puntos Totales</label>
+                                <input type="number" class="form-control bg-light" value="<?php echo htmlspecialchars($_SESSION['puntos']);?>" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Nombre</label>
+                                <input type="text" class="form-control" value="<?php echo htmlspecialchars($_SESSION['nombre_usuario']);?>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Apellido</label>
+                                <input type="text" class="form-control" value="<?php echo htmlspecialchars($_SESSION['apellido_usuario']);?>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">RUN</label>
+                                <input type="text" class="form-control bg-light" value="<?php echo htmlspecialchars($_SESSION['run_usuario']);?>" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Correo Electrónico</label>
+                                <input type="email" class="form-control bg-light" value="<?php echo htmlspecialchars($_SESSION['correo_usuario']);?>" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Número de Teléfono</label>
+                                <input type="tel" class="form-control" value="<?php echo htmlspecialchars($_SESSION['numero_usuario']);?>" required>
+                            </div>
+                        
+                            <!-- Campo de Dirección -->
                         <div class="mb-3">
                             <label class="form-label fw-bold">Dirección</label>
                             <input type="text" id="direccion" class="form-control"
@@ -36,6 +61,7 @@
                             <button type="button" onclick="buscarDireccion()" class="btn btn-primary mt-2">Buscar en
                                 el Mapa</button>
                         </div>
+                        
                         <!-- Mapa -->
                         <div id="map" style="width: 100%; height: 500px;"></div>
                         <!-- Área para mostrar coordenadas y distancia -->
