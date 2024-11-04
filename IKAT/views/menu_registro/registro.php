@@ -106,7 +106,11 @@ include '..\..\config\conexion.php';
                 </div>
                 <?php
                 require('..\..\config\conexion.php');
+<<<<<<< HEAD
                 require('..\..\assets\php\verificar_recaptcha.php');
+=======
+                require('verificar_recaptcha.php');
+>>>>>>> parent of 66013ba (borre todo)
                 if (isset($_POST['correo'])) {
                     // Validar si se completó el captcha
                     if (empty($_POST['g-recaptcha-response'])) {

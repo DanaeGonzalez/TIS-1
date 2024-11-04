@@ -169,7 +169,11 @@
                 // Obtén el valor de la cantidad desde el input
                 const cantidad = document.getElementById('cantidadInput').value;
 
+<<<<<<< HEAD
                        fetch('../assets/php/agregarAlCarrito.php', {
+=======
+                fetch('agregarAlCarrito.php', {
+>>>>>>> parent of 66013ba (borre todo)
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

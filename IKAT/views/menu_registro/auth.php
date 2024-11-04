@@ -5,7 +5,11 @@ if (session_status() === PHP_SESSION_NONE) {
 
 
 if (!isset($_SESSION['identificador']) || !isset($_SESSION['tipo_usuario'])) {
+<<<<<<< HEAD
 header("Location: menu_registro/login.php");
+=======
+header("Location: login.php");
+>>>>>>> parent of 66013ba (borre todo)
 exit();
 }
 
