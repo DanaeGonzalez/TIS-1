@@ -17,7 +17,7 @@ session_start();
 </head>
 <body>
     <!-- Header -->
-    <?php include $_SERVER['DOCUMENT_ROOT'] . '/xampp/IKAT/templates/header.php';?>
+    <?php include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/templates/header.php';?>
     
     <div class="d-flex">
         <!-- Sidebar -->

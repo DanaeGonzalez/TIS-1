@@ -1,5 +1,5 @@
 <?php 
-  include $_SERVER['DOCUMENT_ROOT'] . '/xampp/IKAT/views/menu_registro/auth.php';
+  include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/views/menu_registro/auth.php';
 ?>
 
 <!doctype php>
