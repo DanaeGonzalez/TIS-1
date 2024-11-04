@@ -66,6 +66,8 @@
                                 <h5>Coordenadas (esto lo saco despues):</h5>  <!-- Estas coordenadas nos servirán para hacer el cálculo del envio-->
                                 <p id="latitud">Latitud: </p>
                                 <p id="longitud">Longitud: </p>
+                                <p id="distancia"></p>
+
                             </div>
 
                             <!-- Botón Guardar Cambios -->
@@ -120,6 +122,27 @@
                         console.error('Error:', error);
                         alert('Ocurrió un error al buscar la dirección.');
                     });
+            }
+        
+            function distancia(lat2, lng2) {
+            // Punto fijo (latitud y longitud) para la distancia
+                const lat1 = -36.80696177670701;
+                const lng1 = -73.04647662462334;
+
+                const R = 6371; // Radio de la Tierra en km
+
+                const dLat = (lat2 - lat1) * Math.PI / 180;
+                const dLng = (lng2 - lng1) * Math.PI / 180;
+
+                const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                        Math.sin(dLng / 2) * Math.sin(dLng / 2);
+
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                const distancia = R * c;
+
+                // Mostrar la distancia en el HTML
+                document.getElementById('distancia').textContent = `Distancia: ${distancia.toFixed(2)} km`;
             }
         </script>
     </body>
