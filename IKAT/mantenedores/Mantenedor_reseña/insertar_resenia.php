@@ -9,8 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_usuario = $_POST['id_usuario'];
     $id_producto = $_POST['id_producto'];
 
-    $sql = "INSERT INTO resenia (calificacion, comentario, id_usuario, id_producto)
-            VALUES ($calificacion, '$comentario', $id_usuario, $id_producto)";
+    $sql = "INSERT INTO resenia (calificacion, comentario, activo, id_usuario, id_producto)
+            VALUES ($calificacion, '$comentario',1, $id_usuario, $id_producto)";
 
     if ($conn->query($sql) === TRUE) {
         $mensaje = "Nueva reseña creada exitosamente";
@@ -90,9 +90,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <form action="" method="post">
                             Calificación (1-5): <input class="form-control" type="number" step="1" min="1" max="5" name="calificacion" required><br>
                             Comentario: <input class="form-control" type="text" name="comentario"><br>
-                            ID Usuario: <input class="form-control" type="number" name="id_usuario" required><br>
-                            ID Producto: <input class="form-control" type="number" name="id_producto" required><br>
 
+                            <select class="form-select mb-4" name="id_usuario" required>
+                                <option value="" disabled selected>Selecciona un usuario</option>
+                                <?php
+                                    $sqlUsuario = "SELECT id_usuario, nombre_usuario FROM usuario";
+                                    $resultUsuario = $conn->query($sqlUsuario);
+                                    while($usuario = $resultUsuario->fetch_assoc()) {
+                                        echo "<option value='" . $usuario['id_usuario'] . "'>" . $usuario['nombre_usuario'] . "</option>";
+                                    }
+                                ?>
+                            </select>
+                                
+                            <select class="form-select mb-4" name="id_producto" required>
+                                <option value="" disabled selected>Selecciona un producto</option>
+                                <?php
+                                    $sqlProducto = "SELECT id_producto, nombre_producto FROM producto";
+                                    $resultProducto = $conn->query($sqlProducto);
+                                    while($producto = $resultProducto->fetch_assoc()) {
+                                        echo "<option value='" . $producto['id_producto'] . "'>" . $producto['nombre_producto'] . "</option>";
+                                    }
+                                ?>
+                            </select>
+                                
                             <input class="form-control btn btn-primary d-block" type="submit" value="Crear Reseña">
                             <a href="mostrar_resenia.php" class='btn btn-primary mt-3 d-block'>Volver</a>
                         </form>
