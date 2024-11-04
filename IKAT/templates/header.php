@@ -8,7 +8,7 @@
         <?php
             // Verifica si el tipo de usuario está establecido en la sesión
             if (isset($_SESSION['tipo_usuario'])) {         
-            // Define la URL del enlace según el tipo de usuario
+            // Define la URL del enlace según el tipo de usuario (No tocar)
                 if ($_SESSION['tipo_usuario'] === 'Superadmin') { ?>
                 <a href="/xampp/IKAT/views/menu_rol/menu_supadm.php">
                     <img width="180px" height="auto" src="/xampp/IKAT/assets/images/ikat.png" alt="Ikat">
