@@ -87,7 +87,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                         <?php endwhile; ?>
                                     </select>
                                 </div>
-                                
+                                <!-- Área para mostrar coordenadas y distancia -->
+                        <div id="coordenadas" class="mt-3">
+                            <p id="latitud">Latitud: </p>
+                            <p id="longitud">Longitud: </p>
+                            <p id="distancia"></p>
+                            <p id="valorEnvio">Valor Envío: </p>
+                        </div>
                                 <form action="../vendor/transbank/transbank-sdk/examples/index.php?action=create"
                                     method="post">
                                     <!-- Agrega campos adicionales aquí, si necesitas pasar más información -->
@@ -108,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                     Subtotal<span>$<?= number_format(floor($total), 0, '', '.') ?></span>
                                 </li>
                                 <li
-                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light" id="valorEnvio">
                                     Envío<span>$0.00</span>
                                 </li>
                                 <li
@@ -202,12 +208,23 @@ function valor_envio(distancia) {
     // Verificar si la distancia está en km
     if (typeof distancia === "number" && distancia >= 0) {
         const costoEnvio = distancia * 1500;
-        document.getElementById('valorEnvio').textContent = `Valor del Envío: $${costoEnvio.toFixed(2)}`;
+
+        // Asegúrate de que el elemento existe antes de intentar acceder a él
+        const valorEnvioElement = document.getElementById('valorEnvio');
+        if (valorEnvioElement) {
+            valorEnvioElement.textContent = `Valor del Envío: $${costoEnvio.toFixed(2)}`;
+        } else {
+            console.error("Error: No se encontró el elemento para mostrar el valor del envío.");
+        }
     } else {
         console.error("Error: La distancia debe estar en kilómetros.");
-        document.getElementById('valorEnvio').textContent = "Error en el cálculo del valor del envío.";
+        const valorEnvioElement = document.getElementById('valorEnvio');
+        if (valorEnvioElement) {
+            valorEnvioElement.textContent = "Error en el cálculo del valor del envío.";
+        }
     }
 }
+
 
     </script>
 </body>
