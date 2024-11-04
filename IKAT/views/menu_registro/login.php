@@ -30,11 +30,6 @@ if (isset($_POST['identificador'])) {
             $_SESSION['puntos'] = $user['puntos_totales'];
             $_SESSION['activo'] = $user['activo'];
             $_SESSION['id_carrito'] = $user['id_carrito'];
-<<<<<<< HEAD
-            $_SESSION['id_usuario'] = $user['id_usuario'];
-=======
-
->>>>>>> parent of 66013ba (borre todo)
 
             // Redireccionar según el tipo de usuario
             if ($_SESSION['tipo_usuario'] == 'Registrado') {
