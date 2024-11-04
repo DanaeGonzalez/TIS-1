@@ -21,9 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
         header("Location: https://localhost/xampp/TIS-1/IKAT/vendor/transbank/transbank-sdk/examples/webpay-plus/index.php?action=create");
         exit;
                 
-
-
-
         // Redirigir a la página de pago o mostrar confirmación
     } else {
         echo "Error: " . $query . "<br>" . $conn->error;
@@ -47,6 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="../assets/css/styles.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     </head>
 
     <body>
@@ -65,12 +66,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 <!-- Campo oculto para enviar el total de la compra -->
                                 <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
 
-                                <!-- Dirección de Envío -->
-                                <div class="mb-3">
-                                    <label for="direccion_pedido" class="form-label ">Dirección de Envío</label>
-                                    <input type="text" class="form-control" id="direccion_pedido" name="direccion_pedido"
-                                        required>
-                                </div>
+                                <!-- Campo de Dirección -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Dirección</label>
+                            <input type="text" id="direccion" class="form-control"
+                                placeholder="Ingresa tu dirección" required>
+                            <button type="button" onclick="buscarDireccion()" class="btn btn-primary mt-2">Buscar en
+                                el Mapa</button>
+                            </div>
+                        
+                            <!-- Mapa -->
+                            <div id="map" style="width: 100%; height: 500px;"></div>
 
                                 <!-- Método de Pago -->
                                 <div class="mb-3">
@@ -81,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                         <?php endwhile; ?>
                                     </select>
                                 </div>
-
+                                
                                 <form action="../vendor/transbank/transbank-sdk/examples/index.php?action=create"
                                     method="post">
                                     <!-- Agrega campos adicionales aquí, si necesitas pasar más información -->
@@ -128,6 +134,82 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+
+    <script>
+        let map = L.map('map').setView([-36.79849246501831, -73.05592193108434], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            Zoom: 15,
+        }).addTo(map);
+
+        let marker = L.marker([-36.79849246501831, -73.05592193108434]).addTo(map);
+
+        function buscarDireccion() {
+            const direccion = document.getElementById('direccion').value;
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        const ubicacion = data[0];
+                        const lat = parseFloat(ubicacion.lat);
+                        const lng = parseFloat(ubicacion.lon);
+
+                        map.setView([lat, lng], 12);
+                        marker.setLatLng([lat, lng]);
+
+                        // Mostrar latitud y longitud
+                        document.getElementById('latitud').textContent = `Latitud: ${lat}`;
+                        document.getElementById('longitud').textContent = `Longitud: ${lng}`;
+
+                        // Llamar a la función de distancia con las coordenadas obtenidas
+                        distancia(lat, lng);
+                    } else {
+                        alert('No se pudo encontrar la dirección.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Ocurrió un error al buscar la dirección.');
+                });
+        }
+
+        function distancia(lat2, lng2) {
+    // Punto fijo (latitud y longitud)
+    const lat1 = -36.80696177670701;
+    const lng1 = -73.04647662462334;
+
+    const R = 6371; // Radio de la Tierra en km
+
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLng / 2) * Math.sin(dLng / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distancia = R * c;
+
+    // Mostrar la distancia en el HTML
+    document.getElementById('distancia').textContent = `Distancia: ${distancia.toFixed(2)} km`;
+
+    // Llamar a la función para calcular el valor del envío
+    valor_envio(distancia);
+}
+
+function valor_envio(distancia) {
+    // Verificar si la distancia está en km
+    if (typeof distancia === "number" && distancia >= 0) {
+        const costoEnvio = distancia * 1500;
+        document.getElementById('valorEnvio').textContent = `Valor del Envío: $${costoEnvio.toFixed(2)}`;
+    } else {
+        console.error("Error: La distancia debe estar en kilómetros.");
+        document.getElementById('valorEnvio').textContent = "Error en el cálculo del valor del envío.";
+    }
+}
+
+    </script>
 </body>
 
 </html>

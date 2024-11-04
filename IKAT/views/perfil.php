@@ -53,75 +53,102 @@
                                 <input type="tel" class="form-control" value="<?php echo htmlspecialchars($_SESSION['numero_usuario']);?>" required>
                             </div>
                         
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Dirección</label>
-                                <input type="text" id="direccion" class="form-control"
-                                    placeholder="Ingresa tu dirección" required>
-                                <button type="button" onclick="buscarDireccion()" class="btn btn-primary mt-2">Buscar en
-                                    el Mapa</button>
-                            </div>
-                            <div id="map" style="width: 100%; height: 500px;"></div>
-                            <!-- Área para mostrar coordenadas -->
-                            <div id="coordenadas" class="mt-3">
-                                <h5>Coordenadas (esto lo saco despues):</h5>  <!-- Estas coordenadas nos servirán para hacer el cálculo del envio-->
-                                <p id="latitud">Latitud: </p>
-                                <p id="longitud">Longitud: </p>
-                            </div>
+                            <!-- Campo de Dirección -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Dirección</label>
+                            <input type="text" id="direccion" class="form-control"
+                                placeholder="Ingresa tu dirección" required>
+                            <button type="button" onclick="buscarDireccion()" class="btn btn-primary mt-2">Buscar en
+                                el Mapa</button>
+                        </div>
+                        
+                        <!-- Mapa -->
+                        <div id="map" style="width: 100%; height: 500px;"></div>
+                        <!-- Área para mostrar coordenadas y distancia -->
+                        <div id="coordenadas" class="mt-3">
+                            <p id="latitud">Latitud: </p>
+                            <p id="longitud">Longitud: </p>
+                            <p id="distancia"></p>
+                        </div>
 
-                            <!-- Botón Guardar Cambios -->
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-dark w-50">Guardar Cambios</button>
-                            </div>
-                        </form>
-                    </div>
+                        <!-- Botón Guardar Cambios -->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-dark w-50">Guardar Cambios</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-
-            <!-- Footer -->
-            <?php include '../templates/footer.php'; ?>
-
         </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous"></script>
+        <!-- Footer -->
+        <?php include '../templates/footer.php'; ?>
 
-        <script>
-            let map = L.map('map').setView([-36.79849246501831, -73.05592193108434], 12);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                Zoom: 15,
-            }).addTo(map);
+    </div>
 
-            let marker = L.marker([-36.79849246501831, -73.05592193108434]).addTo(map);
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 
-            function buscarDireccion() {
-                const direccion = document.getElementById('direccion').value;
-                const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}`;
+    <script>
+        let map = L.map('map').setView([-36.79849246501831, -73.05592193108434], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            Zoom: 15,
+        }).addTo(map);
 
-                fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.length > 0) {
-                            const ubicacion = data[0];
-                            const lat = ubicacion.lat;
-                            const lng = ubicacion.lon;
+        let marker = L.marker([-36.79849246501831, -73.05592193108434]).addTo(map);
 
-                            map.setView([lat, lng], 12);
-                            marker.setLatLng([lat, lng]);
+        function buscarDireccion() {
+            const direccion = document.getElementById('direccion').value;
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}`;
 
-                            // Mostrar latitud y longitud
-                            document.getElementById('latitud').textContent = `Latitud: ${lat}`;
-                            document.getElementById('longitud').textContent = `Longitud: ${lng}`;
-                        } else {
-                            alert('No se pudo encontrar la dirección.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Ocurrió un error al buscar la dirección.');
-                    });
-            }
-        </script>
-    </body>
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        const ubicacion = data[0];
+                        const lat = parseFloat(ubicacion.lat);
+                        const lng = parseFloat(ubicacion.lon);
 
-</php>
+                        map.setView([lat, lng], 12);
+                        marker.setLatLng([lat, lng]);
+
+                        // Mostrar latitud y longitud
+                        document.getElementById('latitud').textContent = `Latitud: ${lat}`;
+                        document.getElementById('longitud').textContent = `Longitud: ${lng}`;
+
+                        // Llamar a la función de distancia con las coordenadas obtenidas
+                        distancia(lat, lng);
+                    } else {
+                        alert('No se pudo encontrar la dirección.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Ocurrió un error al buscar la dirección.');
+                });
+        }
+
+        function distancia(lat2, lng2) {
+            // Punto fijo (latitud y longitud) para la distancia
+            const lat1 = -36.80696177670701;
+            const lng1 = -73.04647662462334;
+
+            const R = 6371; // Radio de la Tierra en km
+
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                    Math.sin(dLng / 2) * Math.sin(dLng / 2);
+
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const distancia = R * c;
+
+            // Mostrar la distancia en el HTML
+            document.getElementById('distancia').textContent = `Distancia: ${distancia.toFixed(2)} km`;
+        }
+    </script>
+</body>
+
+</html>
