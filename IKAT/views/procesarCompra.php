@@ -66,13 +66,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 <!-- Campo oculto para enviar el total de la compra -->
                                 <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
 
-                                <!-- Campo de Dirección -->
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Dirección</label>
-                            <input type="text" id="direccion" class="form-control"
-                                placeholder="Ingresa tu dirección" required>
-                            <button type="button" onclick="buscarDireccion()" class="btn btn-primary mt-2">Buscar en
-                                el Mapa</button>
+                            <!-- Campo de Dirección -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Dirección</label>
+                                <input type="text" id="direccion" name="direccion_pedido" class="form-control" placeholder="Ingresa tu dirección" required>
+                                <button type="button" onclick="buscarDireccion()" class="btn btn-primary mt-2">Buscar en el Mapa</button>
                             </div>
                         
                             <!-- Mapa -->
@@ -92,7 +90,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                             <p id="latitud">Latitud: </p>
                             <p id="longitud">Longitud: </p>
                             <p id="distancia"></p>
-                            <p id="valorEnvio">Valor Envío: </p>
                         </div>
                                 <form action="../vendor/transbank/transbank-sdk/examples/index.php?action=create"
                                     method="post">
@@ -114,8 +111,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                     Subtotal<span>$<?= number_format(floor($total), 0, '', '.') ?></span>
                                 </li>
                                 <li
-                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light" id="valorEnvio">
-                                    Envío<span>$0.00</span>
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light" >
+                                    Envío<span id="valorEnvio">$0.00</span>
                                 </li>
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
@@ -207,12 +204,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 function valor_envio(distancia) {
     // Verificar si la distancia está en km
     if (typeof distancia === "number" && distancia >= 0) {
-        const costoEnvio = distancia * 1500;
+        const tarifaBase = 1500;
+        const costoEnvio = Math.round((distancia * 1500) + tarifaBase);
 
         // Asegúrate de que el elemento existe antes de intentar acceder a él
         const valorEnvioElement = document.getElementById('valorEnvio');
         if (valorEnvioElement) {
-            valorEnvioElement.textContent = `Valor del Envío: $${costoEnvio.toFixed(2)}`;
+            valorEnvioElement.textContent = `$ ${costoEnvio.toFixed(2)}`;
         } else {
             console.error("Error: No se encontró el elemento para mostrar el valor del envío.");
         }
