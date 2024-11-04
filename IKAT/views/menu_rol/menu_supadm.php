@@ -130,12 +130,12 @@
           <div class="row justify-content-center text-center">
             <div class="col-10 col-md-6 col-lg-6 mb-4">
               <a href="../catalogo_organizacion.php">
-                <img src="assets/images/categoria_organizacion.png" class="img-fluid categoria-img" alt="Imagen 4">
+                <img src="../../assets/images/categoria_organizacion.png" class="img-fluid categoria-img" alt="Imagen 4">
               </a>
             </div>
             <div class="col-10 col-md-6 col-lg-6 mb-5">
               <a href="../catalogo_cama.php">
-                <img src="assets/images/categoria_cama.png" class="img-fluid categoria-img" alt="Imagen 5">
+                <img src="../../assets/images/categoria_cama.png" class="img-fluid categoria-img" alt="Imagen 5">
               </a>
             </div>
           </div>
