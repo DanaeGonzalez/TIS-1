@@ -8,6 +8,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="..\assets\css\styles.css">
+        <?php include '../assets/php/ver_caracteristicas.php'; ?>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     </head>
 
@@ -61,6 +62,7 @@
                     </div>
                 </div>
 
+
                 <!-- Sección del producto -->
                 <?php
                 include_once '..\config\conexion.php';
@@ -103,10 +105,18 @@
                             <hr>
                             <h5>Características</h5>
                             <ul>
-                                <li>Falta esto ---------</li>
-                                <li>Característica 1</li>
-                                <li>Característica 2</li>
-                                <li>Característica 3</li>
+                                <?php
+                                // Obtener las características del producto
+                                $caracteristicas = obtenerCaracteristicasProducto($conn, $producto['id_producto']);
+
+                                if (!empty($caracteristicas)) {
+                                    foreach ($caracteristicas as $caracteristica) {
+                                        echo "<li>" . htmlspecialchars($caracteristica) . "</li>";
+                                    }
+                                } else {
+                                    echo "<li>No hay características disponibles</li>";
+                                }
+                                ?>
                             </ul>
                             <hr>
                             <h5>Cantidad</h5>
