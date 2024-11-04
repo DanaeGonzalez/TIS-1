@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                             </div>
                         
                             <!-- Mapa -->
-                            <div id="map" style="width: 100%; height: 500px;"></div>
+                            <div id="map" style="width: 100%; height: 300px;"></div>
 
                                 <!-- Método de Pago -->
                                 <div class="mb-3">
@@ -86,11 +86,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                     </select>
                                 </div>
                                 <!-- Área para mostrar coordenadas y distancia -->
-                        <div id="coordenadas" class="mt-3">
-                            <p id="latitud">Latitud: </p>
-                            <p id="longitud">Longitud: </p>
-                            <p id="distancia"></p>
-                        </div>
+                                <div id="coordenadas" style="display: none;" class="mt-3">
+                                    <p id="latitud">Latitud: </p>
+                                    <p id="longitud">Longitud: </p>
+                                    <p id="distancia"></p>
+                                </div>
                                 <form action="../vendor/transbank/transbank-sdk/examples/index.php?action=create"
                                     method="post">
                                     <!-- Agrega campos adicionales aquí, si necesitas pasar más información -->
@@ -104,26 +104,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                         </div>
 
                         <div class="col-md-4 mb-4 p-4 border bg-light rounded shadow-sm resumen-compra">
-                            <h3 class="mb-4 text-center">Resumen de la Compra</h3>
-                            <ul class="list-group">
-                                <li
-                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                    Subtotal<span>$<?= number_format(floor($total), 0, '', '.') ?></span>
-                                </li>
-                                <li
-                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light" >
-                                    Envío<span id="valorEnvio">$0.00</span>
-                                </li>
-                                <li
-                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                    Impuestos<span>$0.00</span>
-                                </li>
-                                <li
-                                    class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
-                                    Total<span>$<?= number_format(floor($total), 0, '', '.') ?></span>
-                                </li>
-                            </ul>
-                        </div>
+    <h3 class="mb-4 text-center">Resumen de la Compra</h3>
+    <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+            Subtotal<span>$<?= number_format(floor($total), 0, '', '.') ?></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+            Envío<span id="valorEnvio">$0.00</span> <!-- El formato ahora se actualizará dinámicamente -->
+        </li>
+
+        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+            Impuestos<span>$0.00</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
+            Total<span>$<?= number_format(floor($total), 0, '', '.') ?></span>
+        </li>
+    </ul>
+</div>
+
                     </div>
                 </div>
             </div>
@@ -201,19 +199,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     valor_envio(distancia);
 }
 
+// Almacenar el valor del envío en una variable
+let costoEnvio = 0; // 
+
 function valor_envio(distancia) {
     // Verificar si la distancia está en km
     if (typeof distancia === "number" && distancia >= 0) {
         const tarifaBase = 1500;
-        const costoEnvio = Math.round((distancia * 1500) + tarifaBase);
-
-        // Asegúrate de que el elemento existe antes de intentar acceder a él
+        costoEnvio = Math.round((distancia * 1500) + tarifaBase); // Almacena el costo de envío en la variable
         const valorEnvioElement = document.getElementById('valorEnvio');
+        
         if (valorEnvioElement) {
-            valorEnvioElement.textContent = `$ ${costoEnvio.toFixed(2)}`;
+            valorEnvioElement.textContent = `$ ${costoEnvio.toLocaleString('es-CL')}`; // Formato similar al subtotal
         } else {
             console.error("Error: No se encontró el elemento para mostrar el valor del envío.");
         }
+        calcularTotal(); // Llama a la función para calcular el total
     } else {
         console.error("Error: La distancia debe estar en kilómetros.");
         const valorEnvioElement = document.getElementById('valorEnvio');
@@ -223,6 +224,18 @@ function valor_envio(distancia) {
     }
 }
 
+
+function calcularTotal() {
+    const subtotal = parseFloat('<?= number_format(floor($total), 0, '', '.') ?>'.replace(/\./g, '').replace('$', '')); // Obtiene el subtotal desde PHP
+    const impuestos = 0;
+    const totalFinal = subtotal + costoEnvio + impuestos;
+
+    // Actualiza el total 
+    const totalElement = document.querySelector('.resumen-compra .list-group-item:last-child span');
+    if (totalElement) {
+        totalElement.textContent = `$ ${totalFinal.toLocaleString('es-CL')}`; // Formato para total
+    }
+}
 
     </script>
 </body>

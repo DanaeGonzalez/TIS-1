@@ -65,7 +65,7 @@
                         <!-- Mapa -->
                         <div id="map" style="width: 100%; height: 500px;"></div>
                         <!-- Área para mostrar coordenadas y distancia -->
-                        <div id="coordenadas" class="mt-3">
+                        <div id="coordenadas" style="display: none;" class="mt-3">
                             <p id="latitud">Latitud: </p>
                             <p id="longitud">Longitud: </p>
                             <p id="distancia"></p>
