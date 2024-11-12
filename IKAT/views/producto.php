@@ -9,6 +9,7 @@
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="..\assets\css\styles.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="../assets/scss/cart.scss">
     </head>
 
     <body>
@@ -118,9 +119,40 @@
                                 <button class="btn btn-outline-dark" type="button"
                                     onclick="this.previousElementSibling.stepUp()">+</button>
                             </div>
-                            <button class="btn btn-dark mt-3 w-100 p-2"
-                                onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">Añadir al carrito</button>
+
+                            <!-- Alerta de éxito -->
+                            <div id="alertSuccess" class="alert alert-success alert-dismissible fade show mt-4"
+                                role="alert"
+                                style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
+                                Producto agregado al carrito!
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+
+                            <!-- Alerta de error -->
+                            <div id="alertError" class="alert alert-danger alert-dismissible fade show mt-4"
+                                role="alert"
+                                style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
+                                Error al agregar el producto al carrito.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+
+
+                            <button class="button mt-3" onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">
+                                <span>Añadir al carrito</span>
+                                <div class="cart">
+                                    <svg viewBox="0 0 36 26">
+                                        <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
+                                        <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+                                    </svg>
+                                </div>
+                            </button>
                             <hr>
+
+
+
+
                             <h5>Descripción del producto</h5>
                             <p><?= htmlspecialchars($producto['descripcion_producto']) ?></p>
                         </div>
@@ -129,6 +161,7 @@
                     <div class="row mt-4 mb-3">
                         <div class="col-12">
                             <h2>Reseñas del Producto</h2>
+<<<<<<< Updated upstream
                             <div class="mb-3">
                                 <strong>Usuario 1</strong>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
@@ -137,6 +170,20 @@
                                 <strong>Usuario 2</strong>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                             </div>
+=======
+                            <?php $resenias = obtenerReseniasProducto($conn, $producto['id_producto']); ?>
+                            <?php if (empty($resenias)): ?>
+                                <p>No hay reseñas para este producto.</p>
+                            <?php else: ?>
+                                <?php foreach ($resenias as $resenia): ?>
+                                    <div class="mb-3">
+                                        <strong><?= htmlspecialchars($resenia['nombre_usuario']) ?></strong>
+                                        <p>Calificación: <?= htmlspecialchars($resenia['calificacion']) ?>/5</p>
+                                        <p><?= htmlspecialchars($resenia['comentario']) ?></p>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+>>>>>>> Stashed changes
                         </div>
                     </div>
                 </div>
@@ -179,15 +226,32 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            alert('Producto agregado al carrito!');
+                            document.getElementById('alertSuccess').style.display = 'block';
+                            setTimeout(() => document.getElementById('alertSuccess').style.display = 'none', 3000);
                         } else {
-                            alert('Error al agregar el producto al carrito.');
+                            document.getElementById('alertError').style.display = 'block';
+                            setTimeout(() => document.getElementById('alertError').style.display = 'none', 3000);
                         }
                     })
+
+
                     .catch((error) => {
                         console.error('Error:', error);
                     });
             }
+        </script>
+
+        <script>
+            document.querySelectorAll('.button').forEach(button => button.addEventListener('click', e => {
+                if (!button.classList.contains('loading')) {
+
+                    button.classList.add('loading');
+
+                    setTimeout(() => button.classList.remove('loading'), 3700);
+
+                }
+                e.preventDefault();
+            }));
         </script>
     </body>
 
