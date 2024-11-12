@@ -1,6 +1,0 @@
-{
-  "require": {
-      "php": ">=7.4",
-      "transbank/transbank-sdk": "~2.0"
-  }
-}
