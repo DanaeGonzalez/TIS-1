@@ -48,6 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
             integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="../assets/css/payButton.css">
     </head>
 
     <body>
@@ -65,15 +67,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                             <form method="POST" action="procesarCompra.php">
                                 <!-- Campo oculto para enviar el total de la compra -->
                                 <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
-                            
+
                                 <!-- Campo oculto para el subtotal original -->
                                 <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
-                                <!-- Campo de Dirección -->
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Dirección</label>
-                                <input type="text" id="direccion" name="direccion_pedido" class="form-control" placeholder="Ingresa tu dirección" required>
-                                <button type="button" onclick="buscarDireccion()" class="btn btn-primary mt-2">Buscar en el Mapa</button>
-                            </div>
+                                <!-- Contenedor de la barra de búsqueda -->
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Dirección</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="direccion" name="direccion_pedido"
+                                            placeholder="Av. Alonso de Ribera 2850" required>
+                                        <button class="input-group-text bg-secondary text-white" type="button"
+                                            onclick="buscarDireccion()">
+                                            <i class="bi bi-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
 
                                 <!-- Mapa -->
                                 <div id="map" style="width: 100%; height: 300px;"></div>
@@ -98,8 +106,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                     <!-- Agrega campos adicionales aquí, si necesitas pasar más información -->
 
                                     <!-- Botón para continuar con el pago -->
-                                    <button type="submit" class="btn btn-dark w-100 mt-3 mb-4">Continuar con el
-                                        pago</button>
+                                    <button type="submit" class="BtnPay mt-3 mb-4">
+                                        Continuar con el pago
+                                        <svg class="svgIcon" viewBox="0 0 576 512">
+                                            <path
+                                                d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
+                                            </path>
+                                        </svg>
+                                    </button>
                                 </form>
                             </form>
                         </div>
@@ -144,11 +158,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
             $total_compra = $_POST['total_calculado']; // Usa el total calculado
             $fecha_compra = date('Y-m-d H:i:s'); // Fecha actual
             $puntos_ganados = $total_compra * 0.1; // (10% del total)
-        
+    
             // Insertar en la base de datos
             $query = "INSERT INTO compra (id_compra, fecha_compra, total_compra, puntos_ganados, tipo_estado, direccion_pedido, id_metodo, id_usuario, id_carrito) 
                       VALUES (NULL, '$fecha_compra', '$total_compra', '$puntos_ganados', '', '$direccion_pedido', '$id_metodo', '$id_usuario', '$id_carrito')";
-        
+
             if ($conn->query($query) === TRUE) {
                 echo "Compra registrada exitosamente.";
                 header("Location: https://localhost/xampp/TIS-1/IKAT/vendor/transbank/transbank-sdk/examples/webpay-plus/index.php?action=create");
@@ -157,9 +171,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                 echo "Error: " . $query . "<br>" . $conn->error;
             }
         }
-        ?>        
+        ?>
         <?php $conn->close();
-    }      ?>
+} ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -255,22 +269,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
 
         function calcularTotal() {
-    const subtotal = parseFloat('<?= number_format(floor($total), 0, '', '.') ?>'.replace(/\./g, '').replace('$', '')); // Obtiene el subtotal desde PHP
-    const impuestos = 0; 
-    const totalFinal = subtotal + costoEnvio + impuestos;
+            const subtotal = parseFloat('<?= number_format(floor($total), 0, '', '.') ?>'.replace(/\./g, '').replace('$', '')); // Obtiene el subtotal desde PHP
+            const impuestos = 0;
+            const totalFinal = subtotal + costoEnvio + impuestos;
 
-    // Actualiza el total 
-    const totalElement = document.querySelector('.resumen-compra .list-group-item:last-child span');
-    if (totalElement) {
-        totalElement.textContent = `$ ${totalFinal.toLocaleString('es-CL')}`; // Formato para total
-    }
+            // Actualiza el total 
+            const totalElement = document.querySelector('.resumen-compra .list-group-item:last-child span');
+            if (totalElement) {
+                totalElement.textContent = `$ ${totalFinal.toLocaleString('es-CL')}`; // Formato para total
+            }
 
-    // Guarda el total calculado 
-    const totalInput = document.getElementById('total_calculado');
-    if (totalInput) {
-        totalInput.value = totalFinal;
-    }
-}
+            // Guarda el total calculado 
+            const totalInput = document.getElementById('total_calculado');
+            if (totalInput) {
+                totalInput.value = totalFinal;
+            }
+        }
 
 
     </script>
