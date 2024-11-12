@@ -17,42 +17,8 @@ unset($_SESSION['mensaje']);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
-    <!-- Header/Navbar -->
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <button class="btn btn-outline border d-lg-none" type="button" data-bs-toggle="collapse" 
-                    data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle sidebar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <img width="180px" height="auto" src="../ikat.png" alt="">
-
-            <button class="navbar-toggler border" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
-                    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Inicio</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg" 
-                                 alt="User Image" class="user-avatar me-2"> 
-                            Usuario
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="../../views/perfil.php">Mi Perfil</a></li>
-                            <li><a class="dropdown-item" href="#">Configuraciones</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="../../views/menu_registro/logout.php">Cerrar Sesión</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <!-- Header -->
+    <?php include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/templates/header.php';?>
 
     <div class="d-flex">
         <!-- Sidebar -->
@@ -136,7 +102,6 @@ unset($_SESSION['mensaje']);
                     } else {
                         echo "<p class='text-center'>No hay productos en top ventas.</p>";
                         echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarTopVentasModal'>Agregar top ventas</a>";
-                        echo "<a href='../menu/menu.html' class='btn btn-primary mt-3 d-block'>Volver al menú</a>";
                     }
                 ?>
             </div>
@@ -153,14 +118,20 @@ unset($_SESSION['mensaje']);
 
                         <form action="agregar_top_ventas.php" method="post">
 
-                            <label>Agregar producto a top ventas ingresando el ID:</label>
+                            <label>Agregar producto a top ventas:</label>
 
-                            <input class="form-control" type="number" name="id_producto" required>
+                            <select class="form-select" name="id_producto" required>
+                            <option value="" disabled selected>Selecciona un producto</option>
+                            <?php
+                                $sqlProducto = "SELECT id_producto, nombre_producto FROM producto";
+                                $resultProducto = $conn->query($sqlProducto);
+                                while($producto = $resultProducto->fetch_assoc()) {
+                                    echo "<option value='" . $producto['id_producto'] . "'>" . $producto['nombre_producto'] . "</option>";
+                                }
+                            ?>
+                        </select>
 
                             <input class="form-control btn btn-primary d-block mt-4" type="submit" value="Agregar">
-
-                            <a href="mostrar_top_ventas.php" class='btn btn-primary mt-3 d-block'>Volver</a>
-
                         </form>
                     </div>
                 </div>

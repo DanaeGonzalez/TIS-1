@@ -8,8 +8,9 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="..\assets\css\styles.css">
+        <?php include '../assets/php/ver_caracteristicas.php'; ?>
+        <?php include '../assets/php/ver_resenias.php'; ?>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link rel="stylesheet" href="../assets/scss/cart.scss">
     </head>
 
     <body>
@@ -62,6 +63,7 @@
                     </div>
                 </div>
 
+
                 <!-- Sección del producto -->
                 <?php
                 include_once '..\config\conexion.php';
@@ -104,10 +106,18 @@
                             <hr>
                             <h5>Características</h5>
                             <ul>
-                                <li>Falta esto ---------</li>
-                                <li>Característica 1</li>
-                                <li>Característica 2</li>
-                                <li>Característica 3</li>
+                                <?php
+                                // Obtener las características del producto
+                                $caracteristicas = obtenerCaracteristicasProducto($conn, $producto['id_producto']);
+
+                                if (!empty($caracteristicas)) {
+                                    foreach ($caracteristicas as $caracteristica) {
+                                        echo "<li>" . htmlspecialchars($caracteristica) . "</li>";
+                                    }
+                                } else {
+                                    echo "<li>No hay características disponibles</li>";
+                                }
+                                ?>
                             </ul>
                             <hr>
                             <h5>Cantidad</h5>
@@ -119,40 +129,9 @@
                                 <button class="btn btn-outline-dark" type="button"
                                     onclick="this.previousElementSibling.stepUp()">+</button>
                             </div>
-
-                            <!-- Alerta de éxito -->
-                            <div id="alertSuccess" class="alert alert-success alert-dismissible fade show mt-4"
-                                role="alert"
-                                style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
-                                Producto agregado al carrito!
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
-
-                            <!-- Alerta de error -->
-                            <div id="alertError" class="alert alert-danger alert-dismissible fade show mt-4"
-                                role="alert"
-                                style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
-                                Error al agregar el producto al carrito.
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
-
-
-                            <button class="button mt-3" onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">
-                                <span>Añadir al carrito</span>
-                                <div class="cart">
-                                    <svg viewBox="0 0 36 26">
-                                        <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
-                                        <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
-                                    </svg>
-                                </div>
-                            </button>
+                            <button class="btn btn-dark mt-3 w-100 p-2"
+                                onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">Añadir al carrito</button>
                             <hr>
-
-
-
-
                             <h5>Descripción del producto</h5>
                             <p><?= htmlspecialchars($producto['descripcion_producto']) ?></p>
                         </div>
@@ -161,17 +140,7 @@
                     <div class="row mt-4 mb-3">
                         <div class="col-12">
                             <h2>Reseñas del Producto</h2>
-<<<<<<< Updated upstream
-                            <div class="mb-3">
-                                <strong>Usuario 1</strong>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                            </div>
-                            <div class="mb-3">
-                                <strong>Usuario 2</strong>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                            </div>
-=======
-                            <?php $resenias = obtenerReseniasProducto($conn, $producto['id_producto']); ?>
+                            <?php $resenias = obtenerReseniasProducto($conn, $producto['id_producto']);?>
                             <?php if (empty($resenias)): ?>
                                 <p>No hay reseñas para este producto.</p>
                             <?php else: ?>
@@ -183,18 +152,12 @@
                                     </div>
                                 <?php endforeach; ?>
                             <?php endif; ?>
->>>>>>> Stashed changes
                         </div>
                     </div>
+
                 </div>
 
                 <?php
-                if (isset($_SESSION['id_carrito'])) {
-                    echo "ID del carrito: " . $_SESSION['id_carrito'];
-                } else {
-                    echo "El carrito no está inicializado en la sesión" . $_SESSION['identificador'];
-                }
-
                 $conn->close();
                 ?>
 
@@ -216,7 +179,7 @@
                 // Obtén el valor de la cantidad desde el input
                 const cantidad = document.getElementById('cantidadInput').value;
 
-                       fetch('../assets/php/agregarAlCarrito.php', {
+                fetch('agregarAlCarrito.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -226,32 +189,15 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            document.getElementById('alertSuccess').style.display = 'block';
-                            setTimeout(() => document.getElementById('alertSuccess').style.display = 'none', 3000);
+                            alert('Producto agregado al carrito!');
                         } else {
-                            document.getElementById('alertError').style.display = 'block';
-                            setTimeout(() => document.getElementById('alertError').style.display = 'none', 3000);
+                            alert('Error al agregar el producto al carrito.');
                         }
                     })
-
-
                     .catch((error) => {
                         console.error('Error:', error);
                     });
             }
-        </script>
-
-        <script>
-            document.querySelectorAll('.button').forEach(button => button.addEventListener('click', e => {
-                if (!button.classList.contains('loading')) {
-
-                    button.classList.add('loading');
-
-                    setTimeout(() => button.classList.remove('loading'), 3700);
-
-                }
-                e.preventDefault();
-            }));
         </script>
     </body>
 

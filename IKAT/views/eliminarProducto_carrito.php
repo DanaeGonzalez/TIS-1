@@ -2,28 +2,38 @@
 include_once '../config/conexion.php';
 include 'menu_registro/auth.php';
 
-if (isset($_POST['id_producto'])) {
-    // Recupera el ID del producto
-    $id_producto = $_POST['id_producto'];
+session_start(); // Inicia o reanuda la sesión
 
-    // Verifica si el ID del producto es válido
-    if (isset($id_producto) && !empty($id_producto)) {
-        // Prepara la consulta para eliminar el producto del carrito
-        $sql = "DELETE FROM carrito_producto WHERE id_producto = ? AND id_carrito = ?";
+if (isset($_POST['product_ids'])) {
+    // Decodifica la cadena JSON a un array
+    $product_ids = json_decode($_POST['product_ids'], true);
+
+    // Verifica si se obtuvo un array y no un valor nulo
+    if (is_array($product_ids) && count($product_ids) > 0) {
+
+        // Prepara la consulta para eliminar los productos del carrito
+        $placeholders = implode(',', array_fill(0, count($product_ids), '?'));
+        $sql = "DELETE FROM carrito_producto WHERE id_producto IN ($placeholders) AND id_carrito = ?";
 
         $stmt = $conn->prepare($sql);
 
+        // Combina los IDs de productos con el ID del carrito
+        $params = array_merge($product_ids, [$_SESSION['id_carrito']]);
+        $types = str_repeat('i', count($product_ids)) . 'i';
+
         // Vincula los parámetros
-        $stmt->bind_param('ii', $id_producto, $_SESSION['id_carrito']);
+        $stmt->bind_param($types, ...$params); // Bind de todos los IDs
 
         // Ejecuta y verifica la eliminación
         if ($stmt->execute()) {
-            echo "Producto eliminado exitosamente.";
+            echo "Productos eliminados exitosamente.";
         } else {
-            echo "Error al eliminar el producto: " . $stmt->error;
+            echo "Error al eliminar productos: " . $stmt->error;
         }
 
         $stmt->close();
+    } else {
+        echo "No se seleccionaron productos para eliminar.";
     }
 }
 

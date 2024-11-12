@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="..\assets\css\styles.css">
         <script src="../assets/js/filtros.js"></script>
         <script src="../assets/js/etiquetas.js"></script>
+        <?php include '../assets/php/dropdowns.php'; ?>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     </head>
@@ -66,7 +67,7 @@
 
                 <!-- Contenedor de filtros -->
                 <div class="container mt-3">
-                    <form id="form-filtros" method="GET" action="javascript:void(0); "
+                    <form id="form-filtros" method="GET" action="javascript:void(0);"
                         onsubmit="return filtrarProductos()"> <!-- Añadimos el formulario -->
                         <div class="row justify-content-center">
                             <h1 class="text-center mb-3">Productos</h1>
@@ -80,22 +81,7 @@
                                         Categoría
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownCategory">
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria" value="Mesa"> Mesa
-                                        </label>
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria" value="Silla"> Silla
-                                        </label>
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria" value="Cama"> Cama
-                                        </label>
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria" value="Sillon"> Sillon
-                                        </label>
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" name="categoria"
-                                                value="Almacenamiento y Organización"> Almacenamiento y Organización
-                                        </label>
+                                        <?php generarDropdown('categoria', 'categoria', 'id_categoria', 'nombre_categoria'); ?>
                                     </div>
                                 </div>
                             </div>
@@ -108,16 +94,7 @@
                                         Color
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownColor">
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Rojo">
-                                            Rojo</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Negro">
-                                            Negro</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Blanco">
-                                            Blanco</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Gris">
-                                            Gris</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="color" value="Café">
-                                            Café</label>
+                                        <?php generarDropdown('color', 'color', 'id_color', 'nombre_color'); ?>
                                     </div>
                                 </div>
                             </div>
@@ -130,14 +107,7 @@
                                         Material
                                     </button>
                                     <div class="dropdown-menu p-2" aria-labelledby="dropdownMaterial">
-                                        <label class="dropdown-item"><input type="checkbox" name="material"
-                                                value="Madera"> Madera</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="material"
-                                                value="Metal"> Metal</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="material"
-                                                value="Plástico"> Plástico</label>
-                                        <label class="dropdown-item"><input type="checkbox" name="material"
-                                                value="Felpa"> Felpa</label>
+                                        <?php generarDropdown('material', 'material', 'id_material', 'nombre_material'); ?>
                                     </div>
                                 </div>
                             </div>
@@ -161,30 +131,29 @@
                 </div>
 
                 <?php
-                // Incluir la conexión
-                include_once '..\config\conexion.php';
+                // Conectar a la base de datos
+                include_once '../config/conexion.php';
 
-                // Consulta para obtener los productos activos
-                $sql = "SELECT * FROM producto WHERE activo = 1";
+                // Configuración de paginación
+                $productosPorPagina = 6;
+                $paginaActual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+                $offset = ($paginaActual - 1) * $productosPorPagina;
+
+                // Consulta con LIMIT y OFFSET
+                $sql = "SELECT * FROM producto WHERE activo = 1 LIMIT $productosPorPagina OFFSET $offset";
                 $result = $conn->query($sql);
+
+                // Consulta para contar el total de productos activos
+                $sqlTotal = "SELECT COUNT(*) as total FROM producto WHERE activo = 1";
+                $totalProductosResult = $conn->query($sqlTotal);
+                $totalProductos = $totalProductosResult->fetch_assoc()['total'];
+
+                // Calcular el total de páginas
+                $totalPaginas = ceil($totalProductos / $productosPorPagina);
 
                 // Verificar si hay resultados
                 if ($result->num_rows > 0):
                     ?>
-
-                    <!-- Alerta de éxito -->
-                    <div id="alertSuccess" class="alert alert-success alert-dismissible fade show mt-4" role="alert"
-                        style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
-                        Producto agregado al carrito!
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <!-- Alerta de error -->
-                    <div id="alertError" class="alert alert-danger alert-dismissible fade show mt-4" role="alert"
-                        style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
-                        Error al agregar el producto al carrito.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
 
                     <!-- Contenedor catálogo -->
                     <div class="container mt-4">
@@ -232,16 +201,34 @@
                 <!-- Paginación -->
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item disabled">
-                            <a class="page-link">Previous</a>
-                        </li>
-                        <li class="page-item"><a class="page-link text-black" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link text-black" href="#">2</a></li>
-                        <li class="page-item">
-                            <a class="page-link text-black" href="#">Next</a>
-                        </li>
+                        <?php if ($paginaActual > 1): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?pagina=<?= $paginaActual - 1 ?>">Previous</a>
+                            </li>
+                        <?php else: ?>
+                            <li class="page-item disabled">
+                                <a class="page-link">Previous</a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
+                            <li class="page-item <?= $i === $paginaActual ? 'active' : '' ?>">
+                                <a class="page-link" href="?pagina=<?= $i ?>"><?= $i ?></a>
+                            </li>
+                        <?php endfor; ?>
+
+                        <?php if ($paginaActual < $totalPaginas): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?pagina=<?= $paginaActual + 1 ?>">Next</a>
+                            </li>
+                        <?php else: ?>
+                            <li class="page-item disabled">
+                                <a class="page-link">Next</a>
+                            </li>
+                        <?php endif; ?>
                     </ul>
                 </nav>
+
             </div>
 
             <!-- Footer -->
@@ -264,11 +251,9 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            document.getElementById('alertSuccess').style.display = 'block';
-                            setTimeout(() => document.getElementById('alertSuccess').style.display = 'none', 3000);
+                            alert('Producto agregado al carrito!');
                         } else {
-                            document.getElementById('alertError').style.display = 'block';
-                            setTimeout(() => document.getElementById('alertError').style.display = 'none', 3000);
+                            alert('Error al agregar el producto al carrito.');
                         }
                     })
                     .catch((error) => {
