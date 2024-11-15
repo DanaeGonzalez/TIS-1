@@ -191,7 +191,7 @@
           <div class="row justify-content-center text-center">
             <div class="col-10 col-md-5 col-lg-4 mb-4">
               <a href="../catalogo_silla.php">
-                <img src="../assets/images/categoria_silla.png" class="img-fluid categoria-img" alt="Imagen 1">
+                <img src="../../assets/images/categoria_silla.png" class="img-fluid categoria-img" alt="Imagen 1">
               </a>
             </div>
             <div class="col-10 col-md-5 col-lg-4 mb-4">
