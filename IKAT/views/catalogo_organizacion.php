@@ -206,21 +206,24 @@
                         <div id="product-container" class="row justify-content-center">
                             <?php while ($producto = $result->fetch_assoc()): ?>
                                 <div class="col-6 col-md-4 mb-4">
-                                    <div class="card" style="width: 100%;">
+                                    <div class="card" style="width: 100%; height: 520px;">
                                         <a href="producto.php?id=<?= $producto['id_producto'] ?>" class="text-decoration-none">
-                                            <img src="<?= $producto['foto_producto'] ?>" class="card-img-top" alt="...">
+                                            <div class="card-img-container d-flex justify-content-center align-items-center"
+                                                style="height: 400px; overflow: hidden;">
+                                                <img src="<?= $producto['foto_producto'] ?>" class="card-img-top img-fluid"
+                                                    alt="...">
+                                            </div>
                                         </a>
-                                        <div class="card-body">
-                                            <h5 class="card-title"><?= htmlspecialchars($producto['nombre_producto']) ?>
-                                            </h5>
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title"><?= htmlspecialchars($producto['nombre_producto']) ?></h5>
                                             <h6 class="card-text">
-                                                $<?= number_format($producto['precio_unitario'], 0, ',', '.') ?></h6>
+                                                $<?= number_format($producto['precio_unitario'], 0, ',', '.') ?>
+                                            </h6>
                                             <div class="d-flex align-items-center">
                                                 <div>
                                                     <button type="button" class="btn btn-outline-secondary"
                                                         onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">
                                                         <i class="bi bi-cart-plus"></i>
-
                                                     </button>
                                                     <button type="button" class="btn btn-outline-secondary">
                                                         <i class="bi bi-heart"></i>
@@ -229,7 +232,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             <?php endwhile; ?>
                         </div>
