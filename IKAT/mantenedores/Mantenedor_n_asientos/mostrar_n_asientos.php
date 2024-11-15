@@ -22,42 +22,8 @@ unset($_SESSION['mensaje']);
 
     <div class="d-flex">
         <!-- Sidebar -->
-        <div id="sidebar" class="collapse d-lg-block">
-            <div class="accordion" id="accordionSidebar">
-                <!-- Título: Mantenedores -->
-                <div class="accordion-item">
-                    <h4 class="accordion-header" id="headingMantenedores">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#mantenedoresLinks" aria-expanded="true" aria-controls="mantenedoresLinks">
-                            Mantenedores
-                        </button>
-                    </h4>
-                    <!-- Enlaces de Mantenedores -->
-                    <div id="mantenedoresLinks" class="accordion-collapse collapse show" aria-labelledby="headingMantenedores"
-                         data-bs-parent="#accordionSidebar">
-                        <div class="accordion-body p-0">
-                            <a href="../categoria/mostrar_categoria.php" class="sidebar-link">Categorías</a>
-                            <a href="../Mantenedor_subcategorias/mostrar_subcategoria.php" class="sidebar-link">Subcategorías</a>
-                            <a href="../Mantenedor_metodo_pago/mostrar_metodo_pago.php" class="sidebar-link">Métodos de pago</a>
-                            <a href="../Mantenedor_producto/mostrar_producto.php" class="sidebar-link">Productos</a>
-                            <a href="../Mantenedor_reseña/mostrar_resenia.php" class="sidebar-link">Reseñas</a>
-                            <a href="../Mantenedor_top_ventas/mostrar_top_ventas.php" class="sidebar-link">Ventas</a>
-                            <?php if ($_SESSION['tipo_usuario'] == 'Superadmin'): ?>
-                                <a href="../Mantenedor_usuario/mostrar_usuario.php" class="sidebar-link">Usuarios</a> <?php
-                            endif; ?>
-                            <a href="../Mantenedor_n_asientos/mostrar_n_asientos.php" class="sidebar-link">N°Asientos</a>
-                            <a href="../Mantenedor_n_cajones/mostrar_n_cajones.php" class="sidebar-link">N°Cajones</a>
-                            <a href="../Mantenedor_n_plazas/mostrar_n_plazas.php" class="sidebar-link">N°Plazas</a>
-                            <a href="../Mantenedor_colores/mostrar_color.php" class="sidebar-link">Colores</a>
-                            <a href="../Mantenedor_firmezas/mostrar_firmeza.php" class="sidebar-link">Firmeza</a>
-                            <a href="../Mantenedor_materiales/mostrar_material.php" class="sidebar-link">Materiales</a>
-                            <a href="../Mantenedor_ambientes/mostrar_ambiente.php" class="sidebar-link">Ambientes</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        <?php include '../sidebar-mantenedores.php';?>
+        
         <!-- Content Area -->
         <div class="content-area flex-grow-1 p-5 col-4 col-md-10">
 
