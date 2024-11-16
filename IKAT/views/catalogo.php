@@ -56,7 +56,7 @@
                             </button>
                             <input type="text" class="form-control p-2" id="buscarInputMain"
                                 placeholder="Buscar productos..." aria-label="Buscar productos..."
-                                aria-describedby="search-addon">
+                                aria-describedby="search-addon" oninput="buscarProductos()">
                             <button class="input-group-text" id="search-addon" type="button"
                                 onclick="buscarProductos()">
                                 <i class="bi bi-search"></i>
