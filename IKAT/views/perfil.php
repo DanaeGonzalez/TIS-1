@@ -1,3 +1,37 @@
+<?php
+include '..\config\conexion.php'; // Cambia esta línea si la ruta es diferente.
+session_start();
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $nombre = $_POST['nombre'];
+    $apellido = $_POST['apellido'];
+    $telefono = $_POST['telefono'];
+    $direccion = $_POST['direccion'];
+
+    $identificador = $_SESSION['identificador'];
+
+    $query = "UPDATE usuario SET nombre_usuario='$nombre', apellido_usuario='$apellido', numero_usuario='$telefono', direccion_usuario='$direccion' 
+    WHERE correo_usuario='$identificador' OR run_usuario='$identificador'";
+
+    if ($conn->query($query)===TRUE) {
+        $_SESSION['nombre_usuario'] = $nombre;
+        $_SESSION['apellido_usuario'] = $apellido;
+        $_SESSION['numero_usuario'] = $telefono;
+        $_SESSION['direccion_usuario'] = $direccion;
+        ?>
+        <div class="alert alert-success text-center alert-dismissible fade show" role="alert">
+            Datos actualizados correctamente
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php }else { ?>
+        <div class="alert alert-danger text-center alert-dismissible fade show" role="alert">
+            Error al actualizar los datos
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php }
+}
+?>
+
 <!doctype php>
 <php lang="en">
 
@@ -27,18 +61,18 @@
                 <hr>
                 <div class="row justify-content-center">
                     <div class="col-md-8">
-                        <form>
+                        <form name="perfil" method="post">
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Puntos Totales</label>
                                 <input type="number" class="form-control bg-light" value="<?php echo htmlspecialchars($_SESSION['puntos']);?>" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Nombre</label>
-                                <input type="text" class="form-control" value="<?php echo htmlspecialchars($_SESSION['nombre_usuario']);?>" required>
+                                <input type="text" name="nombre" class="form-control" value="<?php echo htmlspecialchars($_SESSION['nombre_usuario']);?>" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Apellido</label>
-                                <input type="text" class="form-control" value="<?php echo htmlspecialchars($_SESSION['apellido_usuario']);?>" required>
+                                <input type="text" name="apellido" class="form-control" value="<?php echo htmlspecialchars($_SESSION['apellido_usuario']);?>" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">RUN</label>
@@ -50,14 +84,15 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Número de Teléfono</label>
-                                <input type="tel" class="form-control" value="<?php echo htmlspecialchars($_SESSION['numero_usuario']);?>" required>
+                                <input type="tel" name="telefono" class="form-control" required pattern="^\+569\d{8}$" title="Debe ser un número chileno de 11 dígitos, comenzando con +569" 
+                                value="<?php echo htmlspecialchars($_SESSION['numero_usuario']);?>" required>
                             </div>
                         
                             <!-- Campo de Dirección -->
                         <div class="mb-3">
                             <label class="form-label fw-bold">Dirección</label>
-                            <input type="text" id="direccion" class="form-control"
-                                placeholder="Ingresa tu dirección" required>
+                            <input type="text" name="direccion" id="direccion" class="form-control" value="<?php echo htmlspecialchars($_SESSION['direccion_usuario']);?>"
+                                placeholder="Ingresa tu dirección">
                             <button type="button" onclick="buscarDireccion()" class="btn btn-primary mt-2">Buscar en
                                 el Mapa</button>
                         </div>
@@ -72,7 +107,7 @@
                         </div>
 
                         <!-- Botón Guardar Cambios -->
-                        <div class="text-center">
+                        <div class="text-center mt-3">
                             <button type="submit" class="btn btn-dark w-50">Guardar Cambios</button>
                         </div>
                     </form>
