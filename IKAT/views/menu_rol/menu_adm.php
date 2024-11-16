@@ -150,7 +150,7 @@
         <div class="carousel-inner">
           <div class="carousel-item active">
             <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg" alt="...">
-            <div class="carousel-caption">
+            <div class="carousel-caption mx-auto">
               <h5>Muebles ideales para tu hogar</h5>
               <p>Transforma cada espacio en un rincón único y acogedor.</p>
             </div>
@@ -159,7 +159,7 @@
             <img
               src="https://images.pexels.com/photos/6969995/pexels-photo-6969995.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=5"
               class="d-block w-100 img-fluid" alt="...">
-            <div class="carousel-caption">
+            <div class="carousel-caption mx-auto">
               <h5>Muebles ideales para tu hogar</h5>
               <p>Transforma cada espacio en un rincón único y acogedor.</p>
             </div>
@@ -168,7 +168,7 @@
             <img
               src="https://images.pexels.com/photos/1571463/pexels-photo-1571463.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2   "
               class="d-block w-100 img-fluid" alt="...">
-            <div class="carousel-caption">
+            <div class="carousel-caption mx-auto">
               <h5>Muebles ideales para tu hogar</h5>
               <p>Transforma cada espacio en un rincón único y acogedor.</p>
             </div>
@@ -191,7 +191,7 @@
           <div class="row justify-content-center text-center">
             <div class="col-10 col-md-5 col-lg-4 mb-4">
               <a href="../catalogo_silla.php">
-                <img src="../assets/images/categoria_silla.png" class="img-fluid categoria-img" alt="Imagen 1">
+                <img src="../../assets/images/categoria_silla.png" class="img-fluid categoria-img" alt="Imagen 1">
               </a>
             </div>
             <div class="col-10 col-md-5 col-lg-4 mb-4">

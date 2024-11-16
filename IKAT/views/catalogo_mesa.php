@@ -184,9 +184,9 @@
                 $offset = ($paginaActual - 1) * $productosPorPagina;
 
                 // Consulta con LIMIT y OFFSET
-                $sql = "SELECT * FROM producto WHERE activo = 1  AND id_subcategoria IN 
+                $sql = "SELECT * FROM producto WHERE activo = 1 AND id_subcategoria IN 
                 (SELECT id_subcategoria FROM subcategoria JOIN categoria USING (id_categoria) 
-                WHERE nombre_categoria = 'Mesa') $productosPorPagina OFFSET $offset";
+                WHERE nombre_categoria = 'Mesa') LIMIT $productosPorPagina OFFSET $offset";
                 $result = $conn->query($sql);
 
                 // Consulta para contar el total de productos activos

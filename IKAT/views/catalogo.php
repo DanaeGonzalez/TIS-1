@@ -56,7 +56,7 @@
                             </button>
                             <input type="text" class="form-control p-2" id="buscarInputMain"
                                 placeholder="Buscar productos..." aria-label="Buscar productos..."
-                                aria-describedby="search-addon">
+                                aria-describedby="search-addon" oninput="buscarProductos()">
                             <button class="input-group-text" id="search-addon" type="button"
                                 onclick="buscarProductos()">
                                 <i class="bi bi-search"></i>
@@ -135,7 +135,7 @@
                 include_once '../config/conexion.php';
 
                 // Configuración de paginación
-                $productosPorPagina = 6; 
+                $productosPorPagina = 6;
                 $paginaActual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
                 $offset = ($paginaActual - 1) * $productosPorPagina;
 
@@ -154,6 +154,19 @@
                 // Verificar si hay resultados
                 if ($result->num_rows > 0):
                     ?>
+
+                    <!-- Alerta de éxito -->
+                    <div id="alertSuccess" class="alert alert-success alert-dismissible fade show mt-4" role="alert"
+                        style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
+                        Producto agregado al carrito!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <!-- Alerta de error -->
+                    <div id="alertError" class="alert alert-danger alert-dismissible fade show mt-4" role="alert"
+                        style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
+                        Error al agregar el producto al carrito.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
 
                     <!-- Contenedor catálogo -->
                     <div class="container mt-4">
@@ -251,9 +264,11 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            alert('Producto agregado al carrito!');
+                            document.getElementById('alertSuccess').style.display = 'block';
+                            setTimeout(() => document.getElementById('alertSuccess').style.display = 'none', 3000);
                         } else {
-                            alert('Error al agregar el producto al carrito.');
+                            document.getElementById('alertError').style.display = 'block';
+                            setTimeout(() => document.getElementById('alertError').style.display = 'none', 3000);
                         }
                     })
                     .catch((error) => {

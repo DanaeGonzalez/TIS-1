@@ -130,8 +130,5 @@ function filtrarProductos() {
                     });
                 }
             })
-            .catch(error => {
-                console.error("Error en la solicitud AJAX:", error);
-            });
     });
 }
