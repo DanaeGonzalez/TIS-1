@@ -2,15 +2,15 @@
 include 'menu_registro/auth.php';
 include_once '..\config\conexion.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_POST['id_metodo'], $_POST['total'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_POST['id_metodo'], $_POST['total_calculado'])) {
     // Capturar datos del formulario
     $id_usuario = $_SESSION['id_usuario'];
     $id_carrito = $_SESSION['id_carrito'];
     $direccion_pedido = $_POST['direccion_pedido'];
     $id_metodo = $_POST['id_metodo'];
-    $total_compra = $_POST['total'];
-    $fecha_compra = date('Y-m-d H:i:s'); // Fecha actual
-    $puntos_ganados = $total_compra * 0.1; // (10% del total)
+    $total_compra = $_POST['total_calculado'];
+    $fecha_compra = date('Y-m-d H:i:s');
+    $puntos_ganados = $total_compra * 0.05;
 
     // Insertar en la base de datos
     $query = "INSERT INTO compra (id_compra, fecha_compra, total_compra, puntos_ganados, tipo_estado, direccion_pedido, id_metodo, id_usuario, id_carrito) 
@@ -19,15 +19,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     if ($conn->query($query) === TRUE) {
         echo "Compra registrada exitosamente.";
         header("Location: https://localhost/xampp/TIS-1/IKAT/vendor/transbank/transbank-sdk/examples/webpay-plus/index.php?action=create");
-        exit;
-
-        // Redirigir a la página de pago o mostrar confirmación
     } else {
         echo "Error: " . $query . "<br>" . $conn->error;
     }
 } else {
 
-    $total = $_POST['total'] ?? 0; // Obtiene el total enviado desde el carrito
+    $total = $_POST['total'] ?? 0;
 
     // Obtener métodos de pago
     $query_metodo = "SELECT * FROM metodo_pago WHERE activo = 1";
@@ -67,6 +64,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                             <form method="POST" action="procesarCompra.php">
                                 <!-- Campo oculto para enviar el total de la compra -->
                                 <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
+
+                                <!-- Campo oculto para el total calculado -->
+                                <input type="hidden" id="totalCalculado" name="total_calculado"
+                                    value="<?= htmlspecialchars($total); ?>">
+
+                                <input type="hidden" id="valorEnvioInput" name="valor_envio" value="0">
+
+
 
                                 <!-- Campo oculto para el subtotal original -->
                                 <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
@@ -118,6 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                             </form>
                         </div>
 
+                        <!-- Resumen de la Compra -->
                         <div class="col-md-4 mb-4 p-4 border bg-light rounded shadow-sm resumen-compra">
                             <h3 class="mb-4 text-center">Resumen de la Compra</h3>
                             <ul class="list-group">
@@ -128,19 +134,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
                                     Envío<span id="valorEnvio">$0.00</span>
-                                    <!-- El formato ahora se actualizará dinámicamente -->
+                                </li>
+                                <li
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+                                    Impuestos<span id="valorImpuestos">$0.00</span>
                                 </li>
 
                                 <li
-                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                    Impuestos<span>$0.00</span>
-                                </li>
-                                <li
                                     class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
-                                    Total<span>$<?= number_format(floor($total), 0, '', '.') ?></span>
+                                    Total<span
+                                        id="totalConEnvioImpuestos">$<?= number_format(floor($total), 0, '', '.') ?></span>
                                 </li>
                             </ul>
                         </div>
+
 
                     </div>
                 </div>
@@ -148,30 +155,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
             <?php include '../templates/footer.php'; ?>
         </div>
-        <?php
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_POST['id_metodo'], $_POST['total_calculado'])) {
-            // Capturar datos del formulario
-            $id_usuario = $_SESSION['id_usuario'];
-            $id_carrito = $_SESSION['id_carrito'];
-            $direccion_pedido = $_POST['direccion_pedido'];
-            $id_metodo = $_POST['id_metodo'];
-            $total_compra = $_POST['total_calculado']; // Usa el total calculado
-            $fecha_compra = date('Y-m-d H:i:s'); // Fecha actual
-            $puntos_ganados = $total_compra * 0.1; // (10% del total)
-    
-            // Insertar en la base de datos
-            $query = "INSERT INTO compra (id_compra, fecha_compra, total_compra, puntos_ganados, tipo_estado, direccion_pedido, id_metodo, id_usuario, id_carrito) 
-                      VALUES (NULL, '$fecha_compra', '$total_compra', '$puntos_ganados', '', '$direccion_pedido', '$id_metodo', '$id_usuario', '$id_carrito')";
-
-            if ($conn->query($query) === TRUE) {
-                echo "Compra registrada exitosamente.";
-                header("Location: https://localhost/xampp/TIS-1/IKAT/vendor/transbank/transbank-sdk/examples/webpay-plus/index.php?action=create");
-                exit;
-            } else {
-                echo "Error: " . $query . "<br>" . $conn->error;
-            }
-        }
-        ?>
         <?php $conn->close();
 } ?>
 
@@ -219,11 +202,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
         }
 
         function distancia(lat2, lng2) {
-            // Punto fijo (latitud y longitud)
             const lat1 = -36.80696177670701;
             const lng1 = -73.04647662462334;
-
-            const R = 6371; // Radio de la Tierra en km
+            const R = 6371;
 
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLng = (lng2 - lng1) * Math.PI / 180;
@@ -233,59 +214,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                 Math.sin(dLng / 2) * Math.sin(dLng / 2);
 
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            const distancia = R * c;
+            const distancia_km = R * c;
 
-            // Mostrar la distancia en el HTML
-            document.getElementById('distancia').textContent = `Distancia: ${distancia.toFixed(2)} km`;
+            const valorEnvio = Math.round(distancia_km * 1500);
 
-            // Llamar a la función para calcular el valor del envío
-            valor_envio(distancia);
+            document.getElementById('valorEnvioInput').value = valorEnvio;
+            document.getElementById('valorEnvio').textContent = `$${formatNumber(valorEnvio)}`;
+            calcularTotal();
         }
 
-        // Almacenar el valor del envío en una variable
-        let costoEnvio = 0; // 
-
-        function valor_envio(distancia) {
-            // Verificar si la distancia está en km
-            if (typeof distancia === "number" && distancia >= 0) {
-                const tarifaBase = 1500;
-                costoEnvio = Math.round((distancia * 1500) + tarifaBase); // Almacena el costo de envío en la variable
-                const valorEnvioElement = document.getElementById('valorEnvio');
-
-                if (valorEnvioElement) {
-                    valorEnvioElement.textContent = `$ ${costoEnvio.toLocaleString('es-CL')}`; // Formato similar al subtotal
-                } else {
-                    console.error("Error: No se encontró el elemento para mostrar el valor del envío.");
-                }
-                calcularTotal(); // Llama a la función para calcular el total
-            } else {
-                console.error("Error: La distancia debe estar en kilómetros.");
-                const valorEnvioElement = document.getElementById('valorEnvio');
-                if (valorEnvioElement) {
-                    valorEnvioElement.textContent = "Error en el cálculo del valor del envío.";
-                }
-            }
-        }
 
 
         function calcularTotal() {
             const subtotal = parseFloat('<?= number_format(floor($total), 0, '', '.') ?>'.replace(/\./g, '').replace('$', '')); // Obtiene el subtotal desde PHP
-            const impuestos = 0;
-            const totalFinal = subtotal + costoEnvio + impuestos;
+            const tasaImpuestos = 0.02;
+            const valorEnvio = parseFloat(document.getElementById('valorEnvioInput').value) || 0;
 
-            // Actualiza el total 
-            const totalElement = document.querySelector('.resumen-compra .list-group-item:last-child span');
-            if (totalElement) {
-                totalElement.textContent = `$ ${totalFinal.toLocaleString('es-CL')}`; // Formato para total
-            }
+            // Calcular impuestos
+            const impuestos = subtotal * tasaImpuestos;
 
-            // Guarda el total calculado 
-            const totalInput = document.getElementById('total_calculado');
-            if (totalInput) {
-                totalInput.value = totalFinal;
-            }
+            // Calcular el total final
+            const totalFinal = subtotal + impuestos + valorEnvio;
+
+            // Actualiza el valor de impuestos y el total en la interfaz
+            document.getElementById('valorImpuestos').textContent = `$${formatNumber(impuestos)}`;
+            document.querySelector('.list-group-item.fw-bold span').textContent = `$${formatNumber(totalFinal)}`;
+            document.getElementById('totalCalculado').value = totalFinal;
+
         }
 
+        function formatNumber(num) {
+            return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
 
     </script>
 </body>
