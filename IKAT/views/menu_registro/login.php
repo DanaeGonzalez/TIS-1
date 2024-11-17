@@ -30,7 +30,30 @@ if (isset($_POST['identificador'])) {
             $_SESSION['puntos'] = $user['puntos_totales'];
             $_SESSION['activo'] = $user['activo'];
             $_SESSION['id_carrito'] = $user['id_carrito'];
-            $_SESSION['id_usuario'] = $user['id_usuario'];
+
+            // Buscar el id_lista_deseos en la base de datos
+            $id_usuario = $_SESSION['id_usuario'];
+            $query_lista = "SELECT id_lista_deseos FROM lista_de_deseos WHERE id_usuario = ?";
+            $stmt_lista = $conn->prepare($query_lista);
+            $stmt_lista->bind_param('i', $id_usuario);
+            $stmt_lista->execute();
+            $stmt_lista->bind_result($id_lista_deseos);
+            $stmt_lista->fetch();
+            $stmt_lista->close();
+
+            // Si no existe una lista de deseos, crea una nueva y obtiene su id
+            if (!$id_lista_deseos) {
+                $query_insert = "INSERT INTO lista_de_deseos (id_usuario) VALUES (?)";
+                $stmt_insert = $conn->prepare($query_insert);
+                $stmt_insert->bind_param('i', $id_usuario);
+                if ($stmt_insert->execute()) {
+                    $id_lista_deseos = $stmt_insert->insert_id;
+                }
+                $stmt_insert->close();
+            }
+
+            // Almacena el id_lista_deseos en la sesión
+            $_SESSION['id_lista_deseos'] = $id_lista_deseos;
 
             // Redireccionar según el tipo de usuario
             if ($_SESSION['tipo_usuario'] == 'Registrado') {

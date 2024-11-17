@@ -180,3 +180,24 @@ button.btn.btn-outline-dark:hover {
   align-items: center;
   justify-content: center;
 }
+
+
+/* Botón de agregar al carrito (hover verde) */
+.carrito-btn:hover {
+    background-color: #2d5b38;
+    border-color: #2d5b38;
+}
+
+.carrito-btn:hover i {
+    color: white;
+}
+
+/* Botón de agregar a la lista de deseos (hover rojo) */
+.lista-deseos-btn:hover {
+    background-color: #c22131;
+    border-color: #c22131;
+}
+
+.lista-deseos-btn:hover i {
+    color: white;
+}

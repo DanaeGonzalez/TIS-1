@@ -188,11 +188,13 @@
                                             </h6>
                                             <div class="d-flex align-items-center">
                                                 <div>
-                                                    <button type="button" class="btn btn-outline-secondary"
+                                                    <button type="button" class="btn btn-secondary carrito-btn"
                                                         onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">
                                                         <i class="bi bi-cart-plus"></i>
                                                     </button>
-                                                    <button type="button" class="btn btn-outline-secondary">
+
+                                                    <button type="button" class="btn btn-secondary lista-deseos-btn"
+                                                        onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
                                                         <i class="bi bi-heart"></i>
                                                     </button>
                                                 </div>
@@ -279,6 +281,33 @@
                         console.error('Error:', error);
                     });
             }
+        </script>
+        <script>
+            function agregarAListaDeDeseos(productId) {
+                fetch('../assets/php/agregarAdeseos.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id_producto: productId })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('alertSuccess').style.display = 'block';
+                            document.getElementById('alertSuccess').textContent = 'Producto agregado a la lista de deseos!';
+                            setTimeout(() => document.getElementById('alertSuccess').style.display = 'none', 3000);
+                        } else {
+                            document.getElementById('alertError').style.display = 'block';
+                            document.getElementById('alertError').textContent = data.message || 'Error al agregar el producto a la lista de deseos.';
+                            setTimeout(() => document.getElementById('alertError').style.display = 'none', 3000);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+
         </script>
 
     </body>
