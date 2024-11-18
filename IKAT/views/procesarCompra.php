@@ -2,15 +2,15 @@
 include 'menu_registro/auth.php';
 include_once '..\config\conexion.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_POST['id_metodo'], $_POST['total'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_POST['id_metodo'], $_POST['total_calculado'])) {
     // Capturar datos del formulario
     $id_usuario = $_SESSION['id_usuario'];
     $id_carrito = $_SESSION['id_carrito'];
     $direccion_pedido = $_POST['direccion_pedido'];
     $id_metodo = $_POST['id_metodo'];
-    $total_compra = $_POST['total'];
-    $fecha_compra = date('Y-m-d H:i:s'); // Fecha actual
-    $puntos_ganados = $total_compra * 0.1; // (10% del total)
+    $total_compra = $_POST['total_calculado'];
+    $fecha_compra = date('Y-m-d H:i:s');
+    $puntos_ganados = $total_compra * 0.05;
 
     // Insertar en la base de datos
     $query = "INSERT INTO compra (id_compra, fecha_compra, total_compra, puntos_ganados, tipo_estado, direccion_pedido, id_metodo, id_usuario, id_carrito) 
@@ -19,18 +19,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     if ($conn->query($query) === TRUE) {
         echo "Compra registrada exitosamente.";
         header("Location: https://localhost/xampp/TIS-1/IKAT/vendor/transbank/transbank-sdk/examples/webpay-plus/index.php?action=create");
-        exit;
-                
-
-
-
-        // Redirigir a la página de pago o mostrar confirmación
     } else {
         echo "Error: " . $query . "<br>" . $conn->error;
     }
 } else {
 
-    $total = $_POST['total'] ?? 0; // Obtiene el total enviado desde el carrito
+    $total = $_POST['total'] ?? 0;
 
     // Obtener métodos de pago
     $query_metodo = "SELECT * FROM metodo_pago WHERE activo = 1";
@@ -47,6 +41,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="../assets/css/styles.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="../assets/css/payButton.css">
     </head>
 
     <body>
@@ -64,12 +64,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 <!-- Campo oculto para enviar el total de la compra -->
                                 <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
 
-                                <!-- Dirección de Envío -->
+                                <!-- Campo oculto para el total calculado -->
+                                <input type="hidden" id="totalCalculado" name="total_calculado"
+                                    value="<?= htmlspecialchars($total); ?>">
+
+                                <input type="hidden" id="valorEnvioInput" name="valor_envio" value="0">
+
+
+
+                                <!-- Campo oculto para el subtotal original -->
+                                <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
+                                <!-- Contenedor de la barra de búsqueda -->
                                 <div class="mb-3">
-                                    <label for="direccion_pedido" class="form-label ">Dirección de Envío</label>
-                                    <input type="text" class="form-control" id="direccion_pedido" name="direccion_pedido"
-                                        required>
+                                    <label class="form-label fw-bold">Dirección</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="direccion" name="direccion_pedido"
+                                            placeholder="Av. Alonso de Ribera 2850" required>
+                                        <button class="input-group-text bg-secondary text-white" type="button"
+                                            onclick="buscarDireccion()">
+                                            <i class="bi bi-search"></i>
+                                        </button>
+                                    </div>
                                 </div>
+
+                                <!-- Mapa -->
+                                <div id="map" style="width: 100%; height: 300px;"></div>
 
                                 <!-- Método de Pago -->
                                 <div class="mb-3">
@@ -80,19 +99,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                         <?php endwhile; ?>
                                     </select>
                                 </div>
-
+                                <!-- Área para mostrar coordenadas y distancia -->
+                                <div id="coordenadas" style="display: none;" class="mt-3">
+                                    <p id="latitud">Latitud: </p>
+                                    <p id="longitud">Longitud: </p>
+                                    <p id="distancia"></p>
+                                </div>
                                 <form action="../vendor/transbank/transbank-sdk/examples/index.php?action=create"
                                     method="post">
                                     <!-- Agrega campos adicionales aquí, si necesitas pasar más información -->
 
                                     <!-- Botón para continuar con el pago -->
-                                    <button type="submit" class="btn btn-dark w-100 mt-3 mb-4">Continuar con el
-                                        pago</button>
+                                    <button type="submit" class="BtnPay mt-3 mb-4">
+                                        Continuar con el pago
+                                        <svg class="svgIcon" viewBox="0 0 576 512">
+                                            <path
+                                                d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
+                                            </path>
+                                        </svg>
+                                    </button>
                                 </form>
-
                             </form>
                         </div>
 
+                        <!-- Resumen de la Compra -->
                         <div class="col-md-4 mb-4 p-4 border bg-light rounded shadow-sm resumen-compra">
                             <h3 class="mb-4 text-center">Resumen de la Compra</h3>
                             <ul class="list-group">
@@ -102,31 +132,121 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 </li>
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                    Envío<span>$0.00</span>
+                                    Envío<span id="valorEnvio">$0.00</span>
                                 </li>
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                    Impuestos<span>$0.00</span>
+                                    Impuestos<span id="valorImpuestos">$0.00</span>
                                 </li>
+
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
-                                    Total<span>$<?= number_format(floor($total), 0, '', '.') ?></span>
+                                    Total<span
+                                        id="totalConEnvioImpuestos">$<?= number_format(floor($total), 0, '', '.') ?></span>
                                 </li>
                             </ul>
                         </div>
+
+
                     </div>
                 </div>
             </div>
 
             <?php include '../templates/footer.php'; ?>
         </div>
-
         <?php $conn->close();
 } ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+
+    <script>
+        let map = L.map('map').setView([-36.79849246501831, -73.05592193108434], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            Zoom: 15,
+        }).addTo(map);
+
+        let marker = L.marker([-36.79849246501831, -73.05592193108434]).addTo(map);
+
+        function buscarDireccion() {
+            const direccion = document.getElementById('direccion').value;
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        const ubicacion = data[0];
+                        const lat = parseFloat(ubicacion.lat);
+                        const lng = parseFloat(ubicacion.lon);
+
+                        map.setView([lat, lng], 12);
+                        marker.setLatLng([lat, lng]);
+
+                        // Mostrar latitud y longitud
+                        document.getElementById('latitud').textContent = `Latitud: ${lat}`;
+                        document.getElementById('longitud').textContent = `Longitud: ${lng}`;
+
+                        // Llamar a la función de distancia con las coordenadas obtenidas
+                        distancia(lat, lng);
+                    } else {
+                        alert('No se pudo encontrar la dirección.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Ocurrió un error al buscar la dirección.');
+                });
+        }
+
+        function distancia(lat2, lng2) {
+            const lat1 = -36.80696177670701;
+            const lng1 = -73.04647662462334;
+            const R = 6371;
+
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLng / 2) * Math.sin(dLng / 2);
+
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const distancia_km = R * c;
+
+            const valorEnvio = Math.round(distancia_km * 1500);
+
+            document.getElementById('valorEnvioInput').value = valorEnvio;
+            document.getElementById('valorEnvio').textContent = `$${formatNumber(valorEnvio)}`;
+            calcularTotal();
+        }
+
+
+
+        function calcularTotal() {
+            const subtotal = parseFloat('<?= number_format(floor($total), 0, '', '.') ?>'.replace(/\./g, '').replace('$', '')); // Obtiene el subtotal desde PHP
+            const tasaImpuestos = 0.02;
+            const valorEnvio = parseFloat(document.getElementById('valorEnvioInput').value) || 0;
+
+            // Calcular impuestos
+            const impuestos = subtotal * tasaImpuestos;
+
+            // Calcular el total final
+            const totalFinal = subtotal + impuestos + valorEnvio;
+
+            // Actualiza el valor de impuestos y el total en la interfaz
+            document.getElementById('valorImpuestos').textContent = `$${formatNumber(impuestos)}`;
+            document.querySelector('.list-group-item.fw-bold span').textContent = `$${formatNumber(totalFinal)}`;
+            document.getElementById('totalCalculado').value = totalFinal;
+
+        }
+
+        function formatNumber(num) {
+            return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+    </script>
 </body>
 
 </html>

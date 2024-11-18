@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-11-2024 a las 06:15:49
+-- Tiempo de generación: 04-11-2024 a las 06:58:51
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -70,7 +70,11 @@ CREATE TABLE `carrito` (
 --
 
 INSERT INTO `carrito` (`id_carrito`) VALUES
-(1);
+(1),
+(2),
+(3),
+(4),
+(5);
 
 -- --------------------------------------------------------
 
@@ -89,6 +93,7 @@ CREATE TABLE `carrito_producto` (
 --
 
 INSERT INTO `carrito_producto` (`id_carrito`, `id_producto`, `cantidad_producto`) VALUES
+(1, 5, 2),
 (1, 6, 1);
 
 -- --------------------------------------------------------
@@ -135,7 +140,8 @@ INSERT INTO `color` (`id_color`, `nombre_color`, `codigo_hex`) VALUES
 (3, 'Negro', NULL),
 (4, 'Blanco', NULL),
 (5, 'Gris', NULL),
-(6, 'Cafe', NULL);
+(6, 'Cafe', NULL),
+(7, 'Multicolor', NULL);
 
 -- --------------------------------------------------------
 
@@ -154,6 +160,14 @@ CREATE TABLE `compra` (
   `id_usuario` int(100) NOT NULL,
   `id_carrito` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `compra`
+--
+
+INSERT INTO `compra` (`id_compra`, `fecha_compra`, `total_compra`, `puntos_ganados`, `tipo_estado`, `direccion_pedido`, `id_metodo`, `id_usuario`, `id_carrito`) VALUES
+(1, '2024-11-04', 50980, 5098, '', 'Timor del este', 5, 1, 1),
+(2, '2024-11-04', 50980, 5098, '', 'Timor del este', 5, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -183,7 +197,11 @@ INSERT INTO `control_stock` (`id_control`, `id_producto`, `cantidad`, `motivo`, 
 (6, 3, 1, 'Ingreso', 'a', '2024-11-01 19:27:21'),
 (7, 3, 14, 'Salida', 'a', '2024-11-01 19:28:09'),
 (8, 3, 10, 'Ingreso', 'a', '2024-11-01 19:30:15'),
-(9, 3, 12, 'Ingreso', 'qweqwe', '2024-11-02 19:59:05');
+(9, 3, 12, 'Ingreso', 'qweqwe', '2024-11-02 19:59:05'),
+(10, 9, 4, 'Ingreso', 'Llegan productos a nuestra bodega n° de envio 1', '2024-11-04 05:57:57'),
+(11, 5, 15, 'Ingreso', 'Llegan productos a nuestra bodega n° de envio 1', '2024-11-04 05:58:11'),
+(12, 6, 31, 'Ingreso', 'Llegan productos a nuestra bodega n° de envio 1', '2024-11-04 05:58:23'),
+(13, 8, 12, 'Ingreso', 'Llegan productos a nuestra bodega n° de envio 1', '2024-11-04 05:58:36');
 
 -- --------------------------------------------------------
 
@@ -300,7 +318,9 @@ CREATE TABLE `metodo_pago` (
 --
 
 INSERT INTO `metodo_pago` (`id_metodo`, `nombre_metodo`, `activo`) VALUES
-(5, 'Paypal', 1);
+(5, 'Paypal', 1),
+(6, 'Crédito', 1),
+(7, 'Debito', 1);
 
 -- --------------------------------------------------------
 
@@ -413,13 +433,15 @@ CREATE TABLE `producto` (
 
 INSERT INTO `producto` (`id_producto`, `nombre_producto`, `precio_unitario`, `stock_producto`, `descripcion_producto`, `foto_producto`, `cantidad_vendida`, `top_venta`, `activo`, `id_subcategoria`) VALUES
 (3, 'Cama gato', 25990, 10, 'Una linda camita para tu felino :3 miau', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/127645737_01/w=1500,h=1500,fit=pad', 0, 0, 1, 5),
-(5, 'Mesa roble', 30990, 0, 'Una mesa de roble barnizada', 'https://www.cic.cl/dw/image/v2/BDXB_PRD/on/demandware.static/-/Sites-masterCatalog_CIC/es_CL/dw742de45c/original/images/products/mesa-centro-nuble-caramelo-110x70x40-cm-01.jpg?sw=1500&sh=1500&sm=fit', 0, 0, 1, 3),
-(6, 'Pluma Silla de Cuero y Madera', 19990, 0, 'Una silla de madera con sillones de cuero', 'https://www.cueroydiseno.cl/wp-content/uploads/2021/04/sillapluma-scaled.jpg', 0, 0, 1, 2),
-(7, 'cama estructural con 2 cajones MALM', 369980, 0, 'Una elegante cama de color con dos cajones en la parte de abajo', 'https://www.ikea.com/cl/es/images/products/malm-cama-estructural-con-2-cajones-negro-loenset__1101552_pe866728_s5.jpg?f=s', 0, 0, 1, 4),
-(8, 'Cajonera Alex', 79990, 0, 'Una cajonera muy elegante.', 'https://www.ikea.com/cl/es/images/products/alex-cajonera-negro__0977786_pe813770_s5.jpg?f=s', 0, 0, 1, 6),
-(9, 'Silla de escritorio MARKUS', 119990, 0, 'Una elegante silla de color blanco ideal para tu escritorio de trabajo.', 'https://www.ikea.com/cl/es/images/products/markus-silla-escritorio-vissle-gris-claro__1101440_pe866425_s5.jpg?f=s', 0, 0, 1, 7),
+(5, 'Mesa roble', 30990, 15, 'Una mesa de roble barnizada', 'https://www.cic.cl/dw/image/v2/BDXB_PRD/on/demandware.static/-/Sites-masterCatalog_CIC/es_CL/dw742de45c/original/images/products/mesa-centro-nuble-caramelo-110x70x40-cm-01.jpg?sw=1500&sh=1500&sm=fit', 0, 0, 1, 3),
+(6, 'Pluma Silla de Cuero y Madera', 19990, 31, 'Una silla de madera con sillones de cuero', 'https://www.cueroydiseno.cl/wp-content/uploads/2021/04/sillapluma-scaled.jpg', 0, 0, 1, 2),
+(7, 'Cama estructural MALM', 369980, 0, 'Una elegante cama de color con dos cajones en la parte de abajo', 'https://www.ikea.com/cl/es/images/products/malm-cama-estructural-con-2-cajones-negro-loenset__1101552_pe866728_s5.jpg?f=s', 0, 0, 1, 4),
+(8, 'Cajonera Alex', 79990, 12, 'Una cajonera muy elegante.', 'https://www.ikea.com/cl/es/images/products/alex-cajonera-negro__0977786_pe813770_s5.jpg?f=s', 0, 0, 1, 6),
+(9, 'Silla de escritorio MARKUS', 119990, 4, 'Una elegante silla de color blanco ideal para tu escritorio de trabajo.', 'https://www.ikea.com/cl/es/images/products/markus-silla-escritorio-vissle-gris-claro__1101440_pe866425_s5.jpg?f=s', 0, 0, 1, 7),
 (10, 'Clóset Rakkestad', 119990, 0, 'Sencillo y práctico. Un clóset que ofrece todas las funciones básicas. Y si te falta espacio de almacenaje, puedes añadir otro clóset de la serie RAKKESTAD.', 'https://www.ikea.com/cl/es/images/products/rakkestad-closet-con-2-puertas-negro__0780372_pe760493_s5.jpg?f=s', 0, 0, 1, 8),
-(11, 'Buffet blanco VIHALS', 159990, 0, 'Los dos cajones te permiten organizar tus cosas fácilmente, y tienes más espacio en las repisas detrás de las puertas.', 'https://www.ikea.com/cl/es/images/products/vihals-buffet-blanco__1035578_pe838113_s5.jpg?f=s', 0, 0, 1, 9);
+(11, 'Buffet blanco VIHALS', 159990, 0, 'Los dos cajones te permiten organizar tus cosas fácilmente, y tienes más espacio en las repisas detrás de las puertas.', 'https://www.ikea.com/cl/es/images/products/vihals-buffet-blanco__1035578_pe838113_s5.jpg?f=s', 0, 0, 1, 9),
+(12, 'ESCRITORIO PERAL', 69990, 0, 'Un escritorio para tu computador perfecto para que hagas todas tus tareas.', 'https://ideamarketspa.cl/wp-content/uploads/2022/01/ESCRITORIO-2.png', 0, 0, 1, 1),
+(13, 'Estante billy', 59990, 0, 'Según nuestros cálculos, cada 5 segundos se vende un estante BILLY en algún lugar del mundo. Un dato impresionante, y más teniendo en cuenta que lanzamos BILLY en 1979. Es la opción preferida por los lectores y nunca se pasa de moda.', 'https://www.ikea.com/cl/es/images/products/billy-estante-blanco__0625599_pe692385_s5.jpg?f=s', 0, 0, 1, 10);
 
 -- --------------------------------------------------------
 
@@ -443,7 +465,9 @@ INSERT INTO `producto_ambiente` (`id_producto`, `id_ambiente`) VALUES
 (8, 5),
 (9, 5),
 (10, 5),
-(11, 6);
+(11, 6),
+(12, 5),
+(13, 5);
 
 -- --------------------------------------------------------
 
@@ -468,7 +492,9 @@ INSERT INTO `producto_color` (`id_producto`, `id_color`) VALUES
 (8, 3),
 (9, 4),
 (10, 3),
-(11, 4);
+(11, 4),
+(12, 6),
+(13, 4);
 
 -- --------------------------------------------------------
 
@@ -497,7 +523,8 @@ CREATE TABLE `producto_forma` (
 --
 
 INSERT INTO `producto_forma` (`id_producto`, `id_forma`) VALUES
-(5, 1);
+(5, 1),
+(12, 1);
 
 -- --------------------------------------------------------
 
@@ -521,7 +548,9 @@ INSERT INTO `producto_material` (`id_producto`, `id_material`) VALUES
 (8, 1),
 (9, 2),
 (10, 1),
-(11, 1);
+(11, 1),
+(12, 1),
+(13, 1);
 
 -- --------------------------------------------------------
 
@@ -539,7 +568,8 @@ CREATE TABLE `producto_n_asientos` (
 --
 
 INSERT INTO `producto_n_asientos` (`id_producto`, `id_n_asientos`) VALUES
-(5, 6);
+(5, 6),
+(12, 1);
 
 -- --------------------------------------------------------
 
@@ -559,7 +589,8 @@ CREATE TABLE `producto_n_cajones` (
 INSERT INTO `producto_n_cajones` (`id_producto`, `id_n_cajones`) VALUES
 (8, 2),
 (10, 2),
-(11, 3);
+(11, 3),
+(13, 3);
 
 -- --------------------------------------------------------
 
@@ -589,10 +620,22 @@ CREATE TABLE `resenia` (
   `id_resenia` int(100) NOT NULL,
   `calificacion` int(1) NOT NULL,
   `comentario` text DEFAULT NULL,
+  `razon` text NOT NULL,
   `activo` tinyint(1) NOT NULL,
   `id_usuario` int(100) NOT NULL,
   `id_producto` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `resenia`
+--
+
+INSERT INTO `resenia` (`id_resenia`, `calificacion`, `comentario`, `razon`, `activo`, `id_usuario`, `id_producto`) VALUES
+(5, 5, 'A mi gatito le encanta esta cama', '', 1, 1, 3),
+(6, 5, 'AMOOO ESTA CAMA OMG MÁXIMO LA ADORA TAMBIEN esta muy feliz!!!1', '', 1, 3, 3),
+(7, 3, 'La mesa se se raya muy facilmente, el barniz deja mucho que desear', '', 1, 4, 5),
+(8, 4, 'La silla es bastante elegante, nada mas que decir.', '', 1, 1, 6),
+(9, 1, 'Esta cajonera no sirve para nada es inutil.', '', 1, 5, 8);
 
 -- --------------------------------------------------------
 
@@ -611,7 +654,7 @@ CREATE TABLE `subcategoria` (
 --
 
 INSERT INTO `subcategoria` (`id_subcategoria`, `nombre_subcategoria`, `id_categoria`) VALUES
-(1, 'Escritorio', 5),
+(1, 'Escritorio', 6),
 (2, 'Silla', 5),
 (3, 'Mesa', 6),
 (4, 'Cama', 8),
@@ -619,7 +662,8 @@ INSERT INTO `subcategoria` (`id_subcategoria`, `nombre_subcategoria`, `id_catego
 (6, 'Cajonera', 9),
 (7, 'Silla de escritorio', 5),
 (8, 'Clóset', 9),
-(9, 'Buffet', 9);
+(9, 'Buffet', 9),
+(10, 'Estante', 9);
 
 -- --------------------------------------------------------
 
@@ -648,7 +692,11 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `run_usuario`, `correo_usuario`, `numero_usuario`, `contrasenia_usuario`, `direccion_usuario`, `tipo_usuario`, `puntos_totales`, `activo`, `ultima_sesion`, `id_carrito`) VALUES
-(1, 'Javier', 'Pino', '208460730', 'jpinoh@ing.ucsc.cl', '+56932365067', '$2y$10$FleiHYb0jPoueiI064rr1O92e30.3Ss5imRAI1yxRsqm4wEW47Qle', NULL, 'Superadmin', 0, 1, '2024-11-02', 1);
+(1, 'Javier', 'Pino', '208460730', 'jpinoh@ing.ucsc.cl', '+56932365067', '$2y$10$FleiHYb0jPoueiI064rr1O92e30.3Ss5imRAI1yxRsqm4wEW47Qle', NULL, 'Superadmin', 0, 1, '2024-11-04', 1),
+(2, 'Camilo', 'Campos', '21233765k', 'ccamposg@ing.ucsc.cl', '+56988275096', '$2y$10$VJN9UetBgsVYRfajlvPta.eMaldA5iwrpW7dI/YGrOD907azjhH4.', NULL, 'Admin', 0, 1, '2024-11-04', 2),
+(3, 'Danae', 'Gonzalez', '210653163', 'dgonzalezv@ing.ucsc.cl', '+56931173800', '$2y$10$vKXZksm8sGgg9G/HurQZL.ycLlY7SAfGk/UNYPYpqHbIM2tEG865u', NULL, 'Registrado', 0, 1, '2024-11-04', 3),
+(4, 'Maicol', 'Ramirez', '212725021', 'mramirezm@ing.ucsc.cl', '+56968365262', '$2y$10$TmwGuN5O6N37SQKbc9Dy2OXVUoXIoe44XiO7DAIis/MZO6mGZWSFS', NULL, 'Registrado', 0, 1, '2024-11-04', 4),
+(5, 'Cesar', 'Avendaño', '210720537', 'cavendano@ing.ucsc.cl', '+56982911751', '$2y$10$m2jXyIr62WdI0mhv2OXC1uUvX79Y7x6RVjyXCgTolZd9ZQuyXlwrq', NULL, 'Registrado', 0, 1, '2024-11-04', 5);
 
 --
 -- Índices para tablas volcadas
@@ -883,7 +931,7 @@ ALTER TABLE `boleta`
 -- AUTO_INCREMENT de la tabla `carrito`
 --
 ALTER TABLE `carrito`
-  MODIFY `id_carrito` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_carrito` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `categoria`
@@ -895,19 +943,19 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de la tabla `color`
 --
 ALTER TABLE `color`
-  MODIFY `id_color` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_color` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `compra`
 --
 ALTER TABLE `compra`
-  MODIFY `id_compra` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_compra` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `control_stock`
 --
 ALTER TABLE `control_stock`
-  MODIFY `id_control` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_control` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `envio`
@@ -943,7 +991,7 @@ ALTER TABLE `material`
 -- AUTO_INCREMENT de la tabla `metodo_pago`
 --
 ALTER TABLE `metodo_pago`
-  MODIFY `id_metodo` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_metodo` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `n_asientos`
@@ -973,25 +1021,25 @@ ALTER TABLE `oferta`
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id_producto` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_producto` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `resenia`
 --
 ALTER TABLE `resenia`
-  MODIFY `id_resenia` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_resenia` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `subcategoria`
 --
 ALTER TABLE `subcategoria`
-  MODIFY `id_subcategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_subcategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id_usuario` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_usuario` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Restricciones para tablas volcadas

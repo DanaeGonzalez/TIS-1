@@ -14,10 +14,10 @@ function generarDropdown($nombreDropdown, $nombreTabla, $columnaId, $columnaNomb
 
     if ($result && $result->num_rows > 0) {
         while ($fila = $result->fetch_assoc()) {
-            echo "<label class='dropdown-item'><input type='checkbox' name='{$nombreDropdown}[]' value='" . $fila[$columnaId] . "'> " . $fila[$columnaNombre] . "</label>";
+            echo "<label class='dropdown-item'><input type='checkbox' name='{$nombreDropdown}' value='" . $fila[$columnaNombre] . "'> " . $fila[$columnaNombre] . "</label>";
         }
     } else {
         echo "<span class='dropdown-item text-muted'>No hay opciones disponibles o hubo un error en la consulta</span>";
     }
 }
-?>
+

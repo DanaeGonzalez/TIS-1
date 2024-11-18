@@ -25,4 +25,4 @@ if (isset($_GET['buscar'])) {
     }
     
 }
-
+?>

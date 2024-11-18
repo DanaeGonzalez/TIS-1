@@ -93,7 +93,7 @@ function obtenerCaracteristicasProducto($conn, $idProducto) {
     if ($stmtPlazas->execute()) {
         $result = $stmtPlazas->get_result();
         while ($row = $result->fetch_assoc()) {
-            $caracteristicas[] = "N° de plazas: " . $row['tamaño_plazas'];
+            $caracteristicas[] = "N° de plazas: " . $row['tamaño_plaza'];
         }
     }
     $stmtPlazas->close();
