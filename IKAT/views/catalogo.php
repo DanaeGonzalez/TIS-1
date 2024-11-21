@@ -173,34 +173,40 @@
                         <div id="product-container" class="row justify-content-center">
                             <?php while ($producto = $result->fetch_assoc()): ?>
                                 <div class="col-6 col-md-4 mb-4">
-                                    <div class="card" style="width: 100%;">
+                                    <div class="card" style="width: 100%; height: 520px;">
                                         <a href="producto.php?id=<?= $producto['id_producto'] ?>" class="text-decoration-none">
-                                            <img src="<?= $producto['foto_producto'] ?>" class="card-img-top" alt="...">
+                                            <div class="card-img-container d-flex justify-content-center align-items-center"
+                                                style="height: 400px; overflow: hidden;">
+                                                <img src="<?= $producto['foto_producto'] ?>" class="card-img-top img-fluid"
+                                                    alt="...">
+                                            </div>
                                         </a>
-                                        <div class="card-body">
-                                            <h5 class="card-title"><?= htmlspecialchars($producto['nombre_producto']) ?>
-                                            </h5>
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title"><?= htmlspecialchars($producto['nombre_producto']) ?></h5>
                                             <h6 class="card-text">
-                                                $<?= number_format($producto['precio_unitario'], 0, ',', '.') ?></h6>
+                                                $<?= number_format($producto['precio_unitario'], 0, ',', '.') ?>
+                                            </h6>
                                             <div class="d-flex align-items-center">
                                                 <div>
-                                                    <button type="button" class="btn btn-outline-secondary"
+                                                    <button type="button" class="btn btn-secondary carrito-btn"
                                                         onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">
                                                         <i class="bi bi-cart-plus"></i>
-
                                                     </button>
-                                                    <button type="button" class="btn btn-outline-secondary">
+
+                                                    <button type="button" class="btn btn-secondary lista-deseos-btn"
+                                                        onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
                                                         <i class="bi bi-heart"></i>
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             <?php endwhile; ?>
                         </div>
                     </div>
+
+
 
                     <?php
                 else:
@@ -275,6 +281,33 @@
                         console.error('Error:', error);
                     });
             }
+        </script>
+        <script>
+            function agregarAListaDeDeseos(productId) {
+                fetch('../assets/php/agregarAdeseos.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id_producto: productId })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('alertSuccess').style.display = 'block';
+                            document.getElementById('alertSuccess').textContent = 'Producto agregado a la lista de deseos!';
+                            setTimeout(() => document.getElementById('alertSuccess').style.display = 'none', 3000);
+                        } else {
+                            document.getElementById('alertError').style.display = 'block';
+                            document.getElementById('alertError').textContent = data.message || 'Error al agregar el producto a la lista de deseos.';
+                            setTimeout(() => document.getElementById('alertError').style.display = 'none', 3000);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+
         </script>
 
     </body>

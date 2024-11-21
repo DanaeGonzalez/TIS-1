@@ -102,8 +102,14 @@
 
                         <div class="col-md-6">
                             <h1><?= htmlspecialchars($producto['nombre_producto']) ?></h1>
-                            <h2 class="text-dark mt-2">$<?= number_format($producto['precio_unitario'], 0, ',', '.') ?>
+                            <h2 class="text-dark ">$<?= number_format($producto['precio_unitario'], 0, ',', '.') ?>
+                                <!-- Botón para agregar a la lista de deseos -->
+                                <button class="btn btn-danger"
+                                    onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
+                                    <i class="bi bi-heart"></i> <!-- Icono de corazón -->
+                                </button>
                             </h2>
+
                             <hr>
                             <h5>Características</h5>
                             <ul>
@@ -233,6 +239,33 @@
                 }
                 e.preventDefault();
             }));
+        </script>
+        <script>
+            function agregarAListaDeDeseos(productId) {
+                fetch('../assets/php/agregarAdeseos.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id_producto: productId })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('alertSuccess').style.display = 'block';
+                            document.getElementById('alertSuccess').textContent = 'Producto agregado a la lista de deseos!';
+                            setTimeout(() => document.getElementById('alertSuccess').style.display = 'none', 3000);
+                        } else {
+                            document.getElementById('alertError').style.display = 'block';
+                            document.getElementById('alertError').textContent = data.message || 'Error al agregar el producto a la lista de deseos.';
+                            setTimeout(() => document.getElementById('alertError').style.display = 'none', 3000);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+
         </script>
     </body>
 
