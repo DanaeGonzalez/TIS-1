@@ -8,6 +8,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="..\assets\css\styles.css">
+        <link rel="stylesheet" href="..\assets\css\barra_busqueda.css">
         <script src="../assets/js/filtros.js"></script>
         <script src="../assets/js/etiquetas.js"></script>
         <?php include '../assets/php/dropdowns.php'; ?>
@@ -56,11 +57,12 @@
                             </button>
                             <input type="text" class="form-control p-2" id="buscarInputMain"
                                 placeholder="Buscar productos..." aria-label="Buscar productos..."
-                                aria-describedby="search-addon" oninput="buscarProductos()">
+                                aria-describedby="search-addon" oninput="barraBusqueda()">
                             <button class="input-group-text" id="search-addon" type="button"
                                 onclick="buscarProductos()">
                                 <i class="bi bi-search"></i>
                             </button>
+                            <ul class="list-group position-absolute w-100" id="lista"></ul>
                         </div>
                     </div>
                 </div>
