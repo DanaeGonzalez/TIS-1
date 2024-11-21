@@ -105,7 +105,7 @@ while ($row = $result->fetch_assoc()) {
                                 echo "</div>";
 
                                 // Botón de eliminar producto con SVG
-                                echo "<form action='eliminarProducto_carrito.php' method='POST' class='d-inline-block text-center'>";
+                                echo "<form action='../assets/php/eliminarProducto_carrito.php' method='POST' class='d-inline-block text-center'>";
                                 echo "<input type='hidden' name='id_producto' value='{$row['id_producto']}'>";
                                 echo "<p class='mb-0 fw-bold fs-4 text-secondary'>\$" . number_format(floor($subtotal), 0, '', '.') . "</p>";
                                 echo "<br>";

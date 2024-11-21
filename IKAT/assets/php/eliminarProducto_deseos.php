@@ -1,6 +1,6 @@
 <?php
-include_once '../config/conexion.php';
-include 'menu_registro/auth.php';
+include_once '../../config/conexion.php';
+include '../../views/menu_registro/auth.php';
 
 
 if (isset($_POST['id_producto']) && isset($_SESSION['id_usuario'])) {
@@ -43,6 +43,6 @@ if (isset($_POST['id_producto']) && isset($_SESSION['id_usuario'])) {
 
 $conn->close();
 
-header('Location: deseados.php');
+header('Location: ../../views/deseados.php');
 exit();
 ?>
