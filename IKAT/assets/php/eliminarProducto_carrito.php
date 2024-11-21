@@ -1,6 +1,6 @@
 <?php
-include_once '../config/conexion.php';
-include 'menu_registro/auth.php';
+include_once '../../config/conexion.php';
+include '../../views/menu_registro/auth.php';
 if (isset($_POST['id_producto'])) {
     // Recupera el ID del producto
     $id_producto = $_POST['id_producto'];
@@ -22,6 +22,6 @@ if (isset($_POST['id_producto'])) {
 }
 $conn->close();
 // Redirige de vuelta al carrito de compras
-header('Location: carrito.php');
+header('Location: ../../views/carrito.php');
 exit();
 ?>

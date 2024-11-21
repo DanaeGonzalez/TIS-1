@@ -91,7 +91,7 @@ include_once '..\config\conexion.php';
                                         ?>
                                         <div class="d-flex align-items-end">
                                             <!-- boton de eliminar -->
-                                            <form action="eliminarProducto_deseos.php" method="POST"
+                                            <form action="../assets/php/eliminarProducto_deseos.php" method="POST"
                                                 class="d-inline-block text-center">
                                                 <input type="hidden" name="id_producto"
                                                     value="<?= htmlspecialchars($producto['id_producto']) ?>">

@@ -1,6 +1,6 @@
 <?php
-include_once '../config/conexion.php';
-include 'menu_registro/auth.php';
+include_once '../../config/conexion.php';
+include '../../menu_registro/auth.php';
 
 
 if (isset($_POST['id_producto']) && isset($_SESSION['id_usuario'])) {
