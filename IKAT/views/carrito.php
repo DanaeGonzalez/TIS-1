@@ -1,6 +1,33 @@
 <?php
 include 'menu_registro\auth.php';
+include_once '..\config\conexion.php';
+
+
+// Inicializar un array para almacenar productos con stock insuficiente
+$productosSinStock = [];
+$alerta = false;
+
+// Consultar productos en el carrito
+$sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, cp.cantidad_producto 
+        FROM carrito_producto cp 
+        JOIN producto p ON cp.id_producto = p.id_producto 
+        WHERE cp.id_carrito = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $_SESSION['id_carrito']);
+$stmt->execute();
+$result = $stmt->get_result();
+
+// Recorrer los productos del carrito
+while ($row = $result->fetch_assoc()) {
+    if ($row['cantidad_producto'] > $row['stock_producto']) {
+        // Si hay stock insuficiente, agregar el producto al array
+        $productosSinStock[] = $row;
+        $alerta = true;  // Marcar que hay un problema con el stock
+    }
+}
 ?>
+
+
 
 <!doctype html>
 <html lang="en">
@@ -26,13 +53,27 @@ include 'menu_registro\auth.php';
         <div class="main">
             <div class="container mt-4">
                 <div class="row">
+                    <!-- Mensaje de alerta para productos sin stock -->
+                    <?php if (!empty($productosSinStock)): ?>
+                        <div class="alert alert-warning" role="alert">
+                            <strong>Atención:</strong> Algunos productos en tu carrito no tienen suficiente stock:
+                            <ul>
+                                <?php foreach ($productosSinStock as $producto): ?>
+                                    <li>
+                                        <?= htmlspecialchars($producto['nombre_producto']) ?> -
+                                        solicitado: <?= htmlspecialchars($producto['cantidad_producto']) ?>,
+                                        disponible: <?= htmlspecialchars($producto['stock_producto']) ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                            Por favor, ajusta las cantidades antes de continuar con la compra.
+                        </div>
+                    <?php endif; ?>
                     <h1 class="text-center mb-3">Productos en el Carrito</h1>
                     <hr>
                     <div class="col-md-8">
                         <div class="list-group me-3">
                             <?php
-                            include_once '..\config\conexion.php';
-
                             // Consulta para obtener los productos del carrito
                             $sql = "SELECT p.*, cp.cantidad_producto 
                                 FROM carrito_producto cp 
