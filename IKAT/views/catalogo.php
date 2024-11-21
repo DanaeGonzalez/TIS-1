@@ -172,7 +172,7 @@
                     <!-- Alerta de error -->
                     <div id="alertCarritoError" class="alert alert-danger alert-dismissible fade show mt-4"
                         style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
-                        Error al agregar el producto al carrito.
+                        No hay suficiente stock.
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                     <div id="alertDeseosError" class="alert alert-danger alert-dismissible fade show mt-4"

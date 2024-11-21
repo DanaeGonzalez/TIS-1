@@ -2,6 +2,36 @@
 include 'menu_registro/auth.php';
 include_once '..\config\conexion.php';
 
+// Inicializar un array para almacenar productos con stock insuficiente
+$productosSinStock = [];
+$alerta = false;
+
+// Consultar productos en el carrito
+$sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, cp.cantidad_producto 
+        FROM carrito_producto cp 
+        JOIN producto p ON cp.id_producto = p.id_producto 
+        WHERE cp.id_carrito = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $_SESSION['id_carrito']);
+$stmt->execute();
+$result = $stmt->get_result();
+
+// Recorrer los productos del carrito
+while ($row = $result->fetch_assoc()) {
+    if ($row['cantidad_producto'] > $row['stock_producto']) {
+        // Si hay stock insuficiente, agregar el producto al array
+        $productosSinStock[] = $row;
+        $alerta = true;  // Marcar que hay un problema con el stock
+    }
+}
+
+// Si hay productos sin stock suficiente, redirigir con alerta
+if ($alerta) {
+    echo "<script>alert('Algunos productos en tu carrito no tienen suficiente stock.');</script>";
+    header("Location: carrito.php");
+    exit(); // Asegúrate de que no se ejecute más código después de la redirección
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_POST['id_metodo'], $_POST['total_calculado'])) {
     // Capturar datos del formulario
     $id_usuario = $_SESSION['id_usuario'];
