@@ -59,6 +59,7 @@
                     <ul class="list-unstyled">
                         <?php if ($_SESSION['tipo_usuario'] == 'Superadmin'): ?>
                             <li><a href="../Mantenedor_usuario/mostrar_usuario.php" class="sidebar-link d-block py-2 px-3">Usuarios</a></li>
+                            <li><a href="../Mantenedor_compra/mostrar_compra.php" class="sidebar-link d-block py-2 px-3">Compras</a></li>
                         <?php endif; ?>
                     </ul>
                 </div>

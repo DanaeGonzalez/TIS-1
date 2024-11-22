@@ -73,7 +73,7 @@ unset($_SESSION['mensaje']);
                                                 <input type='hidden' name='id_categoria' value='" . $row['id_categoria'] ."'>
                                                 Nombre: <input type='text' class='form-control' required name='nombre_categoria' value='" . $row['nombre_categoria'] . "'><br>
 
-                                                <input class='form-control btn btn-primary d-block' type='submit' value='Actualizar Categoría'>
+                                                <input class='btn btn-primary d-block' type='submit' value='Actualizar Categoría'>
                                                 <a href='mostrar_categoria.php' class='btn btn-primary mt-3 d-block'>Volver</a>
                                             </form>
                                         </div>
