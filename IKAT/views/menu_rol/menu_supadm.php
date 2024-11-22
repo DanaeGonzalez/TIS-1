@@ -1,5 +1,5 @@
-<?php 
-  include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/views/menu_registro/auth.php';
+<?php
+include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/views/menu_registro/auth.php';
 ?>
 
 <!doctype php>
@@ -59,7 +59,7 @@
       </div>
 
       <!-- Carousel -->
-      <div id="carouselExampleIndicators" class="carousel slide">
+      <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
         <div class="carousel-indicators">
           <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
             aria-current="true" aria-label="Slide 1"></button>
@@ -107,53 +107,53 @@
         </button>
       </div>
 
-        <!-- Contenedor inicio -->
-        <div class="container inicio mt-5">
-          <div class="row justify-content-center text-center">
-            <div class="col-10 col-md-5 col-lg-4 mb-4">
-              <a href="../catalogo_silla.php">
-                <img src="../../assets/images/categoria_silla.png" class="img-fluid categoria-img" alt="Imagen 1">
-              </a>
-            </div>
-            <div class="col-10 col-md-5 col-lg-4 mb-4">
-              <a href="../catalogo_mesa.php">
-                <img src="../../assets/images/categoria_mesa.png" class="img-fluid categoria-img" alt="Imagen 2">
-              </a>
-            </div>
-            <div class="col-10 col-md-5 col-lg-4 mb-4">
-              <a href="../catalogo_sillon.php">
-                <img src="../../assets/images/categoria_sillon.png" class="img-fluid categoria-img" alt="Imagen 3">
-              </a>
-            </div>
+      <!-- Contenedor inicio -->
+      <div class="container inicio mt-5">
+        <div class="row justify-content-center text-center">
+          <div class="col-10 col-md-5 col-lg-4 mb-4">
+            <a href="../catalogo_silla.php">
+              <img src="../../assets/images/categoria_silla.png" class="img-fluid categoria-img" alt="Imagen 1">
+            </a>
           </div>
-
-          <div class="row justify-content-center text-center">
-            <div class="col-10 col-md-6 col-lg-6 mb-4">
-              <a href="../catalogo_organizacion.php">
-                <img src="../../assets/images/categoria_organizacion.png" class="img-fluid categoria-img" alt="Imagen 4">
-              </a>
-            </div>
-            <div class="col-10 col-md-6 col-lg-6 mb-5">
-              <a href="../catalogo_cama.php">
-                <img src="../../assets/images/categoria_cama.png" class="img-fluid categoria-img" alt="Imagen 5">
-              </a>
-            </div>
+          <div class="col-10 col-md-5 col-lg-4 mb-4">
+            <a href="../catalogo_mesa.php">
+              <img src="../../assets/images/categoria_mesa.png" class="img-fluid categoria-img" alt="Imagen 2">
+            </a>
+          </div>
+          <div class="col-10 col-md-5 col-lg-4 mb-4">
+            <a href="../catalogo_sillon.php">
+              <img src="../../assets/images/categoria_sillon.png" class="img-fluid categoria-img" alt="Imagen 3">
+            </a>
           </div>
         </div>
+
+        <div class="row justify-content-center text-center">
+          <div class="col-10 col-md-6 col-lg-6 mb-4">
+            <a href="../catalogo_organizacion.php">
+              <img src="../../assets/images/categoria_organizacion.png" class="img-fluid categoria-img" alt="Imagen 4">
+            </a>
+          </div>
+          <div class="col-10 col-md-6 col-lg-6 mb-5">
+            <a href="../catalogo_cama.php">
+              <img src="../../assets/images/categoria_cama.png" class="img-fluid categoria-img" alt="Imagen 5">
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Footer -->
     <footer class="py-4">
       <div class="container">
         <div class="row">
-          <div class="col-12 col-md-3 mb-3 text-center text-md-start">
-            <h5>¡Únete a la familia IKAT!</h5>
+        <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+            <h5>Tu perfil en IKAT</h5>
             <div class="col-md-9 col-12">
-              Regístrate y disfruta de la experiencia completa de IKAT.
+              <p class="text-justify">Administra tu información personal para
+                aprovechar al máximo tu experiencia en IKAT.</p>
               <div class="text-center">
-                <a href="..\menu_registro\registro.php"
-                  class="btn btn-light border-dark btn-sm mt-3 text-black text-decoration-none">
-                  Registrarme
+                <a href="../perfil.php" class="btn btn-light border-dark btn-sm text-black text-decoration-none">
+                  Ver mi perfil
                 </a>
               </div>
             </div>

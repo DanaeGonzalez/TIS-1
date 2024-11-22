@@ -107,6 +107,16 @@ if (isset($_POST['identificador'])) {
                         <i class="bi bi-bag fs-4 text-secondary"></i>
                     </a>
 
+                    <!-- Botón de lista de deseos -->
+                    <a href="login.php" class="btn btn-link p-0 d-lg-none d-flex">
+                        <i class="bi bi-heart fs-4 text-secondary"></i>
+                    </a>
+
+                    <!-- Botón del carrito -->
+                    <a href="login.php" class="btn btn-link p-0 d-lg-none d-flex">
+                        <i class="bi bi-cart fs-4 text-secondary"></i>
+                    </a>
+
                     <!-- Botón de menú -->
                     <button class="btn btn-link d-lg-none p-0" data-bs-toggle="collapse"
                         data-bs-target="#navbarContent">
@@ -124,6 +134,16 @@ if (isset($_POST['identificador'])) {
                             <!-- Botón de catálogo -->
                             <a href="..\catalogo.php" class="btn btn-link d-none d-lg-flex p-0">
                                 <i class="bi bi-bag fs-4 text-secondary"></i>
+                            </a>
+
+                            <!-- Botón de lista de deseos -->
+                            <a href="login.php" class="btn btn-link p-0 d-none d-lg-flex">
+                                <i class="bi bi-heart fs-4 text-secondary"></i>
+                            </a>
+
+                            <!-- Botón del carrito -->
+                            <a href="login.php" class="btn btn-link p-0 d-none d-lg-flex">
+                                <i class="bi bi-cart fs-4 text-secondary"></i>
                             </a>
 
                             <!-- Menú de usuario -->

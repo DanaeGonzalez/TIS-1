@@ -1,19 +1,37 @@
-<!-- Footer  (no tocar) -->
 <footer class="py-4">
     <div class="container">
         <div class="row">
-            <div class="col-12 col-md-3 mb-3 text-center text-md-start">
-                <h5>¡Únete a la familia IKAT!</h5>
-                <div class="col-md-9 col-12">
-                    Regístrate y disfruta de la experiencia completa de IKAT.
-                    <div class="text-center">
-                        <a href="/xampp/TIS-1/IKAT/views/menu_registro/registro.php"
-                            class="btn btn-light border-dark btn-sm mt-3 text-black text-decoration-none">
-                            Registrarme
-                        </a>
+            <?php if (isset($_SESSION['id_usuario'])): ?>
+                <!-- Mostrar si el usuario está registrado -->
+                <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+                    <h5>Accede a tu perfil IKAT</h5>
+                    <div class="col-md-9 col-12">
+                        Consulta y gestiona tu información personal y preferencias en IKAT.
+                        <div class="text-center">
+                            <a href="/xampp/TIS-1/IKAT/views/perfil.php"
+                                class="btn btn-light border-dark btn-sm mt-3 text-black text-decoration-none">
+                                Ver mi perfil
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
+            <?php else: ?>
+                <!-- Mostrar si el usuario NO está registrado -->
+                <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+                    <h5>¡Únete a la familia IKAT!</h5>
+                    <div class="col-md-9 col-12">
+                        Regístrate y disfruta de la experiencia completa de IKAT.
+                        <div class="text-center">
+                            <a href="/xampp/TIS-1/IKAT/views/menu_registro/registro.php"
+                                class="btn btn-light border-dark btn-sm mt-3 text-black text-decoration-none">
+                                Registrarme
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+            
+            <!-- Otras secciones del footer -->
             <div class="col-12 col-md-3 mb-3 text-center text-md-start">
                 <h5>Servicio</h5>
                 <ul class="list-unstyled">
@@ -33,15 +51,10 @@
             <div class="col-12 col-md-3 mb-3 text-center text-md-start">
                 <h5>Redes Sociales</h5>
                 <ul class="list-unstyled">
-                    <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-facebook"></i>
-                            Facebook</a></li>
-                    <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-instagram"></i>
-                            Instagram</a></li>
-                    <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-threads"></i>
-                            Threads</a></li>
-                    <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-twitter-x"></i>
-                            X</a>
-                    </li>
+                    <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-facebook"></i> Facebook</a></li>
+                    <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-instagram"></i> Instagram</a></li>
+                    <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-threads"></i> Threads</a></li>
+                    <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-twitter-x"></i> X</a></li>
                 </ul>
             </div>
         </div>

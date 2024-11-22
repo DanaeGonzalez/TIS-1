@@ -35,12 +35,12 @@
             </a>
 
             <!-- Botón de lista de deseos -->
-            <a href="..\deseados.php" class="btn btn-link p-0 d-lg-none d-flex">
+            <a href="views/menu_registro/login.php" class="btn btn-link p-0 d-lg-none d-flex">
               <i class="bi bi-heart fs-4 text-secondary"></i>
             </a>
 
             <!-- Botón del carrito -->
-            <a href="..\carrito.php" class="btn btn-link p-0 d-lg-none d-flex">
+            <a href="views/menu_registro/login.php" class="btn btn-link p-0 d-lg-none d-flex">
               <i class="bi bi-cart fs-4 text-secondary"></i>
             </a>
 
@@ -57,17 +57,17 @@
               <li class="nav-item d-flex align-items-center gap-3">
 
                 <!-- Botón de catálogo -->
-                <a href="..\catalogo.php" class="btn btn-link d-none d-lg-flex p-0">
+                <a href="views/catalogo.php" class="btn btn-link d-none d-lg-flex p-0">
                   <i class="bi bi-bag fs-4 text-secondary"></i>
                 </a>
 
                 <!-- Botón de lista de deseos -->
-                <a href="/xampp/TIS-1/IKAT/views/deseados.php" class="btn btn-link p-0 d-none d-lg-flex">
+                <a href="views/menu_registro/login.php" class="btn btn-link p-0 d-none d-lg-flex">
                   <i class="bi bi-heart fs-4 text-secondary"></i>
                 </a>
 
                 <!-- Botón del carrito -->
-                <a href="./xampp/TIS-1/IKAT/views/carrito.php" class="btn btn-link p-0 d-none d-lg-flex">
+                <a href="views/menu_registro/login.php" class="btn btn-link p-0 d-none d-lg-flex">
                   <i class="bi bi-cart fs-4 text-secondary"></i>
                 </a>
                 <!-- Menú de usuario -->
@@ -130,7 +130,7 @@
         </div>
 
         <!-- Carousel -->
-        <div id="carouselExampleIndicators" class="carousel slide">
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
           <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
               aria-current="true" aria-label="Slide 1"></button>
