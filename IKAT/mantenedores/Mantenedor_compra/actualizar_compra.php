@@ -4,7 +4,7 @@ include '../../config/conexion.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'vendor_correo/autoload.php';
+require '../../vendor/autoload.php';        
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_compra = $_POST['id_compra'];
@@ -17,19 +17,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['mensaje'] = "Compra actualizada exitosamente";
 
         // Obtener el correo del usuario relacionado con la compra
-        $userEmailQuery = "SELECT correo_usuario FROM usuarios WHERE id_usuario = $id_usuario";
+        $userEmailQuery = "SELECT correo_usuario FROM usuario WHERE id_usuario = $id_usuario";
         $userResult = $conn->query($userEmailQuery);
 
         if ($userResult->num_rows > 0) {
             $userRow = $userResult->fetch_assoc();
-            $toEmail = $userRow['email'];
+            $toEmail = $userRow['correo_usuario'];
 
             // Configuración del correo
             $fromEmail = 'smurfchatgpt3@gmail.com';
             $fromName = 'Sistema de Compras';
             $password = 'csnigtgwrrffzrog'; // Contraseña de aplicación de Gmail
 
-            $subject = 'Actualización de Estado de Compra';
+            $subject = 'Actualizacion de Estado de Compra';
             $messageText = "Estimado usuario, el estado de su compra con ID: $id_compra ha cambiado a: <strong>$tipo_estado</strong>.";
 
             $mail = new PHPMailer(true);
