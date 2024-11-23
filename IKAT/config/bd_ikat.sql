@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-11-2024 a las 06:58:51
+-- Tiempo de generación: 23-11-2024 a las 19:16:38
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -88,14 +88,6 @@ CREATE TABLE `carrito_producto` (
   `cantidad_producto` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `carrito_producto`
---
-
-INSERT INTO `carrito_producto` (`id_carrito`, `id_producto`, `cantidad_producto`) VALUES
-(1, 5, 2),
-(1, 6, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -167,7 +159,28 @@ CREATE TABLE `compra` (
 
 INSERT INTO `compra` (`id_compra`, `fecha_compra`, `total_compra`, `puntos_ganados`, `tipo_estado`, `direccion_pedido`, `id_metodo`, `id_usuario`, `id_carrito`) VALUES
 (1, '2024-11-04', 50980, 5098, '', 'Timor del este', 5, 1, 1),
-(2, '2024-11-04', 50980, 5098, '', 'Timor del este', 5, 1, 1);
+(2, '2024-11-04', 50980, 5098, '', 'Timor del este', 5, 1, 1),
+(3, '2024-11-04', 0, 0, '', 'Timor del este', 6, 1, 1),
+(4, '2024-11-23', 25990, 1300, '', 'Angol 921, Concepción', 6, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `compra_producto`
+--
+
+CREATE TABLE `compra_producto` (
+  `id_compra` int(100) NOT NULL,
+  `id_producto` int(10) NOT NULL,
+  `cantidad` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `compra_producto`
+--
+
+INSERT INTO `compra_producto` (`id_compra`, `id_producto`, `cantidad`) VALUES
+(4, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -279,6 +292,13 @@ CREATE TABLE `lista_de_deseos` (
   `id_lista_deseos` int(100) NOT NULL,
   `id_usuario` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `lista_de_deseos`
+--
+
+INSERT INTO `lista_de_deseos` (`id_lista_deseos`, `id_usuario`) VALUES
+(1, 1);
 
 -- --------------------------------------------------------
 
@@ -750,6 +770,13 @@ ALTER TABLE `compra`
   ADD KEY `id_carrito` (`id_carrito`);
 
 --
+-- Indices de la tabla `compra_producto`
+--
+ALTER TABLE `compra_producto`
+  ADD PRIMARY KEY (`id_compra`,`id_producto`),
+  ADD KEY `fk_compra_producto_producto` (`id_producto`);
+
+--
 -- Indices de la tabla `control_stock`
 --
 ALTER TABLE `control_stock`
@@ -949,7 +976,7 @@ ALTER TABLE `color`
 -- AUTO_INCREMENT de la tabla `compra`
 --
 ALTER TABLE `compra`
-  MODIFY `id_compra` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_compra` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `control_stock`
@@ -979,7 +1006,7 @@ ALTER TABLE `forma`
 -- AUTO_INCREMENT de la tabla `lista_de_deseos`
 --
 ALTER TABLE `lista_de_deseos`
-  MODIFY `id_lista_deseos` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_lista_deseos` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `material`
@@ -1065,6 +1092,13 @@ ALTER TABLE `compra`
   ADD CONSTRAINT `compra_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`),
   ADD CONSTRAINT `compra_ibfk_2` FOREIGN KEY (`id_metodo`) REFERENCES `metodo_pago` (`id_metodo`),
   ADD CONSTRAINT `compra_ibfk_3` FOREIGN KEY (`id_carrito`) REFERENCES `carrito` (`id_carrito`);
+
+--
+-- Filtros para la tabla `compra_producto`
+--
+ALTER TABLE `compra_producto`
+  ADD CONSTRAINT `fk_compra_producto_compra` FOREIGN KEY (`id_compra`) REFERENCES `compra` (`id_compra`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_compra_producto_producto` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `control_stock`
