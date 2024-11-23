@@ -199,19 +199,29 @@
                                             <h6 class="card-text">
                                                 $<?= number_format($producto['precio_unitario'], 0, ',', '.') ?>
                                             </h6>
+                                            <?php
+                                            // Verificar si el usuario está autenticado
+                                            $usuarioAutenticado = isset($_SESSION['id_usuario']); // Asegúrate de que 'id_usuario' sea el nombre correcto en tu sesión
+                                            ?>
+
                                             <div class="d-flex align-items-center">
                                                 <div>
-                                                    <button type="button" class="btn btn-secondary carrito-btn"
+                                                    <!-- Botón Agregar al carrito -->
+                                                    <button type="button" class="btn btn-secondary carrito-btn" 
+                                                        <?php if (!$usuarioAutenticado) echo 'disabled'; ?> 
                                                         onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">
                                                         <i class="bi bi-cart-plus"></i>
                                                     </button>
 
-                                                    <button type="button" class="btn btn-secondary lista-deseos-btn"
+                                                    <!-- Botón Agregar a la lista de deseos -->
+                                                    <button type="button" class="btn btn-secondary lista-deseos-btn" 
+                                                        <?php if (!$usuarioAutenticado) echo 'disabled'; ?> 
                                                         onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
                                                         <i class="bi bi-heart"></i>
                                                     </button>
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>

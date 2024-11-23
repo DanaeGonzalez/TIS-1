@@ -31,8 +31,7 @@
                 </a> 
             <?php
             }
-            ?>
-
+        ?>
 
         <div class="d-flex align-items-center justify-content-end gap-3 ms-auto">
 
@@ -90,7 +89,7 @@
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg"
                                 alt="User Image" class="user-avatar me-2">
-                            <span> <?php echo $_SESSION['nombre_usuario'];?> </span>
+                            <span> <?php echo isset($_SESSION['nombre_usuario']) ? $_SESSION['nombre_usuario'] : 'Usuario'; ?> </span>
                         </a>
                         <?php if (isset($_SESSION['tipo_usuario'])) {
                             if ($_SESSION['tipo_usuario'] === 'Superadmin') { ?>

@@ -38,6 +38,16 @@ include '..\..\config\conexion.php';
                             <i class="bi bi-bag fs-4 text-secondary"></i>
                         </a>
 
+                        <!-- Botón de lista de deseos -->
+                        <a href="login.php" class="btn btn-link p-0 d-lg-none d-flex">
+                            <i class="bi bi-heart fs-4 text-secondary"></i>
+                        </a>
+
+                        <!-- Botón del carrito -->
+                        <a href="login.php" class="btn btn-link p-0 d-lg-none d-flex">
+                            <i class="bi bi-cart fs-4 text-secondary"></i>
+                        </a>
+
                         <!-- Botón de menú -->
                         <button class="btn btn-link d-lg-none p-0" data-bs-toggle="collapse"
                             data-bs-target="#navbarContent">
@@ -55,6 +65,16 @@ include '..\..\config\conexion.php';
                                 <!-- Botón de catálogo -->
                                 <a href="..\catalogo.php" class="btn btn-link d-none d-lg-flex p-0">
                                     <i class="bi bi-bag fs-4 text-secondary"></i>
+                                </a>
+
+                                <!-- Botón de lista de deseos -->
+                                <a href="login.php" class="btn btn-link p-0 d-none d-lg-flex">
+                                    <i class="bi bi-heart fs-4 text-secondary"></i>
+                                </a>
+
+                                <!-- Botón del carrito -->
+                                <a href="login.php" class="btn btn-link p-0 d-none d-lg-flex">
+                                    <i class="bi bi-cart fs-4 text-secondary"></i>
                                 </a>
 
                                 <!-- Menú de usuario -->
@@ -210,13 +230,14 @@ include '..\..\config\conexion.php';
                                     </div>
                                     <div class="mb-4">
                                         <label for="run" class="form-label ms-1 fw-semibold">RUT</label>
-                                        <input type="text" id="run" name="run" class="form-control border-dark"
-                                            size="9" placeholder="123456789" required>
+                                        <input type="text" id="run" name="run" class="form-control border-dark" size="9"
+                                            placeholder="123456789" required>
                                     </div>
                                     <div class="mb-4">
                                         <label for="numero" class="form-label ms-1 fw-semibold">Número de Teléfono</label>
                                         <input type="tel" id="numero" name="numero" class="form-control border-dark"
-                                            size="12" placeholder="+569" value="+569" required pattern="^\+569\d{8}$" title="Debe ser un número chileno de 11 dígitos, comenzando con +569" required>
+                                            size="12" placeholder="+569" value="+569" required pattern="^\+569\d{8}$"
+                                            title="Debe ser un número chileno de 11 dígitos, comenzando con +569" required>
                                     </div>
                                     <div class="mb-4">
                                         <label for="correo" class="form-label ms-1 fw-semibold">Correo Electrónico</label>
