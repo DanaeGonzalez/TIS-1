@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Dirección</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="direccion" name="direccion_pedido"
+                                        <input type="text" class="form-control" id="direccion" name="direccion_pedido" value="<?php echo htmlspecialchars($_SESSION['direccion_usuario']);?>"
                                             placeholder="Av. Alonso de Ribera 2850" required>
                                         <button class="input-group-text bg-secondary text-white" type="button"
                                             onclick="buscarDireccion()">
