@@ -106,27 +106,37 @@ function filtrarProductos() {
                 } else {
                     data.forEach(producto => {
                         productContainer.innerHTML += `
-                           <div class="col-6 col-md-4 mb-4">
-                               <a href="producto.php?id=${producto.id_producto}" class="text-decoration-none">
-                                   <div class="card" style="width: 100%;">
-                                       <img src="${producto.foto_producto}" class="card-img-top" alt="${producto.nombre_producto}">
-                                       <div class="card-body">
-                                           <h5 class="card-title">${producto.nombre_producto}</h5>
-                                           <h6 class="card-text">$${new Intl.NumberFormat().format(producto.precio_unitario)}</h6>
-                                           <div class="d-flex align-items-center">
-                                               <div>
-                                                   <button type="button" class="btn btn-outline-secondary">
-                                                       <i class="bi bi-cart-plus"></i>
-                                                   </button>
-                                                   <button type="button" class="btn btn-outline-secondary">
-                                                       <i class="bi bi-heart"></i>
-                                                   </button>
-                                               </div>
-                                           </div>
-                                       </div>
-                                   </div>
-                               </a>
-                           </div>`;
+        <div class="col-6 col-md-4 mb-4">
+            <div class="card" style="width: 100%; height: 520px;">
+                <a href="producto.php?id=${producto.id_producto}" class="text-decoration-none">
+                    <div class="card-img-container d-flex justify-content-center align-items-center" style="height: 400px; overflow: hidden;">
+                        <img src="${producto.foto_producto}" class="card-img-top img-fluid" alt="${producto.nombre_producto}">
+                    </div>
+                </a>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">${producto.nombre_producto}</h5>
+                    <h6 class="card-text">$${new Intl.NumberFormat().format(producto.precio_unitario)}</h6>
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <!-- Botón Agregar al carrito -->
+                            <button type="button" class="btn btn-secondary carrito-btn"
+                                ${!usuarioAutenticado ? 'disabled' : ''}
+                                onclick="agregarAlCarrito(${producto.id_producto})">
+                                <i class="bi bi-cart-plus"></i>
+                            </button>
+
+                            <!-- Botón Agregar a la lista de deseos -->
+                            <button type="button" class="btn btn-secondary lista-deseos-btn"
+                                ${!usuarioAutenticado ? 'disabled' : ''}
+                                onclick="agregarAListaDeDeseos(${producto.id_producto})">
+                                <i class="bi bi-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
                     });
                 }
             })

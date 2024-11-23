@@ -202,8 +202,8 @@
                                             <?php
                                             // Verificar si el usuario está autenticado
                                             $usuarioAutenticado = isset($_SESSION['id_usuario']); // Asegúrate de que 'id_usuario' sea el nombre correcto en tu sesión
+                                            
                                             ?>
-
                                             <div class="d-flex align-items-center">
                                                 <div>
                                                     <!-- Botón Agregar al carrito -->
@@ -278,6 +278,11 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
             </script>
+
+    <script>
+        // Pasar el valor de PHP (true o false) a JavaScript
+        let usuarioAutenticado = <?php echo json_encode($usuarioAutenticado); ?>;
+    </script>
 
         <script>
             function agregarAlCarrito(productId) {
