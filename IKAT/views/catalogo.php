@@ -8,6 +8,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="..\assets\css\styles.css">
+        <link rel="stylesheet" href="..\assets\css\barra_busqueda.css">
         <script src="../assets/js/filtros.js"></script>
         <script src="../assets/js/etiquetas.js"></script>
         <?php include '../assets/php/dropdowns.php'; ?>
@@ -56,11 +57,12 @@
                             </button>
                             <input type="text" class="form-control p-2" id="buscarInputMain"
                                 placeholder="Buscar productos..." aria-label="Buscar productos..."
-                                aria-describedby="search-addon" oninput="buscarProductos()">
+                                aria-describedby="search-addon" oninput="barraBusqueda()">
                             <button class="input-group-text" id="search-addon" type="button"
                                 onclick="buscarProductos()">
                                 <i class="bi bi-search"></i>
                             </button>
+                            <ul class="list-group position-absolute w-100" id="lista"></ul>
                         </div>
                     </div>
                 </div>
@@ -156,16 +158,27 @@
                     ?>
 
                     <!-- Alerta de éxito -->
-                    <div id="alertSuccess" class="alert alert-success alert-dismissible fade show mt-4" role="alert"
+                    <div id="alertCarritoSuccess" class="alert alert-success alert-dismissible fade show mt-4"
                         style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
-                        Producto agregado al carrito!
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        Producto agregado al carrito.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
-                    <!-- Alerta de error -->
-                    <div id="alertError" class="alert alert-danger alert-dismissible fade show mt-4" role="alert"
+                    <div id="alertDeseosSuccess" class="alert alert-success alert-dismissible fade show mt-4"
                         style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
-                        Error al agregar el producto al carrito.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        Producto agregado a la lista de deseos.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+
+                    <!-- Alerta de error -->
+                    <div id="alertCarritoError" class="alert alert-danger alert-dismissible fade show mt-4"
+                        style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
+                        No hay suficiente stock.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    <div id="alertDeseosError" class="alert alert-danger alert-dismissible fade show mt-4"
+                        style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
+                        El producto ya se encuentra en la lista de deseados.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
 
                     <!-- Contenedor catálogo -->
@@ -205,8 +218,6 @@
                             <?php endwhile; ?>
                         </div>
                     </div>
-
-
 
                     <?php
                 else:
@@ -270,16 +281,14 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            document.getElementById('alertSuccess').style.display = 'block';
-                            setTimeout(() => document.getElementById('alertSuccess').style.display = 'none', 3000);
+                            document.getElementById('alertCarritoSuccess').style.display = 'block';
+                            setTimeout(() => document.getElementById('alertCarritoSuccess').style.display = 'none', 3000);
                         } else {
-                            document.getElementById('alertError').style.display = 'block';
-                            setTimeout(() => document.getElementById('alertError').style.display = 'none', 3000);
+                            document.getElementById('alertCarritoError').style.display = 'block';
+                            setTimeout(() => document.getElementById('alertCarritoError').style.display = 'none', 3000);
                         }
                     })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
+                    .catch((error) => console.error('Error:', error));
             }
         </script>
         <script>
@@ -294,18 +303,14 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            document.getElementById('alertSuccess').style.display = 'block';
-                            document.getElementById('alertSuccess').textContent = 'Producto agregado a la lista de deseos!';
-                            setTimeout(() => document.getElementById('alertSuccess').style.display = 'none', 3000);
+                            document.getElementById('alertDeseosSuccess').style.display = 'block';
+                            setTimeout(() => document.getElementById('alertDeseosSuccess').style.display = 'none', 3000);
                         } else {
-                            document.getElementById('alertError').style.display = 'block';
-                            document.getElementById('alertError').textContent = data.message || 'Error al agregar el producto a la lista de deseos.';
-                            setTimeout(() => document.getElementById('alertError').style.display = 'none', 3000);
+                            document.getElementById('alertDeseosError').style.display = 'block';
+                            setTimeout(() => document.getElementById('alertDeseosError').style.display = 'none', 3000);
                         }
                     })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
+                    .catch((error) => console.error('Error:', error));
             }
 
         </script>

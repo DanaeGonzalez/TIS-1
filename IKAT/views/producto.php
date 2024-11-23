@@ -148,7 +148,7 @@
                             <div id="alertError" class="alert alert-danger alert-dismissible fade show mt-4"
                                 role="alert"
                                 style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
-                                Error al agregar el producto al carrito.
+                               No hay suficiente stock.
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"
                                     aria-label="Close"></button>
                             </div>
@@ -209,7 +209,7 @@
                 // Obtén el valor de la cantidad desde el input
                 const cantidad = document.getElementById('cantidadInput').value;
 
-                fetch('agregarAlCarrito.php', {
+                fetch('../assets/php/agregaralCarrito.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
