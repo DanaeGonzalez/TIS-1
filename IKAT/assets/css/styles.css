@@ -94,6 +94,17 @@ button.carousel-control-next{
   border-radius: 5px; 
 }
 
+#mensaje_borroso{
+  width: auto;
+  backdrop-filter: blur(5px);
+  background-color: #BFBFBF; 
+  padding: 10px;
+  border-radius: 5px; 
+  position: inherit;
+  z-index: 3;
+  text-shadow: 3px 3px 3px #8C5C32;
+  text-align: center;
+}
 
 /*BARRA BUSQUEDA INICIO*/
 .search-bar-container {
