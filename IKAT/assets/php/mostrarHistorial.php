@@ -1,5 +1,7 @@
 <?php
-include '../../config/conexion.php'; 
+include '../../config/conexion.php';
+header('Content-Type: application/json');
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_usuario = $_POST['id_usuario']; 
