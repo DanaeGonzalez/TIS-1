@@ -89,7 +89,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                         <h2 class="text-center mb-3">Completa tu Compra</h2>
                         <hr>
                         <div class="col-md-8">
-
                             <form method="POST" action="procesarCompra.php">
                                 <!-- Campo oculto para enviar el total de la compra -->
                                 <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
@@ -108,11 +107,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Dirección</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="direccion" name="direccion_pedido" value="<?php echo htmlspecialchars($_SESSION['direccion_usuario']);?>"
+                                        <input type="text" class="form-control" id="direccion" name="direccion_pedido" onblur="buscarDireccion();" value="<?php echo htmlspecialchars($_SESSION['direccion_usuario']);?>"
                                             placeholder="Av. Alonso de Ribera 2850" required>
-                                        <button class="input-group-text bg-secondary text-white" type="button"
-                                            onclick="buscarDireccion()">
-                                            <i class="bi bi-search"></i>
+                                        <button class="btn btn-outline-secondary" type="button" id="confirmar_direccion"
+                                            onclick="buscarDireccion()" required>
+                                            <i class="bi bi-check"></i> Confirmar
                                         </button>
                                     </div>
                                 </div>
@@ -135,6 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                     <p id="longitud">Longitud: </p>
                                     <p id="distancia"></p>
                                 </div>
+                                
                                 <form action="../vendor/transbank/transbank-sdk/examples/index.php?action=create"
                                     method="post">
                                     <!-- Agrega campos adicionales aquí, si necesitas pasar más información -->
