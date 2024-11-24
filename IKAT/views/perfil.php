@@ -63,7 +63,7 @@
                             <label class="form-label fw-bold">Dirección</label>
                             <input type="text" id="direccion" name="direccion_e" class="form-control" value="<?php echo htmlspecialchars($_SESSION['direccion_usuario']);?>"
                                 placeholder="Ingresa tu dirección" required>
-                            <button type="button" onclick="buscarDireccion()" class="btn btn-primary mt-2">Buscar en
+                            <button type="button" onclick="buscarDireccion()" class="btn btn-dark mt-3">Buscar en
                                 el Mapa</button>
                         </div>
                         
@@ -78,7 +78,7 @@
 
                         <!-- Botón Guardar Cambios -->
                         <div class="text-center">
-                            <button type="submit" class="btn btn-dark w-50">Guardar Cambios</button>
+                            <button type="submit" class="btn btn-dark w-50 mt-4">Guardar Cambios</button>
                         </div>
                     </form>
                 </div>

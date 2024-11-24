@@ -229,31 +229,35 @@
                         <div id="product-container" class="row justify-content-center">
                             <?php while ($producto = $result->fetch_assoc()): ?>
                                 <div class="col-6 col-md-4 mb-4">
-                                    <div class="card" style="width: 100%; height: 520px;">
+                                    <div class="card d-flex flex-column h-100">
                                         <a href="producto.php?id=<?= $producto['id_producto'] ?>" class="text-decoration-none">
-                                            <div class="card-img-container d-flex justify-content-center align-items-center"
-                                                style="height: 400px; overflow: hidden;">
-                                                <img src="<?= $producto['foto_producto'] ?>" class="card-img-top img-fluid"
-                                                    alt="...">
+                                            <!-- Contenedor de la imagen con altura dinámica -->
+                                            <div class="card-img-container d-flex justify-content-center align-items-center">
+                                                <img src="<?= $producto['foto_producto'] ?>" class="card-img-top img-fluid h-100" alt="Imagen del producto" style="object-fit: cover; width: 100%; height: auto;" 
+                                                    id="product-image-<?= $producto['id_producto'] ?>">
                                             </div>
                                         </a>
                                         <div class="card-body d-flex flex-column">
-                                            <h5 class="card-title"><?= htmlspecialchars($producto['nombre_producto']) ?></h5>
-                                            <h6 class="card-text">
-                                                $<?= number_format($producto['precio_unitario'], 0, ',', '.') ?>
-                                            </h6>
-                                            <div class="d-flex align-items-center">
-                                                <div>
-                                                    <button type="button" class="btn btn-secondary carrito-btn"
-                                                        onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">
-                                                        <i class="bi bi-cart-plus"></i>
-                                                    </button>
+                                            <!-- Contenedor del título con altura mínima -->
+                                            <div class="title-container">
+                                                <h5 class="card-title text-truncate"><?= htmlspecialchars($producto['nombre_producto']) ?></h5>
+                                            </div>
+                                            <h6 class="card-text mb-3">$<?= number_format($producto['precio_unitario'], 0, ',', '.') ?></h6>
 
-                                                    <button type="button" class="btn btn-secondary lista-deseos-btn"
+                                            <?php $usuarioAutenticado = isset($_SESSION['id_usuario']); ?>
+                                            <div class="mt-auto d-flex align-items-center">
+                                                <!-- Botón Agregar al carrito -->
+                                                <button type="button" class="btn btn-secondary me-2 carrito-btn" 
+                                                        <?php if (!$usuarioAutenticado) echo 'disabled'; ?> 
+                                                        onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">
+                                                    <i class="bi bi-cart-plus"></i>
+                                                </button>
+                                                <!-- Botón Agregar a la lista de deseos -->
+                                                <button type="button" class="btn btn-secondary lista-deseos-btn" 
+                                                        <?php if (!$usuarioAutenticado) echo 'disabled'; ?> 
                                                         onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
-                                                        <i class="bi bi-heart"></i>
-                                                    </button>
-                                                </div>
+                                                    <i class="bi bi-heart"></i>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

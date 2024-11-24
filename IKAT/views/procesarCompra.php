@@ -87,6 +87,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
             <?php include '../templates/header.php'; ?>
 
             <div class="main">
+                                <!-- Modal para la barra de búsqueda -->
+                                <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="searchModalLabel">Buscar productos</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="searchForm" onsubmit="return buscarProductos()">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="buscarInputModal"
+                                            placeholder="Buscar productos..." aria-label="Buscar productos">
+                                        <button class="btn btn-dark" type="submit">Buscar</button>
+                                    </div>
+                                </form>
+                                <div id="resultadosBusqueda" class="mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenedor de la barra de búsqueda -->
+                <div class="d-none d-lg-flex justify-content-center align-items-center mt-4">
+                    <div class="search-container col-lg-7 col-10">
+                        <div class="input-group">
+                            <button class="input-group-text" id="search-addon" type="button">
+                                <i class="bi bi-list"></i>
+                            </button>
+                            <input type="text" class="form-control p-2" id="buscarInputMain"
+                                placeholder="Buscar productos..." aria-label="Buscar productos..."
+                                aria-describedby="search-addon" oninput="barraBusqueda()">
+                            <button class="input-group-text" id="search-addon" type="button"
+                                onclick="buscarProductos()">
+                                <i class="bi bi-search"></i>
+                            </button>
+                            <ul class="list-group position-absolute w-100" id="lista"></ul>
+                        </div>
+                    </div>
+                </div>
                 <div class="container mt-4">
                     <div class="row align-items-center">
                         <h2 class="text-center mb-3">Completa tu Compra</h2>
