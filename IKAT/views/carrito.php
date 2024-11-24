@@ -1,6 +1,33 @@
 <?php
 include 'menu_registro\auth.php';
+include_once '..\config\conexion.php';
+
+
+// Inicializar un array para almacenar productos con stock insuficiente
+$productosSinStock = [];
+$alerta = false;
+
+// Consultar productos en el carrito
+$sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, cp.cantidad_producto 
+        FROM carrito_producto cp 
+        JOIN producto p ON cp.id_producto = p.id_producto 
+        WHERE cp.id_carrito = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $_SESSION['id_carrito']);
+$stmt->execute();
+$result = $stmt->get_result();
+
+// Recorrer los productos del carrito
+while ($row = $result->fetch_assoc()) {
+    if ($row['cantidad_producto'] > $row['stock_producto']) {
+        // Si hay stock insuficiente, agregar el producto al array
+        $productosSinStock[] = $row;
+        $alerta = true;  // Marcar que hay un problema con el stock
+    }
+}
 ?>
+
+
 
 <!doctype html>
 <html lang="en">
@@ -26,13 +53,27 @@ include 'menu_registro\auth.php';
         <div class="main">
             <div class="container mt-4">
                 <div class="row">
+                    <!-- Mensaje de alerta para productos sin stock -->
+                    <?php if (!empty($productosSinStock)): ?>
+                        <div class="alert alert-warning" role="alert">
+                            <strong>Atención:</strong> Algunos productos en tu carrito no tienen suficiente stock:
+                            <ul>
+                                <?php foreach ($productosSinStock as $producto): ?>
+                                    <li>
+                                        <?= htmlspecialchars($producto['nombre_producto']) ?> -
+                                        solicitado: <?= htmlspecialchars($producto['cantidad_producto']) ?>,
+                                        disponible: <?= htmlspecialchars($producto['stock_producto']) ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                            Por favor, ajusta las cantidades antes de continuar con la compra.
+                        </div>
+                    <?php endif; ?>
                     <h1 class="text-center mb-3">Productos en el Carrito</h1>
                     <hr>
                     <div class="col-md-8">
                         <div class="list-group me-3">
                             <?php
-                            include_once '..\config\conexion.php';
-
                             // Consulta para obtener los productos del carrito
                             $sql = "SELECT p.*, cp.cantidad_producto 
                                 FROM carrito_producto cp 
@@ -64,7 +105,7 @@ include 'menu_registro\auth.php';
                                 echo "</div>";
 
                                 // Botón de eliminar producto con SVG
-                                echo "<form action='eliminarProducto_carrito.php' method='POST' class='d-inline-block text-center'>";
+                                echo "<form action='../assets/php/eliminarProducto_carrito.php' method='POST' class='d-inline-block text-center'>";
                                 echo "<input type='hidden' name='id_producto' value='{$row['id_producto']}'>";
                                 echo "<p class='mb-0 fw-bold fs-4 text-secondary'>\$" . number_format(floor($subtotal), 0, '', '.') . "</p>";
                                 echo "<br>";
@@ -91,24 +132,33 @@ include 'menu_registro\auth.php';
                             </li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Impuestos<span>$0.00</span>
+                                Envío <em>Pendiente</em>
+                            </li>
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+                                Impuestos <em>Pendiente</em>
                             </li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
-                                Total<span>$<?= number_format(floor($total), 0, '', '.') ?></span>
+                                Total<span>$<?= number_format(floor($total + ($total * 0.02)), 0, '', '.') ?></span>
                             </li>
                         </ul>
-                        <form action="procesarCompra.php" method="POST">
-                            <input type="hidden" name="total" value="<?= $total ?>">
-                            <button type="submit" class="BtnPay mt-4">
-                                Procesar compra
+                        <?php if ($total > 0): ?>
+                            <form action="procesarCompra.php" method="POST">
+                                <input type="hidden" name="total" value="<?= $total ?>">
+                                <button type="submit" class="BtnPay mt-4">
+                                    Procesar compra
                                     <path
                                         d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
                                     </path>
-                                </svg>
-                            </button>
-                        </form>
-
+                                    </svg>
+                                </button>
+                            </form>
+                        <?php else: ?>
+                            <div class="alert alert-info mt-4 text-center">
+                                Tu carrito está vacío. Agrega productos para continuar con la compra.
+                            </div>
+                        <?php endif; ?>
                     </div>
 
                 </div>

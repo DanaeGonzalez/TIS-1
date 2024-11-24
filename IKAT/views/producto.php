@@ -20,7 +20,6 @@
             <!-- Header/Navbar -->
             <?php include '../templates/header.php'; ?>
 
-
             <!-- Main -->
             <div class="main">
                 <!-- Modal para la barra de búsqueda -->
@@ -102,8 +101,14 @@
 
                         <div class="col-md-6">
                             <h1><?= htmlspecialchars($producto['nombre_producto']) ?></h1>
-                            <h2 class="text-dark mt-2">$<?= number_format($producto['precio_unitario'], 0, ',', '.') ?>
+                            <h2 class="text-dark ">$<?= number_format($producto['precio_unitario'], 0, ',', '.') ?>
+                                <!-- Botón para agregar a la lista de deseos -->
+                                <button class="btn btn-danger"
+                                    onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
+                                    <i class="bi bi-heart"></i> <!-- Icono de corazón -->
+                                </button>
                             </h2>
+
                             <hr>
                             <h5>Características</h5>
                             <ul>
@@ -142,7 +147,7 @@
                             <div id="alertError" class="alert alert-danger alert-dismissible fade show mt-4"
                                 role="alert"
                                 style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
-                                Error al agregar el producto al carrito.
+                               No hay suficiente stock.
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"
                                     aria-label="Close"></button>
                             </div>
@@ -203,7 +208,7 @@
                 // Obtén el valor de la cantidad desde el input
                 const cantidad = document.getElementById('cantidadInput').value;
 
-                fetch('agregarAlCarrito.php', {
+                fetch('../assets/php/agregaralCarrito.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -233,6 +238,33 @@
                 }
                 e.preventDefault();
             }));
+        </script>
+        <script>
+            function agregarAListaDeDeseos(productId) {
+                fetch('../assets/php/agregarAdeseos.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id_producto: productId })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('alertSuccess').style.display = 'block';
+                            document.getElementById('alertSuccess').textContent = 'Producto agregado a la lista de deseos!';
+                            setTimeout(() => document.getElementById('alertSuccess').style.display = 'none', 3000);
+                        } else {
+                            document.getElementById('alertError').style.display = 'block';
+                            document.getElementById('alertError').textContent = data.message || 'Error al agregar el producto a la lista de deseos.';
+                            setTimeout(() => document.getElementById('alertError').style.display = 'none', 3000);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+
         </script>
     </body>
 

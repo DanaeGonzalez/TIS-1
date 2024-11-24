@@ -24,7 +24,7 @@ function buscarProductos() {
     productContainer.innerHTML = ""; // Limpia solo el área de productos, manteniendo la barra de filtros
 
     // Hacer la solicitud fetch
-    fetch(`../assets/php/busqueda_catalogo.php?buscar=${encodeURIComponent(buscar)}`)
+    fetch(`/IKAT/assets/php/barra_busqueda.php?buscar=${encodeURIComponent(buscar)}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error en la respuesta del servidor');
@@ -106,29 +106,102 @@ function filtrarProductos() {
                 } else {
                     data.forEach(producto => {
                         productContainer.innerHTML += `
-                           <div class="col-6 col-md-4 mb-4">
-                               <a href="producto.php?id=${producto.id_producto}" class="text-decoration-none">
-                                   <div class="card" style="width: 100%;">
-                                       <img src="${producto.foto_producto}" class="card-img-top" alt="${producto.nombre_producto}">
-                                       <div class="card-body">
-                                           <h5 class="card-title">${producto.nombre_producto}</h5>
-                                           <h6 class="card-text">$${new Intl.NumberFormat().format(producto.precio_unitario)}</h6>
-                                           <div class="d-flex align-items-center">
-                                               <div>
-                                                   <button type="button" class="btn btn-outline-secondary">
-                                                       <i class="bi bi-cart-plus"></i>
-                                                   </button>
-                                                   <button type="button" class="btn btn-outline-secondary">
-                                                       <i class="bi bi-heart"></i>
-                                                   </button>
-                                               </div>
-                                           </div>
-                                       </div>
-                                   </div>
-                               </a>
-                           </div>`;
+        <div class="col-6 col-md-4 mb-4">
+            <div class="card" style="width: 100%; height: 520px;">
+                <a href="producto.php?id=${producto.id_producto}" class="text-decoration-none">
+                    <div class="card-img-container d-flex justify-content-center align-items-center" style="height: 400px; overflow: hidden;">
+                        <img src="${producto.foto_producto}" class="card-img-top img-fluid" alt="${producto.nombre_producto}">
+                    </div>
+                </a>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">${producto.nombre_producto}</h5>
+                    <h6 class="card-text">$${new Intl.NumberFormat().format(producto.precio_unitario)}</h6>
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <!-- Botón Agregar al carrito -->
+                            <button type="button" class="btn btn-secondary carrito-btn"
+                                ${!usuarioAutenticado ? 'disabled' : ''}
+                                onclick="agregarAlCarrito(${producto.id_producto})">
+                                <i class="bi bi-cart-plus"></i>
+                            </button>
+
+                            <!-- Botón Agregar a la lista de deseos -->
+                            <button type="button" class="btn btn-secondary lista-deseos-btn"
+                                ${!usuarioAutenticado ? 'disabled' : ''}
+                                onclick="agregarAListaDeDeseos(${producto.id_producto})">
+                                <i class="bi bi-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
                     });
                 }
             })
     });
+}
+
+function barraBusqueda() {
+    
+    const buscarInputModal = document.getElementById('buscarInputModal');
+    const buscarInputMain = document.getElementById('buscarInputMain');
+
+    // Determinar cuál input usar en base a su disponibilidad
+    const buscarInput = buscarInputModal && buscarInputModal.value ? buscarInputModal : buscarInputMain;
+
+    // Verificar si el campo de entrada fue encontrado
+    if (!buscarInput) {
+        console.error("Campo de búsqueda no encontrado.");
+        return false;
+    }
+
+    const buscar = buscarInput.value; // Obtener el valor del input
+    console.log("Valor de búsqueda:", buscar); // Mensaje de depuración
+
+    const listaResultados = document.getElementById('lista'); // Contenedor de la lista
+    if (listaResultados) {
+        listaResultados.innerHTML = 'Buscando...'; // Limpia y muestra un mensaje temporal
+    }
+
+    // Hacer la solicitud fetch
+    fetch(`../assets/php/barra_busqueda.php?buscar=${encodeURIComponent(buscar)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la respuesta del servidor');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Datos recibidos:", data); // Mensaje de depuración
+
+            if (listaResultados) {
+                listaResultados.innerHTML = ''; // Limpiar los resultados previos
+            }
+
+            if (Array.isArray(data) && data.length > 0) {
+                data.forEach(producto => {
+                    const item = document.createElement('li');
+                    item.classList.add('list-group-item', 'sugerencia-item');
+                    item.innerHTML = `
+                        <img src="${producto.foto_producto}" alt="${producto.nombre_producto}" class="sugerencia-img">
+                        <span>${producto.nombre_producto}</span>
+                    `;
+                    listaResultados.appendChild(item);
+                });
+            } else {
+                if (listaResultados) {
+                    listaResultados.innerHTML = '<li class="list-group-item text-muted">No se encontraron productos.</li>';
+                }
+            }
+        })
+        .catch(error => {
+            if (listaResultados) {
+                listaResultados.innerHTML = '<li class="list-group-item text-danger">Error en la búsqueda: ${error.message}</li>';
+            }
+            console.error('Error en la búsqueda:', error);
+        });
+
+    return false; // Evita el envío del formulario
 }

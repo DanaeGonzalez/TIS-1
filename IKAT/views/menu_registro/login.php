@@ -30,7 +30,30 @@ if (isset($_POST['identificador'])) {
             $_SESSION['puntos'] = $user['puntos_totales'];
             $_SESSION['activo'] = $user['activo'];
             $_SESSION['id_carrito'] = $user['id_carrito'];
-            $_SESSION['id_usuario'] = $user['id_usuario'];
+
+            // Buscar el id_lista_deseos en la base de datos
+            $id_usuario = $_SESSION['id_usuario'];
+            $query_lista = "SELECT id_lista_deseos FROM lista_de_deseos WHERE id_usuario = ?";
+            $stmt_lista = $conn->prepare($query_lista);
+            $stmt_lista->bind_param('i', $id_usuario);
+            $stmt_lista->execute();
+            $stmt_lista->bind_result($id_lista_deseos);
+            $stmt_lista->fetch();
+            $stmt_lista->close();
+
+            // Si no existe una lista de deseos, crea una nueva y obtiene su id
+            if (!$id_lista_deseos) {
+                $query_insert = "INSERT INTO lista_de_deseos (id_usuario) VALUES (?)";
+                $stmt_insert = $conn->prepare($query_insert);
+                $stmt_insert->bind_param('i', $id_usuario);
+                if ($stmt_insert->execute()) {
+                    $id_lista_deseos = $stmt_insert->insert_id;
+                }
+                $stmt_insert->close();
+            }
+
+            // Almacena el id_lista_deseos en la sesión
+            $_SESSION['id_lista_deseos'] = $id_lista_deseos;
 
             // Redireccionar según el tipo de usuario
             if ($_SESSION['tipo_usuario'] == 'Registrado') {
@@ -84,6 +107,16 @@ if (isset($_POST['identificador'])) {
                         <i class="bi bi-bag fs-4 text-secondary"></i>
                     </a>
 
+                    <!-- Botón de lista de deseos -->
+                    <a href="login.php" class="btn btn-link p-0 d-lg-none d-flex">
+                        <i class="bi bi-heart fs-4 text-secondary"></i>
+                    </a>
+
+                    <!-- Botón del carrito -->
+                    <a href="login.php" class="btn btn-link p-0 d-lg-none d-flex">
+                        <i class="bi bi-cart fs-4 text-secondary"></i>
+                    </a>
+
                     <!-- Botón de menú -->
                     <button class="btn btn-link d-lg-none p-0" data-bs-toggle="collapse"
                         data-bs-target="#navbarContent">
@@ -103,12 +136,22 @@ if (isset($_POST['identificador'])) {
                                 <i class="bi bi-bag fs-4 text-secondary"></i>
                             </a>
 
+                            <!-- Botón de lista de deseos -->
+                            <a href="login.php" class="btn btn-link p-0 d-none d-lg-flex">
+                                <i class="bi bi-heart fs-4 text-secondary"></i>
+                            </a>
+
+                            <!-- Botón del carrito -->
+                            <a href="login.php" class="btn btn-link p-0 d-none d-lg-flex">
+                                <i class="bi bi-cart fs-4 text-secondary"></i>
+                            </a>
+
                             <!-- Menú de usuario -->
                             <div class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg"
-                                        alt="User Image" class="user-avatar me-2">
+                                    <img src="/xampp/TIS-1/IKAT/assets/images/profile/01.webp"
+                                    alt="User Image" class="user-avatar me-2">
                                     Usuario
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">

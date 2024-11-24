@@ -8,6 +8,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="..\assets\css\styles.css">
+        <link rel="stylesheet" href="..\assets\css\barra_busqueda.css">
         <script src="../assets/js/filtros.js"></script>
         <script src="../assets/js/etiquetas.js"></script>
         <?php include '../assets/php/dropdowns.php'; ?>
@@ -56,11 +57,12 @@
                             </button>
                             <input type="text" class="form-control p-2" id="buscarInputMain"
                                 placeholder="Buscar productos..." aria-label="Buscar productos..."
-                                aria-describedby="search-addon">
+                                aria-describedby="search-addon" oninput="barraBusqueda()">
                             <button class="input-group-text" id="search-addon" type="button"
                                 onclick="buscarProductos()">
                                 <i class="bi bi-search"></i>
                             </button>
+                            <ul class="list-group position-absolute w-100" id="lista"></ul>
                         </div>
                     </div>
                 </div>
@@ -156,16 +158,27 @@
                     ?>
 
                     <!-- Alerta de éxito -->
-                    <div id="alertSuccess" class="alert alert-success alert-dismissible fade show mt-4" role="alert"
+                    <div id="alertCarritoSuccess" class="alert alert-success alert-dismissible fade show mt-4"
                         style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
-                        Producto agregado al carrito!
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        Producto agregado al carrito.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
-                    <!-- Alerta de error -->
-                    <div id="alertError" class="alert alert-danger alert-dismissible fade show mt-4" role="alert"
+                    <div id="alertDeseosSuccess" class="alert alert-success alert-dismissible fade show mt-4"
                         style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
-                        Error al agregar el producto al carrito.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        Producto agregado a la lista de deseos.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+
+                    <!-- Alerta de error -->
+                    <div id="alertCarritoError" class="alert alert-danger alert-dismissible fade show mt-4"
+                        style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
+                        No hay suficiente stock.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    <div id="alertDeseosError" class="alert alert-danger alert-dismissible fade show mt-4"
+                        style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
+                        El producto ya se encuentra en la lista de deseados.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
 
                     <!-- Contenedor catálogo -->
@@ -173,30 +186,44 @@
                         <div id="product-container" class="row justify-content-center">
                             <?php while ($producto = $result->fetch_assoc()): ?>
                                 <div class="col-6 col-md-4 mb-4">
-                                    <div class="card" style="width: 100%;">
+                                    <div class="card" style="width: 100%; height: 520px;">
                                         <a href="producto.php?id=<?= $producto['id_producto'] ?>" class="text-decoration-none">
-                                            <img src="<?= $producto['foto_producto'] ?>" class="card-img-top" alt="...">
+                                            <div class="card-img-container d-flex justify-content-center align-items-center"
+                                                style="height: 400px; overflow: hidden;">
+                                                <img src="<?= $producto['foto_producto'] ?>" class="card-img-top img-fluid"
+                                                    alt="...">
+                                            </div>
                                         </a>
-                                        <div class="card-body">
-                                            <h5 class="card-title"><?= htmlspecialchars($producto['nombre_producto']) ?>
-                                            </h5>
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title"><?= htmlspecialchars($producto['nombre_producto']) ?></h5>
                                             <h6 class="card-text">
-                                                $<?= number_format($producto['precio_unitario'], 0, ',', '.') ?></h6>
+                                                $<?= number_format($producto['precio_unitario'], 0, ',', '.') ?>
+                                            </h6>
+                                            <?php
+                                            // Verificar si el usuario está autenticado
+                                            $usuarioAutenticado = isset($_SESSION['id_usuario']); // Asegúrate de que 'id_usuario' sea el nombre correcto en tu sesión
+                                            
+                                            ?>
                                             <div class="d-flex align-items-center">
                                                 <div>
-                                                    <button type="button" class="btn btn-outline-secondary"
+                                                    <!-- Botón Agregar al carrito -->
+                                                    <button type="button" class="btn btn-secondary carrito-btn" 
+                                                        <?php if (!$usuarioAutenticado) echo 'disabled'; ?> 
                                                         onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">
                                                         <i class="bi bi-cart-plus"></i>
-
                                                     </button>
-                                                    <button type="button" class="btn btn-outline-secondary">
+
+                                                    <!-- Botón Agregar a la lista de deseos -->
+                                                    <button type="button" class="btn btn-secondary lista-deseos-btn" 
+                                                        <?php if (!$usuarioAutenticado) echo 'disabled'; ?> 
+                                                        onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
                                                         <i class="bi bi-heart"></i>
                                                     </button>
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
-
                                 </div>
                             <?php endwhile; ?>
                         </div>
@@ -252,6 +279,11 @@
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
             </script>
 
+    <script>
+        // Pasar el valor de PHP (true o false) a JavaScript
+        let usuarioAutenticado = <?php echo json_encode($usuarioAutenticado); ?>;
+    </script>
+
         <script>
             function agregarAlCarrito(productId) {
                 fetch('../assets/php/agregaralCarrito.php', {
@@ -264,17 +296,38 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            document.getElementById('alertSuccess').style.display = 'block';
-                            setTimeout(() => document.getElementById('alertSuccess').style.display = 'none', 3000);
+                            document.getElementById('alertCarritoSuccess').style.display = 'block';
+                            setTimeout(() => document.getElementById('alertCarritoSuccess').style.display = 'none', 3000);
                         } else {
-                            document.getElementById('alertError').style.display = 'block';
-                            setTimeout(() => document.getElementById('alertError').style.display = 'none', 3000);
+                            document.getElementById('alertCarritoError').style.display = 'block';
+                            setTimeout(() => document.getElementById('alertCarritoError').style.display = 'none', 3000);
                         }
                     })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
+                    .catch((error) => console.error('Error:', error));
             }
+        </script>
+        <script>
+            function agregarAListaDeDeseos(productId) {
+                fetch('../assets/php/agregarAdeseos.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id_producto: productId })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('alertDeseosSuccess').style.display = 'block';
+                            setTimeout(() => document.getElementById('alertDeseosSuccess').style.display = 'none', 3000);
+                        } else {
+                            document.getElementById('alertDeseosError').style.display = 'block';
+                            setTimeout(() => document.getElementById('alertDeseosError').style.display = 'none', 3000);
+                        }
+                    })
+                    .catch((error) => console.error('Error:', error));
+            }
+
         </script>
 
     </body>

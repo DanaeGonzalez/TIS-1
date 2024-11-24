@@ -21,4 +21,3 @@
     header('Location: mostrar_top_ventas.php');
     exit();
 ?>
-

@@ -31,8 +31,7 @@
                 </a> 
             <?php
             }
-            ?>
-
+        ?>
 
         <div class="d-flex align-items-center justify-content-end gap-3 ms-auto">
 
@@ -42,17 +41,17 @@
             </button>
 
             <!-- Botón de catálogo -->
-            <a href="../views/catalogo.php" class="btn btn-link d-lg-none p-0">
+            <a href="/xampp/TIS-1/IKAT/views/catalogo.php" class="btn btn-link d-lg-none p-0">
                 <i class="bi bi-bag fs-4 text-secondary"></i>
             </a>
 
             <!-- Botón de lista de deseos -->
-            <a href="../views/deseados.php" class="btn btn-link p-0 d-lg-none d-flex">
+            <a href="/xampp/TIS-1/IKAT/views/deseados.php" class="btn btn-link p-0 d-lg-none d-flex">
                 <i class="bi bi-heart fs-4 text-secondary"></i>
             </a>
 
             <!-- Botón del carrito -->
-            <a href="../views/carrito.php" class="btn btn-link p-0 d-lg-none d-flex">
+            <a href="/xampp/TIS-1/IKAT/views/carrito.php" class="btn btn-link p-0 d-lg-none d-flex">
                 <i class="bi bi-cart fs-4 text-secondary"></i>
             </a>
 
@@ -88,9 +87,9 @@
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg"
-                                alt="User Image" class="user-avatar me-2">
-                            <span> <?php echo $_SESSION['nombre_usuario'];?> </span>
+                            <img src="/xampp/TIS-1/IKAT/assets/images/profile/01.webp"
+                            alt="User Image" class="user-avatar me-2">
+                            <span> <?php echo isset($_SESSION['nombre_usuario']) ? $_SESSION['nombre_usuario'] : 'Usuario'; ?> </span>
                         </a>
                         <?php if (isset($_SESSION['tipo_usuario'])) {
                             if ($_SESSION['tipo_usuario'] === 'Superadmin') { ?>

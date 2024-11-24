@@ -1,5 +1,5 @@
-<?php 
-  include '../menu_registro/auth.php';
+<?php
+include '../menu_registro/auth.php';
 ?>
 
 <!doctype php>
@@ -17,87 +17,7 @@
 
   <body>
     <!-- Header/Navbar -->
-    <nav class="navbar navbar-expand-lg">
-      <div class="container-fluid">
-        <a href="menu_adm.php">
-          <img width="180px" height="auto" src="..\..\assets\images\ikat.png" alt="Ikat">
-        </a>
-
-        <div class="d-flex align-items-center justify-content-end gap-3 ms-auto">
-
-          <!-- Botón de búsqueda -->
-          <button class="btn btn-link d-lg-none p-0" data-bs-toggle="modal" data-bs-target="#searchModal">
-            <i class="bi bi-search fs-4  text-secondary"></i>
-          </button>
-
-          <!-- Botón de catálogo -->
-          <a href="../catalogo.php" class="btn btn-link d-lg-none p-0">
-            <i class="bi bi-bag fs-4 text-secondary"></i>
-          </a>
-
-          <!-- Botón de lista de deseos -->
-          <a href="..\deseados.php" class="btn btn-link p-0 d-lg-none d-flex">
-            <i class="bi bi-heart fs-4 text-secondary"></i>
-          </a>
-
-          <!-- Botón del carrito -->
-          <a href="..\carrito.php" class="btn btn-link p-0 d-lg-none d-flex">
-            <i class="bi bi-cart fs-4 text-secondary"></i>
-          </a>
-
-          <!-- Botón de menú -->
-          <button class="btn btn-link d-lg-none p-0" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-            <i class="bi bi-list fs-4  text-secondary"></i>
-          </button>
-        </div>
-
-        <!-- Menú de navegación colapsable -->
-        <div class="collapse navbar-collapse" id="navbarContent">
-          <ul class="navbar-nav ms-auto align-items-center text-center">
-
-            <!-- Botones de lista de deseos y carrito al lado del usuario -->
-            <li class="nav-item d-flex align-items-center gap-3">
-
-              <!-- Botón de catálogo -->
-              <a href="..\catalogo.php" class="btn btn-link d-none d-lg-flex p-0">
-                <i class="bi bi-bag fs-4 text-secondary"></i>
-              </a>
-
-              <!-- Botón de lista de deseos -->
-              <a href="..\deseados.php" class="btn btn-link p-0 d-none d-lg-flex">
-                <i class="bi bi-heart fs-4 text-secondary"></i>
-              </a>
-
-              <!-- Botón del carrito -->
-              <a href="..\carrito.php" class="btn btn-link p-0 d-none d-lg-flex">
-                <i class="bi bi-cart fs-4 text-secondary"></i>
-              </a>
-
-              <!-- Menú de usuario -->
-              <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
-                  data-bs-toggle="dropdown" aria-expanded="false">
-                  <img
-                    src="https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg"
-                    alt="User Image" class="user-avatar me-2">
-                  <span> <?php echo $_SESSION['nombre_usuario'];?> </span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li><a class="dropdown-item" href="..\compras.php">Mis Compras</a></li>
-                  <li><a class="dropdown-item" href="..\perfil.php">Mi Perfil</a></li>
-                  <li><a class="dropdown-item" href="mantenedores_adm.php">Mantenedores</a></li>
-                  <li>
-                    <hr class="dropdown-divider">
-                  </li>
-                  <li><a class="dropdown-item" href="..\menu_registro\logout.php">Cerrar Sesión</a></li>
-                </ul>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
+    <?php include '../../templates/header.php'; ?>
     <!-- Main -->
     <div class="main">
       <!-- Modal para la barra de búsqueda -->
@@ -138,7 +58,7 @@
       </div>
 
       <!-- Carousel -->
-      <div id="carouselExampleIndicators" class="carousel slide">
+      <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
         <div class="carousel-indicators">
           <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
             aria-current="true" aria-label="Slide 1"></button>
@@ -186,53 +106,53 @@
         </button>
       </div>
 
-        <!-- Contenedor inicio -->
-        <div class="container inicio mt-5">
-          <div class="row justify-content-center text-center">
-            <div class="col-10 col-md-5 col-lg-4 mb-4">
-              <a href="../catalogo_silla.php">
-                <img src="../../assets/images/categoria_silla.png" class="img-fluid categoria-img" alt="Imagen 1">
-              </a>
-            </div>
-            <div class="col-10 col-md-5 col-lg-4 mb-4">
-              <a href="../catalogo_mesa.php">
-                <img src="../../assets/images/categoria_mesa.png" class="img-fluid categoria-img" alt="Imagen 2">
-              </a>
-            </div>
-            <div class="col-10 col-md-5 col-lg-4 mb-4">
-              <a href="../catalogo_sillon.php">
-                <img src="../../assets/images/categoria_sillon.png" class="img-fluid categoria-img" alt="Imagen 3">
-              </a>
-            </div>
+      <!-- Contenedor inicio -->
+      <div class="container inicio mt-5">
+        <div class="row justify-content-center text-center">
+          <div class="col-10 col-md-5 col-lg-4 mb-4">
+            <a href="../catalogo_silla.php">
+              <img src="../../assets/images/categoria_silla.png" class="img-fluid categoria-img" alt="Imagen 1">
+            </a>
           </div>
-
-          <div class="row justify-content-center text-center">
-            <div class="col-10 col-md-6 col-lg-6 mb-4">
-              <a href="../catalogo_organizacion.php">
-                <img src="../../assets/images/categoria_organizacion.png" class="img-fluid categoria-img" alt="Imagen 4">
-              </a>
-            </div>
-            <div class="col-10 col-md-6 col-lg-6 mb-5">
-              <a href="../catalogo_cama.php">
-                <img src="../../assets/images/categoria_cama.png" class="img-fluid categoria-img" alt="Imagen 5">
-              </a>
-            </div>
+          <div class="col-10 col-md-5 col-lg-4 mb-4">
+            <a href="../catalogo_mesa.php">
+              <img src="../../assets/images/categoria_mesa.png" class="img-fluid categoria-img" alt="Imagen 2">
+            </a>
+          </div>
+          <div class="col-10 col-md-5 col-lg-4 mb-4">
+            <a href="../catalogo_sillon.php">
+              <img src="../../assets/images/categoria_sillon.png" class="img-fluid categoria-img" alt="Imagen 3">
+            </a>
           </div>
         </div>
+
+        <div class="row justify-content-center text-center">
+          <div class="col-10 col-md-6 col-lg-6 mb-4">
+            <a href="../catalogo_organizacion.php">
+              <img src="../../assets/images/categoria_organizacion.png" class="img-fluid categoria-img" alt="Imagen 4">
+            </a>
+          </div>
+          <div class="col-10 col-md-6 col-lg-6 mb-5">
+            <a href="../catalogo_cama.php">
+              <img src="../../assets/images/categoria_cama.png" class="img-fluid categoria-img" alt="Imagen 5">
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Footer -->
     <footer class="py-4">
       <div class="container">
         <div class="row">
-          <div class="col-12 col-md-3 mb-3 text-center text-md-start">
-            <h5>¡Únete a la familia IKAT!</h5>
+        <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+            <h5>Tu perfil en IKAT</h5>
             <div class="col-md-9 col-12">
-              Regístrate y disfruta de la experiencia completa de IKAT.
+              <p class="text-justify">Administra tu información personal para
+                aprovechar al máximo tu experiencia en IKAT.</p>
               <div class="text-center">
-                <a href="..\menu_regisotroregistro.php"
-                  class="btn btn-light border-dark btn-sm mt-3 text-black text-decoration-none">
-                  Registrarme
+                <a href="../perfil.php" class="btn btn-light border-dark btn-sm text-black text-decoration-none">
+                  Ver mi perfil
                 </a>
               </div>
             </div>

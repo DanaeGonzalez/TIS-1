@@ -1,0 +1,30 @@
+/* Limita la altura de la lista de sugerencias y permite el desplazamiento vertical */
+#lista {
+    max-height: 200px;
+    overflow-y: auto;
+    top: 100%; /* Asegura que la lista se posicione justo debajo del input */
+    z-index: 1000; /* Asegura que la lista se muestre sobre otros elementos */
+    position: absolute;
+}
+
+/* Cambia el color de fondo de los elementos al pasar el mouse */
+#lista li:hover {
+    background-color: #f8f9fa;
+}
+
+/* Estilos para alinear la imagen y el texto en cada sugerencia */
+.sugerencia-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sugerencia-img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+.input-group {
+    position: relative;
+}

@@ -94,6 +94,17 @@ button.carousel-control-next{
   border-radius: 5px; 
 }
 
+#mensaje_borroso{
+  width: auto;
+  backdrop-filter: blur(5px);
+  background-color: #BFBFBF; 
+  padding: 10px;
+  border-radius: 5px; 
+  position: inherit;
+  z-index: 3;
+  text-shadow: 3px 3px 3px #8C5C32;
+  text-align: center;
+}
 
 /*BARRA BUSQUEDA INICIO*/
 .search-bar-container {
@@ -180,3 +191,30 @@ button.btn.btn-outline-dark:hover {
   align-items: center;
   justify-content: center;
 }
+
+
+/* Botón de agregar al carrito (hover verde) */
+.carrito-btn:hover {
+    background-color: #2d5b38;
+    border-color: #2d5b38;
+}
+
+.carrito-btn:hover i {
+    color: white;
+}
+
+/* Botón de agregar a la lista de deseos (hover rojo) */
+.lista-deseos-btn:hover {
+    background-color: #c22131;
+    border-color: #c22131;
+}
+
+.lista-deseos-btn:hover i {
+    color: white;
+}
+
+/*#confirmar_direccion {
+  background-color: #8C5C32 !important;
+  color: white !important;
+  border-color: #8C5C32 !important;
+}*/
