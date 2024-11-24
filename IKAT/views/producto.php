@@ -20,7 +20,6 @@
             <!-- Header/Navbar -->
             <?php include '../templates/header.php'; ?>
 
-
             <!-- Main -->
             <div class="main">
                 <!-- Modal para la barra de búsqueda -->

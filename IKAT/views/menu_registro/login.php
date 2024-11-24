@@ -150,8 +150,8 @@ if (isset($_POST['identificador'])) {
                             <div class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg"
-                                        alt="User Image" class="user-avatar me-2">
+                                    <img src="/xampp/TIS-1/IKAT/assets/images/profile/01.webp"
+                                    alt="User Image" class="user-avatar me-2">
                                     Usuario
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
