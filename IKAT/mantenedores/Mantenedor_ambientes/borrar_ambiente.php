@@ -16,5 +16,3 @@ if (isset($_GET['id'])) {
 header('Location: mostrar_ambiente.php');
 exit();
 ?>
-
-
