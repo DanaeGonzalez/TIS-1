@@ -1,3 +1,8 @@
+<?php
+    require("../config/conexion.php");
+    /*$id_recibido = $_GET['id_usuario'];*/
+?>
+
 <!doctype php>
 <php lang="en">
 
@@ -27,18 +32,18 @@
                 <hr>
                 <div class="row justify-content-center">
                     <div class="col-md-8">
-                        <form>
+                        <form action="editar_perfil.php" method="post">
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Puntos Totales</label>
                                 <input type="number" class="form-control bg-light" value="<?php echo htmlspecialchars($_SESSION['puntos']);?>" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Nombre</label>
-                                <input type="text" class="form-control" value="<?php echo htmlspecialchars($_SESSION['nombre_usuario']);?>" required>
+                                <input type="text" class="form-control" name="nombre_e" value="<?php echo htmlspecialchars($_SESSION['nombre_usuario']);?>" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Apellido</label>
-                                <input type="text" class="form-control" value="<?php echo htmlspecialchars($_SESSION['apellido_usuario']);?>" required>
+                                <input type="text" class="form-control" name="apellido_e"  value="<?php echo htmlspecialchars($_SESSION['apellido_usuario']);?>" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">RUN</label>
@@ -50,13 +55,13 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Número de Teléfono</label>
-                                <input type="tel" class="form-control" value="<?php echo htmlspecialchars($_SESSION['numero_usuario']);?>" required>
+                                <input type="tel" class="form-control" name="numero_e" value="<?php echo htmlspecialchars($_SESSION['numero_usuario']);?>" required>
                             </div>
-                        
+                            <input type="hidden" name="id_e" value="<?php echo htmlspecialchars($_SESSION['id_usuario']);?>">
                             <!-- Campo de Dirección -->
                         <div class="mb-3">
                             <label class="form-label fw-bold">Dirección</label>
-                            <input type="text" id="direccion" class="form-control"
+                            <input type="text" id="direccion" name="direccion_e" class="form-control" value="<?php echo htmlspecialchars($_SESSION['direccion_usuario']);?>"
                                 placeholder="Ingresa tu dirección" required>
                             <button type="button" onclick="buscarDireccion()" class="btn btn-primary mt-2">Buscar en
                                 el Mapa</button>

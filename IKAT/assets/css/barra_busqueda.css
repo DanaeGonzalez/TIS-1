@@ -2,8 +2,8 @@
 #lista {
     max-height: 200px;
     overflow-y: auto;
-    top: 100%; /* Asegura que la lista se posicione justo debajo del input */
-    z-index: 1000; /* Asegura que la lista se muestre sobre otros elementos */
+    top: 100%; 
+    z-index: 1000; 
     position: absolute;
 }
 
