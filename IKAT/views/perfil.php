@@ -4,7 +4,7 @@
 ?>
 
 <!doctype php>
-<php lang="en">
+<php lang="es">
 
     <head>
         <meta charset="utf-8">
