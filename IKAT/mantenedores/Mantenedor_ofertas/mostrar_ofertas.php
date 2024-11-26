@@ -4,8 +4,6 @@ session_start();
 
 $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : '';
 unset($_SESSION['mensaje']);
-
-
 ?>
 
 <!DOCTYPE html>
@@ -87,8 +85,8 @@ unset($_SESSION['mensaje']);
                                             <form action='actualizar_oferta.php' method='post'>
                                                 <input type='hidden' name='id_oferta' value='" . $row['id_oferta'] . "'>
                                                 <div class='mb-3'>
-                                                    <label for='nombre' class='form-label'>Nombre producto</label>
-                                                    <input type='text' id='nombre' class='form-control' value='" . $row['nombre_producto'] . "' disabled>
+                                                    <label for='idProducto' class='form-label'>ID Producto</label>
+                                                    <input type='text' id='idProducto' class='form-control' value='" . $row['id_producto'] . "' disabled>
                                                 </div>
                                                 <div class='mb-3'>
                                                     <label for='porcentajeDescuento' class='form-label'>Porcentaje de Descuento (1 a 100%)</label>
