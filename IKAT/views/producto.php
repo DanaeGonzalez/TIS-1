@@ -1,5 +1,5 @@
 <!doctype php>
-<php lang="en">
+<php lang="es">
 
     <head>
         <meta charset="utf-8">
@@ -19,7 +19,6 @@
         <div class="container-f">
             <!-- Header/Navbar -->
             <?php include '../templates/header.php'; ?>
-
 
             <!-- Main -->
             <div class="main">

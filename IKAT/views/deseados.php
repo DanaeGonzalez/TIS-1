@@ -27,13 +27,55 @@ include_once '..\config\conexion.php';
 
         <!-- Main -->
         <div class="main">
+                            <!-- Modal para la barra de búsqueda -->
+                            <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="searchModalLabel">Buscar productos</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="searchForm" onsubmit="return buscarProductos()">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="buscarInputModal"
+                                            placeholder="Buscar productos..." aria-label="Buscar productos">
+                                        <button class="btn btn-dark" type="submit">Buscar</button>
+                                    </div>
+                                </form>
+                                <div id="resultadosBusqueda" class="mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenedor de la barra de búsqueda -->
+                <div class="d-none d-lg-flex justify-content-center align-items-center mt-4">
+                    <div class="search-container col-lg-7 col-10">
+                        <div class="input-group">
+                            <button class="input-group-text" id="search-addon" type="button">
+                                <i class="bi bi-list"></i>
+                            </button>
+                            <input type="text" class="form-control p-2" id="buscarInputMain"
+                                placeholder="Buscar productos..." aria-label="Buscar productos..."
+                                aria-describedby="search-addon" oninput="barraBusqueda()">
+                            <button class="input-group-text" id="search-addon" type="button"
+                                onclick="buscarProductos()">
+                                <i class="bi bi-search"></i>
+                            </button>
+                            <ul class="list-group position-absolute w-100" id="lista"></ul>
+                        </div>
+                    </div>
+                </div>
             <!-- Contenedor deseados -->
             <div class="container mt-4">
                 <div class="row">
                     <h1 class="text-center mb-3">Productos deseados</h1>
                     <hr>
-                    <div class="col-md-12">
-                        <div class="list-group me-3">
+                    <div class="col-12">
+                        <div class="list-group">
                             <?php
                             $id_usuario = $_SESSION['id_usuario'];
 
@@ -57,11 +99,11 @@ include_once '..\config\conexion.php';
 
                             // Obtener productos de la lista de deseos
                             $consulta_productos = $conn->prepare("
-                                SELECT p.id_producto, p.nombre_producto, p.precio_unitario, p.foto_producto 
-                                FROM lista_deseos_producto ldp
-                                JOIN producto p ON ldp.id_producto = p.id_producto
-                                WHERE ldp.id_lista_deseos = ?
-                            ");
+                        SELECT p.id_producto, p.nombre_producto, p.precio_unitario, p.foto_producto 
+                        FROM lista_deseos_producto ldp
+                        JOIN producto p ON ldp.id_producto = p.id_producto
+                        WHERE ldp.id_lista_deseos = ?
+                    ");
                             $consulta_productos->bind_param("i", $id_lista_deseos);
                             $consulta_productos->execute();
                             $resultado_productos = $consulta_productos->get_result();
@@ -71,13 +113,12 @@ include_once '..\config\conexion.php';
                                     ?>
                                     <div
                                         class="list-group-item d-flex justify-content-between align-items-center bg-light border mb-4 rounded shadow-sm p-3">
-                                        <div class="d-flex align-items-center">
-
+                                        <div class="d-flex align-items-center justify-content-between">
                                             <label class="d-flex align-items-center" style="cursor: pointer;">
                                                 <a href="producto.php?id=<?= $producto['id_producto']; ?>">
                                                     <img src="<?= $producto['foto_producto']; ?>"
-                                                        alt="<?= $producto['nombre_producto']; ?>" class="me-3 rounded"
-                                                        style="width: 170px;">
+                                                        alt="<?= $producto['nombre_producto']; ?>"
+                                                        class="me-3 rounded img-fluid" style="max-width: 150px;">
                                                 </a>
                                                 <div>
                                                     <h4 class="mb-1 text-dark"><?= $producto['nombre_producto']; ?></h4>
@@ -85,14 +126,11 @@ include_once '..\config\conexion.php';
                                                         $<?= number_format($producto['precio_unitario'], 0, '', '.'); ?></h6>
                                                 </div>
                                             </label>
-
                                         </div>
-                                        <?php
-                                        ?>
-                                        <div class="d-flex align-items-end">
-                                            <!-- boton de eliminar -->
+                                        <div class="d-flex flex-column flex-sm-row align-items-center">
+                                            <!-- botón de eliminar -->
                                             <form action="../assets/php/eliminarProducto_deseos.php" method="POST"
-                                                class="d-inline-block text-center">
+                                                class="d-inline-block text-center mb-3 mb-sm-0 ms-sm-1 ms-3">
                                                 <input type="hidden" name="id_producto"
                                                     value="<?= htmlspecialchars($producto['id_producto']) ?>">
                                                 <button type="submit" class="btn btn-danger btn-sm button me-3"
@@ -109,7 +147,7 @@ include_once '..\config\conexion.php';
                                                 </button>
                                             </form>
 
-                                            <!-- boton de añadir al carrito -->
+                                            <!-- botón de añadir al carrito -->
                                             <form action="../assets/php/deseoAcarrito.php" method="POST" class="d-inline-block">
                                                 <input type="hidden" name="id_producto"
                                                     value="<?= htmlspecialchars($producto['id_producto']); ?>">
@@ -124,8 +162,6 @@ include_once '..\config\conexion.php';
                                                     </div>
                                                 </button>
                                             </form>
-
-
                                         </div>
                                     </div>
                                     <?php

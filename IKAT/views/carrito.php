@@ -51,6 +51,48 @@ while ($row = $result->fetch_assoc()) {
         <?php include '../templates/header.php'; ?>
 
         <div class="main">
+                            <!-- Modal para la barra de búsqueda -->
+                            <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="searchModalLabel">Buscar productos</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="searchForm" onsubmit="return buscarProductos()">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="buscarInputModal"
+                                            placeholder="Buscar productos..." aria-label="Buscar productos">
+                                        <button class="btn btn-dark" type="submit">Buscar</button>
+                                    </div>
+                                </form>
+                                <div id="resultadosBusqueda" class="mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenedor de la barra de búsqueda -->
+                <div class="d-none d-lg-flex justify-content-center align-items-center mt-4">
+                    <div class="search-container col-lg-7 col-10">
+                        <div class="input-group">
+                            <button class="input-group-text" id="search-addon" type="button">
+                                <i class="bi bi-list"></i>
+                            </button>
+                            <input type="text" class="form-control p-2" id="buscarInputMain"
+                                placeholder="Buscar productos..." aria-label="Buscar productos..."
+                                aria-describedby="search-addon" oninput="barraBusqueda()">
+                            <button class="input-group-text" id="search-addon" type="button"
+                                onclick="buscarProductos()">
+                                <i class="bi bi-search"></i>
+                            </button>
+                            <ul class="list-group position-absolute w-100" id="lista"></ul>
+                        </div>
+                    </div>
+                </div>
             <div class="container mt-4">
                 <div class="row">
                     <!-- Mensaje de alerta para productos sin stock -->
@@ -132,28 +174,33 @@ while ($row = $result->fetch_assoc()) {
                             </li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Envío: <em>Pendiente</em>
+                                Envío <em>Pendiente</em>
                             </li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Impuestos<span>$<?= number_format(floor($total * 0.02), 0, '', '.') ?></span>
+                                Impuestos <em>Pendiente</em>
                             </li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
                                 Total<span>$<?= number_format(floor($total + ($total * 0.02)), 0, '', '.') ?></span>
                             </li>
                         </ul>
-                        <form action="procesarCompra.php" method="POST">
-                            <input type="hidden" name="total" value="<?= $total ?>">
-                            <button type="submit" class="BtnPay mt-4">
-                                Procesar compra
-                                <path
-                                    d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
-                                </path>
-                                </svg>
-                            </button>
-                        </form>
-
+                        <?php if ($total > 0): ?>
+                            <form action="procesarCompra.php" method="POST">
+                                <input type="hidden" name="total" value="<?= $total ?>">
+                                <button type="submit" class="BtnPay mt-4">
+                                    Procesar compra
+                                    <path
+                                        d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
+                                    </path>
+                                    </svg>
+                                </button>
+                            </form>
+                        <?php else: ?>
+                            <div class="alert alert-info mt-4 text-center">
+                                Tu carrito está vacío. Agrega productos para continuar con la compra.
+                            </div>
+                        <?php endif; ?>
                     </div>
 
                 </div>

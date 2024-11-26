@@ -59,6 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     // Obtener métodos de pago
     $query_metodo = "SELECT * FROM metodo_pago WHERE activo = 1";
     $result_metodo = $conn->query($query_metodo);
+
+    // Verificar si la dirección está confirmada
+    $direccionConfirmada = isset($_POST['direccion_pedido']) && !empty($_POST['direccion_pedido']);
     ?>
 
     <!doctype html>
@@ -84,12 +87,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
             <?php include '../templates/header.php'; ?>
 
             <div class="main">
+                                <!-- Modal para la barra de búsqueda -->
+                                <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="searchModalLabel">Buscar productos</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="searchForm" onsubmit="return buscarProductos()">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="buscarInputModal"
+                                            placeholder="Buscar productos..." aria-label="Buscar productos">
+                                        <button class="btn btn-dark" type="submit">Buscar</button>
+                                    </div>
+                                </form>
+                                <div id="resultadosBusqueda" class="mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenedor de la barra de búsqueda -->
+                <div class="d-none d-lg-flex justify-content-center align-items-center mt-4">
+                    <div class="search-container col-lg-7 col-10">
+                        <div class="input-group">
+                            <button class="input-group-text" id="search-addon" type="button">
+                                <i class="bi bi-list"></i>
+                            </button>
+                            <input type="text" class="form-control p-2" id="buscarInputMain"
+                                placeholder="Buscar productos..." aria-label="Buscar productos..."
+                                aria-describedby="search-addon" oninput="barraBusqueda()">
+                            <button class="input-group-text" id="search-addon" type="button"
+                                onclick="buscarProductos()">
+                                <i class="bi bi-search"></i>
+                            </button>
+                            <ul class="list-group position-absolute w-100" id="lista"></ul>
+                        </div>
+                    </div>
+                </div>
                 <div class="container mt-4">
                     <div class="row align-items-center">
                         <h2 class="text-center mb-3">Completa tu Compra</h2>
                         <hr>
                         <div class="col-md-8">
-
                             <form method="POST" action="procesarCompra.php">
                                 <!-- Campo oculto para enviar el total de la compra -->
                                 <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
@@ -109,13 +153,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                     <label class="form-label fw-bold">Dirección</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="direccion" name="direccion_pedido"
+                                            onblur="buscarDireccion();"
+                                            value="<?php echo htmlspecialchars($_SESSION['direccion_usuario']); ?>"
                                             placeholder="Av. Alonso de Ribera 2850" required>
-                                        <button class="input-group-text bg-secondary text-white" type="button"
-                                            onclick="buscarDireccion()">
-                                            <i class="bi bi-search"></i>
+                                        <!-- Botón para confirmar dirección -->
+                                        <button class="btn btn-outline-secondary" type="button" id="confirmar_direccion"
+                                            onclick="buscarDireccion()" required>
+                                            <i class="bi bi-check"></i> Confirmar
                                         </button>
                                     </div>
                                 </div>
+
+                                <!-- Alerta si la dirección no está confirmada -->
+                                <?php if (!$direccionConfirmada): ?>
+                                    <div class="alert alert-info" role="alert">
+                                        ¡Por favor, confirma tu dirección antes de continuar con la compra!
+                                    </div>
+                                <?php endif; ?>
 
                                 <!-- Mapa -->
                                 <div id="map" style="width: 100%; height: 300px;"></div>
@@ -135,13 +189,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                     <p id="longitud">Longitud: </p>
                                     <p id="distancia"></p>
                                 </div>
+
                                 <form action="../vendor/transbank/transbank-sdk/examples/index.php?action=create"
                                     method="post">
                                     <!-- Agrega campos adicionales aquí, si necesitas pasar más información -->
 
                                     <!-- Botón para continuar con el pago -->
-                                    <button type="submit" class="BtnPay mt-3 mb-4">
-                                        Continuar con el pago
+                                    <button type="submit" class="BtnPay mt-3 mb-4" id="continuar_pago"
+                                        <?= !$direccionConfirmada ? 'disabled' : ''; ?>> Continuar con el pago
                                         <svg class="svgIcon" viewBox="0 0 576 512">
                                             <path
                                                 d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
@@ -220,6 +275,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
                         // Llamar a la función de distancia con las coordenadas obtenidas
                         distancia(lat, lng);
+
+                        // Aquí se ejecuta la lógica para buscar la dirección
+                        console.log("Dirección confirmada");
+
+                        // Habilitar el botón de "Continuar con el pago" después de confirmar la dirección
+                        document.getElementById("continuar_pago").disabled = false;
                     } else {
                         alert('No se pudo encontrar la dirección.');
                     }

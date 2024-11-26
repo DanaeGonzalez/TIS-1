@@ -150,8 +150,8 @@ if (isset($_POST['identificador'])) {
                             <div class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg"
-                                        alt="User Image" class="user-avatar me-2">
+                                    <img src="/xampp/TIS-1/IKAT/assets/images/profile/01.webp"
+                                    alt="User Image" class="user-avatar me-2">
                                     Usuario
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -167,13 +167,10 @@ if (isset($_POST['identificador'])) {
             </div>
         </nav>
 
-        <!-- Main -->
-        <div class="container mt-4 mb-5">
-            <h1 class="text-center">¡Bienvenido de nuevo a IKAT!</h1>
-            <hr>
-            <div class="row mt-5 d-flex justify-content-center">
+        <div class="container mt-4 mb-5 d-flex align-items-center">
+            <div class="row d-flex justify-content-center w-100">
                 <!-- Formulario de inicio de sesión -->
-                <div class="col-md-6 border rounded-3 shadow-lg p-5 bg-light">
+                <div class="col-md-9 col-lg-6 border rounded-3 shadow-lg p-5 bg-light">
                     <h2 class="text-center mb-4 fw-bold">Inicia Sesión</h2>
                     <?php if (isset($error_message)): ?>
                         <div class="alert alert-danger text-center"><?= $error_message; ?></div>
@@ -198,58 +195,58 @@ if (isset($_POST['identificador'])) {
                 </div>
             </div>
         </div>
-    </div>
 
 
-    <!-- Footer -->
-    <footer class="py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 col-md-3 mb-3 text-center text-md-start">
-                    <h5>¡Únete a la familia IKAT!</h5>
-                    <div class="col-md-9 col-12">
-                        Regístrate y disfruta de la experiencia completa de IKAT.
-                        <div class="text-center">
-                            <a href="registro.php"
-                                class="btn btn-light border-dark btn-sm mt-3 text-black text-decoration-none">
-                                Registrarme
-                            </a>
+        <!-- Footer -->
+        <footer class="py-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+                        <h5>¡Únete a la familia IKAT!</h5>
+                        <div class="col-md-9 col-12">
+                            Regístrate y disfruta de la experiencia completa de IKAT.
+                            <div class="text-center">
+                                <a href="registro.php"
+                                    class="btn btn-light border-dark btn-sm mt-3 text-black text-decoration-none">
+                                    Registrarme
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12 col-md-3 mb-3 text-center text-md-start">
-                    <h5>Servicio</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-black text-decoration-none">Sigue tu pedido</a></li>
-                        <li><a href="#" class="text-black text-decoration-none">IKAT Points</a></li>
-                        <li><a href="#" class="text-black text-decoration-none">Despacho a domicilio</a></li>
-                        <li><a href="#" class="text-black text-decoration-none">Métodos de pago</a></li>
-                    </ul>
-                </div>
-                <div class="col-12 col-md-3 mb-3 text-center text-md-start">
-                    <h5>Sobre IKAT</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-black text-decoration-none">Quienes somos</a></li>
-                        <li><a href="#" class="text-black text-decoration-none">Misión y Visión</a></li>
-                    </ul>
-                </div>
-                <div class="col-12 col-md-3 mb-3 text-center text-md-start">
-                    <h5>Redes Sociales</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-facebook"></i>
-                                Facebook</a></li>
-                        <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-instagram"></i>
-                                Instagram</a></li>
-                        <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-threads"></i>
-                                Threads</a></li>
-                        <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-twitter-x"></i>
-                                X</a>
-                        </li>
-                    </ul>
+                    <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+                        <h5>Servicio</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-black text-decoration-none">Sigue tu pedido</a></li>
+                            <li><a href="#" class="text-black text-decoration-none">IKAT Points</a></li>
+                            <li><a href="#" class="text-black text-decoration-none">Despacho a domicilio</a></li>
+                            <li><a href="#" class="text-black text-decoration-none">Métodos de pago</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+                        <h5>Sobre IKAT</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-black text-decoration-none">Quienes somos</a></li>
+                            <li><a href="#" class="text-black text-decoration-none">Misión y Visión</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+                        <h5>Redes Sociales</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-facebook"></i>
+                                    Facebook</a></li>
+                            <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-instagram"></i>
+                                    Instagram</a></li>
+                            <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-threads"></i>
+                                    Threads</a></li>
+                            <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-twitter-x"></i>
+                                    X</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

@@ -1,5 +1,5 @@
 <!doctype php>
-<php lang="en">
+<php lang="es">
 
   <head>
     <meta charset="utf-8">
@@ -181,32 +181,42 @@
         <!-- Contenedor inicio -->
         <div class="container inicio mt-5">
           <div class="row justify-content-center text-center">
-            <div class="col-10 col-md-5 col-lg-4 mb-4">
+            <div class="col-10 col-md-5 col-lg-4 mb-4 inicio-categoria">
               <a href="views/catalogo_silla.php">
                 <img src="assets/images/categoria_silla.png" class="img-fluid categoria-img" alt="Imagen 1">
+                <p class="text-overlay">Sillas</p>
               </a>
             </div>
-            <div class="col-10 col-md-5 col-lg-4 mb-4">
+
+
+            <div class="col-10 col-md-5 col-lg-4 mb-4 inicio-categoria">
               <a href="views/catalogo_mesa.php">
                 <img src="assets/images/categoria_mesa.png" class="img-fluid categoria-img" alt="Imagen 2">
+                <p class="text-overlay">Mesas</p>
               </a>
             </div>
-            <div class="col-10 col-md-5 col-lg-4 mb-4">
+
+            <div class="col-10 col-md-5 col-lg-4 mb-4 inicio-categoria">
               <a href="views/catalogo_sillon.php">
                 <img src="assets/images/categoria_sillon.png" class="img-fluid categoria-img" alt="Imagen 3">
+                <p class="text-overlay">Sillones</p>
               </a>
             </div>
           </div>
 
           <div class="row justify-content-center text-center">
-            <div class="col-10 col-md-6 col-lg-6 mb-4">
+
+            <div class="col-10 col-md-6 col-lg-6 mb-4 inicio-categoria">
               <a href="views/catalogo_organizacion.php">
                 <img src="assets/images/categoria_organizacion.png" class="img-fluid categoria-img" alt="Imagen 4">
+                <p class="text-overlay">Organización</p>
               </a>
             </div>
-            <div class="col-10 col-md-6 col-lg-6 mb-5">
+
+            <div class="col-10 col-md-6 col-lg-6 mb-4 inicio-categoria">
               <a href="views/catalogo_cama.php">
                 <img src="assets/images/categoria_cama.png" class="img-fluid categoria-img" alt="Imagen 5">
+                <p class="text-overlay">Camas</p>
               </a>
             </div>
           </div>
