@@ -105,9 +105,9 @@
                     <?php endif; ?>
                     <form action="../../assets/php/change_pass.php" method="post">
                         <div class="mb-4">
-                            <label for="identificador" class="form-label ms-1 fw-semibold">Contraseña</label>
+                            <label for="identificador" class="form-label ms-1 fw-semibold">Nueva contraseña</label>
                             <input type="password" id="identificador" name="new_pass" class="form-control border-dark"
-                                placeholder="Nueva contraseña" required />
+                                placeholder="8-15 caracteres" required />
                             <input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">
                         </div>
                         <button type="submit" name="submit" class="btn btn-dark w-100 py-2">Cambiar contraseña</button>
