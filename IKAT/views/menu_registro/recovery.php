@@ -106,7 +106,7 @@
                     <form action="../../assets/php/recovery.php" method="post">
                         <div class="mb-4">
                             <label for="identificador" class="form-label ms-1 fw-semibold">Correo</label>
-                            <input type="text" id="identificador" name="email" class="form-control border-dark"
+                            <input type="email" id="identificador" name="email" class="form-control border-dark"
                                 placeholder="nombre@ejemplo.com" required />
                         </div>
                         <button type="submit" name="submit" class="btn btn-dark w-100 py-2">Recuperar</button>
