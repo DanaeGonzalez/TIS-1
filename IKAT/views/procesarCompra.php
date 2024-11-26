@@ -87,6 +87,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
             <?php include '../templates/header.php'; ?>
 
             <div class="main">
+                <!-- Modal para la barra de búsqueda -->
+                <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="searchModalLabel">Buscar productos</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="searchForm" onsubmit="return buscarProductos()">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="buscarInputModal"
+                                            placeholder="Buscar productos..." aria-label="Buscar productos">
+                                        <button class="btn btn-dark" type="submit">Buscar</button>
+                                    </div>
+                                </form>
+                                <div id="resultadosBusqueda" class="mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenedor de la barra de búsqueda -->
+                <div class="d-none d-lg-flex justify-content-center align-items-center mt-4">
+                    <div class="search-container col-lg-7 col-10">
+                        <div class="input-group">
+                            <button class="input-group-text" id="search-addon" type="button">
+                                <i class="bi bi-list"></i>
+                            </button>
+                            <input type="text" class="form-control p-2" id="buscarInputMain"
+                                placeholder="Buscar productos..." aria-label="Buscar productos..."
+                                aria-describedby="search-addon" oninput="barraBusqueda()">
+                            <button class="input-group-text" id="search-addon" type="button" onclick="buscarProductos()">
+                                <i class="bi bi-search"></i>
+                            </button>
+                            <ul class="list-group position-absolute w-100" id="lista"></ul>
+                        </div>
+                    </div>
+                </div>
                 <div class="container mt-4">
                     <div class="row align-items-center">
                         <h2 class="text-center mb-3">Completa tu Compra</h2>
@@ -102,7 +142,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
                                 <input type="hidden" id="valorEnvioInput" name="valor_envio" value="0">
 
+                                <?php
+                                $id_usuario = $_SESSION['id_usuario']; // Usamos el ID del usuario desde la sesión para la consulta
+                                // Consulta SQL para obtener solo la dirección del usuario
+                                $queryDireccion = "SELECT direccion_usuario FROM usuario WHERE id_usuario = ?";
+                                $stmtDireccion = $conn->prepare($queryDireccion);
+                                $stmtDireccion->bind_param("i", $id_usuario); // Vinculamos el ID del usuario como parámetro
+                                $stmtDireccion->execute();
+                                $resultDireccion = $stmtDireccion->get_result();
 
+                                // Verificamos si se obtuvo un resultado
+                                if ($resultDireccion->num_rows > 0) {
+                                    $row = $resultDireccion->fetch_assoc();
+                                    $direccion = $row['direccion_usuario'];
+                                } else {
+                                    // Si no se encuentra el usuario, redirigimos o mostramos un error
+                                    echo "Usuario no encontrado.";
+                                    exit;
+                                }
+                                ?>
 
                                 <!-- Campo oculto para el subtotal original -->
                                 <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
@@ -111,8 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                     <label class="form-label fw-bold">Dirección</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="direccion" name="direccion_pedido"
-                                            onblur="buscarDireccion();"
-                                            value="<?php echo htmlspecialchars($_SESSION['direccion_usuario']); ?>"
+                                            onblur="buscarDireccion();" value="<?php echo htmlspecialchars($direccion); ?>"
                                             placeholder="Av. Alonso de Ribera 2850" required>
                                         <!-- Botón para confirmar dirección -->
                                         <button class="btn btn-outline-secondary" type="button" id="confirmar_direccion"

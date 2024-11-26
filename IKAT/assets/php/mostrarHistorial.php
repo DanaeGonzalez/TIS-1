@@ -29,13 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $historial[] = $row;
         }
 
-        if (count($historial) > 0) {
-            echo json_encode($historial);  //Responder con el historial en formato JSON
-        } else {
-            echo json_encode(['error' => 'No se encontraron compras.']);  //Si no hay datos, devolver un error
-        }
+        // Responder con el historial en formato JSON
+        echo json_encode($historial);
     } else {
-        echo json_encode(['error' => 'id_usuario no proporcionado.']);  //Si no se proporciona id_usuario
+        echo json_encode(['error' => 'id_usuario no proporcionado.']);  // Si no se proporciona id_usuario
     }
 }
 ?>

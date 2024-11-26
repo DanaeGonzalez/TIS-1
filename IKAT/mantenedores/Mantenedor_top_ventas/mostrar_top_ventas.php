@@ -98,7 +98,7 @@ unset($_SESSION['mensaje']);
                                     echo "<option value='" . $producto['id_producto'] . "'>" . $producto['nombre_producto'] . "</option>";
                                 }
                             ?>
-                        </select>
+                            </select>
 
                             <input class="form-control btn btn-primary d-block mt-4" type="submit" value="Agregar">
                         </form>
