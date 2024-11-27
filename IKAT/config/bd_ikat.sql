@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-11-2024 a las 19:16:38
+-- Tiempo de generación: 27-11-2024 a las 18:03:31
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.0.30
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -88,6 +88,15 @@ CREATE TABLE `carrito_producto` (
   `cantidad_producto` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `carrito_producto`
+--
+
+INSERT INTO `carrito_producto` (`id_carrito`, `id_producto`, `cantidad_producto`) VALUES
+(2, 3, 1),
+(2, 5, 1),
+(2, 6, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -146,7 +155,6 @@ CREATE TABLE `compra` (
   `fecha_compra` date NOT NULL,
   `total_compra` int(11) NOT NULL,
   `puntos_ganados` int(11) NOT NULL,
-  `tipo_estado` enum('Preparando pedido','En reparto','Entregado','Intento de entrega fallido','Devuelto a origen') NOT NULL,
   `direccion_pedido` varchar(255) NOT NULL,
   `id_metodo` int(10) DEFAULT NULL,
   `id_usuario` int(100) NOT NULL,
@@ -157,11 +165,13 @@ CREATE TABLE `compra` (
 -- Volcado de datos para la tabla `compra`
 --
 
-INSERT INTO `compra` (`id_compra`, `fecha_compra`, `total_compra`, `puntos_ganados`, `tipo_estado`, `direccion_pedido`, `id_metodo`, `id_usuario`, `id_carrito`) VALUES
-(1, '2024-11-04', 50980, 5098, '', 'Timor del este', 5, 1, 1),
-(2, '2024-11-04', 50980, 5098, '', 'Timor del este', 5, 1, 1),
-(3, '2024-11-04', 0, 0, '', 'Timor del este', 6, 1, 1),
-(4, '2024-11-23', 25990, 1300, '', 'Angol 921, Concepción', 6, 1, 1);
+INSERT INTO `compra` (`id_compra`, `fecha_compra`, `total_compra`, `puntos_ganados`, `direccion_pedido`, `id_metodo`, `id_usuario`, `id_carrito`) VALUES
+(1, '2024-11-04', 50980, 5098, 'Timor del este', 5, 1, 1),
+(2, '2024-11-04', 50980, 5098, 'Timor del este', 5, 1, 1),
+(3, '2024-11-04', 0, 0, 'Timor del este', 6, 1, 1),
+(4, '2024-11-23', 25990, 1300, 'Angol 921, Concepción', 6, 1, 1),
+(5, '2024-11-27', 2358437, 117922, 'a', 7, 2, 2),
+(6, '2024-11-27', 2390046, 119502, 'pekin', 7, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -172,15 +182,18 @@ INSERT INTO `compra` (`id_compra`, `fecha_compra`, `total_compra`, `puntos_ganad
 CREATE TABLE `compra_producto` (
   `id_compra` int(100) NOT NULL,
   `id_producto` int(10) NOT NULL,
-  `cantidad` int(11) NOT NULL
+  `cantidad` int(11) NOT NULL,
+  `tipo_estado` enum('Preparando pedido','En reparto','Entregado','Intento de entrega fallido','Devuelto a origen') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `compra_producto`
 --
 
-INSERT INTO `compra_producto` (`id_compra`, `id_producto`, `cantidad`) VALUES
-(4, 3, 1);
+INSERT INTO `compra_producto` (`id_compra`, `id_producto`, `cantidad`, `tipo_estado`) VALUES
+(4, 3, 1, 'Entregado'),
+(5, 3, 1, 'Devuelto a origen'),
+(5, 6, 1, 'Preparando pedido');
 
 -- --------------------------------------------------------
 
@@ -282,6 +295,13 @@ CREATE TABLE `lista_deseos_producto` (
   `id_producto` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `lista_deseos_producto`
+--
+
+INSERT INTO `lista_deseos_producto` (`id_lista_deseos`, `id_producto`) VALUES
+(2, 5);
+
 -- --------------------------------------------------------
 
 --
@@ -298,7 +318,8 @@ CREATE TABLE `lista_de_deseos` (
 --
 
 INSERT INTO `lista_de_deseos` (`id_lista_deseos`, `id_usuario`) VALUES
-(1, 1);
+(1, 1),
+(2, 2);
 
 -- --------------------------------------------------------
 
@@ -426,7 +447,8 @@ CREATE TABLE `oferta` (
 --
 
 INSERT INTO `oferta` (`id_oferta`, `porcentaje_descuento`, `activo`, `id_producto`) VALUES
-(2, 30, 1, 3);
+(2, 30, 1, 3),
+(3, 1, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -452,9 +474,9 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`id_producto`, `nombre_producto`, `precio_unitario`, `stock_producto`, `descripcion_producto`, `foto_producto`, `cantidad_vendida`, `top_venta`, `activo`, `id_subcategoria`) VALUES
-(3, 'Cama gato', 25990, 10, 'Una linda camita para tu felino :3 miau', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/127645737_01/w=1500,h=1500,fit=pad', 0, 0, 1, 5),
+(3, 'Cama gato', 25990, 9, 'Una linda camita para tu felino :3 miau', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/127645737_01/w=1500,h=1500,fit=pad', 1, 1, 1, 5),
 (5, 'Mesa roble', 30990, 15, 'Una mesa de roble barnizada', 'https://www.cic.cl/dw/image/v2/BDXB_PRD/on/demandware.static/-/Sites-masterCatalog_CIC/es_CL/dw742de45c/original/images/products/mesa-centro-nuble-caramelo-110x70x40-cm-01.jpg?sw=1500&sh=1500&sm=fit', 0, 0, 1, 3),
-(6, 'Pluma Silla de Cuero y Madera', 19990, 31, 'Una silla de madera con sillones de cuero', 'https://www.cueroydiseno.cl/wp-content/uploads/2021/04/sillapluma-scaled.jpg', 0, 0, 1, 2),
+(6, 'Pluma Silla de Cuero y Madera', 19990, 30, 'Una silla de madera con sillones de cuero', 'https://www.cueroydiseno.cl/wp-content/uploads/2021/04/sillapluma-scaled.jpg', 1, 0, 1, 2),
 (7, 'Cama estructural MALM', 369980, 0, 'Una elegante cama de color con dos cajones en la parte de abajo', 'https://www.ikea.com/cl/es/images/products/malm-cama-estructural-con-2-cajones-negro-loenset__1101552_pe866728_s5.jpg?f=s', 0, 0, 1, 4),
 (8, 'Cajonera Alex', 79990, 12, 'Una cajonera muy elegante.', 'https://www.ikea.com/cl/es/images/products/alex-cajonera-negro__0977786_pe813770_s5.jpg?f=s', 0, 0, 1, 6),
 (9, 'Silla de escritorio MARKUS', 119990, 4, 'Una elegante silla de color blanco ideal para tu escritorio de trabajo.', 'https://www.ikea.com/cl/es/images/products/markus-silla-escritorio-vissle-gris-claro__1101440_pe866425_s5.jpg?f=s', 0, 0, 1, 7),
@@ -712,8 +734,8 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `run_usuario`, `correo_usuario`, `numero_usuario`, `contrasenia_usuario`, `direccion_usuario`, `tipo_usuario`, `puntos_totales`, `activo`, `ultima_sesion`, `id_carrito`) VALUES
-(1, 'Javier', 'Pino', '208460730', 'jpinoh@ing.ucsc.cl', '+56932365067', '$2y$10$FleiHYb0jPoueiI064rr1O92e30.3Ss5imRAI1yxRsqm4wEW47Qle', NULL, 'Superadmin', 0, 1, '2024-11-04', 1),
-(2, 'Camilo', 'Campos', '21233765k', 'ccamposg@ing.ucsc.cl', '+56988275096', '$2y$10$VJN9UetBgsVYRfajlvPta.eMaldA5iwrpW7dI/YGrOD907azjhH4.', NULL, 'Admin', 0, 1, '2024-11-04', 2),
+(1, 'Javier', 'Pino', '208460730', 'jpinoh@ing.ucsc.cl', '+56932365067', '$2y$10$FleiHYb0jPoueiI064rr1O92e30.3Ss5imRAI1yxRsqm4wEW47Qle', NULL, 'Superadmin', 0, 1, '2024-11-27', 1),
+(2, 'Camilo', 'Campos', '21233765k', 'ccamposg@ing.ucsc.cl', '+56988275096', '$2y$10$VJN9UetBgsVYRfajlvPta.eMaldA5iwrpW7dI/YGrOD907azjhH4.', NULL, 'Superadmin', 0, 1, '2024-11-27', 2),
 (3, 'Danae', 'Gonzalez', '210653163', 'dgonzalezv@ing.ucsc.cl', '+56931173800', '$2y$10$vKXZksm8sGgg9G/HurQZL.ycLlY7SAfGk/UNYPYpqHbIM2tEG865u', NULL, 'Registrado', 0, 1, '2024-11-04', 3),
 (4, 'Maicol', 'Ramirez', '212725021', 'mramirezm@ing.ucsc.cl', '+56968365262', '$2y$10$TmwGuN5O6N37SQKbc9Dy2OXVUoXIoe44XiO7DAIis/MZO6mGZWSFS', NULL, 'Registrado', 0, 1, '2024-11-04', 4),
 (5, 'Cesar', 'Avendaño', '210720537', 'cavendano@ing.ucsc.cl', '+56982911751', '$2y$10$m2jXyIr62WdI0mhv2OXC1uUvX79Y7x6RVjyXCgTolZd9ZQuyXlwrq', NULL, 'Registrado', 0, 1, '2024-11-04', 5);
@@ -976,7 +998,7 @@ ALTER TABLE `color`
 -- AUTO_INCREMENT de la tabla `compra`
 --
 ALTER TABLE `compra`
-  MODIFY `id_compra` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_compra` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `control_stock`
@@ -1006,7 +1028,7 @@ ALTER TABLE `forma`
 -- AUTO_INCREMENT de la tabla `lista_de_deseos`
 --
 ALTER TABLE `lista_de_deseos`
-  MODIFY `id_lista_deseos` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_lista_deseos` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `material`
@@ -1042,7 +1064,7 @@ ALTER TABLE `n_plazas`
 -- AUTO_INCREMENT de la tabla `oferta`
 --
 ALTER TABLE `oferta`
-  MODIFY `id_oferta` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_oferta` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `producto`
