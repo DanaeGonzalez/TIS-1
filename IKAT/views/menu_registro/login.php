@@ -167,10 +167,32 @@ if (isset($_POST['identificador'])) {
             </div>
         </nav>
 
-        <div class="container mt-4 mb-5 d-flex align-items-center">
-            <div class="row d-flex justify-content-center w-100">
+        <!-- Main -->
+        <div class="container mt-4 mb-5">
+            <h1 class="text-center">¡Bienvenido de nuevo a IKAT!</h1>
+            <hr>
+            <div class="row mt-5 d-flex justify-content-center">
+                <?php
+                    if (isset($_GET['msg'])) {
+                      switch ($_GET['msg']) {
+                        case 'ok':?>
+                            <div class="alert alert-warning" role="alert">Por favor, revisa tu correo electrónico.</div>
+                            <?php
+                            break;
+                        case 'success_pass':?>
+                            <div class="alert alert-success" role="alert">¡Ya puedes iniciar sesión con tu nueva contraseña!</div>
+                            <?php
+                            break;
+                            
+                        default: ?>
+                            <div class="alert alert-danger" role="alert">Algo salió mal. Por favor, intenta recuperar tu contraseña nuevamente.</div>
+                            <?php
+                            break;
+                      }  
+                    }    
+                ?>
                 <!-- Formulario de inicio de sesión -->
-                <div class="col-md-9 col-lg-6 border rounded-3 shadow-lg p-5 bg-light">
+                <div class="col-md-6 border rounded-3 shadow-lg px-5 pt-5 pb-3 bg-light">
                     <h2 class="text-center mb-4 fw-bold">Inicia Sesión</h2>
                     <?php if (isset($error_message)): ?>
                         <div class="alert alert-danger text-center"><?= $error_message; ?></div>
@@ -190,7 +212,8 @@ if (isset($_POST['identificador'])) {
                     </form>
                     <p class="text-center mt-4">
                         ¿No estás registrado aún? <br><a href="registro.php"
-                            class="text-decoration-none text-secondary fw-semibold">Regístrate aquí</a>
+                            class="text-decoration-none text-secondary fw-semibold">Regístrate aquí</a><br><br>
+                            <a href="recovery.php" class="text-decoration-none text-dark fw-bold">¿Olvidaste tu contraseña?</a>
                     </p>
                 </div>
             </div>
