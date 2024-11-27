@@ -184,8 +184,10 @@ function barraBusqueda() {
                     const item = document.createElement('li');
                     item.classList.add('list-group-item', 'sugerencia-item');
                     item.innerHTML = `
-                        <img src="${producto.foto_producto}" alt="${producto.nombre_producto}" class="sugerencia-img">
-                        <span>${producto.nombre_producto}</span>
+                        <a href="producto.php?id=${producto.id_producto}" style="text-decoration: none;">    
+                            <img src="${producto.foto_producto}" alt="${producto.nombre_producto}" class="sugerencia-img">
+                            <span>${producto.nombre_producto}</span>
+                        </a>
                     `;
                     listaResultados.appendChild(item);
                 });

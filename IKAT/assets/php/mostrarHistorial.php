@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id_usuario = $_POST['id_usuario']; 
 
         //Consulta SQL
-        $query = "SELECT cp.id_compra, p.nombre_producto, p.precio_unitario, cp.cantidad, p.foto_producto, c.fecha_compra
+        $query = "SELECT cp.id_compra, p.nombre_producto, p.id_producto, p.precio_unitario, cp.cantidad, p.foto_producto, c.fecha_compra
                   FROM compra_producto cp
                   JOIN producto p USING (id_producto)
                   JOIN compra c USING (id_compra)
