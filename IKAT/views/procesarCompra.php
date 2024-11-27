@@ -43,8 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     $puntos_ganados = $total_compra * 0.05;
 
     // Insertar en la base de datos
-    $query = "INSERT INTO compra (id_compra, fecha_compra, total_compra, puntos_ganados, tipo_estado, direccion_pedido, id_metodo, id_usuario, id_carrito) 
-              VALUES (NULL, '$fecha_compra', '$total_compra', '$puntos_ganados', '', '$direccion_pedido', '$id_metodo', '$id_usuario', '$id_carrito')";
+    $query = "INSERT INTO compra (id_compra, fecha_compra, total_compra, puntos_ganados, direccion_pedido, id_metodo, id_usuario, id_carrito) 
+              VALUES (NULL, '$fecha_compra', '$total_compra', '$puntos_ganados', '$direccion_pedido', '$id_metodo', '$id_usuario', '$id_carrito')";
 
     if ($conn->query($query) === TRUE) {
         echo "Compra registrada exitosamente.";
@@ -332,7 +332,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
         function calcularTotal() {
             const subtotal = parseFloat('<?= number_format(floor($total), 0, '', '.') ?>'.replace(/\./g, '').replace('$', '')); // Obtiene el subtotal desde PHP
-            const tasaImpuestos = 0.02;
+            const tasaImpuestos = 0.19;
             const valorEnvio = parseFloat(document.getElementById('valorEnvioInput').value) || 0;
 
             // Calcular impuestos
