@@ -38,7 +38,7 @@ unset($_SESSION['mensaje']);
             <h1 class="text-center p-4">Mantenedor de Compras</h1>
             <div class="table-responsive">
                 <?php
-                $sql = "SELECT * FROM compra";
+                $sql = "SELECT * FROM compra JOIN compra_producto USING(id_compra)";
                 $result = $conn->query($sql);
 
                 if ($result->num_rows > 0) {
@@ -46,6 +46,7 @@ unset($_SESSION['mensaje']);
                             <thead class='thead-dark'>
                                 <tr>
                                     <th>ID Compra</th>
+                                    <th>ID Producto</th>
                                     <th>Fecha Compra</th>
                                     <th>Estado</th>
                                     <th>ID Usuario</th>
@@ -56,18 +57,19 @@ unset($_SESSION['mensaje']);
                     while ($row = $result->fetch_assoc()) {
                         echo "<tr>
                                 <td>" . $row["id_compra"] . "</td>
+                                <td>" . $row["id_producto"] . "</td>
                                 <td>" . $row["fecha_compra"] . "</td>
                                 <td>" . $row["tipo_estado"] . "</td>
                                 <td>" . $row["id_usuario"] . "</td>
                                 <td>
-                                    <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarCompraModal" . $row["id_compra"] . "'>Editar</a> |
+                                    <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarCompraModal" . $row["id_compra"] . "_" . $row["id_producto"] . "'>Editar</a> |
                                     <a href='borrar_compra.php?id=" . $row["id_compra"] . "' class='btn btn-danger btn-sm'>Borrar</a>
                                 </td>
                               </tr>";
                     
                         // Modal para editar el estado de la compra
                         echo "
-                        <div class='modal fade' id='editarCompraModal" . $row["id_compra"] . "' tabindex='-1' aria-labelledby='editarCompraModalLabel' aria-hidden='true'>
+                        <div class='modal fade' id='editarCompraModal" . $row["id_compra"] . "_" . $row["id_producto"] . "' tabindex='-1' aria-labelledby='editarCompraModalLabel' aria-hidden='true'>
                             <div class='modal-dialog'>
                                 <div class='modal-content'>
                                     <div class='modal-header'>
@@ -77,6 +79,7 @@ unset($_SESSION['mensaje']);
                                     <div class='modal-body'>
                                         <form action='actualizar_compra.php' method='post'>
                                             <input type='hidden' name='id_compra' value='" . $row['id_compra'] . "'>
+                                            <input type='hidden' name='id_producto' value='" . $row['id_producto'] . "'>
                                             <input type='hidden' name='id_usuario' value='" . $row['id_usuario'] . "'>
                                             <label for='tipo_estado'>Estado:</label>
                                             <select name='tipo_estado' class='form-select' required>
