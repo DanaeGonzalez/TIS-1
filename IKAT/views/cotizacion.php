@@ -40,6 +40,10 @@ while ($row = $result->fetch_assoc()) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../assets/scss/delete.scss">
     <link rel="stylesheet" href="../assets/css/payButton.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
 </head>
 
@@ -103,16 +107,16 @@ while ($row = $result->fetch_assoc()) {
                                 echo "</div>";
 
                             // Botón de eliminar producto
-                                /*echo "<p class='mb-0 fw-bold fs-4 text-secondary'>\$" . number_format(floor($subtotal), 0, '', '.') . "</p>";
-                                echo "<br>";
+                                echo "<p class='mb-0 fw-bold fs-4 text-secondary'>\$" . number_format(floor($subtotal), 0, '', '.') . "</p>";
+                                /*echo "<br>";
                                 echo "<button type='button' class='btn btn-danger btn-sm button mt-5 eliminar-producto' data-id='{$row['id_producto']}'>";
                                 echo "<div class='icon'>";
                                 echo "<svg class='top'><use xlink:href='#top'></use></svg>";
                                 echo "<svg class='bottom'><use xlink:href='#bottom'></use></svg>";
                                 echo "</div>";
                                 echo "<span>Eliminar</span>";
-                                echo "</button>";
-                                echo "</div>";*/
+                                echo "</button>";*/
+                                echo "</div>";
                             }
 
                             ?>
@@ -127,17 +131,19 @@ while ($row = $result->fetch_assoc()) {
                                 Subtotal<span>$<?= number_format(floor($total), 0, '', '.') ?></span>
                             </li>
                             <li
-                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Envío <em>Pendiente</em>
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+                                    Envío<span id="valorEnvio">$0.00</span>
                             </li>
-                            <li
-                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Impuestos <em>Pendiente</em>
-                            </li>
-                            <li
-                                class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
-                                Total<span>$<?= number_format(floor($total + ($total * 0.02)), 0, '', '.') ?></span>
-                            </li>
+                                <li
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+                                    Impuestos<span id="valorImpuestos">$0.00</span>
+                                </li>
+
+                                <li
+                                    class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
+                                    Total<span
+                                        id="totalConEnvioImpuestos">$<?= number_format(floor($total), 0, '', '.') ?></span>
+                                </li>
                         </ul>
                         <?php if ($total > 0): ?>
                             <form action="cotizacion.php" method="POST">
@@ -160,6 +166,30 @@ while ($row = $result->fetch_assoc()) {
                 </div>
             </div>
         </div>
+        <!-- Contenedor de la barra de búsqueda Mapa-->
+        <div class="mb-3">
+            <label class="form-label fw-bold">Dirección</label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="direccion" name="direccion_pedido"
+                    onblur="buscarDireccion();" 
+                    placeholder="Av. Alonso de Ribera 2850" required>
+                <!-- Botón para confirmar dirección -->
+                <button class="btn btn-outline-secondary" type="button" id="confirmar_direccion"
+                    onclick="buscarDireccion()" required>
+                    <i class="bi bi-check"></i> Confirmar
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mapa -->
+        <div id="map" style="width: 100%; height: 300px;"></div> <!-- solo para probar si funciona-->
+
+        <!-- Área para mostrar coordenadas y distancia -->
+        <div id="coordenadas" style="display: none;" class="mt-3">
+                                    <p id="latitud">Latitud: </p>
+                                    <p id="longitud">Longitud: </p>
+                                    <p id="distancia"></p>
+                                </div>
         <?php include '../templates/footer.php'; ?>
     </div>
 
@@ -203,6 +233,93 @@ while ($row = $result->fetch_assoc()) {
         }
     })
     });*/
+
+    function buscarDireccion() {
+            const direccion = document.getElementById('direccion').value;
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}`;
+            
+            let map = L.map('map').setView([-36.79849246501831, -73.05592193108434], 12);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            Zoom: 15,
+            }).addTo(map);
+
+            let marker = L.marker([-36.79849246501831, -73.05592193108434]).addTo(map);
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        const ubicacion = data[0];
+                        const lat = parseFloat(ubicacion.lat);
+                        const lng = parseFloat(ubicacion.lon);
+
+                        map.setView([lat, lng], 12);
+                        marker.setLatLng([lat, lng]);
+
+                        // Mostrar latitud y longitud
+                        document.getElementById('latitud').textContent = `Latitud: ${lat}`;
+                        document.getElementById('longitud').textContent = `Longitud: ${lng}`;
+
+                        // Llamar a la función de distancia con las coordenadas obtenidas
+                        distancia(lat, lng);
+
+                        // Aquí se ejecuta la lógica para buscar la dirección
+                        console.log("Dirección confirmada");
+
+                        // Habilitar el botón de "Continuar con el pago" después de confirmar la dirección
+                        document.getElementById("continuar_pago").disabled = false;
+                    } else {
+                        alert('No se pudo encontrar la dirección.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Ocurrió un error al buscar la dirección.');
+                });
+        }
+
+        function distancia(lat2, lng2) {
+            const lat1 = -36.80696177670701;
+            const lng1 = -73.04647662462334;
+            const R = 6371;
+
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLng / 2) * Math.sin(dLng / 2);
+
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const distancia_km = R * c;
+
+            const valorEnvio = Math.round(distancia_km * 1500);
+
+            document.getElementById('valorEnvioInput').value = valorEnvio;
+            document.getElementById('valorEnvio').textContent = `$${formatNumber(valorEnvio)}`;
+            calcularTotal();
+        }
+
+        function calcularTotal() {
+            const subtotal = parseFloat('<?= number_format(floor($total), 0, '', '.') ?>'.replace(/\./g, '').replace('$', '')); // Obtiene el subtotal desde PHP
+            const tasaImpuestos = 0.19;
+            const valorEnvio = parseFloat(document.getElementById('valorEnvioInput').value) || 0;
+
+            // Calcular impuestos
+            const impuestos = subtotal * tasaImpuestos;
+
+            // Calcular el total final
+            const totalFinal = subtotal + impuestos + valorEnvio;
+
+            // Actualiza el valor de impuestos y el total en la interfaz
+            document.getElementById('valorImpuestos').textContent = `$${formatNumber(impuestos)}`;
+            document.querySelector('.list-group-item.fw-bold span').textContent = `$${formatNumber(totalFinal)}`;
+            document.getElementById('totalCalculado').value = totalFinal;
+
+        }
+
+        function formatNumber(num) {
+            return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
 
     </script>
 </body>

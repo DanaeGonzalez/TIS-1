@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
                                 <!-- Campo oculto para el subtotal original -->
                                 <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
-                                <!-- Contenedor de la barra de búsqueda -->
+                                <!-- Contenedor de la barra de búsqueda Mapa-->
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Dirección</label>
                                     <div class="input-group">
