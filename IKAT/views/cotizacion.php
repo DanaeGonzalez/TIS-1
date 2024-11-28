@@ -25,6 +25,26 @@ while ($row = $result->fetch_assoc()) {
         $alerta = true;  // Marcar que hay un problema con el stock
     }
 }
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_POST['id_metodo'], $_POST['total_calculado'])) {
+    // Capturar datos del formulario
+    $id_usuario = $_SESSION['id_usuario'];
+    $id_carrito = $_SESSION['id_carrito'];
+    $direccion_pedido = $_POST['direccion_pedido'];
+    $id_metodo = $_POST['id_metodo'];
+    $total_compra = $_POST['total_calculado'];
+    $fecha_compra = date('Y-m-d H:i:s');
+
+} else {
+
+    $total = $_POST['total'] ?? 0;
+
+    // Obtener métodos de pago
+    $query_metodo = "SELECT * FROM metodo_pago WHERE activo = 1";
+    $result_metodo = $conn->query($query_metodo);
+
+    // Verificar si la dirección está confirmada
+    $direccionConfirmada = isset($_POST['direccion_pedido']) && !empty($_POST['direccion_pedido']);}
 ?>
 
 <!doctype html>
@@ -162,16 +182,37 @@ while ($row = $result->fetch_assoc()) {
                             </div>
                         <?php endif; ?>
                     </div>
-
+                        <!-- Campo oculto para el subtotal original -->
+                        <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
                 </div>
             </div>
         </div>
+        <?php
+                                $id_usuario = $_SESSION['id_usuario']; // Usamos el ID del usuario desde la sesión para la consulta
+                                // Consulta SQL para obtener solo la dirección del usuario
+                                $queryDireccion = "SELECT direccion_usuario FROM usuario WHERE id_usuario = ?";
+                                $stmtDireccion = $conn->prepare($queryDireccion);
+                                $stmtDireccion->bind_param("i", $id_usuario); // Vinculamos el ID del usuario como parámetro
+                                $stmtDireccion->execute();
+                                $resultDireccion = $stmtDireccion->get_result();
+
+                                // Verificamos si se obtuvo un resultado
+                                if ($resultDireccion->num_rows > 0) {
+                                    $row = $resultDireccion->fetch_assoc();
+                                    $direccion = $row['direccion_usuario'];
+                                } else {
+                                    // Si no se encuentra el usuario, redirigimos o mostramos un error
+                                    echo "Usuario no encontrado.";
+                                    exit;
+                                }
+                                ?>
+                                
         <!-- Contenedor de la barra de búsqueda Mapa-->
         <div class="mb-3">
             <label class="form-label fw-bold">Dirección</label>
             <div class="input-group">
                 <input type="text" class="form-control" id="direccion" name="direccion_pedido"
-                    onblur="buscarDireccion();" 
+                    onblur="buscarDireccion();" value="<?php echo htmlspecialchars($direccion); ?>"
                     placeholder="Av. Alonso de Ribera 2850" required>
                 <!-- Botón para confirmar dirección -->
                 <button class="btn btn-outline-secondary" type="button" id="confirmar_direccion"
@@ -233,17 +274,17 @@ while ($row = $result->fetch_assoc()) {
         }
     })
     });*/
+        let map = L.map('map').setView([-36.79849246501831, -73.05592193108434], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            Zoom: 15,
+        }).addTo(map);
 
-    function buscarDireccion() {
+        let marker = L.marker([-36.79849246501831, -73.05592193108434]).addTo(map);
+
+        function buscarDireccion() {
             const direccion = document.getElementById('direccion').value;
             const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}`;
-            
-            let map = L.map('map').setView([-36.79849246501831, -73.05592193108434], 12);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            Zoom: 15,
-            }).addTo(map);
 
-            let marker = L.marker([-36.79849246501831, -73.05592193108434]).addTo(map);
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
