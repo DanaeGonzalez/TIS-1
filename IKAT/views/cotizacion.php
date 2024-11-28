@@ -27,8 +27,6 @@ while ($row = $result->fetch_assoc()) {
 }
 ?>
 
-
-
 <!doctype html>
 <html lang="en">
 
@@ -66,10 +64,10 @@ while ($row = $result->fetch_assoc()) {
                                     </li>
                                 <?php endforeach; ?>
                             </ul>
-                            Por favor, ajusta las cantidades antes de continuar con la compra.
+                            Por favor, ajusta las cantidades antes de continuar con la cotización.
                         </div>
                     <?php endif; ?>
-                    <h1 class="text-center mb-3">Productos en el Carrito</h1>
+                    <h1 class="text-center mb-3">Cotización de productos</h1>
                     <hr>
                     <div class="col-md-8">
                         <div class="list-group me-3">
@@ -104,27 +102,25 @@ while ($row = $result->fetch_assoc()) {
                                 echo "</div></div></div>";
                                 echo "</div>";
 
-                                // Botón de eliminar producto con SVG
-                                echo "<form action='../assets/php/eliminarProducto_carrito.php' method='POST' class='d-inline-block text-center'>";
-                                echo "<input type='hidden' name='id_producto' value='{$row['id_producto']}'>";
-                                echo "<p class='mb-0 fw-bold fs-4 text-secondary'>\$" . number_format(floor($subtotal), 0, '', '.') . "</p>";
+                            // Botón de eliminar producto
+                                /*echo "<p class='mb-0 fw-bold fs-4 text-secondary'>\$" . number_format(floor($subtotal), 0, '', '.') . "</p>";
                                 echo "<br>";
-                                echo "<button type='submit' class='btn btn-danger btn-sm button mt-5'>";
+                                echo "<button type='button' class='btn btn-danger btn-sm button mt-5 eliminar-producto' data-id='{$row['id_producto']}'>";
                                 echo "<div class='icon'>";
                                 echo "<svg class='top'><use xlink:href='#top'></use></svg>";
                                 echo "<svg class='bottom'><use xlink:href='#bottom'></use></svg>";
                                 echo "</div>";
-                                echo "<span>Borrar</span>";
+                                echo "<span>Eliminar</span>";
                                 echo "</button>";
-                                echo "</form>";
-                                echo "</div>";
+                                echo "</div>";*/
                             }
+
                             ?>
                         </div>
                     </div>
 
                     <div class="col-md-4 mb-4 p-4 border bg-light rounded shadow-sm resumen-compra">
-                        <h3 class="mb-4 text-center">Resumen de la Compra</h3>
+                        <h3 class="mb-4 text-center">Cotización</h3>
                         <ul class="list-group">
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
@@ -144,27 +140,19 @@ while ($row = $result->fetch_assoc()) {
                             </li>
                         </ul>
                         <?php if ($total > 0): ?>
-                            <form action="procesarCompra.php" method="POST">
+                            <form action="cotizacion.php" method="POST">
                                 <input type="hidden" name="total" value="<?= $total ?>">
                                 <button type="submit" class="BtnPay mt-4">
-                                    Procesar compra
+                                    Descargar
                                     <path
                                         d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
                                     </path>
                                     </svg>
                                 </button>
                             </form>
-                                <a type="button" class="BtnPay mt-4" href="cotizacion.php">
-                                    Generar Cotización
-                                    <path
-                                        d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
-                                    </path>
-                                    </svg>
-                                </a>
-                            
                         <?php else: ?>
                             <div class="alert alert-info mt-4 text-center">
-                                Tu carrito está vacío. Agrega productos para continuar con la compra.
+                                Tu carrito está vacío. Agrega productos para continuar con la cotización
                             </div>
                         <?php endif; ?>
                     </div>
@@ -198,6 +186,23 @@ while ($row = $result->fetch_assoc()) {
                 }, 2200); // El tiempo debe coincidir con la duración de la animación
             }
         }));
+        
+        /*document.querySelectorAll('.eliminar-producto').forEach(button => {
+        button.addEventListener('click', function () {
+        // Seleccionar el contenedor del producto
+        const productItem = button.closest('.list-group-item');
+            if (productItem) {
+            // Aplicar clase de "invisible" con una animación, o eliminar directamente
+            productItem.style.transition = "opacity 0.5s ease";
+            productItem.style.opacity = 0;
+
+            // Esperar a que termine la animación antes de ocultarlo completamente
+            setTimeout(() => {
+                productItem.style.display = 'none';
+            }, 500);
+        }
+    })
+    });*/
 
     </script>
 </body>
