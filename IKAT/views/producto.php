@@ -94,10 +94,15 @@
                 <div class="container mt-4">
                     <div class="row">
                         <div class="col-md-6 text-center">
-                            <img width="90%" src="<?= $producto['foto_producto'] ?>"
+                            <?php //función para ajustar la ruta
+                            $ruta_original = $producto['foto_producto'];
+                            $ruta_ajustada = str_replace("../../", "../", $ruta_original);
+                            ?>
+                            <img width="90%" src="<?= $ruta_ajustada ?>"
                                 class="img-fluid rounded product-image" style="border: 1px solid #f0f0f0;"
                                 alt="Imagen del Producto">
                         </div>
+
 
                         <div class="col-md-6">
                             <h1><?= htmlspecialchars($producto['nombre_producto']) ?></h1>
@@ -147,7 +152,7 @@
                             <div id="alertError" class="alert alert-danger alert-dismissible fade show mt-4"
                                 role="alert"
                                 style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1050;">
-                               No hay suficiente stock.
+                                No hay suficiente stock.
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"
                                     aria-label="Close"></button>
                             </div>
@@ -209,12 +214,15 @@
                 const cantidad = document.getElementById('cantidadInput').value;
 
                 fetch('../assets/php/agregaralCarrito.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ id_producto: productId, cantidad: parseInt(cantidad) })
-                })
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id_producto: productId,
+                            cantidad: parseInt(cantidad)
+                        })
+                    })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
@@ -242,12 +250,14 @@
         <script>
             function agregarAListaDeDeseos(productId) {
                 fetch('../assets/php/agregarAdeseos.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ id_producto: productId })
-                })
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id_producto: productId
+                        })
+                    })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
@@ -264,7 +274,6 @@
                         console.error('Error:', error);
                     });
             }
-
         </script>
     </body>
 

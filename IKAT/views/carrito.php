@@ -20,9 +20,9 @@ $result = $stmt->get_result();
 // Recorrer los productos del carrito
 while ($row = $result->fetch_assoc()) {
     if ($row['cantidad_producto'] > $row['stock_producto']) {
-        // Si hay stock insuficiente, agregar el producto al array
+        //Si hay stock insuficiente, agregar el producto al array
         $productosSinStock[] = $row;
-        $alerta = true;  // Marcar que hay un problema con el stock
+        $alerta = true;  //Marcar que hay un problema con el stock
     }
 }
 ?>
@@ -87,14 +87,17 @@ while ($row = $result->fetch_assoc()) {
 
                             $total = 0;
 
-                            // Mostrar productos en el carrito
                             while ($row = $result->fetch_assoc()) {
                                 $subtotal = $row['precio_unitario'] * $row['cantidad_producto'];
                                 $total += $subtotal;
-
+                            
+                                //Ajustar la ruta de la imagen
+                                $ruta_original = $row['foto_producto'];
+                                $ruta_ajustada = str_replace("../../", "../", $ruta_original);
+                            
                                 echo "<div class='list-group-item d-flex justify-content-between align-items-center bg-light border mb-4 rounded shadow-sm p-3'>";
                                 echo "<div class='d-flex align-items-center'>";
-                                echo "<a href='producto.php?id={$row['id_producto']}'><img src='{$row['foto_producto']}' alt='{$row['nombre_producto']}' class='me-3 rounded' style='width: 170px;'></a>";
+                                echo "<a href='producto.php?id={$row['id_producto']}'><img src='{$ruta_ajustada}' alt='{$row['nombre_producto']}' class='me-3 rounded' style='width: 170px;'></a>";
                                 echo "<div>";
                                 echo "<h4 class='mb-1 text-dark '>{$row['nombre_producto']}</h4>";
                                 echo "<h6 class='text-dark'>\$" . number_format(floor($row['precio_unitario']), 0, '', '.') . "</h6>";

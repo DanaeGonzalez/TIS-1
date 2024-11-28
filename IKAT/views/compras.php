@@ -1,5 +1,5 @@
 <?php
-session_start(); // Asegúrate de que la sesión esté iniciada
+session_start(); 
 $id_usuario = $_SESSION['id_usuario'] ?? null; // Asigna el valor o null si no está definido
 ?>
 

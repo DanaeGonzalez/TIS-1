@@ -68,13 +68,17 @@ include_once '..\config\conexion.php';
 
                             if ($resultado_productos->num_rows > 0) {
                                 while ($producto = $resultado_productos->fetch_assoc()) {
-                                    ?>
+                            ?>
                                     <div
                                         class="list-group-item d-flex justify-content-between align-items-center bg-light border mb-4 rounded shadow-sm p-3">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <label class="d-flex align-items-center" style="cursor: pointer;">
                                                 <a href="producto.php?id=<?= $producto['id_producto']; ?>">
-                                                    <img src="<?= $producto['foto_producto']; ?>"
+                                                    <?php //función para ajustar la ruta
+                                                    $ruta_original = $producto['foto_producto'];
+                                                    $ruta_ajustada = str_replace("../../", "../", $ruta_original);
+                                                    ?>
+                                                    <img src="<?= $ruta_ajustada ?>"
                                                         alt="<?= $producto['nombre_producto']; ?>"
                                                         class="me-3 rounded img-fluid" style="max-width: 150px;">
                                                 </a>
@@ -122,7 +126,7 @@ include_once '..\config\conexion.php';
                                             </form>
                                         </div>
                                     </div>
-                                    <?php
+                            <?php
                                 }
                             } else {
                                 echo "<p class='text-center text-muted'>No tienes productos en tu lista de deseos.</p>";
@@ -159,7 +163,6 @@ include_once '..\config\conexion.php';
                 }, 2200); // El tiempo debe coincidir con la duración de la animación
             }
         }));
-
     </script>
     <script>
         document.querySelectorAll('.button_c').forEach(button => button.addEventListener('click', e => {

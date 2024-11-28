@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="insertar_producto.php" method="POST" enctype="multipart/form-data">
+        <label for="nombre_producto">Nombre del producto:</label>
+        <input type="text" name="nombre_producto" id="nombre_producto" required><br>
+    
+        <label for="precio_unitario">Precio del producto:</label>
+        <input type="number" name="precio_unitario" id="precio_unitario" required><br>
+    
+        <label for="descripcion_producto">Descripción del producto:</label>
+        <textarea name="descripcion_producto" id="descripcion_producto" required></textarea><br>
+    
+        <label for="foto_producto">Foto del producto:</label>
+        <input type="file" name="foto_producto" id="foto_producto" accept="image/*" required><br>
+        
+        <input type="submit" value="Ingresar producto">
+    </form>
+</body>
+</html>

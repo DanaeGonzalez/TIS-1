@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../../config/conexion.php';
+include '../config/conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Recuperar datos del formulario
@@ -18,26 +18,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $tamano_foto = $foto['size'];
 
         //Definir el directorio donde se guardará la imagen
-        $directorio = '../../assets/images/productos/';
+        $directorio = '../assets/images/productos/';
         
         // Verificar que la carpeta de destino exista
         if (!is_dir($directorio)) {
             mkdir($directorio, 0777, true); //Crear directorio si no existe
         }
 
-        //Crear un nombre único para el archivo de imagen
+        // Crear un nombre único para el archivo de imagen
         $nombre_foto_final = time() . '-' . basename($nombre_foto);
         $ruta_foto_final = $directorio . $nombre_foto_final;
 
-        //Verificar permitidos
+        // Verificar el tipo de archivo (por ejemplo, solo permitir imágenes)
         $ext = pathinfo($nombre_foto, PATHINFO_EXTENSION);
         $ext = strtolower($ext);
         $tipos_permitidos = ['jpg', 'jpeg', 'png', 'gif'];
 
         if (in_array($ext, $tipos_permitidos)) {
-            //Mover la imagen cargada al directorio deseado
+            // Mover la imagen cargada al directorio deseado
             if (move_uploaded_file($tmp_foto, $ruta_foto_final)) {
-                //Insertar datos en la base de datos
+                // Insertar datos en la base de datos
                 $sql = "INSERT INTO producto (nombre_producto, precio_unitario, descripcion_producto, foto_producto, stock_producto, cantidad_vendida, top_venta, activo)
                         VALUES ('$nombre', $precio, '$descripcion', '$ruta_foto_final', 0, 0, 0, 1)";
                 
