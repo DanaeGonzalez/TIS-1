@@ -143,11 +143,10 @@ function filtrarProductos() {
 }
 
 function barraBusqueda() {
-    
     const buscarInputModal = document.getElementById('buscarInputModal');
     const buscarInputMain = document.getElementById('buscarInputMain');
 
-    // Determinar cuál input usar en base a su disponibilidad
+    //Determinar cuál input usar en base a su disponibilidad
     const buscarInput = buscarInputModal && buscarInputModal.value ? buscarInputModal : buscarInputMain;
 
     // Verificar si el campo de entrada fue encontrado
@@ -162,6 +161,7 @@ function barraBusqueda() {
     const listaResultados = document.getElementById('lista'); // Contenedor de la lista
     if (listaResultados) {
         listaResultados.innerHTML = 'Buscando...'; // Limpia y muestra un mensaje temporal
+        listaResultados.style.display = 'block'; 
     }
 
     // Hacer la solicitud fetch
@@ -199,10 +199,24 @@ function barraBusqueda() {
         })
         .catch(error => {
             if (listaResultados) {
-                listaResultados.innerHTML = '<li class="list-group-item text-danger">Error en la búsqueda: ${error.message}</li>';
+                listaResultados.innerHTML = `<li class="list-group-item text-danger">Error en la búsqueda: ${error.message}</li>`;
             }
             console.error('Error en la búsqueda:', error);
         });
 
-    return false; // Evita el envío del formulario
+    //eventos para cerrar la barra de búsqueda
+    document.addEventListener('click', (event) => {
+        if (listaResultados && !listaResultados.contains(event.target) && !buscarInput.contains(event.target)) {
+            listaResultados.style.display = 'none'; 
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && listaResultados) {
+            listaResultados.style.display = 'none'; 
+        }
+    });
+
+    return false; //Evita el envío del formulario
 }
+
