@@ -155,7 +155,7 @@
 
                 // Verificar si hay resultados
                 if ($result->num_rows > 0):
-                    ?>
+                ?>
 
                     <!-- Alerta de éxito -->
                     <div id="alertCarritoSuccess" class="alert alert-success alert-dismissible fade show mt-4"
@@ -185,12 +185,16 @@
                     <div class="container mt-4">
                         <div id="product-container" class="row justify-content-center">
                             <?php while ($producto = $result->fetch_assoc()): ?>
+                                <?php //función para ajustar la ruta
+                                $ruta_original = $producto['foto_producto'];
+                                $ruta_ajustada = str_replace("../../", "../", $ruta_original);
+                                ?>
                                 <div class="col-6 col-md-4 mb-4">
                                     <div class="card d-flex flex-column h-100">
                                         <a href="producto.php?id=<?= $producto['id_producto'] ?>" class="text-decoration-none">
                                             <!-- Contenedor de la imagen con altura dinámica -->
                                             <div class="card-img-container d-flex justify-content-center align-items-center">
-                                                <img src="<?= $producto['foto_producto'] ?>" class="card-img-top img-fluid h-100" alt="Imagen del producto" style="object-fit: cover; width: 100%; height: auto;" 
+                                                <img src="<?= $ruta_ajustada ?>" class="card-img-top img-fluid h-100" alt="Imagen del producto" style="object-fit: cover; width: 100%; height: auto;"
                                                     id="product-image-<?= $producto['id_producto'] ?>">
                                             </div>
                                         </a>
@@ -204,15 +208,15 @@
                                             <?php $usuarioAutenticado = isset($_SESSION['id_usuario']); ?>
                                             <div class="mt-auto d-flex align-items-center">
                                                 <!-- Botón Agregar al carrito -->
-                                                <button type="button" class="btn btn-secondary me-2 carrito-btn" 
-                                                        <?php if (!$usuarioAutenticado) echo 'disabled'; ?> 
-                                                        onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">
+                                                <button type="button" class="btn btn-secondary me-2 carrito-btn"
+                                                    <?php if (!$usuarioAutenticado) echo 'disabled'; ?>
+                                                    onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">
                                                     <i class="bi bi-cart-plus"></i>
                                                 </button>
                                                 <!-- Botón Agregar a la lista de deseos -->
-                                                <button type="button" class="btn btn-secondary lista-deseos-btn" 
-                                                        <?php if (!$usuarioAutenticado) echo 'disabled'; ?> 
-                                                        onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
+                                                <button type="button" class="btn btn-secondary lista-deseos-btn"
+                                                    <?php if (!$usuarioAutenticado) echo 'disabled'; ?>
+                                                    onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
                                                     <i class="bi bi-heart"></i>
                                                 </button>
                                             </div>
@@ -222,7 +226,8 @@
                             <?php endwhile; ?>
                         </div>
                     </div>
-                    <?php
+
+                <?php
                 else:
                     echo "<p>No se encontraron productos.</p>";
                 endif;
@@ -270,22 +275,25 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-            </script>
+        </script>
 
-    <script>
-        // Pasar el valor de PHP (true o false) a JavaScript
-        let usuarioAutenticado = <?php echo json_encode($usuarioAutenticado); ?>;
-    </script>
+        <script>
+            // Pasar el valor de PHP (true o false) a JavaScript
+            let usuarioAutenticado = <?php echo json_encode($usuarioAutenticado); ?>;
+        </script>
 
         <script>
             function agregarAlCarrito(productId) {
                 fetch('../assets/php/agregaralCarrito.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ id_producto: productId, cantidad: 1 })
-                })
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id_producto: productId,
+                            cantidad: 1
+                        })
+                    })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
@@ -302,12 +310,14 @@
         <script>
             function agregarAListaDeDeseos(productId) {
                 fetch('../assets/php/agregarAdeseos.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ id_producto: productId })
-                })
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id_producto: productId
+                        })
+                    })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
@@ -320,7 +330,6 @@
                     })
                     .catch((error) => console.error('Error:', error));
             }
-
         </script>
 
     </body>

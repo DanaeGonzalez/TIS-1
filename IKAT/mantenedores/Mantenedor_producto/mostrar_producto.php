@@ -561,14 +561,14 @@
                     </div>
                     <div class="modal-body">
 
-                        <form action="insertar_producto.php" method="post">
-                            Nombre del Producto: <input class="form-control" type="text" name="nombre_producto" required><br>
+                        <form action="insertar_producto.php" method="POST" enctype="multipart/form-data">
+                            Nombre del Producto: <input class="form-control" type="text" name="nombre_producto" id="nombre_producto" required><br>
 
-                            Precio Unitario: <input class="form-control" type="number" name="precio_unitario" required><br>
+                            Precio Unitario: <input class="form-control" type="number" name="precio_unitario" id="precio_unitario" required><br>
 
-                            Descripción: <textarea class="form-control" name="descripcion_producto" required></textarea><br>
+                            Descripción: <textarea class="form-control" name="descripcion_producto" id="descripcion_producto" required></textarea><br>
 
-                            Foto (URL): <input class="form-control" type="text" name="foto_producto" required><br>
+                            Imagen (Tipos de archivo aceptados: .gif .jpeg .jpg .png): <input class="form-control" type="file" name="foto_producto" id="foto_producto" accept="image/*" required><br>
 
                             <button type="submit" class="btn btn-primary">Guardar Producto</button>
                         </form>

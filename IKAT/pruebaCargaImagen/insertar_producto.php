@@ -17,12 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $tmp_foto = $foto['tmp_name'];
         $tamano_foto = $foto['size'];
 
-        // Definir el directorio donde se guardará la imagen
-        $directorio = 'images/';
+        //Definir el directorio donde se guardará la imagen
+        $directorio = '../assets/images/productos/';
         
         // Verificar que la carpeta de destino exista
         if (!is_dir($directorio)) {
-            mkdir($directorio, 0777, true); // Crear directorio si no existe
+            mkdir($directorio, 0777, true); //Crear directorio si no existe
         }
 
         // Crear un nombre único para el archivo de imagen
