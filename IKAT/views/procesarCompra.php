@@ -7,18 +7,18 @@ $productosSinStock = [];
 $alerta = false;
 
 // Consultar productos en el carrito
-$sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, cp.cantidad_producto 
-        FROM carrito_producto cp 
+$sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, cp.cantidad 
+        FROM carrito cp 
         JOIN producto p ON cp.id_producto = p.id_producto 
-        WHERE cp.id_carrito = ?";
+        WHERE cp.id_usuario = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $_SESSION['id_carrito']);
+$stmt->bind_param("i", $_SESSION['id_usuario']);
 $stmt->execute();
 $result = $stmt->get_result();
 
 // Recorrer los productos del carrito
 while ($row = $result->fetch_assoc()) {
-    if ($row['cantidad_producto'] > $row['stock_producto']) {
+    if ($row['cantidad'] > $row['stock_producto']) {
         // Si hay stock insuficiente, agregar el producto al array
         $productosSinStock[] = $row;
         $alerta = true;  // Marcar que hay un problema con el stock
@@ -35,7 +35,6 @@ if ($alerta) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_POST['id_metodo'], $_POST['total_calculado'])) {
     // Capturar datos del formulario
     $id_usuario = $_SESSION['id_usuario'];
-    $id_carrito = $_SESSION['id_carrito'];
     $direccion_pedido = $_POST['direccion_pedido'];
     $id_metodo = $_POST['id_metodo'];
     $total_compra = $_POST['total_calculado'];
@@ -43,8 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     $puntos_ganados = $total_compra * 0.05;
 
     // Insertar en la base de datos
-    $query = "INSERT INTO compra (id_compra, fecha_compra, total_compra, puntos_ganados, direccion_pedido, id_metodo, id_usuario, id_carrito) 
-              VALUES (NULL, '$fecha_compra', '$total_compra', '$puntos_ganados', '$direccion_pedido', '$id_metodo', '$id_usuario', '$id_carrito')";
+    $query = "INSERT INTO compra (id_compra, fecha_compra, total_compra, puntos_ganados, direccion_pedido, id_metodo, id_usuario) 
+              VALUES (NULL, '$fecha_compra', '$total_compra', '$puntos_ganados', '$direccion_pedido', '$id_metodo', '$id_usuario')";
 
     if ($conn->query($query) === TRUE) {
         echo "Compra registrada exitosamente.";
@@ -148,6 +147,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
                                 <!-- Mapa -->
                                 <div id="map" style="width: 100%; height: 380px;"></div>
+
+                                <!-- Método de Pago -->
+                                <div class="mb-3">
+                                    <label for="id_metodo" class="form-label">Método de Pago</label>
+                                    <select class="form-control" id="id_metodo" name="id_metodo" required>
+                                        <?php while ($row = $result_metodo->fetch_assoc()): ?>
+                                            <option value="<?= $row['id_metodo'] ?>"><?= $row['nombre_metodo'] ?></option>
+                                        <?php endwhile; ?>
+                                    </select>
+                                
+                                </div>
 
                                 <!-- Área para mostrar coordenadas y distancia -->
                                 <div id="coordenadas" style="display: none;" class="mt-3">

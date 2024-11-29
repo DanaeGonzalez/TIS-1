@@ -7,19 +7,19 @@ include_once '..\config\conexion.php';
 $productosSinStock = [];
 $alerta = false;
 
-// Consultar productos en el carrito
-$sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, cp.cantidad_producto 
-        FROM carrito_producto cp 
-        JOIN producto p ON cp.id_producto = p.id_producto 
-        WHERE cp.id_carrito = ?";
+// Consulta para obtener los productos del carrito
+$sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, cp.cantidad, p.precio_unitario, p.foto_producto
+FROM carrito cp 
+JOIN producto p ON cp.id_producto = p.id_producto 
+WHERE cp.id_usuario = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $_SESSION['id_carrito']);
+$stmt->bind_param("i", $_SESSION['id_usuario']);
 $stmt->execute();
 $result = $stmt->get_result();
 
 // Recorrer los productos del carrito
 while ($row = $result->fetch_assoc()) {
-    if ($row['cantidad_producto'] > $row['stock_producto']) {
+    if ($row['cantidad'] > $row['stock_producto']) {
         // Si hay stock insuficiente, agregar el producto al array
         $productosSinStock[] = $row;
         $alerta = true;  // Marcar que hay un problema con el stock
@@ -29,9 +29,8 @@ while ($row = $result->fetch_assoc()) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_POST['id_metodo'], $_POST['total_calculado'])) {
     // Capturar datos del formulario
     $id_usuario = $_SESSION['id_usuario'];
-    $id_carrito = $_SESSION['id_carrito'];
-    $direccion_pedido = $_POST['direccion_pedido'];
     $id_metodo = $_POST['id_metodo'];
+    $direccion_pedido = $_POST['direccion_pedido'];
     $total_compra = $_POST['total_calculado'];
     $fecha_compra = date('Y-m-d H:i:s');
 }
@@ -44,7 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     $result_metodo = $conn->query($query_metodo);
 
     // Verificar si la dirección está confirmada
-    $direccionConfirmada = isset($_POST['direccion_pedido']) && !empty($_POST['direccion_pedido']);}
+    $direccionConfirmada = isset($_POST['direccion_pedido']) && !empty($_POST['direccion_pedido']);
+}
 ?>
 
 <!doctype html>
@@ -61,9 +61,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     <link rel="stylesheet" href="../assets/scss/delete.scss">
     <link rel="stylesheet" href="../assets/css/payButton.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
 </head>
 
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 <?php foreach ($productosSinStock as $producto): ?>
                                     <li>
                                         <?= htmlspecialchars($producto['nombre_producto']) ?> -
-                                        solicitado: <?= htmlspecialchars($producto['cantidad_producto']) ?>,
+                                        solicitado: <?= htmlspecialchars($producto['cantidad']) ?>,
                                         disponible: <?= htmlspecialchars($producto['stock_producto']) ?>
                                     </li>
                                 <?php endforeach; ?>
@@ -97,13 +97,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                         <div class="list-group me-3">
                             <?php
                             // Consulta para obtener los productos del carrito
-                            $sql = "SELECT p.*, cp.cantidad_producto 
-                                FROM carrito_producto cp 
-                                JOIN producto p ON cp.id_producto = p.id_producto 
-                                WHERE cp.id_carrito = ?";
-
+                            $sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, cp.cantidad, p.precio_unitario, p.foto_producto
+                            FROM carrito cp 
+                            JOIN producto p ON cp.id_producto = p.id_producto 
+                            WHERE cp.id_usuario = ?";
                             $stmt = $conn->prepare($sql);
-                            $stmt->bind_param("i", $_SESSION['id_carrito']);
+                            $stmt->bind_param("i", $_SESSION['id_usuario']);
                             $stmt->execute();
                             $result = $stmt->get_result();
 
@@ -111,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
                             // Mostrar productos en el carrito
                             while ($row = $result->fetch_assoc()) {
-                                $subtotal = $row['precio_unitario'] * $row['cantidad_producto'];
+                                $subtotal = $row['precio_unitario'] * $row['cantidad'];
                                 $total += $subtotal;
 
                                 echo "<div class='list-group-item d-flex justify-content-between align-items-center bg-light border mb-4 rounded shadow-sm p-3'>";
@@ -122,11 +121,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 echo "<h6 class='text-dark'>\$" . number_format(floor($row['precio_unitario']), 0, '', '.') . "</h6>";
                                 echo "<div class='d-flex align-items-center'>";
                                 echo "<div class='input-group input-group-sm' style='width: 40px;'>";
-                                echo "<input type='text' value='{$row['cantidad_producto']}' min='1' class='form-control text-center' readonly>";
+                                echo "<input type='text' value='{$row['cantidad']}' min='1' class='form-control text-center' readonly>";
                                 echo "</div></div></div>";
                                 echo "</div>";
 
-                            // Botón de eliminar producto
+                                // Botón de eliminar producto
                                 echo "<p class='mb-0 fw-bold fs-4 text-secondary'>\$" . number_format(floor($subtotal), 0, '', '.') . "</p>";
                                 /*echo "<br>";
                                 echo "<button type='button' class='btn btn-danger btn-sm button mt-5 eliminar-producto' data-id='{$row['id_producto']}'>";
@@ -161,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 $stmtDireccion->bind_param("i", $id_usuario); // Vinculamos el ID del usuario como parámetro
                                 $stmtDireccion->execute();
                                 $resultDireccion = $stmtDireccion->get_result();
-
+                        
                                 // Verificamos si se obtuvo un resultado
                                 if ($resultDireccion->num_rows > 0) {
                                     $row = $resultDireccion->fetch_assoc();
@@ -172,7 +171,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                     exit;
                                 }
                                 ?>
-
                                 <!-- Campo oculto para el subtotal original -->
                                 <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
                                 <!-- Contenedor de la barra de búsqueda Mapa-->
@@ -247,6 +245,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
         crossorigin="anonymous"></script>
 
     <script>
+        document.querySelectorAll('.button').forEach(button => button.addEventListener('click', e => {
+            // Evitar la acción por defecto (enviar el formulario inmediatamente)
+            e.preventDefault();
+
+            if (!button.classList.contains('delete')) {
+                button.classList.add('delete');
+
+                // Se espera a que termine la animación (2200ms) antes de enviar el formulario
+                setTimeout(() => {
+                    // El formulario se envía después de que termine la animación
+                    button.closest('form').submit();
+                }, 2200); // El tiempo debe coincidir con la duración de la animación
+            }
+        }));
+
+        /*document.querySelectorAll('.eliminar-producto').forEach(button => {
+        button.addEventListener('click', function () {
+        // Seleccionar el contenedor del producto
+        const productItem = button.closest('.list-group-item');
+            if (productItem) {
+            // Aplicar clase de "invisible" con una animación, o eliminar directamente
+            productItem.style.transition = "opacity 0.5s ease";
+            productItem.style.opacity = 0;
+
+            // Esperar a que termine la animación antes de ocultarlo completamente
+            setTimeout(() => {
+                productItem.style.display = 'none';
+            }, 500);
+        }
+    })
+    });*/
         let map = L.map('map').setView([-36.79849246501831, -73.05592193108434], 12);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             Zoom: 15,
