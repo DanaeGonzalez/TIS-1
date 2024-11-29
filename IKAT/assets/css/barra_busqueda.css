@@ -1,6 +1,6 @@
 /* Limita la altura de la lista de sugerencias y permite el desplazamiento vertical */
 #lista {
-    max-height: 200px;
+    max-height: 400px;
     overflow-y: auto;
     top: 100%; 
     z-index: 1000; 

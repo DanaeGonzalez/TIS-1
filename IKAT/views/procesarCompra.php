@@ -147,17 +147,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 <?php endif; ?>
 
                                 <!-- Mapa -->
-                                <div id="map" style="width: 100%; height: 300px;"></div>
+                                <div id="map" style="width: 100%; height: 380px;"></div>
 
-                                <!-- Método de Pago -->
-                                <div class="mb-3">
-                                    <label for="id_metodo" class="form-label">Método de Pago</label>
-                                    <select class="form-control" id="id_metodo" name="id_metodo" required>
-                                        <?php while ($row = $result_metodo->fetch_assoc()): ?>
-                                            <option value="<?= $row['id_metodo'] ?>"><?= $row['nombre_metodo'] ?></option>
-                                        <?php endwhile; ?>
-                                    </select>
-                                </div>
                                 <!-- Área para mostrar coordenadas y distancia -->
                                 <div id="coordenadas" style="display: none;" class="mt-3">
                                     <p id="latitud">Latitud: </p>
@@ -241,7 +232,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                         const lat = parseFloat(ubicacion.lat);
                         const lng = parseFloat(ubicacion.lon);
 
-                        map.setView([lat, lng], 12);
+                        map.setView([lat, lng], 15);
                         marker.setLatLng([lat, lng]);
 
                         // Mostrar latitud y longitud
