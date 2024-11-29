@@ -33,7 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($productResult->num_rows > 0) {
                 $productRow = $productResult->fetch_assoc();
                 $productName = $productRow['nombre_producto'];
-                $productPhoto = $productRow['foto_producto']; // URL de la foto
+                $productPhoto = $productRow['foto_producto']; // Ruta relativa en la base de datos
+
+                // Construir la URL completa para el entorno local (XAMPP)
+                $baseURL = "http://localhost/TIS-1/IKAT"; // Cambia "tu_proyecto" por la carpeta de tu proyecto
+                $productPhotoURL = $baseURL . ltrim($productPhoto, './'); // Construir la URL completa
 
                 // Configuración del correo
                 $fromEmail = 'clientes.ikat@gmail.com';
@@ -54,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <h2 style='color: #8C5C32;'>Producto</h2>
                             <p style='color: #0D0D0D; font-size: 18px;'><strong>$productName</strong></p>
                             <div style='margin: 20px auto;'>
-                                <img src='$productPhoto' alt='$productName' style='width: 100%; max-width: 300px; border: 1px solid #BFBFBF; border-radius: 8px;'>
+                                <img src='$productPhotoURL' alt='$productName' style='width: 100%; max-width: 300px; border: 1px solid #BFBFBF; border-radius: 8px;'>
                             </div>
                         </div>
                         <div style='background-color: #F2F2F2; padding: 15px; text-align: center;'>
