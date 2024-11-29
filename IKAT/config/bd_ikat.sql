@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-11-2024 a las 18:03:31
+-- Tiempo de generación: 29-11-2024 a las 17:23:50
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Versión de PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -62,40 +62,10 @@ CREATE TABLE `boleta` (
 --
 
 CREATE TABLE `carrito` (
-  `id_carrito` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `carrito`
---
-
-INSERT INTO `carrito` (`id_carrito`) VALUES
-(1),
-(2),
-(3),
-(4),
-(5);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `carrito_producto`
---
-
-CREATE TABLE `carrito_producto` (
-  `id_carrito` int(100) NOT NULL,
+  `id_usuario` int(100) NOT NULL,
   `id_producto` int(10) NOT NULL,
-  `cantidad_producto` int(5) NOT NULL
+  `cantidad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `carrito_producto`
---
-
-INSERT INTO `carrito_producto` (`id_carrito`, `id_producto`, `cantidad_producto`) VALUES
-(2, 3, 1),
-(2, 5, 1),
-(2, 6, 1);
 
 -- --------------------------------------------------------
 
@@ -157,21 +127,21 @@ CREATE TABLE `compra` (
   `puntos_ganados` int(11) NOT NULL,
   `direccion_pedido` varchar(255) NOT NULL,
   `id_metodo` int(10) DEFAULT NULL,
-  `id_usuario` int(100) NOT NULL,
-  `id_carrito` int(11) NOT NULL
+  `id_usuario` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `compra`
 --
 
-INSERT INTO `compra` (`id_compra`, `fecha_compra`, `total_compra`, `puntos_ganados`, `direccion_pedido`, `id_metodo`, `id_usuario`, `id_carrito`) VALUES
-(1, '2024-11-04', 50980, 5098, 'Timor del este', 5, 1, 1),
-(2, '2024-11-04', 50980, 5098, 'Timor del este', 5, 1, 1),
-(3, '2024-11-04', 0, 0, 'Timor del este', 6, 1, 1),
-(4, '2024-11-23', 25990, 1300, 'Angol 921, Concepción', 6, 1, 1),
-(5, '2024-11-27', 2358437, 117922, 'a', 7, 2, 2),
-(6, '2024-11-27', 2390046, 119502, 'pekin', 7, 2, 2);
+INSERT INTO `compra` (`id_compra`, `fecha_compra`, `total_compra`, `puntos_ganados`, `direccion_pedido`, `id_metodo`, `id_usuario`) VALUES
+(1, '2024-11-04', 50980, 5098, 'Timor del este', 5, 1),
+(2, '2024-11-04', 50980, 5098, 'Timor del este', 5, 1),
+(3, '2024-11-04', 0, 0, 'Timor del este', 6, 1),
+(4, '2024-11-23', 25990, 1300, 'Angol 921, Concepción', 6, 1),
+(5, '2024-11-27', 2358437, 117922, 'a', 7, 2),
+(6, '2024-11-27', 2390046, 119502, 'pekin', 7, 2),
+(7, '2024-11-28', 157413, 7871, 'Angol 931, Concepción', 5, 1);
 
 -- --------------------------------------------------------
 
@@ -193,7 +163,8 @@ CREATE TABLE `compra_producto` (
 INSERT INTO `compra_producto` (`id_compra`, `id_producto`, `cantidad`, `tipo_estado`) VALUES
 (4, 3, 1, 'Entregado'),
 (5, 3, 1, 'Devuelto a origen'),
-(5, 6, 1, 'Preparando pedido');
+(5, 6, 1, 'Preparando pedido'),
+(7, 17, 1, 'Preparando pedido');
 
 -- --------------------------------------------------------
 
@@ -227,7 +198,8 @@ INSERT INTO `control_stock` (`id_control`, `id_producto`, `cantidad`, `motivo`, 
 (10, 9, 4, 'Ingreso', 'Llegan productos a nuestra bodega n° de envio 1', '2024-11-04 05:57:57'),
 (11, 5, 15, 'Ingreso', 'Llegan productos a nuestra bodega n° de envio 1', '2024-11-04 05:58:11'),
 (12, 6, 31, 'Ingreso', 'Llegan productos a nuestra bodega n° de envio 1', '2024-11-04 05:58:23'),
-(13, 8, 12, 'Ingreso', 'Llegan productos a nuestra bodega n° de envio 1', '2024-11-04 05:58:36');
+(13, 8, 12, 'Ingreso', 'Llegan productos a nuestra bodega n° de envio 1', '2024-11-04 05:58:36'),
+(14, 17, 5, 'Ingreso', 'Llego nueva mercadería de sillones', '2024-11-28 20:15:41');
 
 -- --------------------------------------------------------
 
@@ -300,6 +272,11 @@ CREATE TABLE `lista_deseos_producto` (
 --
 
 INSERT INTO `lista_deseos_producto` (`id_lista_deseos`, `id_producto`) VALUES
+(1, 3),
+(1, 5),
+(1, 7),
+(1, 8),
+(1, 17),
 (2, 5);
 
 -- --------------------------------------------------------
@@ -483,7 +460,11 @@ INSERT INTO `producto` (`id_producto`, `nombre_producto`, `precio_unitario`, `st
 (10, 'Clóset Rakkestad', 119990, 0, 'Sencillo y práctico. Un clóset que ofrece todas las funciones básicas. Y si te falta espacio de almacenaje, puedes añadir otro clóset de la serie RAKKESTAD.', 'https://www.ikea.com/cl/es/images/products/rakkestad-closet-con-2-puertas-negro__0780372_pe760493_s5.jpg?f=s', 0, 0, 1, 8),
 (11, 'Buffet blanco VIHALS', 159990, 0, 'Los dos cajones te permiten organizar tus cosas fácilmente, y tienes más espacio en las repisas detrás de las puertas.', 'https://www.ikea.com/cl/es/images/products/vihals-buffet-blanco__1035578_pe838113_s5.jpg?f=s', 0, 0, 1, 9),
 (12, 'ESCRITORIO PERAL', 69990, 0, 'Un escritorio para tu computador perfecto para que hagas todas tus tareas.', 'https://ideamarketspa.cl/wp-content/uploads/2022/01/ESCRITORIO-2.png', 0, 0, 1, 1),
-(13, 'Estante billy', 59990, 0, 'Según nuestros cálculos, cada 5 segundos se vende un estante BILLY en algún lugar del mundo. Un dato impresionante, y más teniendo en cuenta que lanzamos BILLY en 1979. Es la opción preferida por los lectores y nunca se pasa de moda.', 'https://www.ikea.com/cl/es/images/products/billy-estante-blanco__0625599_pe692385_s5.jpg?f=s', 0, 0, 1, 10);
+(13, 'Estante billy', 59990, 0, 'Según nuestros cálculos, cada 5 segundos se vende un estante BILLY en algún lugar del mundo. Un dato impresionante, y más teniendo en cuenta que lanzamos BILLY en 1979. Es la opción preferida por los lectores y nunca se pasa de moda.', 'https://www.ikea.com/cl/es/images/products/billy-estante-blanco__0625599_pe692385_s5.jpg?f=s', 0, 0, 1, 10),
+(16, 'Sillón rojo', 89990, 0, 'Un elegante sillón con un color distinguido', '../../assets/images/productos/1732820938-sillon rojo.jpg', 0, 0, 1, NULL),
+(17, 'Sillón amarillo', 129990, 5, 'Un sillón de la mas alta calidad muy cómodo y de un color amarillo.', '../../assets/images/productos/1732821050-sillon_amarillo.jpg', 0, 0, 1, NULL),
+(18, 'Sillón de cuero roma', 191500, 0, 'El Sillón Roma se ubica entre los mejores sillones ejecutivos del mercado...¿porqué?\r\n\r\nTapizado en cuero tipo Búfalo, destaca por su sobriedad y comodidad. Se adapta bien a espacios gerenciales, escritorios ejecutivos, ideal para ofrecer descanso y comodidad a personas exigentes. \r\n\r\nCuenta con apoyabrazos incorporados con acolchado y tapiz en Eco cuero tipo Búfalo. Además de un mecanismo basculante y la posibilidad de ajustar la tensión con su perilla bajo el asiento.\r\n\r\nEstrella Aluminio ultra resistente con ruedas dobles de 50 mm.', '../../assets/images/productos/1732823165-sillon-de-cuero-roma.jpg', 0, 0, 1, NULL),
+(19, 'Sillón Florencia', 349990, 0, 'Un elegante sillón de color negro para cubrir las necesidades de tu hogar.', '../../assets/images/productos/1732837514-1CC21271241.jpg', 0, 0, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -725,20 +706,19 @@ CREATE TABLE `usuario` (
   `tipo_usuario` enum('Admin','Registrado','Superadmin') NOT NULL,
   `puntos_totales` bigint(255) NOT NULL,
   `activo` tinyint(1) NOT NULL DEFAULT 1,
-  `ultima_sesion` date DEFAULT NULL,
-  `id_carrito` int(11) DEFAULT NULL
+  `ultima_sesion` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `run_usuario`, `correo_usuario`, `numero_usuario`, `contrasenia_usuario`, `direccion_usuario`, `tipo_usuario`, `puntos_totales`, `activo`, `ultima_sesion`, `id_carrito`) VALUES
-(1, 'Javier', 'Pino', '208460730', 'jpinoh@ing.ucsc.cl', '+56932365067', '$2y$10$FleiHYb0jPoueiI064rr1O92e30.3Ss5imRAI1yxRsqm4wEW47Qle', NULL, 'Superadmin', 0, 1, '2024-11-27', 1),
-(2, 'Camilo', 'Campos', '21233765k', 'ccamposg@ing.ucsc.cl', '+56988275096', '$2y$10$VJN9UetBgsVYRfajlvPta.eMaldA5iwrpW7dI/YGrOD907azjhH4.', NULL, 'Superadmin', 0, 1, '2024-11-27', 2),
-(3, 'Danae', 'Gonzalez', '210653163', 'dgonzalezv@ing.ucsc.cl', '+56931173800', '$2y$10$vKXZksm8sGgg9G/HurQZL.ycLlY7SAfGk/UNYPYpqHbIM2tEG865u', NULL, 'Registrado', 0, 1, '2024-11-04', 3),
-(4, 'Maicol', 'Ramirez', '212725021', 'mramirezm@ing.ucsc.cl', '+56968365262', '$2y$10$TmwGuN5O6N37SQKbc9Dy2OXVUoXIoe44XiO7DAIis/MZO6mGZWSFS', NULL, 'Registrado', 0, 1, '2024-11-04', 4),
-(5, 'Cesar', 'Avendaño', '210720537', 'cavendano@ing.ucsc.cl', '+56982911751', '$2y$10$m2jXyIr62WdI0mhv2OXC1uUvX79Y7x6RVjyXCgTolZd9ZQuyXlwrq', NULL, 'Registrado', 0, 1, '2024-11-04', 5);
+INSERT INTO `usuario` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `run_usuario`, `correo_usuario`, `numero_usuario`, `contrasenia_usuario`, `direccion_usuario`, `tipo_usuario`, `puntos_totales`, `activo`, `ultima_sesion`) VALUES
+(1, 'Javier', 'Pino', '208460730', 'jpinoh@ing.ucsc.cl', '+56932365067', '$2y$10$FleiHYb0jPoueiI064rr1O92e30.3Ss5imRAI1yxRsqm4wEW47Qle', NULL, 'Superadmin', 0, 1, '2024-11-27'),
+(2, 'Camilo', 'Campos', '21233765k', 'ccamposg@ing.ucsc.cl', '+56988275096', '$2y$10$VJN9UetBgsVYRfajlvPta.eMaldA5iwrpW7dI/YGrOD907azjhH4.', NULL, 'Superadmin', 0, 1, '2024-11-27'),
+(3, 'Danae', 'Gonzalez', '210653163', 'dgonzalezv@ing.ucsc.cl', '+56931173800', '$2y$10$vKXZksm8sGgg9G/HurQZL.ycLlY7SAfGk/UNYPYpqHbIM2tEG865u', NULL, 'Registrado', 0, 1, '2024-11-04'),
+(4, 'Maicol', 'Ramirez', '212725021', 'mramirezm@ing.ucsc.cl', '+56968365262', '$2y$10$TmwGuN5O6N37SQKbc9Dy2OXVUoXIoe44XiO7DAIis/MZO6mGZWSFS', NULL, 'Registrado', 0, 1, '2024-11-04'),
+(5, 'Cesar', 'Avendaño', '210720537', 'cavendano@ing.ucsc.cl', '+56982911751', '$2y$10$m2jXyIr62WdI0mhv2OXC1uUvX79Y7x6RVjyXCgTolZd9ZQuyXlwrq', NULL, 'Registrado', 0, 1, '2024-11-04');
 
 --
 -- Índices para tablas volcadas
@@ -761,14 +741,8 @@ ALTER TABLE `boleta`
 -- Indices de la tabla `carrito`
 --
 ALTER TABLE `carrito`
-  ADD PRIMARY KEY (`id_carrito`);
-
---
--- Indices de la tabla `carrito_producto`
---
-ALTER TABLE `carrito_producto`
-  ADD PRIMARY KEY (`id_carrito`,`id_producto`),
-  ADD KEY `id_producto` (`id_producto`);
+  ADD PRIMARY KEY (`id_usuario`,`id_producto`),
+  ADD KEY `fk_carrito_producto` (`id_producto`);
 
 --
 -- Indices de la tabla `categoria`
@@ -788,8 +762,7 @@ ALTER TABLE `color`
 ALTER TABLE `compra`
   ADD PRIMARY KEY (`id_compra`),
   ADD KEY `id_usuario` (`id_usuario`),
-  ADD KEY `id_metodo` (`id_metodo`),
-  ADD KEY `id_carrito` (`id_carrito`);
+  ADD KEY `id_metodo` (`id_metodo`);
 
 --
 -- Indices de la tabla `compra_producto`
@@ -957,8 +930,7 @@ ALTER TABLE `subcategoria`
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`id_usuario`),
-  ADD KEY `fk_usuario_carrito` (`id_carrito`);
+  ADD PRIMARY KEY (`id_usuario`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -977,12 +949,6 @@ ALTER TABLE `boleta`
   MODIFY `id_boleta` int(100) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `carrito`
---
-ALTER TABLE `carrito`
-  MODIFY `id_carrito` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
@@ -998,13 +964,13 @@ ALTER TABLE `color`
 -- AUTO_INCREMENT de la tabla `compra`
 --
 ALTER TABLE `compra`
-  MODIFY `id_compra` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_compra` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `control_stock`
 --
 ALTER TABLE `control_stock`
-  MODIFY `id_control` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_control` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `envio`
@@ -1070,7 +1036,7 @@ ALTER TABLE `oferta`
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id_producto` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_producto` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `resenia`
@@ -1101,19 +1067,18 @@ ALTER TABLE `boleta`
   ADD CONSTRAINT `boleta_ibfk_1` FOREIGN KEY (`id_compra`) REFERENCES `compra` (`id_compra`);
 
 --
--- Filtros para la tabla `carrito_producto`
+-- Filtros para la tabla `carrito`
 --
-ALTER TABLE `carrito_producto`
-  ADD CONSTRAINT `carrito_producto_ibfk_1` FOREIGN KEY (`id_carrito`) REFERENCES `carrito` (`id_carrito`),
-  ADD CONSTRAINT `carrito_producto_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`);
+ALTER TABLE `carrito`
+  ADD CONSTRAINT `fk_carrito_producto` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_carrito_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `compra`
 --
 ALTER TABLE `compra`
   ADD CONSTRAINT `compra_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`),
-  ADD CONSTRAINT `compra_ibfk_2` FOREIGN KEY (`id_metodo`) REFERENCES `metodo_pago` (`id_metodo`),
-  ADD CONSTRAINT `compra_ibfk_3` FOREIGN KEY (`id_carrito`) REFERENCES `carrito` (`id_carrito`);
+  ADD CONSTRAINT `compra_ibfk_2` FOREIGN KEY (`id_metodo`) REFERENCES `metodo_pago` (`id_metodo`);
 
 --
 -- Filtros para la tabla `compra_producto`
@@ -1227,12 +1192,6 @@ ALTER TABLE `resenia`
 --
 ALTER TABLE `subcategoria`
   ADD CONSTRAINT `subcategoria_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id_categoria`) ON DELETE CASCADE;
-
---
--- Filtros para la tabla `usuario`
---
-ALTER TABLE `usuario`
-  ADD CONSTRAINT `fk_usuario_carrito` FOREIGN KEY (`id_carrito`) REFERENCES `carrito` (`id_carrito`) ON DELETE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
