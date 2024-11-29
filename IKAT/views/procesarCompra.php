@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     ?>
 
     <!doctype html>
-    <html lang="en">
+    <html lang="es">
 
     <head>
         <meta charset="utf-8">

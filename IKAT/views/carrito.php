@@ -46,7 +46,7 @@ while ($row = $result->fetch_assoc()) {
 
 
 <!doctype html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
