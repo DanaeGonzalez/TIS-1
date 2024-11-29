@@ -50,22 +50,32 @@
 
                 <!-- Contenedor de la barra de búsqueda -->
                 <div class="d-none d-lg-flex justify-content-center align-items-center mt-4">
-                    <div class="search-container col-lg-7 col-10">
+                    <div class="search-container col-lg-7 col-10 position-relative">
                         <div class="input-group">
+                            <!-- Botón desplegable -->
                             <button class="input-group-text" id="search-addon" type="button">
                                 <i class="bi bi-list"></i>
-                            </button>
+                            </button>   
+
+                            <!-- Campo de búsqueda -->
                             <input type="text" class="form-control p-2" id="buscarInputMain"
                                 placeholder="Buscar productos..." aria-label="Buscar productos..."
-                                aria-describedby="search-addon" oninput="barraBusqueda()">
-                            <button class="input-group-text" id="buscarInputMain" type="button"
+                                aria-describedby="search-addon"
+                                onfocus="barraBusqueda()" oninput="barraBusqueda()">
+
+                            <!-- Botón buscar -->
+                            <button class="input-group-text" id="buscarBtnMain" type="button"
                                 onclick="buscarProductos()">
                                 <i class="bi bi-search"></i>
                             </button>
-                            <ul class="list-group position-absolute w-100" id="lista"></ul>
                         </div>
+
+                        <!-- Lista de resultados -->
+                        <ul class="list-group position-absolute w-100 d-none" id="lista"></ul>
                     </div>
                 </div>
+
+
 
                 <!-- Contenedor de filtros -->
                 <div class="container mt-3">

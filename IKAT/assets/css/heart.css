@@ -1,0 +1,33 @@
+.container_heart input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  .container_heart {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .container_heart svg {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 35px;
+    width: 35px;
+    transition: all 0.3s;
+    fill: #666;
+  }
+  
+  .container_heart svg:hover {
+    transform: scale(1.1);
+  }
+  
+  .container_heart input:checked ~ svg {
+    fill: #E3474F;
+  }
+  

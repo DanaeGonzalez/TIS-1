@@ -143,99 +143,72 @@ function filtrarProductos() {
 }
 
 function barraBusqueda() {
-    const buscarInputModal = document.getElementById('buscarInputModal');
     const buscarInputMain = document.getElementById('buscarInputMain');
+    const listaResultados = document.getElementById('lista');
 
-    // Determinar cuál input usar en base a su disponibilidad
-    const buscarInput = buscarInputModal && buscarInputModal.value ? buscarInputModal : buscarInputMain;
-
-    // Verificar si el campo de entrada fue encontrado
-    if (!buscarInput) {
-        console.error("Campo de búsqueda no encontrado.");
-        return false;
+    if (!buscarInputMain || !listaResultados) {
+        console.error("Elementos de búsqueda no encontrados.");
+        return;
     }
 
-    const listaResultados = document.getElementById('lista'); // Contenedor de la lista
-
+    // Función para mostrar resultados
     function realizarBusqueda(buscar = '') {
-        console.log("Valor de búsqueda:", buscar); // Mensaje de depuración
-
         if (listaResultados) {
-            listaResultados.innerHTML = 'Buscando...'; // Limpia y muestra un mensaje temporal
-            listaResultados.style.display = 'block'; 
+            listaResultados.innerHTML = 'Buscando...'; // Mostrar un mensaje temporal
+            listaResultados.classList.remove('d-none'); // Asegurar que la lista sea visible
         }
 
-        // Hacer la solicitud fetch
         fetch(`../assets/php/barra_busqueda.php?buscar=${encodeURIComponent(buscar)}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error en la respuesta del servidor');
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
-                console.log("Datos recibidos:", data); // Mensaje de depuración
-
-                if (listaResultados) {
-                    listaResultados.innerHTML = ''; // Limpiar los resultados previos
-                }
+                listaResultados.innerHTML = ''; // Limpia resultados previos
 
                 if (Array.isArray(data) && data.length > 0) {
                     data.forEach(producto => {
-                        // Ajustar la ruta de la imagen
-                        const rutaOriginal = producto.foto_producto;
-                        const rutaAjustada = rutaOriginal.replace("../../", "../");
-                
+                        const rutaAjustada = producto.foto_producto.replace("../../", "../");
                         const item = document.createElement('li');
                         item.classList.add('list-group-item', 'sugerencia-item');
                         item.innerHTML = `
-                            <a href="producto.php?id=${producto.id_producto}" style="text-decoration: none;">    
-                                <img src="${rutaAjustada}" alt="${producto.nombre_producto}" class="sugerencia-img">
+                            <a href="producto.php?id=${producto.id_producto}" class="d-flex align-items-center" style="text-decoration: none;">
+                                <img src="${rutaAjustada}" alt="${producto.nombre_producto}" class="sugerencia-img me-2">
                                 <span>${producto.nombre_producto}</span>
-                            </a>
-                        `;
+                            </a>`;
                         listaResultados.appendChild(item);
                     });
                 } else {
-                    if (listaResultados) {
-                        listaResultados.innerHTML = '<li class="list-group-item text-muted">No se encontraron productos.</li>';
-                    }
+                    listaResultados.innerHTML = '<li class="list-group-item text-muted">No se encontraron productos.</li>';
                 }
-                
+
+                listaResultados.classList.remove('d-none');
             })
             .catch(error => {
-                if (listaResultados) {
-                    listaResultados.innerHTML = `<li class="list-group-item text-danger">Error en la búsqueda: ${error.message}</li>`;
-                }
                 console.error('Error en la búsqueda:', error);
+                listaResultados.innerHTML = '<li class="list-group-item text-danger">Error al cargar los productos.</li>';
             });
     }
 
-    //Evento para realizar búsqueda al hacer clic en el input
-    buscarInput.addEventListener('focus', () => {
-        realizarBusqueda(); // Llama a la búsqueda sin texto
+    // Evento al enfocar el input
+    buscarInputMain.addEventListener('focus', () => realizarBusqueda());
+
+    // Evento al escribir en el input
+    buscarInputMain.addEventListener('input', () => {
+        const buscar = buscarInputMain.value;
+        realizarBusqueda(buscar);
     });
 
-    //Evento para realizar búsqueda al escribir en el input
-    buscarInput.addEventListener('input', () => {
-        const buscar = buscarInput.value;
-        realizarBusqueda(buscar); // Llama a la búsqueda con el texto ingresado
-    });
-
-    //eventos para cerrar la barra de búsqueda
+    // Evento ocultar resultados al hacer clic fuera
     document.addEventListener('click', (event) => {
-        if (listaResultados && !listaResultados.contains(event.target) && !buscarInput.contains(event.target)) {
-            listaResultados.style.display = 'none'; 
+        if (!listaResultados.contains(event.target) && !buscarInputMain.contains(event.target)) {
+            listaResultados.classList.add('d-none');
         }
     });
 
+    // Evento ocultar resultados al presionar "Escape"
     document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && listaResultados) {
-            listaResultados.style.display = 'none'; 
+        if (event.key === 'Escape') {
+            listaResultados.classList.add('d-none');
         }
     });
-
-    return false; //Evita el envío del formulario
 }
 
 

@@ -8,6 +8,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="..\assets\css\styles.css">
+        <link rel="stylesheet" href="..\assets\css\heart.css">
         <?php include '../assets/php/ver_caracteristicas.php'; ?>
         <?php include '../assets/php/ver_resenias.php'; ?>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -105,7 +106,16 @@
 
 
                         <div class="col-md-6">
-                            <h1><?= htmlspecialchars($producto['nombre_producto']) ?></h1>
+                            <div class="d-flex justify-content-between align-items-center me-2">
+                                <h1><?= htmlspecialchars($producto['nombre_producto']) ?></h1>
+                                <!-- Botón para agregar a la lista de deseos -->
+                                <label class="container_heart" onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
+                                    <input type="checkbox">
+                                    <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <path d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z"></path>
+                                    </svg>
+                                </label>
+                            </div>
                             <h2 class="text-dark ">$<?= number_format($producto['precio_unitario'], 0, ',', '.') ?>
                                 <!-- Botón para agregar a la lista de deseos -->
                                 <button class="btn btn-danger"
@@ -113,7 +123,6 @@
                                     <i class="bi bi-heart"></i> <!-- Icono de corazón -->
                                 </button>
                             </h2>
-
                             <hr>
                             <h5>Características</h5>
                             <ul>
