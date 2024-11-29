@@ -18,7 +18,7 @@
 
     if (strlen($contraseña) >= 8 && strlen($contraseña) <= 15 && !preg_match('/\s/', $contraseña)) {
         $contraseña = password_hash($contraseña, PASSWORD_BCRYPT);
-        $query = "UPDATE usuario SET contrasenia_usuario = '$contraseña' WHERE id_usuario = '$id'";
+        $query = "UPDATE usuario SET contrasenia_usuario = '$contraseña', token_rec = NULL WHERE id_usuario = '$id'";
         $result = mysqli_query($conn,$query);
     
         header("Location: ../../views/menu_registro/login.php?msg=success_pass");
