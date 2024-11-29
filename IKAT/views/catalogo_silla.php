@@ -37,7 +37,7 @@
                                 <form id="searchForm" onsubmit="return buscarProductos()">
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="buscarInputModal"
-                                            placeholder="Buscar productos..." aria-label="Buscar productos">
+                                            placeholder="Escribe lo que estés buscando: mesa, cama, silla..." aria-label="Buscar productos">
                                         <button class="btn btn-dark" type="submit">Buscar</button>
                                     </div>
                                 </form>
@@ -51,11 +51,9 @@
                 <div class="d-none d-lg-flex justify-content-center align-items-center mt-4">
                     <div class="search-container col-lg-7 col-10">
                         <div class="input-group">
-                            <button class="input-group-text" id="search-addon" type="button">
-                                <i class="bi bi-list"></i>
-                            </button>
+
                             <input type="text" class="form-control p-2" id="buscarInputMain"
-                                placeholder="Buscar productos..." aria-label="Buscar productos..."
+                                placeholder="Escribe lo que estés buscando: mesa, cama, silla..." aria-label="Escribe lo que estés buscando: mesa, cama, silla..."
                                 aria-describedby="search-addon">
                             <button class="input-group-text" id="search-addon" type="button"
                                 onclick="buscarProductos()">

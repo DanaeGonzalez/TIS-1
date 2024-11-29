@@ -113,7 +113,7 @@ include '..\..\config\conexion.php';
                             <div class="modal-body">
                                 <form>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Buscar productos..."
+                                        <input type="text" class="form-control" placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
                                             aria-label="Buscar productos">
                                         <button class="btn btn-dark" type="submit">
                                             Buscar

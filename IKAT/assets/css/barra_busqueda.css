@@ -1,6 +1,7 @@
 #lista {
     max-height: 400px;
     overflow-y: auto;
+    max-width: 96%;
     top: 100%; 
     z-index: 1000; 
     position: absolute;

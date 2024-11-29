@@ -21,8 +21,8 @@
                 <button class="input-group-text" id="search-addon" type="button">
                     <i class="bi bi-list"></i>
                 </button>
-                <input type="text" class="form-control p-2" name="campo" id="campo" placeholder="Buscar productos..."
-                    aria-label="Buscar productos..." aria-describedby="search-addon" oninput="buscarProductos()">
+                <input type="text" class="form-control p-2" name="campo" id="campo" placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
+                    aria-label="Escribe lo que estés buscando: mesa, cama, silla..." aria-describedby="search-addon" oninput="buscarProductos()">
                 <button class="input-group-text" id="search-addon" type="button" onclick="buscarProductos()">
                     <i class="bi bi-search"></i>
                 </button>

@@ -28,11 +28,9 @@ $id_usuario = $_SESSION['id_usuario'] ?? null; // Asigna el valor o null si no e
                 <div class="d-none d-lg-flex justify-content-center align-items-center mt-4">
                     <div class="search-container col-lg-7 col-10">
                         <div class="input-group">
-                            <button class="input-group-text" id="search-addon" type="button">
-                                <i class="bi bi-list"></i>
-                            </button>
-                            <input type="text" class="form-control p-2" placeholder="Buscar productos..."
-                                aria-label="Buscar productos..." aria-describedby="search-addon">
+
+                            <input type="text" class="form-control p-2" placeholder="Buscar productos comprados"
+                                aria-label="Buscar productos comprados" aria-describedby="search-addon">
                             <button class="input-group-text" id="search-addon" type="button">
                                 <i class="bi bi-search"></i>
                             </button>
