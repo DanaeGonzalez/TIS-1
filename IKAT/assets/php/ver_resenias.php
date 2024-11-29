@@ -1,6 +1,6 @@
 <?php
 function obtenerReseniasProducto($conn, $idProducto) {
-    $sql = "SELECT r.calificacion, r.comentario, u.nombre_usuario
+    $sql = "SELECT r.calificacion, r.comentario, u.nombre_usuario, r.id_usuario
             FROM resenia r
             JOIN usuario u ON r.id_usuario = u.id_usuario
             WHERE r.id_producto = ? AND r.activo = 1";
