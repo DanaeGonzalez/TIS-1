@@ -81,8 +81,8 @@ include '..\..\config\conexion.php';
                                 <div class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img src="/xampp/TIS-1/IKAT/assets/images/profile/01.webp"
-                                        alt="User Image" class="user-avatar me-2">
+                                        <img src="/xampp/TIS-1/IKAT/assets/images/profile/01.webp" alt="User Image"
+                                            class="user-avatar me-2">
                                         Usuario
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end">
@@ -113,7 +113,8 @@ include '..\..\config\conexion.php';
                             <div class="modal-body">
                                 <form>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
+                                        <input type="text" class="form-control"
+                                            placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
                                             aria-label="Buscar productos">
                                         <button class="btn btn-dark" type="submit">
                                             Buscar
@@ -173,39 +174,30 @@ include '..\..\config\conexion.php';
                             if (strlen($contrasenia) >= 8 && strlen($contrasenia) <= 15 && !preg_match('/\s/', $contrasenia)) {
                                 $contrasenia = password_hash($contrasenia, PASSWORD_BCRYPT);
 
-                                // Crear un nuevo carrito
-                                $query_carrito = "INSERT INTO carrito () VALUES ()"; // Agrega campos si es necesario
-                                if (mysqli_query($conn, $query_carrito)) {
-                                    // Obtener el id_carrito del carrito creado
-                                    $new_id_carrito = mysqli_insert_id($conn);
+                                // Inserción en la tabla usuario
+                                $query_usuario = "INSERT INTO usuario (nombre_usuario, apellido_usuario, run_usuario, correo_usuario, numero_usuario, contrasenia_usuario, tipo_usuario, puntos_totales, activo, ultima_sesion)
+                                                VALUES ('$nombre', '$apellido', '$run', '$correo', '$numero', '$contrasenia', 'Registrado', '0', '1', NOW())";
 
-                                    // Inserción en la tabla usuario
-                                    $query_usuario = "INSERT INTO usuario (nombre_usuario, apellido_usuario, run_usuario, correo_usuario, numero_usuario, contrasenia_usuario, tipo_usuario, puntos_totales, activo, ultima_sesion, id_carrito)
-                                VALUES ('$nombre', '$apellido', '$run', '$correo', '$numero', '$contrasenia', 'Registrado', '0', '1', NOW(), '$new_id_carrito')";
-
-                                    if (mysqli_query($conn, $query_usuario)) {
-                                        echo "
+                                if (mysqli_query($conn, $query_usuario)) {
+                                    echo "
                                     <div class='container-fluid d-flex justify-content-center align-items-center bg-light' style='height: 100vh;'>
                                         <div class='alert alert-success text-center shadow-lg p-5 rounded-3' role='alert' style='max-width: 500px;'>
                                             <h3 class='fw-bold'>¡Te has registrado correctamente!</h3>
                                             <p>Haz clic aquí para <a href='login.php' class='alert-link'>Iniciar sesión</a></p>
                                         </div>
                                     </div>";
-                                    } else {
-                                        die("Error en la inserción de usuario: " . mysqli_error($conn));
-                                    }
                                 } else {
-                                    die("Error en la creación del carrito: " . mysqli_error($conn));
+                                    die("Error en la inserción de usuario: " . mysqli_error($conn));
                                 }
                             } else {
                                 echo "
-                            <div class='container-fluid d-flex justify-content-center align-items-center bg-light' style='height: 100vh;'>
-                                <div class='alert alert-danger text-center shadow-lg p-5 rounded-3' role='alert' style='max-width: 500px;'>
-                                    <h3>Error en la contraseña</h3>
-                                    <p>La contraseña debe tener entre 8 y 15 caracteres y no contener espacios.</p>
-                                    <a href='registro.php' class='btn btn-dark mt-3'>Volver a Intentar</a>
-                                </div>
-                            </div>";
+                                <div class='container-fluid d-flex justify-content-center align-items-center bg-light' style='height: 100vh;'>
+                                    <div class='alert alert-danger text-center shadow-lg p-5 rounded-3' role='alert' style='max-width: 500px;'>
+                                        <h3>Error en la contraseña</h3>
+                                        <p>La contraseña debe tener entre 8 y 15 caracteres y no contener espacios.</p>
+                                        <a href='registro.php' class='btn btn-dark mt-3'>Volver a Intentar</a>
+                                    </div>
+                                </div>";
                             }
                         }
                     }
