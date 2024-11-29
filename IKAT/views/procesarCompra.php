@@ -156,6 +156,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                     <p id="distancia"></p>
                                 </div>
 
+                                <!-- Método de Pago -->
+                                <div class="mb-3">
+                                    <label for="id_metodo" class="form-label">Método de Pago</label>
+                                    <select class="form-control" id="id_metodo" name="id_metodo" required>
+                                        <?php while ($row = $result_metodo->fetch_assoc()): ?>
+                                            <option value="<?= $row['id_metodo'] ?>"><?= $row['nombre_metodo'] ?></option>
+                                        <?php endwhile; ?>
+                                    </select>
+                                </div>
+
                                 <form action="../vendor/transbank/transbank-sdk/examples/index.php?action=create"
                                     method="post">
                                     <!-- Agrega campos adicionales aquí, si necesitas pasar más información -->
