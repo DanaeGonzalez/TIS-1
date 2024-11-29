@@ -187,6 +187,25 @@
                             <p><?= htmlspecialchars($producto['descripcion_producto']) ?></p>
                         </div>
                     </div>
+                    
+                    <!-- Reseñas antiguo -->
+                    <div class="row mt-4 mb-3">
+                        <div class="col-12">
+                            <h2>Reseñas del Producto</h2>
+                            <?php $resenias = obtenerReseniasProducto($conn, $producto['id_producto']); ?>
+                            <?php if (empty($resenias)): ?>
+                                <p>No hay reseñas para este producto.</p>
+                            <?php else: ?>
+                                <?php foreach ($resenias as $resenia): ?>
+                                    <div class="mb-3">
+                                        <strong><?= htmlspecialchars($resenia['nombre_usuario']) ?></strong>
+                                        <p>Calificación: <?= htmlspecialchars($resenia['calificacion']) ?>/5</p>
+                                        <p><?= htmlspecialchars($resenia['comentario']) ?></p>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
 
                     <!-- carrusel de reseñas ejemplo -->
                     <div class="container-fluid bg-white py-3">
