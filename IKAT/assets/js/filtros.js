@@ -24,7 +24,7 @@ function buscarProductos() {
     productContainer.innerHTML = ""; // Limpia solo el área de productos, manteniendo la barra de filtros
 
     // Hacer la solicitud fetch
-    fetch(`/IKAT/assets/php/barra_busqueda.php?buscar=${encodeURIComponent(buscar)}`)
+    fetch(`../assets/php/barra_busqueda.php?buscar=${encodeURIComponent(buscar)}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error en la respuesta del servidor');
@@ -106,36 +106,36 @@ function filtrarProductos() {
                 } else {
                     data.forEach(producto => {
                         productContainer.innerHTML += `
-        <div class="col-6 col-md-4 mb-4">
-            <div class="card d-flex flex-column h-100">
-                <a href="producto.php?id=${producto.id_producto}" class="text-decoration-none">
-                    <div class="card-img-container d-flex justify-content-center align-items-center">
-                        <img src="${producto.foto_producto}" class="card-img-top img-fluid h-100" alt="${producto.nombre_producto}" style="object-fit: cover; width: 100%; height: auto;" 
-                             id="product-image-${producto.id_producto}">
-                    </div>
-                </a>
-                <div class="card-body d-flex flex-column">
-<h5 class="card-title text-truncate">${producto.nombre_producto}</h5>
-                    <h6 class="card-text">$${new Intl.NumberFormat().format(producto.precio_unitario)}</h6>
-                    <div class="d-flex align-items-center">
-                        <div>
-                            <button type="button" class="btn btn-secondary carrito-btn"
-                                ${!usuarioAutenticado ? 'disabled' : ''}
-                                onclick="agregarAlCarrito(${producto.id_producto})">
-                                <i class="bi bi-cart-plus"></i>
-                            </button>
+                            <div class="col-6 col-md-4 mb-4">
+                                <div class="card d-flex flex-column h-100">
+                                    <a href="producto.php?id=${producto.id_producto}" class="text-decoration-none">
+                                        <div class="card-img-container d-flex justify-content-center align-items-center">
+                                            <img src="${producto.foto_producto}" class="card-img-top img-fluid h-100" alt="${producto.nombre_producto}" style="object-fit: cover; width: 100%; height: auto;" 
+                                                 id="product-image-${producto.id_producto}">
+                                        </div>
+                                    </a>
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title text-truncate">${producto.nombre_producto}</h5>
+                                        <h6 class="card-text">$${new Intl.NumberFormat().format(producto.precio_unitario)}</h6>
+                                        <div class="d-flex align-items-center">
+                                            <div>
+                                                <button type="button" class="btn btn-secondary carrito-btn"
+                                                    ${!usuarioAutenticado ? 'disabled' : ''}
+                                                    onclick="agregarAlCarrito(${producto.id_producto})">
+                                                    <i class="bi bi-cart-plus"></i>
+                                                </button>
 
-                            <button type="button" class="btn btn-secondary lista-deseos-btn"
-                                ${!usuarioAutenticado ? 'disabled' : ''}
-                                onclick="agregarAListaDeDeseos(${producto.id_producto})">
-                                <i class="bi bi-heart"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
+                                                <button type="button" class="btn btn-secondary lista-deseos-btn"
+                                                    ${!usuarioAutenticado ? 'disabled' : ''}
+                                                    onclick="agregarAListaDeDeseos(${producto.id_producto})">
+                                                    <i class="bi bi-heart"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
                     });
                 }
             })
