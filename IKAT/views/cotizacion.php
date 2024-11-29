@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                     <?php endif; ?>
                     <h1 class="text-center mb-3">Cotización de productos</h1>
                     <hr>
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                         <div class="list-group me-3">
                             <?php
                             // Consulta para obtener los productos del carrito
@@ -141,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                             ?>
                         </div>
                     </div>
-                        <div class="col-md-8">
+                        <div class="col-md-5">
 
                             <form method="POST" action="cotizacion.php">
                                 <!-- Campo oculto para enviar el total de la compra -->
@@ -193,12 +193,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 <!-- Alerta si la dirección no está confirmada -->
                                 <?php if (!$direccionConfirmada): ?>
                                     <div class="alert alert-info" role="alert">
-                                        ¡Por favor, confirma tu dirección antes de continuar con la compra!
+                                        ¡Por favor, confirma tu dirección antes de continuar con la cotización!
                                     </div>
                                 <?php endif; ?>
 
                                 <!-- Mapa -->
-                                <div id="map" style="width: 100%; height: 380px;"></div>
+                                <div id="map" style="display: none;"></div>
 
                                 <!-- Área para mostrar coordenadas y distancia -->
                                 <div id="coordenadas" style="display: none;" class="mt-3">
@@ -206,13 +206,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                     <p id="longitud">Longitud: </p>
                                     <p id="distancia"></p>
                                 </div>
-                                <br>
                             </form>
-                        </div>
 
-                        <!-- Resumen de la Compra -->
-                        <div class="col-md-4 mb-4 p-4 border bg-light rounded shadow-sm resumen-compra">
-                            <h3 class="mb-4 text-center">Resumen de la Compra</h3>
+                            <!-- Resumen de la Compra -->
+                        <div class="col-md-7 mb-7 p-4 border bg-light rounded shadow-sm resumen-compra">
+                            <h3 class="mb-7 text-center">Cotización</h3>
                             <ul class="list-group">
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
@@ -220,11 +218,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 </li>
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                    Envío<span id="valorEnvio">$0.00</span>
+                                    Envío<span id="valorEnvio">$0</span>
                                 </li>
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                    Impuestos<span id="valorImpuestos">$0.00</span>
+                                    Impuestos<span id="valorImpuestos">$0</span>
                                 </li>
 
                                 <li
@@ -234,8 +232,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 </li>
                             </ul>
                         </div>
-
-
+                        <br>
+                        </div>
                     </div>
                 </div>
             </div>
