@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-11-2024 a las 17:23:50
+-- Tiempo de generación: 29-11-2024 a las 18:52:09
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.0.30
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -296,7 +296,8 @@ CREATE TABLE `lista_de_deseos` (
 
 INSERT INTO `lista_de_deseos` (`id_lista_deseos`, `id_usuario`) VALUES
 (1, 1),
-(2, 2);
+(2, 2),
+(3, 5);
 
 -- --------------------------------------------------------
 
@@ -706,19 +707,20 @@ CREATE TABLE `usuario` (
   `tipo_usuario` enum('Admin','Registrado','Superadmin') NOT NULL,
   `puntos_totales` bigint(255) NOT NULL,
   `activo` tinyint(1) NOT NULL DEFAULT 1,
-  `ultima_sesion` date DEFAULT NULL
+  `ultima_sesion` date DEFAULT NULL,
+  `token_rec` varchar(32) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `run_usuario`, `correo_usuario`, `numero_usuario`, `contrasenia_usuario`, `direccion_usuario`, `tipo_usuario`, `puntos_totales`, `activo`, `ultima_sesion`) VALUES
-(1, 'Javier', 'Pino', '208460730', 'jpinoh@ing.ucsc.cl', '+56932365067', '$2y$10$FleiHYb0jPoueiI064rr1O92e30.3Ss5imRAI1yxRsqm4wEW47Qle', NULL, 'Superadmin', 0, 1, '2024-11-27'),
-(2, 'Camilo', 'Campos', '21233765k', 'ccamposg@ing.ucsc.cl', '+56988275096', '$2y$10$VJN9UetBgsVYRfajlvPta.eMaldA5iwrpW7dI/YGrOD907azjhH4.', NULL, 'Superadmin', 0, 1, '2024-11-27'),
-(3, 'Danae', 'Gonzalez', '210653163', 'dgonzalezv@ing.ucsc.cl', '+56931173800', '$2y$10$vKXZksm8sGgg9G/HurQZL.ycLlY7SAfGk/UNYPYpqHbIM2tEG865u', NULL, 'Registrado', 0, 1, '2024-11-04'),
-(4, 'Maicol', 'Ramirez', '212725021', 'mramirezm@ing.ucsc.cl', '+56968365262', '$2y$10$TmwGuN5O6N37SQKbc9Dy2OXVUoXIoe44XiO7DAIis/MZO6mGZWSFS', NULL, 'Registrado', 0, 1, '2024-11-04'),
-(5, 'Cesar', 'Avendaño', '210720537', 'cavendano@ing.ucsc.cl', '+56982911751', '$2y$10$m2jXyIr62WdI0mhv2OXC1uUvX79Y7x6RVjyXCgTolZd9ZQuyXlwrq', NULL, 'Registrado', 0, 1, '2024-11-04');
+INSERT INTO `usuario` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `run_usuario`, `correo_usuario`, `numero_usuario`, `contrasenia_usuario`, `direccion_usuario`, `tipo_usuario`, `puntos_totales`, `activo`, `ultima_sesion`, `token_rec`) VALUES
+(1, 'Javier', 'Pino', '208460730', 'jpinoh@ing.ucsc.cl', '+56932365067', '$2y$10$FleiHYb0jPoueiI064rr1O92e30.3Ss5imRAI1yxRsqm4wEW47Qle', NULL, 'Superadmin', 0, 1, '2024-11-27', NULL),
+(2, 'Camilo', 'Campos', '21233765k', 'ccamposg@ing.ucsc.cl', '+56988275096', '$2y$10$VJN9UetBgsVYRfajlvPta.eMaldA5iwrpW7dI/YGrOD907azjhH4.', NULL, 'Superadmin', 0, 1, '2024-11-27', NULL),
+(3, 'Danae', 'Gonzalez', '210653163', 'dgonzalezv@ing.ucsc.cl', '+56931173800', '$2y$10$vKXZksm8sGgg9G/HurQZL.ycLlY7SAfGk/UNYPYpqHbIM2tEG865u', NULL, 'Registrado', 0, 1, '2024-11-04', NULL),
+(4, 'Maicol', 'Ramirez', '212725021', 'mramirezm@ing.ucsc.cl', '+56968365262', '$2y$10$TmwGuN5O6N37SQKbc9Dy2OXVUoXIoe44XiO7DAIis/MZO6mGZWSFS', NULL, 'Registrado', 0, 1, '2024-11-04', NULL),
+(5, 'Cesar', 'Avendaño', '210720537', 'cavendano@ing.ucsc.cl', '+56982911751', '$2y$10$IwbJKgN6gEzIjfLglZUpzOeQuD.OJfItLqARNAf4WGcRJJFexvHX6', NULL, 'Registrado', 0, 1, '2024-11-29', NULL);
 
 --
 -- Índices para tablas volcadas
@@ -994,7 +996,7 @@ ALTER TABLE `forma`
 -- AUTO_INCREMENT de la tabla `lista_de_deseos`
 --
 ALTER TABLE `lista_de_deseos`
-  MODIFY `id_lista_deseos` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_lista_deseos` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `material`

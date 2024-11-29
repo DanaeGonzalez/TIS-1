@@ -1,3 +1,9 @@
+<?php
+include '../../config/conexion.php';
+$token = $_GET['token'];
+$query = "SELECT * FROM usuario WHERE token_rec = '$token' AND token_rec IS NOT NULL";
+$result = mysqli_query($conn,$query);
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -94,27 +100,32 @@
         </nav>
 
         <!-- Main -->
-        <div class="container mt-4">
-            <h1 class="text-center">¡Un paso más cerca de recuperar tu contraseña!</h1>
-            <hr>
-            <div class="row mt-5 d-flex justify-content-center align-content-center">
-                <!-- Formulario de inicio de sesión -->
-                <div class="col-md-6 border rounded-3 shadow-lg px-5 pt-3 pb-3 bg-light">
-                    <?php if (isset($error_message)): ?>
-                        <div class="alert alert-danger text-center"><?= $error_message; ?></div>
-                    <?php endif; ?>
-                    <form action="../../assets/php/change_pass.php" method="post">
-                        <div class="mb-4">
-                            <label for="identificador" class="form-label ms-1 fw-semibold">Nueva contraseña</label>
-                            <input type="password" id="identificador" name="new_pass" class="form-control border-dark"
-                                placeholder="8-15 caracteres" required />
-                            <input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">
+        <?php
+            if (mysqli_num_rows($result)==1) { ?>
+                <div class="container mt-4">
+                    <h1 class="text-center">¡Un paso más cerca de recuperar tu contraseña!</h1>
+                    <hr>
+                    <div class="row mt-5 d-flex justify-content-center align-content-center">
+                        <!-- Formulario de inicio de sesión -->
+                        <div class="col-md-6 border rounded-3 shadow-lg px-5 pt-3 pb-3 bg-light">
+                            <?php if (isset($error_message)): ?>
+                                <div class="alert alert-danger text-center"><?= $error_message; ?></div>
+                            <?php endif; ?>
+                            <form action="../../assets/php/change_pass.php" method="post">
+                                <div class="mb-4">
+                                    <label for="identificador" class="form-label ms-1 fw-semibold">Nueva contraseña</label>
+                                    <input type="password" id="identificador" name="new_pass" class="form-control border-dark"
+                                        placeholder="8-15 caracteres" required />
+                                    <input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">
+                                </div>
+                                <button type="submit" name="submit" class="btn btn-dark w-100 py-2">Cambiar contraseña</button>
+                            </form>
                         </div>
-                        <button type="submit" name="submit" class="btn btn-dark w-100 py-2">Cambiar contraseña</button>
-                    </form>
+                    </div>
                 </div>
-            </div>
-        </div>
+                <?php }else {
+                    echo "<div class='alert alert-danger text-center'>El enlace no es válido o ya ha sido utilizado.</div>";
+                } ?>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
