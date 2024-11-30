@@ -163,7 +163,7 @@ function agregarTodaLaCompraAlCarrito(idCompra) {
         .then(productos => {
             console.log('Productos recibidos:', productos);
             if (productos.error) {
-                alert(productos.error);
+                showAlert(productos.error, 'danger');
                 return;
             }
 
@@ -171,32 +171,67 @@ function agregarTodaLaCompraAlCarrito(idCompra) {
             productos.forEach(producto => {
                 agregarAlCarrito(producto.id_producto, producto.cantidad);
             });
+            showAlert('Todos los productos de la compra fueron agregados al carrito.', 'success');
         })
         .catch(error => {
             console.error('Error al obtener los productos de la compra:', error);
-            alert('Error al obtener los productos. Inténtalo más tarde.');
+            showAlert('Error al obtener los productos. Inténtalo más tarde.', 'danger');
         });
 }
 
-// Función para agregar un producto al carrito
 function agregarAlCarrito(productId, cantidad) {
     fetch('../assets/php/agregaralCarrito.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id_producto: productId,
-                cantidad: cantidad
-            })
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            id_producto: productId,
+            cantidad: cantidad
         })
+    })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert("Producto agregado al carrito con éxito.");
+                showAlert('Producto agregado al carrito con éxito.', 'success');
             } else {
-                alert(data.error || "Hubo un error al agregar el producto al carrito.");
+                showAlert(data.error || 'Hubo un error al agregar el producto al carrito.', 'danger');
             }
         })
-        .catch((error) => console.error('Error:', error));
+        .catch((error) => {
+            console.error('Error:', error);
+            showAlert('Ocurrió un error al agregar el producto al carrito.', 'danger');
+        });
+}
+
+/**
+ * Muestra una alerta Bootstrap en la página.
+ * @param {string} message - Mensaje de la alerta.
+ * @param {string} type - Tipo de alerta (success, danger, warning, info).
+ * @param {number} duration - Duración en milisegundos antes de que desaparezca.
+ */
+function showAlert(message, type = 'success', duration = 3000) {
+    const alertContainer = document.getElementById('alert-container');
+    if (!alertContainer) {
+        console.error('No se encontró el contenedor de alertas.');
+        return;
+    }
+
+    // Crear la alerta
+    const alert = document.createElement('div');
+    alert.className = `alert alert-${type} alert-dismissible fade show`;
+    alert.role = 'alert';
+    alert.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    `;
+
+    // Agregar la alerta al contenedor
+    alertContainer.appendChild(alert);
+
+    // Eliminar la alerta después de la duración especificada
+    setTimeout(() => {
+        alert.classList.remove('show');
+        alert.addEventListener('transitionend', () => alert.remove());
+    }, duration);
 }

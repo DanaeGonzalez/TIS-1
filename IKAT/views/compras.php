@@ -35,6 +35,7 @@ $id_usuario = $_SESSION['id_usuario'] ?? null; // Asigna el valor o null si no e
 
             <!-- Main -->
             <div class="main">
+                <div id="alert-container" class="position-fixed top-0 end-0 p-3" style="z-index: 1050;"></div>
 
                 <!-- Contenedor compras -->
                 <div class="container mt-4">
