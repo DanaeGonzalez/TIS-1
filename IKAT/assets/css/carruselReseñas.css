@@ -33,6 +33,7 @@
   .carousel .card {
     margin: 0 0.5em;
     border: 0;
+    height: 100%;
   }
   
   .carousel-control-prev,
