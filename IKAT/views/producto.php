@@ -46,8 +46,7 @@
                             <div class="modal-body">
                                 <form>
                                     <div class="input-group">
-                                        <input type="text" class="form-control"
-                                            placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
+                                        <input type="text" class="form-control" placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
                                             aria-label="Buscar productos">
                                         <button class="btn btn-dark" type="submit">
                                             Buscar
@@ -64,10 +63,8 @@
                     <div class="search-container col-lg-7 col-10">
                         <div class="input-group">
 
-                            <input type="text" class="form-control p-2"
-                                placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
-                                aria-label="Escribe lo que estés buscando: mesa, cama, silla..."
-                                aria-describedby="search-addon">
+                            <input type="text" class="form-control p-2" placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
+                                aria-label="Escribe lo que estés buscando: mesa, cama, silla..." aria-describedby="search-addon">
                             <button class="input-group-text" id="search-addon" type="button">
                                 <i class="bi bi-search"></i>
                             </button>
@@ -110,8 +107,9 @@
                             $ruta_original = $producto['foto_producto'];
                             $ruta_ajustada = str_replace("../../", "../", $ruta_original);
                             ?>
-                            <img width="90%" src="<?= $ruta_ajustada ?>" class="img-fluid rounded product-image"
-                                style="border: 1px solid #f0f0f0;" alt="Imagen del Producto">
+                            <img width="90%" src="<?= $ruta_ajustada ?>"
+                                class="img-fluid rounded product-image" style="border: 1px solid #f0f0f0;"
+                                alt="Imagen del Producto">
                         </div>
 
 
@@ -119,14 +117,10 @@
                             <div class="d-flex justify-content-between align-items-center me-2">
                                 <h1><?= htmlspecialchars($producto['nombre_producto']) ?></h1>
                                 <!-- Botón para agregar a la lista de deseos -->
-                                <label class="container_heart"
-                                    onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
+                                <label class="container_heart" onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
                                     <input type="checkbox">
-                                    <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve"
-                                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                        <path
-                                            d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z">
-                                        </path>
+                                    <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <path d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z"></path>
                                     </svg>
                                 </label>
                             </div>
@@ -209,10 +203,12 @@
 
                             <!-- Define el stock máximo aquí -->
                             <div class="input-group" style="width: 130px;">
-                                <button class="btn btn-outline-dark" type="button" onclick="decrementar()">-</button>
-                                <input type="number" id="cantidadInput" value="1" min="1" max="10"
+                                <button class="btn btn-outline-dark" type="button"
+                                    onclick="this.nextElementSibling.stepDown()">-</button>
+                                <input type="number" id="cantidadInput" value="1" min="1"
                                     class="form-control text-center custom-input">
-                                <button class="btn btn-outline-dark" type="button" onclick="incrementar()">+</button>
+                                <button class="btn btn-outline-dark" type="button"
+                                    onclick="this.previousElementSibling.stepUp()">+</button>
                             </div>
 
                             <div id="resultado" style="display: none;">El valor es: 1</div>
@@ -472,15 +468,15 @@
                 const cantidad = document.getElementById('cantidadInput').value;
 
                 fetch('../assets/php/agregaralCarrito.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        id_producto: productId,
-                        cantidad: parseInt(cantidad)
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id_producto: productId,
+                            cantidad: parseInt(cantidad)
+                        })
                     })
-                })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
@@ -508,14 +504,14 @@
         <script>
             function agregarAListaDeDeseos(productId) {
                 fetch('../assets/php/agregarAdeseos.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        id_producto: productId
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id_producto: productId
+                        })
                     })
-                })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {

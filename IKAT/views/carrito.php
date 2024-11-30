@@ -157,11 +157,11 @@ while ($row = $result->fetch_assoc()) {
                             </li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Total IVA 19% <span>$<?= number_format(floor( ($total * 0.19)), 0, '', '.') ?></span>
+                                Impuestos <em>Pendiente</em>
                             </li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
-                                Total<span>$<?= number_format(floor($total + ($total * 0.19)), 0, '', '.') ?></span>
+                                Total<span>$<?= number_format(floor($total + ($total * 0.0)), 0, '', '.') ?></span>
                             </li>
                         </ul>
                         <?php if ($total > 0): ?>
@@ -175,7 +175,7 @@ while ($row = $result->fetch_assoc()) {
                                     </svg>
                                 </button>
                             </form>
-                            <a type="button" class="BtnPay mt-4" href="cotizacion.php">
+                            <a type="button" class="BtnPay mt-4" href="cotizacion.php" style="text-decoration: none;">
                                 Generar Cotización
                                 <path
                                     d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
