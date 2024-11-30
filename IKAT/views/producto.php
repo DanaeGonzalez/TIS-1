@@ -268,7 +268,7 @@
                             </div>
                             <!-- Botón de añadir al carrito -->
                             <button id="addToCartButton" class="button mt-3" style="display: none;"
-                                onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>); retrasarRecarga();">
+                                onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>, 'cantidadInput'); retrasarRecarga();">
                                 <span>Añadir al carrito</span>
                                 <div class="cart">
                                     <svg viewBox="0 0 36 26">
@@ -412,6 +412,7 @@
 
         <!-- Archivo JS personalizado -->
         <script src="../assets/js/carruselReseñas.js"></script>
+        <script src="../assets/js/carritoDeseos.js"></script>
 
 
 
