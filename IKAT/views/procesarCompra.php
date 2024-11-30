@@ -148,8 +148,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 <!-- Mapa -->
                                 <div id="map" style="width: 100%; height: 380px;"></div>
 
-                                <!-- Método de Pago -->
-                                <div class="mb-3">
+                                <!-- Método de Pago-->
+                                <div class="mb-3" style="display: none;">
                                     <label for="id_metodo" class="form-label">Método de Pago</label>
                                     <select class="form-control" id="id_metodo" name="id_metodo" required>
                                         <?php while ($row = $result_metodo->fetch_assoc()): ?>
@@ -164,16 +164,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                     <p id="latitud">Latitud: </p>
                                     <p id="longitud">Longitud: </p>
                                     <p id="distancia"></p>
-                                </div>
-
-                                <!-- Método de Pago -->
-                                <div class="mb-3">
-                                    <label for="id_metodo" class="form-label">Método de Pago</label>
-                                    <select class="form-control" id="id_metodo" name="id_metodo" required>
-                                        <?php while ($row = $result_metodo->fetch_assoc()): ?>
-                                            <option value="<?= $row['id_metodo'] ?>"><?= $row['nombre_metodo'] ?></option>
-                                        <?php endwhile; ?>
-                                    </select>
                                 </div>
 
                                 <form action="../vendor/transbank/transbank-sdk/examples/index.php?action=create"
