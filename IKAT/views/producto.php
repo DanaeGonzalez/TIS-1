@@ -154,7 +154,10 @@
                                 ?>
                             </ul>
                             <hr>
-                            <h5>Cantidad</h5>
+                            <div class="cantidades d-flex mb-2">
+                                <h5>Cantidad &nbsp; </h5>
+                                <span id="stockStatus"></span>
+                            </div>
 
 
                             <?php
@@ -212,8 +215,8 @@
                                 <button class="btn btn-outline-dark" type="button" onclick="incrementar()">+</button>
                             </div>
 
-                            <div id="resultado">El valor es: 1</div>
-                            <div id="stockStatus">Stock disponible: </div>
+                            <div id="resultado" style="display: none;">El valor es: 1</div>
+
 
                             <!-- Alerta de éxito -->
                             <div id="alertSuccess" class="alert alert-success alert-dismissible fade show mt-4"
@@ -232,7 +235,7 @@
                                     aria-label="Close"></button>
                             </div>
                             <!-- Botón de añadir al carrito -->
-                            <button id="addToCartButton" class="button mt-3"
+                            <button id="addToCartButton" class="button mt-3" style="display: none;"
                                 onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>); retrasarRecarga();">
                                 <span>Añadir al carrito</span>
                                 <div class="cart">
@@ -244,9 +247,11 @@
                             </button>
 
                             <!-- Segundo botón, solo visible cuando el stock es 0 -->
-                            <button id="outOfStockButton" class="btn btn-dark mt-3" disabled>
+                            <button id="outOfStockButton" class="btn btn-dark mt-3 w-100" style="display: none;"
+                                disabled>
                                 <span>Sin stock</span>
                             </button>
+
                             <hr>
                             <h5>Descripción del producto</h5>
                             <p><?= htmlspecialchars($producto['descripcion_producto']) ?></p>
@@ -257,7 +262,7 @@
 
                     <?php
                     include_once '..\config\conexion.php'; // Incluir el archivo de conexión a la base de datos
-
+                    
                     // Validar la existencia de id_producto en la URL
                     if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                         $idProducto = $_GET['id'];
@@ -300,12 +305,18 @@
                                                             <div>
                                                                 <div class="stars">
                                                                     <?php for ($i = 0; $i < 5; $i++): ?>
-                                                                        <svg fill="<?php echo $i < $resenia['calificacion'] ? 'currentColor' : 'none'; ?>" stroke="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                                                        <svg fill="<?php echo $i < $resenia['calificacion'] ? 'currentColor' : 'none'; ?>"
+                                                                            stroke="currentColor" viewBox="0 0 20 20"
+                                                                            xmlns="http://www.w3.org/2000/svg">
+                                                                            <path
+                                                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                                            </path>
                                                                         </svg>
                                                                     <?php endfor; ?>
                                                                 </div>
-                                                                <p class="name"><?php echo htmlspecialchars($resenia['nombre_usuario']); ?></p>
+                                                                <p class="name">
+                                                                    <?php echo htmlspecialchars($resenia['nombre_usuario']); ?>
+                                                                </p>
                                                             </div>
                                                         </div>
                                                         <p class="message">
@@ -316,11 +327,13 @@
                                             <?php endforeach; ?>
                                         <?php endif; ?>
                                     </div>
-                                    <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+                                    <button class="carousel-control-prev" type="button"
+                                        data-bs-target="#testimonialCarousel" data-bs-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                         <span class="visually-hidden">Previous</span>
                                     </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+                                    <button class="carousel-control-next" type="button"
+                                        data-bs-target="#testimonialCarousel" data-bs-slide="next">
                                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                         <span class="visually-hidden">Next</span>
                                     </button>
@@ -389,7 +402,9 @@
             // Función para incrementar la cantidad
             function incrementar() {
                 let cantidad = parseInt(cantidadInput.value);
-                if (cantidad < maxStock) {
+                let stockRestante = maxStock - cantidadEnCarrito - cantidad;
+
+                if (stockRestante > 0) {
                     cantidadInput.value = cantidad + 1;
                     actualizarValor();
                 }
@@ -421,13 +436,13 @@
 
                 // Actualiza el mensaje de stock disponible y estado de los botones
                 if (stockRestante > 0) {
-                    //stockStatus.innerText = "Stock disponible: " + (stockRestante - cantidadSeleccionada);
+                    stockStatus.innerText = `( ${stockRestante - cantidadSeleccionada} ) disponibles`;
                     addToCartButton.disabled = false;
                     addToCartButton.classList.remove("disabled-button");
                     addToCartButton.style.display = "inline-block";
                     outOfStockButton.style.display = "none";
                 } else {
-                    //stockStatus.innerText = "Stock disponible: 0";
+                    stockStatus.innerText = `( 0 ) disponibles`;
                     addToCartButton.disabled = true;
                     addToCartButton.classList.add("disabled-button");
                     addToCartButton.style.display = "none";
@@ -446,10 +461,6 @@
 
             // Inicializar el valor al cargar la página
             actualizarValor();
-
-            document.getElementById("resultado").style.display = "none";
-            document.getElementById("stockStatus").style.display = "none";
-
         </script>
 
 
