@@ -126,9 +126,8 @@
                             </div>
                             <h2 class="text-dark ">$<?= number_format($producto['precio_unitario'], 0, ',', '.') ?>
                                 <!-- Botón para agregar a la lista de deseos -->
-                                <button class="btn btn-danger"
-                                    onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
-                                    <i class="bi bi-heart"></i> <!-- Icono de corazón -->
+                                <button class="btn btn-danger" onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>, '¡Producto agregado a la lista de deseos!')">
+                                    <i class="bi bi-heart"></i>
                                 </button>
                             </h2>
                             <hr>
@@ -173,7 +172,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"
                                     aria-label="Close"></button>
                             </div>
-                            <button class="button mt-3" onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">
+                            <button class="button mt-3" onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>, 'cantidadInput')">
                                 <span>Añadir al carrito</span>
                                 <div class="cart">
                                     <svg viewBox="0 0 36 26">
@@ -288,41 +287,8 @@
 
         <!-- Archivo JS personalizado -->
         <script src="../assets/js/carruselReseñas.js"></script>
+        <script src="../assets/js/carritoDeseos.js"></script>
 
-
-
-
-        <script>
-            function agregarAlCarrito(productId) {
-
-                // Obtén el valor de la cantidad desde el input
-                const cantidad = document.getElementById('cantidadInput').value;
-
-                fetch('../assets/php/agregaralCarrito.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            id_producto: productId,
-                            cantidad: parseInt(cantidad)
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            document.getElementById('alertSuccess').style.display = 'block';
-                            setTimeout(() => document.getElementById('alertSuccess').style.display = 'none', 3000);
-                        } else {
-                            document.getElementById('alertError').style.display = 'block';
-                            setTimeout(() => document.getElementById('alertError').style.display = 'none', 3000);
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
-            }
-        </script>
         <script>
             document.querySelectorAll('.button').forEach(button => button.addEventListener('click', e => {
                 if (!button.classList.contains('loading')) {
@@ -331,34 +297,6 @@
                 }
                 e.preventDefault();
             }));
-        </script>
-        <script>
-            function agregarAListaDeDeseos(productId) {
-                fetch('../assets/php/agregarAdeseos.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            id_producto: productId
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            document.getElementById('alertSuccess').style.display = 'block';
-                            document.getElementById('alertSuccess').textContent = 'Producto agregado a la lista de deseos!';
-                            setTimeout(() => document.getElementById('alertSuccess').style.display = 'none', 3000);
-                        } else {
-                            document.getElementById('alertError').style.display = 'block';
-                            document.getElementById('alertError').textContent = data.message || 'Error al agregar el producto a la lista de deseos.';
-                            setTimeout(() => document.getElementById('alertError').style.display = 'none', 3000);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-            }
         </script>
     </body>
 

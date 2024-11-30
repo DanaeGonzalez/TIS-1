@@ -89,48 +89,9 @@ $id_usuario = $_SESSION['id_usuario'] ?? null; // Asigna el valor o null si no e
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-10 mx-auto">
                             <!-- Contenedor dinámico -->
                             <div id="historial-compras" class="list-group"></div>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="container mt-4">
-                                <!-- Resumen de productos -->
-                                <div class="card shadow-sm">
-                                    <div class="card-body">
-                                        <h5 class="fw-bold">Resumen</h5>
-
-                                        <!-- Lista de productos -->
-                                        <ul class="list-unstyled">
-                                            <li class="d-flex justify-content-between py-2">
-                                                <span>Producto 1</span>
-                                                <span>$129.990</span>
-                                            </li>
-                                            <li class="d-flex justify-content-between py-2">
-                                                <span>Producto 2</span>
-                                                <span>$25.990</span>
-                                            </li>
-                                        </ul>
-
-                                        <!-- Línea separadora -->
-                                        <hr class="my-3">
-
-                                        <!-- Total -->
-                                        <div class="d-flex justify-content-between">
-                                            <span class="fw-bold">Total incl. IVA</span>
-                                            <span class="fw-bold fs-4">$155.980</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Botón -->
-                                <div class="mt-4 text-center">
-                                    <button class="btn btn-primary btn-lg rounded-pill px-4">
-                                        <i class="bi bi-cart-plus me-2"></i>
-                                        Agregar todos los artículos al carrito
-                                    </button>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
