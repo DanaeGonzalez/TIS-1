@@ -351,14 +351,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
         function calcularTotal() {
             const subtotal = parseFloat('<?= number_format(floor($total), 0, '', '.') ?>'.replace(/\./g, '').replace('$', '')); // Obtiene el subtotal desde PHP
-            const tasaImpuestos = 0.19;
+            const tasaImpuestos = 1.19;
             const valorEnvio = parseFloat(document.getElementById('valorEnvioInput').value) || 0;
 
             // Calcular impuestos
-            const impuestos = subtotal * tasaImpuestos;
+            const impuestos = subtotal -(subtotal / tasaImpuestos);
 
             // Calcular el total final
-            const totalFinal = subtotal + impuestos + valorEnvio;
+            const totalFinal = subtotal + valorEnvio;
 
             // Actualiza el valor de impuestos y el total en la interfaz
             document.getElementById('valorImpuestos').textContent = `$${formatNumber(impuestos)}`;

@@ -157,12 +157,10 @@ while ($row = $result->fetch_assoc()) {
                             </li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Impuestos <em>Pendiente</em>
-                            </li>
+                                Total IVA 19% <span>$<?= number_format(floor( ($total * 0.19)), 0, '', '.') ?></span>                            </li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
-                                Total<span>$<?= number_format(floor($total + ($total * 0.0)), 0, '', '.') ?></span>
-                            </li>
+                                Total<span>$<?= number_format(floor($total + ($total * 0.19)), 0, '', '.') ?></span>                            </li>
                         </ul>
                         <?php if ($total > 0): ?>
                             <form action="procesarCompra.php" method="POST">
