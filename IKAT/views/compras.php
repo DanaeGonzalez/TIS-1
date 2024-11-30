@@ -20,6 +20,7 @@ $id_usuario = $_SESSION['id_usuario'] ?? null; // Asigna el valor o null si no e
                 border-width: 2px !important;
                 font-weight: bold;
             }
+
             .image-contour {
                 box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
             }
@@ -38,42 +39,98 @@ $id_usuario = $_SESSION['id_usuario'] ?? null; // Asigna el valor o null si no e
                 <!-- Contenedor compras -->
                 <div class="container mt-4">
                     <div class="row">
-                        <div class="d-flex gap-5">
+                        <div class="d-flex gap-5 align-items-center">
                             <h1 class="text-start mb-3">Compras</h1>
                             <!-- Contenedor de la barra de búsqueda -->
-                            <div class="group">
-                                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
-                                    <g>
-                                        <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
-                                    </g>
-                                </svg>
-                                <input placeholder="Search" type="search" class="input">
+                            <div class="d-flex align-items-center flex-grow-1">
+                                <div class="position-relative w-100">
+                                    <input placeholder="Buscar en mis compras" type="search" class="form-control ps-5">
+                                    <svg class="position-absolute top-50 start-0 translate-middle-y ms-3" aria-hidden="true" viewBox="0 0 24 24" style="width: 1.2rem; height: 1.2rem;">
+                                        <g>
+                                            <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </div>
+                            <!-- Filtro y enlace -->
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownFiltro" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Todas
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownFiltro">
+                                        <li><a class="dropdown-item" href="#">Opción 1</a></li>
+                                        <li><a class="dropdown-item" href="#">Opción 2</a></li>
+                                        <li><a class="dropdown-item" href="#">Opción 3</a></li>
+                                    </ul>
+                                </div>
+                                <a href="#" class="text-decoration-none text-secondary">1 compra</a>
                             </div>
                         </div>
+
                         <hr>
                         <!-- Productos por opinar -->
                         <div class="container mt-2">
-                                <div class="d-flex align-items-center justify-content-between p-3 border rounded shadow-sm mb-5" style="background-color: #f2f2f2;">
-                                    <!-- Imágenes circulares -->
-                                    <div class="d-flex">
-                                        <img src="../assets/images/estrellita.png" alt="Producto 1" class="rounded-circle me-2" width="50" height="50">
-                                        <img src="../assets/images/productos/1732821050-sillon_amarillo.jpg" alt="Producto 2" class="rounded-circle image-contour" width="50" height="50">
-                                    </div>
+                            <div class="d-flex align-items-center justify-content-between p-3 border rounded shadow-sm mb-5" style="background-color: #f2f2f2;">
+                                <!-- Imágenes circulares -->
+                                <div class="d-flex">
+                                    <img src="../assets/images/estrellita.png" alt="Producto 1" class="rounded-circle me-2" width="50" height="50">
+                                    <img src="../assets/images/productos/1732821050-sillon_amarillo.jpg" alt="Producto 2" class="rounded-circle image-contour" width="50" height="50">
+                                </div>
 
-                                    <!-- Texto -->
-                                    <div>
-                                        <span style="font-size: 18px;">2 productos esperan tu opinión</span>
-                                    </div>
+                                <!-- Texto -->
+                                <div>
+                                    <span style="font-size: 18px;">2 productos esperan tu opinión</span>
+                                </div>
 
-                                    <!-- Botón -->
-                                    <div>
-                                        <button class="btn btn-outline-primary btn-outline-thick">Opinar</button>
-                                    </div>
+                                <!-- Botón -->
+                                <div>
+                                    <button class="btn btn-outline-primary btn-outline-thick">Opinar</button>
                                 </div>
                             </div>
-                        <div class="col-md-8">
+                        </div>
+                        <div class="col-md-7">
                             <!-- Contenedor dinámico -->
                             <div id="historial-compras" class="list-group"></div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="container mt-4">
+                                <!-- Resumen de productos -->
+                                <div class="card shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="fw-bold">Resumen</h5>
+
+                                        <!-- Lista de productos -->
+                                        <ul class="list-unstyled">
+                                            <li class="d-flex justify-content-between py-2">
+                                                <span>Producto 1</span>
+                                                <span>$129.990</span>
+                                            </li>
+                                            <li class="d-flex justify-content-between py-2">
+                                                <span>Producto 2</span>
+                                                <span>$25.990</span>
+                                            </li>
+                                        </ul>
+
+                                        <!-- Línea separadora -->
+                                        <hr class="my-3">
+
+                                        <!-- Total -->
+                                        <div class="d-flex justify-content-between">
+                                            <span class="fw-bold">Total incl. IVA</span>
+                                            <span class="fw-bold fs-4">$155.980</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Botón -->
+                                <div class="mt-4 text-center">
+                                    <button class="btn btn-primary btn-lg rounded-pill px-4">
+                                        <i class="bi bi-cart-plus me-2"></i>
+                                        Agregar todos los artículos al carrito
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
