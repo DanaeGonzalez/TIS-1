@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     const historialContenedor = document.getElementById("historial-compras");
+    const totalComprasSpan = document.querySelector(".text-secondary");
 
+    // Fetch para obtener las compras del usuario
     fetch("/xampp/TIS-1/IKAT/assets/php/mostrarHistorial.php", {
         method: "POST",
         body: new URLSearchParams({
@@ -11,26 +13,24 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            return response.json(); // Respuesta esperada en formato JSON
+            return response.json();
         })
         .then((data) => {
             if (data.error) {
-                throw new Error(data.error); // Si la respuesta contiene un error
+                throw new Error(data.error);
             }
 
+            // Verificar si no hay compras
             if (data.length === 0) {
-                // Si no hay compras, muestra un mensaje
                 historialContenedor.innerHTML = `<p class="text-muted text-center">No hay productos en el historial de compras.</p>`;
+                updateTotalCompras(0);
             } else {
-                // Renderiza el historial de compras agrupado por compra
+                // Renderizar compras
                 historialContenedor.innerHTML = data
                     .map((compra) => {
                         const productosHTML = compra.productos
                             .map((producto, index) => {
-                                const rutaOriginal = producto.foto_producto;
-                                const rutaAjustada = rutaOriginal.replace("../../", "../");
-
-                                // Agregar la clase `border-top` solo si no es el primer producto
+                                const rutaAjustada = producto.foto_producto.replace("../../", "../");
                                 const borderClass = index !== 0 ? "border-top pt-3 mt-3" : "";
 
                                 return `
@@ -61,69 +61,28 @@ document.addEventListener("DOMContentLoaded", () => {
                         `;
                     })
                     .join("");
+
+                // Actualizar el total de compras
+                updateTotalCompras(data.length);
             }
         })
         .catch((error) => {
             console.error("Error al cargar el historial:", error);
             historialContenedor.innerHTML = `<p class="text-danger">Error al cargar el historial. Inténtalo más tarde.</p>`;
+            updateTotalCompras(0); // Si hay un error, aseguramos que se actualice a 0
         });
 });
 
-function agregarTodaLaCompraAlCarrito(idCompra) {
-    console.log(`Se llamó a agregarTodaLaCompraAlCarrito con idCompra: ${idCompra}`);
-    fetch('../assets/php/obtenerProductosCompra.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-            id_compra: idCompra
-        })
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(productos => {
-            console.log('Productos recibidos:', productos);
-            if (productos.error) {
-                alert(productos.error);
-                return;
-            }
-
-            // Iterar sobre los productos y agregarlos al carrito
-            productos.forEach(producto => {
-                agregarAlCarrito(producto.id_producto, producto.cantidad);
-            });
-        })
-        .catch(error => {
-            console.error('Error al obtener los productos de la compra:', error);
-            alert('Error al obtener los productos. Inténtalo más tarde.');
-        });
+/**
+ * Actualiza el span del total de compras
+ * @param {number} total - Número total de compras
+ */
+function updateTotalCompras(total) {
+    const totalComprasSpan = document.getElementById("total-compras"); // Usar ID único
+    if (totalComprasSpan) {
+        totalComprasSpan.textContent = `${total} ${total === 1 ? "compra" : "compras"}`;
+    } else {
+        console.error("No se encontró el elemento para mostrar el total de compras.");
+    }
 }
 
-
-// Función para agregar un producto al carrito
-function agregarAlCarrito(productId, cantidad) {
-    fetch('../assets/php/agregaralCarrito.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id_producto: productId,
-                cantidad: cantidad
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert("Producto agregado al carrito con éxito.");
-            } else {
-                alert(data.error || "Hubo un error al agregar el producto al carrito.");
-            }
-        })
-        .catch((error) => console.error('Error:', error));
-}

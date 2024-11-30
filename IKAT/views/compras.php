@@ -59,12 +59,12 @@ $id_usuario = $_SESSION['id_usuario'] ?? null; // Asigna el valor o null si no e
                                         Todas
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownFiltro">
-                                        <li><a class="dropdown-item" href="#">Opción 1</a></li>
-                                        <li><a class="dropdown-item" href="#">Opción 2</a></li>
-                                        <li><a class="dropdown-item" href="#">Opción 3</a></li>
+                                        <li><a class="dropdown-item" href="#">Esta semana</a></li>
+                                        <li><a class="dropdown-item" href="#">Este Mes</a></li>
+                                        <li><a class="dropdown-item" href="#">Este año</a></li>
                                     </ul>
                                 </div>
-                                <a href="#" class="text-decoration-none text-secondary">1 compra</a>
+                                <span id="total-compras" class="text-secondary">0 compras</span>
                             </div>
                         </div>
 
