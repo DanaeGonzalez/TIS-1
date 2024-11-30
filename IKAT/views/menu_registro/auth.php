@@ -12,7 +12,8 @@ if (
     $current_page !== 'catalogo_mesa.php' &&
     $current_page !== 'catalogo_organizacion.php' &&
     $current_page !== 'catalogo_silla.php' &&
-    $current_page !== 'catalogo_sillon.php' && (!isset($_SESSION['identificador']) || !isset($_SESSION['tipo_usuario']))
+    $current_page !== 'catalogo_sillon.php' &&
+    $current_page !== 'producto.php' && (!isset($_SESSION['identificador']) || !isset($_SESSION['tipo_usuario']))
 ) {
     header("Location: /xampp/TIS-1/IKAT/views/menu_registro/login.php");
     exit();
