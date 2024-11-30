@@ -70,7 +70,7 @@ include '../menu_registro/auth.php';
         <div class="carousel-inner">
           <div class="carousel-item active">
             <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg" alt="...">
-            <div class="carousel-caption mx-auto">
+            <div class="carousel-caption mx-auto bg-dark bg-opacity-50">
               <h5>Muebles ideales para tu hogar</h5>
               <p>Transforma cada espacio en un rincón único y acogedor.</p>
             </div>
@@ -79,18 +79,18 @@ include '../menu_registro/auth.php';
             <img
               src="https://images.pexels.com/photos/6969995/pexels-photo-6969995.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=5"
               class="d-block w-100 img-fluid" alt="...">
-            <div class="carousel-caption mx-auto">
-              <h5>Muebles ideales para tu hogar</h5>
-              <p>Transforma cada espacio en un rincón único y acogedor.</p>
+            <div class="carousel-caption mx-auto bg-dark bg-opacity-50">
+              <h5>Diseños excepcionales para tu hogar</h5>
+              <p>Convierte cada habitación en un lugar lleno de estilo y confort.</p>
             </div>
           </div>
           <div class="carousel-item">
             <img
               src="https://images.pexels.com/photos/1571463/pexels-photo-1571463.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2   "
               class="d-block w-100 img-fluid" alt="...">
-            <div class="carousel-caption mx-auto">
-              <h5>Muebles ideales para tu hogar</h5>
-              <p>Transforma cada espacio en un rincón único y acogedor.</p>
+            <div class="carousel-caption mx-auto bg-dark bg-opacity-50">
+              <h5>Encuentra el mueble perfecto</h5>
+              <p>Diseños exclusivos que se adaptan a tu estilo y necesidades.</p>
             </div>
           </div>
         </div>

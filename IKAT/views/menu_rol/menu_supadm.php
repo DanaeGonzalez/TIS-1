@@ -32,8 +32,8 @@ include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/views/menu_registro/auth.
             <div class="modal-body">
               <form>
                 <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
-                    aria-label="Buscar productos">
+                  <input type="text" class="form-control"
+                    placeholder="Escribe lo que estés buscando: mesa, cama, silla..." aria-label="Buscar productos">
                   <button class="btn btn-dark" type="submit">
                     Buscar
                   </button>
@@ -46,7 +46,8 @@ include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/views/menu_registro/auth.
 
       <!-- Contenedor de la barra de búsqueda sobre el carrusel -->
       <div class="search-bar-container d-none d-lg-flex">
-        <input class="form-control d-inline w-75" type="text" placeholder="Escribe lo que estés buscando: mesa, cama, silla...">
+        <input class="form-control d-inline w-75" type="text"
+          placeholder="Escribe lo que estés buscando: mesa, cama, silla...">
         <button class="btn btn-dark d-inline" type="submit">
           <i class="bi bi-search"></i>
         </button>
@@ -71,7 +72,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/views/menu_registro/auth.
         <div class="carousel-inner">
           <div class="carousel-item active">
             <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg" alt="...">
-            <div class="carousel-caption mx-auto">
+            <div class="carousel-caption mx-auto bg-dark bg-opacity-50">
               <h5>Muebles ideales para tu hogar</h5>
               <p>Transforma cada espacio en un rincón único y acogedor.</p>
             </div>
@@ -80,18 +81,18 @@ include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/views/menu_registro/auth.
             <img
               src="https://images.pexels.com/photos/6969995/pexels-photo-6969995.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=5"
               class="d-block w-100 img-fluid" alt="...">
-            <div class="carousel-caption mx-auto">
-              <h5>Muebles ideales para tu hogar</h5>
-              <p>Transforma cada espacio en un rincón único y acogedor.</p>
+            <div class="carousel-caption mx-auto bg-dark bg-opacity-50">
+              <h5>Diseños excepcionales para tu hogar</h5>
+              <p>Convierte cada habitación en un lugar lleno de estilo y confort.</p>
             </div>
           </div>
           <div class="carousel-item">
             <img
               src="https://images.pexels.com/photos/1571463/pexels-photo-1571463.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2   "
               class="d-block w-100 img-fluid" alt="...">
-            <div class="carousel-caption mx-auto">
-              <h5>Muebles ideales para tu hogar</h5>
-              <p>Transforma cada espacio en un rincón único y acogedor.</p>
+            <div class="carousel-caption mx-auto bg-dark bg-opacity-50">
+              <h5>Encuentra el mueble perfecto</h5>
+              <p>Diseños exclusivos que se adaptan a tu estilo y necesidades.</p>
             </div>
           </div>
         </div>
@@ -152,7 +153,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/views/menu_registro/auth.
     <footer class="py-4">
       <div class="container">
         <div class="row">
-        <div class="col-12 col-md-3 mb-3 text-center text-md-start">
+          <div class="col-12 col-md-3 mb-3 text-center text-md-start">
             <h5>Tu perfil en IKAT</h5>
             <div class="col-md-9 col-12">
               <p class="text-justify">Administra tu información personal para

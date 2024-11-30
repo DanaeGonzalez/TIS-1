@@ -95,6 +95,53 @@ button.carousel-control-next{
   border-radius: 5px; 
 }
 
+/* Estilo general para los botones del carrusel */
+#carouselExampleIndicators .carousel-control-prev,
+#carouselExampleIndicators .carousel-control-next {
+  width: 60px;
+  height: 60px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute; /* Asegura que estén en la posición correcta */
+  top: 50%; /* Centra verticalmente */
+  transform: translateY(-50%); /* Ajusta para el centro exacto */
+  z-index: 10; /* Asegura que los botones estén encima del contenido */
+  transition: all 0.3s ease;
+}
+
+#carouselExampleIndicators .carousel-control-prev{
+  left: 10px; /* Ajusta la distancia del lado izquierdo */
+}
+
+#carouselExampleIndicators .carousel-control-next {
+  right: 10px; /* Ajusta la distancia del lado derecho */
+}
+
+#carouselExampleIndicators .carousel-control-prev:hover,
+#carouselExampleIndicators .carousel-control-next:hover{
+  background-color: rgba(0, 0, 0, 0.8); /* Fondo más oscuro al pasar el mouse */
+  transform: translateY(-50%) scale(1.1); /* Conserva la posición y aumenta tamaño */
+}
+
+#carouselExampleIndicators .carousel-control-prev-icon,
+#carouselExampleIndicators .carousel-control-next-icon{
+  color: #fff; /* Flecha blanca */
+  transition: transform 0.3s ease;
+}
+
+#carouselExampleIndicators .carousel-control-prev:hover .carousel-control-prev-icon,
+#carouselExampleIndicators .carousel-control-next:hover .carousel-control-next-icon {
+  transform: translateX(-5px); /* Movimiento sutil hacia la izquierda para prev */
+}
+
+#carouselExampleIndicators .carousel-control-next:hover .carousel-control-next-icon {
+  transform: translateX(5px); /* Movimiento sutil hacia la derecha para next */
+}
+
+
 .inicio-categoria {
   position: relative;
 }
