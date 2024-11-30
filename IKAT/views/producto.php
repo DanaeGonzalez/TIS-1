@@ -36,7 +36,8 @@
                             <div class="modal-body">
                                 <form>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
+                                        <input type="text" class="form-control"
+                                            placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
                                             aria-label="Buscar productos">
                                         <button class="btn btn-dark" type="submit">
                                             Buscar
@@ -53,8 +54,10 @@
                     <div class="search-container col-lg-7 col-10">
                         <div class="input-group">
 
-                            <input type="text" class="form-control p-2" placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
-                                aria-label="Escribe lo que estés buscando: mesa, cama, silla..." aria-describedby="search-addon">
+                            <input type="text" class="form-control p-2"
+                                placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
+                                aria-label="Escribe lo que estés buscando: mesa, cama, silla..."
+                                aria-describedby="search-addon">
                             <button class="input-group-text" id="search-addon" type="button">
                                 <i class="bi bi-search"></i>
                             </button>
@@ -97,9 +100,8 @@
                             $ruta_original = $producto['foto_producto'];
                             $ruta_ajustada = str_replace("../../", "../", $ruta_original);
                             ?>
-                            <img width="90%" src="<?= $ruta_ajustada ?>"
-                                class="img-fluid rounded product-image" style="border: 1px solid #f0f0f0;"
-                                alt="Imagen del Producto">
+                            <img width="90%" src="<?= $ruta_ajustada ?>" class="img-fluid rounded product-image"
+                                style="border: 1px solid #f0f0f0;" alt="Imagen del Producto">
                         </div>
 
 
@@ -107,10 +109,14 @@
                             <div class="d-flex justify-content-between align-items-center me-2">
                                 <h1><?= htmlspecialchars($producto['nombre_producto']) ?></h1>
                                 <!-- Botón para agregar a la lista de deseos -->
-                                <label class="container_heart" onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
+                                <label class="container_heart"
+                                    onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
                                     <input type="checkbox">
-                                    <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                        <path d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z"></path>
+                                    <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve"
+                                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <path
+                                            d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z">
+                                        </path>
                                     </svg>
                                 </label>
                             </div>
@@ -139,14 +145,66 @@
                             </ul>
                             <hr>
                             <h5>Cantidad</h5>
+
+
+                            <?php
+                            $id_usuario = $_SESSION['id_usuario'];
+
+                            // Consulta SQL para obtener el stock del producto
+                            $sqlStock = "SELECT stock_producto FROM producto WHERE id_producto = $id_producto";
+
+                            // Ejecutar la consulta
+                            $resultStock = $conn->query($sqlStock);
+
+                            // Verificar si la consulta se ejecutó correctamente
+                            if (!$resultStock) {
+                                die("Error en la consulta: " . $conn->error);
+                            }
+
+                            // Inicializar la variable de stock
+                            $stockProducto = 0;
+
+                            if ($resultStock->num_rows > 0) {
+                                // Si existe una fila, obtenemos el stock del producto
+                                $row = $resultStock->fetch_assoc();
+                                $stockProducto = $row['stock_producto'];
+                            }
+
+                            // Consulta SQL para obtener la cantidad del producto en el carrito
+                            $sqlCantidad = "SELECT cantidad
+                            FROM carrito
+                            WHERE id_producto = $id_producto AND id_usuario = $id_usuario";
+
+                            // Ejecutar la consulta
+                            $resultCantidad = $conn->query($sqlCantidad);
+
+                            // Verificar si la consulta se ejecutó correctamente
+                            if (!$resultCantidad) {
+                                die("Error en la consulta: " . $conn->error);
+                            }
+
+                            // Inicializar la cantidad en el carrito
+                            $cantidadEnCarrito = 0;
+
+                            if ($resultCantidad->num_rows > 0) {
+                                // Si existe una fila, obtenemos la cantidad del producto en el carrito
+                                $row = $resultCantidad->fetch_assoc();
+                                $cantidadEnCarrito = $row['cantidad'];
+                            }
+                            ?>
+
+
+                            <!-- Define el stock máximo aquí -->
                             <div class="input-group" style="width: 130px;">
-                                <button class="btn btn-outline-dark" type="button"
-                                    onclick="this.nextElementSibling.stepDown()">-</button>
-                                <input type="number" id="cantidadInput" value="1" min="1"
+                                <button class="btn btn-outline-dark" type="button" onclick="decrementar()">-</button>
+                                <input type="number" id="cantidadInput" value="1" min="1" max="10"
                                     class="form-control text-center custom-input">
-                                <button class="btn btn-outline-dark" type="button"
-                                    onclick="this.previousElementSibling.stepUp()">+</button>
+                                <button class="btn btn-outline-dark" type="button" onclick="incrementar()">+</button>
                             </div>
+
+                            <div id="resultado">El valor es: 1</div>
+                            <div id="stockStatus">Stock disponible: </div>
+
                             <!-- Alerta de éxito -->
                             <div id="alertSuccess" class="alert alert-success alert-dismissible fade show mt-4"
                                 role="alert"
@@ -163,7 +221,9 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"
                                     aria-label="Close"></button>
                             </div>
-                            <button class="button mt-3" onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">
+                            <!-- Botón de añadir al carrito -->
+                            <button id="addToCartButton" class="button mt-3"
+                                onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>); retrasarRecarga();">
                                 <span>Añadir al carrito</span>
                                 <div class="cart">
                                     <svg viewBox="0 0 36 26">
@@ -171,6 +231,11 @@
                                         <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
                                     </svg>
                                 </div>
+                            </button>
+
+                            <!-- Segundo botón, solo visible cuando el stock es 0 -->
+                            <button id="outOfStockButton" class="btn btn-dark mt-3" disabled>
+                                <span>Sin stock</span>
                             </button>
                             <hr>
                             <h5>Descripción del producto</h5>
@@ -215,21 +280,118 @@
             crossorigin="anonymous"></script>
 
         <script>
+            function retrasarRecarga() {
+                // Recarga la página después de 4 segundos
+                setTimeout(() => {
+                    location.reload();
+                }, 4000);
+            }
+        </script>
+
+
+        <script>
+            // Recibir el stock desde PHP
+            let maxStock = <?php echo $stockProducto; ?>;
+            let cantidadEnCarrito = <?php echo $cantidadEnCarrito; ?>;
+
+
+            // Obtener los elementos del DOM
+            const cantidadInput = document.getElementById("cantidadInput");
+            const resultado = document.getElementById("resultado");
+            const stockStatus = document.getElementById("stockStatus");
+            const addToCartButton = document.getElementById("addToCartButton");
+            const outOfStockButton = document.getElementById("outOfStockButton");
+
+            // Función que actualiza el valor en el div
+            function actualizarValor() {
+                resultado.innerText = "El valor es: " + cantidadInput.value;
+                actualizarStock();
+            }
+
+            // Función para incrementar la cantidad
+            function incrementar() {
+                let cantidad = parseInt(cantidadInput.value);
+                if (cantidad < maxStock) {
+                    cantidadInput.value = cantidad + 1;
+                    actualizarValor();
+                }
+            }
+
+            // Función para decrementar la cantidad
+            function decrementar() {
+                let cantidad = parseInt(cantidadInput.value);
+                if (cantidad > 1) {
+                    cantidadInput.value = cantidad - 1;
+                    actualizarValor();
+                }
+            }
+
+            // Función que actualiza el estado del stock (mensaje de disponibilidad)
+            function actualizarStock() {
+                const cantidadSeleccionada = parseInt(cantidadInput.value);
+
+                // Calcula el stock restante en tiempo real
+                const stockRestante = maxStock - cantidadEnCarrito;
+
+                // Actualiza el máximo permitido para el input de cantidad
+                cantidadInput.max = stockRestante;
+
+                // Corrige el valor si excede el stock restante
+                if (cantidadSeleccionada > stockRestante) {
+                    cantidadInput.value = stockRestante;
+                }
+
+                // Actualiza el mensaje de stock disponible y estado de los botones
+                if (stockRestante > 0) {
+                    //stockStatus.innerText = "Stock disponible: " + (stockRestante - cantidadSeleccionada);
+                    addToCartButton.disabled = false;
+                    addToCartButton.classList.remove("disabled-button");
+                    addToCartButton.style.display = "inline-block";
+                    outOfStockButton.style.display = "none";
+                } else {
+                    //stockStatus.innerText = "Stock disponible: 0";
+                    addToCartButton.disabled = true;
+                    addToCartButton.classList.add("disabled-button");
+                    addToCartButton.style.display = "none";
+                    outOfStockButton.style.display = "inline-block";
+                }
+            }
+
+            // Escuchar cambios en el input
+            cantidadInput.addEventListener("input", function () {
+                let cantidad = parseInt(cantidadInput.value);
+                if (cantidad > maxStock) {
+                    cantidadInput.value = maxStock;
+                }
+                actualizarValor();
+            });
+
+            // Inicializar el valor al cargar la página
+            actualizarValor();
+
+            document.getElementById("resultado").style.display = "none";
+            document.getElementById("stockStatus").style.display = "none";
+
+        </script>
+
+
+
+        <script>
             function agregarAlCarrito(productId) {
 
                 // Obtén el valor de la cantidad desde el input
                 const cantidad = document.getElementById('cantidadInput').value;
 
                 fetch('../assets/php/agregaralCarrito.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            id_producto: productId,
-                            cantidad: parseInt(cantidad)
-                        })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id_producto: productId,
+                        cantidad: parseInt(cantidad)
                     })
+                })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
@@ -257,14 +419,14 @@
         <script>
             function agregarAListaDeDeseos(productId) {
                 fetch('../assets/php/agregarAdeseos.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            id_producto: productId
-                        })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id_producto: productId
                     })
+                })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
