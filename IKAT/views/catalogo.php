@@ -9,8 +9,10 @@
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="..\assets\css\styles.css">
         <link rel="stylesheet" href="..\assets\css\barra_busqueda.css">
+        <link rel="stylesheet" href="..\assets\css\rating.css">
         <script src="../assets/js/filtros.js"></script>
         <script src="../assets/js/etiquetas.js"></script>
+        <script src="../assets/js/stars.js"></script>
         <?php include '../assets/php/dropdowns.php'; ?>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
@@ -51,7 +53,7 @@
                 <!-- Contenedor de la barra de búsqueda -->
                 <div class="d-none d-lg-flex justify-content-center align-items-center mt-4">
                     <div class="search-container col-lg-7 col-10 position-relative">
-                        <div class="input-group"> 
+                        <div class="input-group">
                             <!-- Campo de búsqueda -->
                             <input type="text" class="form-control p-2" id="buscarInputMain"
                                 placeholder="Escribe lo que estés buscando: mesa, cama, silla..." aria-label="Escribe lo que estés buscando: mesa, cama, silla..."
@@ -190,40 +192,36 @@
                     <div class="container mt-4">
                         <div id="product-container" class="row justify-content-center">
                             <?php while ($producto = $result->fetch_assoc()): ?>
-                                <?php //función para ajustar la ruta
+                                <?php
                                 $ruta_original = $producto['foto_producto'];
                                 $ruta_ajustada = str_replace("../../", "../", $ruta_original);
                                 ?>
                                 <div class="col-6 col-md-4 mb-4">
                                     <div class="card d-flex flex-column h-100">
                                         <a href="producto.php?id=<?= $producto['id_producto'] ?>" class="text-decoration-none">
-                                            <!-- Contenedor de la imagen con altura dinámica -->
                                             <div class="card-img-container d-flex justify-content-center align-items-center">
-                                                <img src="<?= $ruta_ajustada ?>" class="card-img-top img-fluid h-100" alt="Imagen del producto" style="object-fit: cover; width: 100%; height: auto;"
-                                                    id="product-image-<?= $producto['id_producto'] ?>">
+                                                <img src="<?= $ruta_ajustada ?>" class="card-img-top img-fluid h-100" alt="Imagen del producto" style="object-fit: cover; width: 100%; height: auto;" id="product-image-<?= $producto['id_producto'] ?>">
                                             </div>
                                         </a>
                                         <div class="card-body d-flex flex-column">
-                                            <!-- Contenedor del título con altura mínima -->
                                             <div class="title-container">
                                                 <h5 class="card-title text-truncate"><?= htmlspecialchars($producto['nombre_producto']) ?></h5>
                                             </div>
                                             <h6 class="card-text mb-3">$<?= number_format($producto['precio_unitario'], 0, ',', '.') ?></h6>
 
-                                            <?php $usuarioAutenticado = isset($_SESSION['id_usuario']); ?>
-                                            <div class="mt-auto d-flex align-items-center">
-                                                <!-- Botón Agregar al carrito -->
-                                                <button type="button" class="btn btn-secondary me-2 carrito-btn"
-                                                    <?php if (!$usuarioAutenticado) echo 'disabled'; ?>
-                                                    onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">
-                                                    <i class="bi bi-cart-plus"></i>
-                                                </button>
-                                                <!-- Botón Agregar a la lista de deseos -->
-                                                <button type="button" class="btn btn-secondary lista-deseos-btn"
-                                                    <?php if (!$usuarioAutenticado) echo 'disabled'; ?>
-                                                    onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
-                                                    <i class="bi bi-heart"></i>
-                                                </button>
+                                            <div class="d-flex justify-content-between align-items-center pe-3">
+                                                <div class="mt-auto d-flex align-items-center">
+                                                    <button type="button" class="btn btn-secondary me-2 carrito-btn" onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>)">
+                                                        <i class="bi bi-cart-plus"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-secondary lista-deseos-btn" onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
+                                                        <i class="bi bi-heart"></i>
+                                                    </button>
+                                                </div>
+                                                <!-- Estrellitas dinámicas -->
+                                                <div id="stars-container-<?= $producto['id_producto'] ?>" class="d-flex align-items-center gap-1">
+                                                    <span>Cargando estrellas...</span> <!-- Placeholder mientras se carga AJAX -->
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -231,6 +229,8 @@
                             <?php endwhile; ?>
                         </div>
                     </div>
+
+
 
                 <?php
                 else:
