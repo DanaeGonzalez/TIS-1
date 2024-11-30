@@ -18,26 +18,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['mensaje'] = "Compra actualizada exitosamente";
 
         // Obtener los datos del usuario relacionado con la compra
-        $userEmailQuery = "SELECT nombre_usuario, correo_usuario FROM usuario WHERE id_usuario = $id_usuario";
+        $userEmailQuery = "SELECT nombre_usuario, apellido_usuario, correo_usuario FROM usuario WHERE id_usuario = $id_usuario";
         $userResult = $conn->query($userEmailQuery);
 
         if ($userResult->num_rows > 0) {
             $userRow = $userResult->fetch_assoc();
             $userName = $userRow['nombre_usuario'];
+            $userLastName = $userRow['apellido_usuario'];
             $toEmail = $userRow['correo_usuario'];
 
             // Obtener detalles del producto
-            $productQuery = "SELECT nombre_producto, foto_producto FROM producto WHERE id_producto = $id_producto";
+            $productQuery = "SELECT nombre_producto FROM producto WHERE id_producto = $id_producto";
             $productResult = $conn->query($productQuery);
 
             if ($productResult->num_rows > 0) {
                 $productRow = $productResult->fetch_assoc();
                 $productName = $productRow['nombre_producto'];
-                $productPhoto = $productRow['foto_producto']; // Ruta relativa en la base de datos
 
-                // Construir la URL completa para el entorno local (XAMPP)
-                $baseURL = "http://localhost/TIS-1/IKAT"; // Cambia "tu_proyecto" por la carpeta de tu proyecto
-                $productPhotoURL = $baseURL . ltrim($productPhoto, './'); // Construir la URL completa
+                // Obtener la fecha de la compra
+                $purchaseQuery = "SELECT fecha_compra FROM compra WHERE id_compra = $id_compra";
+                $purchaseResult = $conn->query($purchaseQuery);
+                $purchaseDate = ($purchaseResult->num_rows > 0) ? $purchaseResult->fetch_assoc()['fecha_compra'] : 'Fecha no disponible';
 
                 // Configuración del correo
                 $fromEmail = 'clientes.ikat@gmail.com';
@@ -53,13 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <h1 style='margin: 0;'>Actualización de Compra</h1>
                         </div>
                         <div style='padding: 20px; text-align: center;'>
-                            <h2 style='color: #8C5C32;'>Estimado cliente: $userName</h2>
+                            <h2 style='color: #8C5C32;'>Estimado cliente: <span style='color: #000;'>$userName $userLastName</span></h2>
                             <p style='color: #595959; font-size: 16px;'>El estado de su compra con ID: <strong>$id_compra</strong> ha cambiado a: <strong>$tipo_estado</strong>.</p>
-                            <h2 style='color: #8C5C32;'>Producto</h2>
-                            <p style='color: #0D0D0D; font-size: 18px;'><strong>$productName</strong></p>
-                            <div style='margin: 20px auto;'>
-                                <img src='$productPhotoURL' alt='$productName' style='width: 100%; max-width: 300px; border: 1px solid #BFBFBF; border-radius: 8px;'>
-                            </div>
+                            <p style='color: #595959; font-size: 16px;'>Producto: <strong>$productName</strong></p>
+                            <p style='color: #595959; font-size: 16px;'>Fecha de compra: <strong>$purchaseDate</strong></p>
                         </div>
                         <div style='background-color: #F2F2F2; padding: 15px; text-align: center;'>
                             <p style='color: #595959; font-size: 14px;'>Gracias por confiar en nosotros.</p>
