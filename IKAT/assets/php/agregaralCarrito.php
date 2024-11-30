@@ -11,12 +11,12 @@ if (isset($data['id_producto']) && isset($data['cantidad'])) {
     $id_producto = $data['id_producto'];
     $cantidad = $data['cantidad'];
 
-    // Obtén el ID del carrito de la sesión del usuario
-    $id_carrito = $_SESSION['id_carrito']; 
+    // Obtén el ID del usuario desde la sesión
+    $id_usuario = $_SESSION['id_usuario']; 
 
-    // Verifica que el id_carrito esté definido
-    if (!isset($id_carrito)) {
-        echo json_encode(['success' => false, 'error' => 'ID de carrito no encontrado en la sesión.']);
+    // Verifica que el id_usuario esté definido
+    if (!isset($id_usuario)) {
+        echo json_encode(['success' => false, 'error' => 'ID de usuario no encontrado en la sesión.']);
         exit;
     }
 
@@ -36,9 +36,9 @@ if (isset($data['id_producto']) && isset($data['cantidad'])) {
     }
 
     // Consulta para obtener la cantidad actual en el carrito para este producto
-    $sql_carrito = "SELECT cantidad_producto FROM carrito_producto WHERE id_carrito = ? AND id_producto = ?";
+    $sql_carrito = "SELECT cantidad FROM carrito WHERE id_usuario = ? AND id_producto = ?";
     $stmt_carrito = $conn->prepare($sql_carrito);
-    $stmt_carrito->bind_param('ii', $id_carrito, $id_producto);
+    $stmt_carrito->bind_param('ii', $id_usuario, $id_producto);
     $stmt_carrito->execute();
     $stmt_carrito->bind_result($cantidad_actual);
     $stmt_carrito->fetch();
@@ -55,16 +55,16 @@ if (isset($data['id_producto']) && isset($data['cantidad'])) {
         }
 
         // Actualiza la cantidad del producto en el carrito
-        $sql_update = "UPDATE carrito_producto SET cantidad_producto = ? WHERE id_carrito = ? AND id_producto = ?";
+        $sql_update = "UPDATE carrito SET cantidad = ? WHERE id_usuario = ? AND id_producto = ?";
         $stmt_update = $conn->prepare($sql_update);
-        $stmt_update->bind_param('iii', $nueva_cantidad, $id_carrito, $id_producto);
+        $stmt_update->bind_param('iii', $nueva_cantidad, $id_usuario, $id_producto);
         $stmt_update->execute();
         $stmt_update->close();
     } else {
         // Si el producto no está en el carrito, agrégalo
-        $sql_insert = "INSERT INTO carrito_producto (id_carrito, id_producto, cantidad_producto) VALUES (?, ?, ?)";
+        $sql_insert = "INSERT INTO carrito (id_usuario, id_producto, cantidad) VALUES (?, ?, ?)";
         $stmt_insert = $conn->prepare($sql_insert);
-        $stmt_insert->bind_param('iii', $id_carrito, $id_producto, $cantidad);
+        $stmt_insert->bind_param('iii', $id_usuario, $id_producto, $cantidad);
         $stmt_insert->execute();
         $stmt_insert->close();
     }

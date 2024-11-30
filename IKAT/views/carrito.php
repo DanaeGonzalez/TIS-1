@@ -2,35 +2,51 @@
 include 'menu_registro\auth.php';
 include_once '..\config\conexion.php';
 
+// Verificar si el usuario está autenticado
+if (!isset($_SESSION['id_usuario'])) {
+    echo "Tu sesión ha expirado o no estás autenticado.";
+    exit;
+}
 
 // Inicializar un array para almacenar productos con stock insuficiente
 $productosSinStock = [];
 $alerta = false;
 
-// Consultar productos en el carrito
-$sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, cp.cantidad_producto 
-        FROM carrito_producto cp 
-        JOIN producto p ON cp.id_producto = p.id_producto 
-        WHERE cp.id_carrito = ?";
+
+// Consultar productos en el carrito del usuario
+$sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, p.foto_producto, 
+               p.precio_unitario, c.cantidad 
+        FROM carrito c 
+        JOIN producto p ON c.id_producto = p.id_producto 
+        WHERE c.id_usuario = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $_SESSION['id_carrito']);
+$stmt->bind_param("i", $_SESSION['id_usuario']);
 $stmt->execute();
 $result = $stmt->get_result();
 
+// Inicializar variables
+$productos = [];
+$total = 0;
+
 // Recorrer los productos del carrito
 while ($row = $result->fetch_assoc()) {
-    if ($row['cantidad_producto'] > $row['stock_producto']) {
-        //Si hay stock insuficiente, agregar el producto al array
-        $productosSinStock[] = $row;
-        $alerta = true;  //Marcar que hay un problema con el stock
+    $subtotal = $row['precio_unitario'] * $row['cantidad'];
+    $total += $subtotal;
+
+    if ($row['cantidad'] > $row['stock_producto']) {
+        $productosSinStock[] = $row; // Guardar productos con stock insuficiente
+        $alerta = true;
     }
+
+    $productos[] = $row; // Almacenar productos para mostrar
 }
+
 ?>
 
 
 
 <!doctype html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
@@ -61,7 +77,7 @@ while ($row = $result->fetch_assoc()) {
                                 <?php foreach ($productosSinStock as $producto): ?>
                                     <li>
                                         <?= htmlspecialchars($producto['nombre_producto']) ?> -
-                                        solicitado: <?= htmlspecialchars($producto['cantidad_producto']) ?>,
+                                        solicitado: <?= htmlspecialchars($producto['cantidad']) ?>,
                                         disponible: <?= htmlspecialchars($producto['stock_producto']) ?>
                                     </li>
                                 <?php endforeach; ?>
@@ -74,27 +90,29 @@ while ($row = $result->fetch_assoc()) {
                     <div class="col-md-8">
                         <div class="list-group me-3">
                             <?php
-                            // Consulta para obtener los productos del carrito
-                            $sql = "SELECT p.*, cp.cantidad_producto 
-                                FROM carrito_producto cp 
-                                JOIN producto p ON cp.id_producto = p.id_producto 
-                                WHERE cp.id_carrito = ?";
-
+                            // Consultar productos en el carrito del usuario
+                            $sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, p.foto_producto, 
+                            p.precio_unitario, c.cantidad 
+                            FROM carrito c 
+                            JOIN producto p ON c.id_producto = p.id_producto 
+                            WHERE c.id_usuario = ?";
                             $stmt = $conn->prepare($sql);
-                            $stmt->bind_param("i", $_SESSION['id_carrito']);
+                            $stmt->bind_param("i", $_SESSION['id_usuario']);
                             $stmt->execute();
                             $result = $stmt->get_result();
 
+                            // Inicializar variables
+                            $productos = [];
                             $total = 0;
 
                             while ($row = $result->fetch_assoc()) {
-                                $subtotal = $row['precio_unitario'] * $row['cantidad_producto'];
+                                $subtotal = $row['precio_unitario'] * $row['cantidad'];
                                 $total += $subtotal;
-                            
+
                                 //Ajustar la ruta de la imagen
                                 $ruta_original = $row['foto_producto'];
                                 $ruta_ajustada = str_replace("../../", "../", $ruta_original);
-                            
+
                                 echo "<div class='list-group-item d-flex justify-content-between align-items-center bg-light border mb-4 rounded shadow-sm p-3'>";
                                 echo "<div class='d-flex align-items-center'>";
                                 echo "<a href='producto.php?id={$row['id_producto']}'><img src='{$ruta_ajustada}' alt='{$row['nombre_producto']}' class='me-3 rounded' style='width: 170px;'></a>";
@@ -103,7 +121,7 @@ while ($row = $result->fetch_assoc()) {
                                 echo "<h6 class='text-dark'>\$" . number_format(floor($row['precio_unitario']), 0, '', '.') . "</h6>";
                                 echo "<div class='d-flex align-items-center'>";
                                 echo "<div class='input-group input-group-sm' style='width: 40px;'>";
-                                echo "<input type='text' value='{$row['cantidad_producto']}' min='1' class='form-control text-center' readonly>";
+                                echo "<input type='text' value='{$row['cantidad']}' min='1' class='form-control text-center' readonly>";
                                 echo "</div></div></div>";
                                 echo "</div>";
 
@@ -157,14 +175,14 @@ while ($row = $result->fetch_assoc()) {
                                     </svg>
                                 </button>
                             </form>
-                                <a type="button" class="BtnPay mt-4" href="cotizacion.php">
-                                    Generar Cotización
-                                    <path
-                                        d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
-                                    </path>
-                                    </svg>
-                                </a>
-                            
+                            <a type="button" class="BtnPay mt-4" href="cotizacion.php">
+                                Generar Cotización
+                                <path
+                                    d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
+                                </path>
+                                </svg>
+                            </a>
+
                         <?php else: ?>
                             <div class="alert alert-info mt-4 text-center">
                                 Tu carrito está vacío. Agrega productos para continuar con la compra.

@@ -7,19 +7,19 @@ include_once '..\config\conexion.php';
 $productosSinStock = [];
 $alerta = false;
 
-// Consultar productos en el carrito
-$sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, cp.cantidad_producto 
-        FROM carrito_producto cp 
-        JOIN producto p ON cp.id_producto = p.id_producto 
-        WHERE cp.id_carrito = ?";
+// Consulta para obtener los productos del carrito
+$sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, cp.cantidad, p.precio_unitario, p.foto_producto
+FROM carrito cp 
+JOIN producto p ON cp.id_producto = p.id_producto 
+WHERE cp.id_usuario = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $_SESSION['id_carrito']);
+$stmt->bind_param("i", $_SESSION['id_usuario']);
 $stmt->execute();
 $result = $stmt->get_result();
 
 // Recorrer los productos del carrito
 while ($row = $result->fetch_assoc()) {
-    if ($row['cantidad_producto'] > $row['stock_producto']) {
+    if ($row['cantidad'] > $row['stock_producto']) {
         // Si hay stock insuficiente, agregar el producto al array
         $productosSinStock[] = $row;
         $alerta = true;  // Marcar que hay un problema con el stock
@@ -29,13 +29,12 @@ while ($row = $result->fetch_assoc()) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_POST['id_metodo'], $_POST['total_calculado'])) {
     // Capturar datos del formulario
     $id_usuario = $_SESSION['id_usuario'];
-    $id_carrito = $_SESSION['id_carrito'];
-    $direccion_pedido = $_POST['direccion_pedido'];
     $id_metodo = $_POST['id_metodo'];
+    $direccion_pedido = $_POST['direccion_pedido'];
     $total_compra = $_POST['total_calculado'];
     $fecha_compra = date('Y-m-d H:i:s');
-
-} else {
+}
+ else {
 
     $total = $_POST['total'] ?? 0;
 
@@ -44,16 +43,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     $result_metodo = $conn->query($query_metodo);
 
     // Verificar si la dirección está confirmada
-    $direccionConfirmada = isset($_POST['direccion_pedido']) && !empty($_POST['direccion_pedido']);}
+    $direccionConfirmada = isset($_POST['direccion_pedido']) && !empty($_POST['direccion_pedido']);
+}
 ?>
 
 <!doctype html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IKAT - Carrito de Compras</title>
+    <title>IKAT - Cotización</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="../assets/css/styles.css">
@@ -61,21 +61,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     <link rel="stylesheet" href="../assets/scss/delete.scss">
     <link rel="stylesheet" href="../assets/css/payButton.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
 </head>
 
 <body>
 
-    <div class="container-f">
-        <?php include '../templates/header.php'; ?>
+<div class="container-f">
+            <?php include '../templates/header.php'; ?>
 
-        <div class="main">
-            <div class="container mt-4">
-                <div class="row">
-                    <!-- Mensaje de alerta para productos sin stock -->
+            <div class="main">
+                <div class="container mt-4">
+                    <div class="row align-items-center">
+                        <!-- Mensaje de alerta para productos sin stock -->
                     <?php if (!empty($productosSinStock)): ?>
                         <div class="alert alert-warning" role="alert">
                             <strong>Atención:</strong> Algunos productos en tu carrito no tienen suficiente stock:
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 <?php foreach ($productosSinStock as $producto): ?>
                                     <li>
                                         <?= htmlspecialchars($producto['nombre_producto']) ?> -
-                                        solicitado: <?= htmlspecialchars($producto['cantidad_producto']) ?>,
+                                        solicitado: <?= htmlspecialchars($producto['cantidad']) ?>,
                                         disponible: <?= htmlspecialchars($producto['stock_producto']) ?>
                                     </li>
                                 <?php endforeach; ?>
@@ -93,17 +93,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                     <?php endif; ?>
                     <h1 class="text-center mb-3">Cotización de productos</h1>
                     <hr>
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                         <div class="list-group me-3">
                             <?php
                             // Consulta para obtener los productos del carrito
-                            $sql = "SELECT p.*, cp.cantidad_producto 
-                                FROM carrito_producto cp 
-                                JOIN producto p ON cp.id_producto = p.id_producto 
-                                WHERE cp.id_carrito = ?";
-
+                            $sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, cp.cantidad, p.precio_unitario, p.foto_producto
+                            FROM carrito cp 
+                            JOIN producto p ON cp.id_producto = p.id_producto 
+                            WHERE cp.id_usuario = ?";
                             $stmt = $conn->prepare($sql);
-                            $stmt->bind_param("i", $_SESSION['id_carrito']);
+                            $stmt->bind_param("i", $_SESSION['id_usuario']);
                             $stmt->execute();
                             $result = $stmt->get_result();
 
@@ -111,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
                             // Mostrar productos en el carrito
                             while ($row = $result->fetch_assoc()) {
-                                $subtotal = $row['precio_unitario'] * $row['cantidad_producto'];
+                                $subtotal = $row['precio_unitario'] * $row['cantidad'];
                                 $total += $subtotal;
 
                                 echo "<div class='list-group-item d-flex justify-content-between align-items-center bg-light border mb-4 rounded shadow-sm p-3'>";
@@ -122,11 +121,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 echo "<h6 class='text-dark'>\$" . number_format(floor($row['precio_unitario']), 0, '', '.') . "</h6>";
                                 echo "<div class='d-flex align-items-center'>";
                                 echo "<div class='input-group input-group-sm' style='width: 40px;'>";
-                                echo "<input type='text' value='{$row['cantidad_producto']}' min='1' class='form-control text-center' readonly>";
+                                echo "<input type='text' value='{$row['cantidad']}' min='1' class='form-control text-center' readonly>";
                                 echo "</div></div></div>";
                                 echo "</div>";
 
-                            // Botón de eliminar producto
+                                // Botón de eliminar producto
                                 echo "<p class='mb-0 fw-bold fs-4 text-secondary'>\$" . number_format(floor($subtotal), 0, '', '.') . "</p>";
                                 /*echo "<br>";
                                 echo "<button type='button' class='btn btn-danger btn-sm button mt-5 eliminar-producto' data-id='{$row['id_producto']}'>";
@@ -138,56 +137,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 echo "</button>";*/
                                 echo "</div>";
                             }
-
                             ?>
                         </div>
                     </div>
+                        <div class="col-md-5">
 
-                    <div class="col-md-4 mb-4 p-4 border bg-light rounded shadow-sm resumen-compra">
-                        <h3 class="mb-4 text-center">Cotización</h3>
-                        <ul class="list-group">
-                            <li
-                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Subtotal<span>$<?= number_format(floor($total), 0, '', '.') ?></span>
-                            </li>
-                            <li
-                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                    Envío<span id="valorEnvio">$0.00</span>
-                            </li>
-                                <li
-                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                    Impuestos<span id="valorImpuestos">$0.00</span>
-                                </li>
+                            <form method="POST" action="cotizacion.php">
+                                <!-- Campo oculto para enviar el total de la compra -->
+                                <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
 
-                                <li
-                                    class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
-                                    Total<span
-                                        id="totalConEnvioImpuestos">$<?= number_format(floor($total), 0, '', '.') ?></span>
-                                </li>
-                        </ul>
-                        <?php if ($total > 0): ?>
-                            <form action="cotizacion.php" method="POST">
-                                <input type="hidden" name="total" value="<?= $total ?>">
-                                <button type="submit" class="BtnPay mt-4">
-                                    Descargar
-                                    <path
-                                        d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
-                                    </path>
-                                    </svg>
-                                </button>
-                            </form>
-                        <?php else: ?>
-                            <div class="alert alert-info mt-4 text-center">
-                                Tu carrito está vacío. Agrega productos para continuar con la cotización
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                        <!-- Campo oculto para el subtotal original -->
-                        <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
-                </div>
-            </div>
-        </div>
-        <?php
+                                <!-- Campo oculto para el total calculado -->
+                                <input type="hidden" id="totalCalculado" name="total_calculado"
+                                    value="<?= htmlspecialchars($total); ?>">
+
+                                <input type="hidden" id="valorEnvioInput" name="valor_envio" value="0">
+
+                                <?php
                                 $id_usuario = $_SESSION['id_usuario']; // Usamos el ID del usuario desde la sesión para la consulta
                                 // Consulta SQL para obtener solo la dirección del usuario
                                 $queryDireccion = "SELECT direccion_usuario FROM usuario WHERE id_usuario = ?";
@@ -195,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 $stmtDireccion->bind_param("i", $id_usuario); // Vinculamos el ID del usuario como parámetro
                                 $stmtDireccion->execute();
                                 $resultDireccion = $stmtDireccion->get_result();
-
+                        
                                 // Verificamos si se obtuvo un resultado
                                 if ($resultDireccion->num_rows > 0) {
                                     $row = $resultDireccion->fetch_assoc();
@@ -206,37 +171,74 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                     exit;
                                 }
                                 ?>
-                                
-        <!-- Contenedor de la barra de búsqueda Mapa-->
-        <div class="mb-3">
-            <label class="form-label fw-bold">Dirección</label>
-            <div class="input-group">
-                <input type="text" class="form-control" id="direccion" name="direccion_pedido"
-                    onblur="buscarDireccion();" value="<?php echo htmlspecialchars($direccion); ?>"
-                    placeholder="Av. Alonso de Ribera 2850" required>
-                <!-- Botón para confirmar dirección -->
-                <button class="btn btn-outline-secondary" type="button" id="confirmar_direccion"
-                    onclick="buscarDireccion()" required>
-                    <i class="bi bi-check"></i> Confirmar
-                </button>
-            </div>
-        </div>
-        
-        <!-- Mapa -->
-        <div id="map" style="width: 100%; height: 300px;"></div> <!-- solo para probar si funciona-->
+                                <!-- Campo oculto para el subtotal original -->
+                                <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
+                                <!-- Contenedor de la barra de búsqueda Mapa-->
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Dirección</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="direccion" name="direccion_pedido"
+                                            onblur="buscarDireccion();" value="<?php echo htmlspecialchars($direccion); ?>"
+                                            placeholder="Av. Alonso de Ribera 2850" required>
+                                        <!-- Botón para confirmar dirección -->
+                                        <button class="btn btn-outline-secondary" type="button" id="confirmar_direccion"
+                                            onclick="buscarDireccion()" required>
+                                            <i class="bi bi-check"></i> Confirmar
+                                        </button>
+                                    </div>
+                                </div>
 
-        <!-- Área para mostrar coordenadas y distancia -->
-        <div id="coordenadas" style="display: none;" class="mt-3">
+                                <!-- Alerta si la dirección no está confirmada -->
+                                <?php if (!$direccionConfirmada): ?>
+                                    <div class="alert alert-info" role="alert">
+                                        ¡Por favor, confirma tu dirección antes de continuar con la cotización!
+                                    </div>
+                                <?php endif; ?>
+
+                                <!-- Mapa -->
+                                <div id="map" style="display: none;"></div>
+
+                                <!-- Área para mostrar coordenadas y distancia -->
+                                <div id="coordenadas" style="display: none;" class="mt-3">
                                     <p id="latitud">Latitud: </p>
                                     <p id="longitud">Longitud: </p>
                                     <p id="distancia"></p>
                                 </div>
-        <?php include '../templates/footer.php'; ?>
-    </div>
+                            </form>
 
-    <?php
-    $conn->close();
-    ?>
+                            <!-- Resumen de la Compra -->
+                        <div class="col-md-7 mb-7 p-4 border bg-light rounded shadow-sm resumen-compra">
+                            <h3 class="mb-7 text-center">Cotización</h3>
+                            <ul class="list-group">
+                                <li
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+                                    Subtotal<span>$<?= number_format(floor($total), 0, '', '.') ?></span>
+                                </li>
+                                <li
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+                                    Envío<span id="valorEnvio">$0</span>
+                                </li>
+                                <li
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+                                    Impuestos<span id="valorImpuestos">$0</span>
+                                </li>
+
+                                <li
+                                    class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
+                                    Total<span
+                                        id="totalConEnvioImpuestos">$<?= number_format(floor($total), 0, '', '.') ?></span>
+                                </li>
+                            </ul>
+                        </div>
+                        <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <?php include '../templates/footer.php'; ?>
+        </div>
+        <?php $conn->close();?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -257,7 +259,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                 }, 2200); // El tiempo debe coincidir con la duración de la animación
             }
         }));
-        
+
         /*document.querySelectorAll('.eliminar-producto').forEach(button => {
         button.addEventListener('click', function () {
         // Seleccionar el contenedor del producto
@@ -293,7 +295,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                         const lat = parseFloat(ubicacion.lat);
                         const lng = parseFloat(ubicacion.lon);
 
-                        map.setView([lat, lng], 12);
+                        map.setView([lat, lng], 15);
                         marker.setLatLng([lat, lng]);
 
                         // Mostrar latitud y longitud
