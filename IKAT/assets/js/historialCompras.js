@@ -142,3 +142,61 @@ function updateTotalCompras(total) {
         console.error("No se encontró el elemento para mostrar el total de compras.");
     }
 }
+
+function agregarTodaLaCompraAlCarrito(idCompra) {
+    console.log(`Se llamó a agregarTodaLaCompraAlCarrito con idCompra: ${idCompra}`);
+    fetch('../assets/php/obtenerProductosCompra.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            id_compra: idCompra
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(productos => {
+            console.log('Productos recibidos:', productos);
+            if (productos.error) {
+                alert(productos.error);
+                return;
+            }
+
+            // Iterar sobre los productos y agregarlos al carrito
+            productos.forEach(producto => {
+                agregarAlCarrito(producto.id_producto, producto.cantidad);
+            });
+        })
+        .catch(error => {
+            console.error('Error al obtener los productos de la compra:', error);
+            alert('Error al obtener los productos. Inténtalo más tarde.');
+        });
+}
+
+// Función para agregar un producto al carrito
+function agregarAlCarrito(productId, cantidad) {
+    fetch('../assets/php/agregaralCarrito.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id_producto: productId,
+                cantidad: cantidad
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Producto agregado al carrito con éxito.");
+            } else {
+                alert(data.error || "Hubo un error al agregar el producto al carrito.");
+            }
+        })
+        .catch((error) => console.error('Error:', error));
+}
