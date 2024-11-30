@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                                 <p class="mb-0 fw-bold text-dark">Precio total: $${new Intl.NumberFormat('es-CL').format(producto.precio_unitario * producto.cantidad)}</p>
                                             </div>
                                         </div>
-                                        <button class="btn btn-outline-primary btn-sm">Volver a comprar</button>
+                                        <button class="btn btn-outline-primary btn-sm" onclick="agregarAlCarrito(${producto.id_producto}, ${producto.cantidad})">Volver a comprar</button>
                                     </div>
                                 `;
                             })
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <div class="list-group-item p-4 bg-light mb-4 rounded shadow-sm">
                                 <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                                     <h5 class="mb-0">Fecha de compra: ${compra.fecha_compra}</h5>
-                                    <a href="#" class="text-primary fw-bold text-decoration-none" onclick="agregarAlCarrito(${compra.id_compra})">Agregar todo al carrito</a>
+                                    <a href="#" class="text-primary fw-bold text-decoration-none" onclick="agregarTodaLaCompraAlCarrito(${compra.id_compra})">Agregar todo al carrito</a>
                                 </div>
                                 ${productosHTML}
                             </div>
@@ -69,7 +69,61 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 });
 
-// Función para agregar toda la compra al carrito (solo un ejemplo)
-function agregarAlCarrito(idCompra) {
-    alert(`Agregar todos los productos de la compra ${idCompra} al carrito.`);
+function agregarTodaLaCompraAlCarrito(idCompra) {
+    console.log(`Se llamó a agregarTodaLaCompraAlCarrito con idCompra: ${idCompra}`);
+    fetch('../assets/php/obtenerProductosCompra.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            id_compra: idCompra
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(productos => {
+            console.log('Productos recibidos:', productos);
+            if (productos.error) {
+                alert(productos.error);
+                return;
+            }
+
+            // Iterar sobre los productos y agregarlos al carrito
+            productos.forEach(producto => {
+                agregarAlCarrito(producto.id_producto, producto.cantidad);
+            });
+        })
+        .catch(error => {
+            console.error('Error al obtener los productos de la compra:', error);
+            alert('Error al obtener los productos. Inténtalo más tarde.');
+        });
+}
+
+
+// Función para agregar un producto al carrito
+function agregarAlCarrito(productId, cantidad) {
+    fetch('../assets/php/agregaralCarrito.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id_producto: productId,
+                cantidad: cantidad
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Producto agregado al carrito con éxito.");
+            } else {
+                alert(data.error || "Hubo un error al agregar el producto al carrito.");
+            }
+        })
+        .catch((error) => console.error('Error:', error));
 }
