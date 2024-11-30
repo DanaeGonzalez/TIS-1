@@ -55,10 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
     $total = $_POST['total'] ?? 0;
 
-    if ($total == 0) {
-        header("Location: carrito.php");
-    }
-
     // Obtener métodos de pago
     $query_metodo = "SELECT * FROM metodo_pago WHERE activo = 1";
     $result_metodo = $conn->query($query_metodo);
@@ -160,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                             <option value="<?= $row['id_metodo'] ?>"><?= $row['nombre_metodo'] ?></option>
                                         <?php endwhile; ?>
                                     </select>
-
+                                
                                 </div>
 
                                 <!-- Área para mostrar coordenadas y distancia -->
@@ -197,19 +193,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 </li>
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                    Envío<span id="valorEnvio"><em>Pendiente</em></span>
+                                    Envío<span id="valorEnvio">$0.00</span>
                                 </li>
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                    Total IVA 19%<span
-                                        id="valorImpuestos">$<?= number_format(floor(($total * 0.19)), 0, '', '.') ?></span>
-
+                                    Impuestos<span id="valorImpuestos">$0.00</span>
                                 </li>
 
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
                                     Total<span
-                                        id="totalConEnvioImpuestos">$<?= number_format(floor($total + ($total * 0.19)), 0, '', '.') ?></span>
+                                        id="totalConEnvioImpuestos">$<?= number_format(floor($total), 0, '', '.') ?></span>
                                 </li>
                             </ul>
                         </div>

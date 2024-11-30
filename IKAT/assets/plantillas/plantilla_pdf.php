@@ -1,167 +1,88 @@
+<?php
+include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/views/menu_registro/auth.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/config/conexion.php';
+$sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, cp.cantidad 
+        FROM carrito cp 
+        JOIN producto p ON cp.id_producto = p.id_producto 
+        WHERE cp.id_usuario = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $_SESSION['id_usuario']);
+$stmt->execute();
+$result = $stmt->get_result();
+
+// Recorrer los productos del carrito
+while ($row = $result->fetch_assoc()) {
+    if ($row['cantidad'] > $row['stock_producto']) {
+        // Si hay stock insuficiente, agregar el producto al array
+        $productosSinStock[] = $row;
+        $alerta = true;  // Marcar que hay un problema con el stock
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_POST['id_metodo'], $_POST['total_calculado'])) {
+    // Capturar datos del formulario
+    $id_usuario = $_SESSION['id_usuario'];
+    $direccion_pedido = $_POST['direccion_pedido'];
+    $id_metodo = $_POST['id_metodo'];
+    $total_compra = $_POST['total_calculado'];
+    $fecha_compra = date('Y-m-d H:i:s');
+    $puntos_ganados = $total_compra * 0.05;
+
+    // Insertar en la base de datos
+    $query = "INSERT INTO compra (id_compra, fecha_compra, total_compra, puntos_ganados, direccion_pedido, id_metodo, id_usuario) 
+              VALUES (NULL, '$fecha_compra', '$total_compra', '$puntos_ganados', '$direccion_pedido', '$id_metodo', '$id_usuario')";
+
+    if ($conn->query($query) === TRUE) {
+        echo "Compra registrada exitosamente.";
+        header("Location: https://localhost/xampp/TIS-1/IKAT/vendor/transbank/transbank-sdk/examples/webpay-plus/index.php?action=create");
+    } else {
+        echo "Error: " . $query . "<br>" . $conn->error;
+    }
+} else {
+
+    $total = $_POST['total'] ?? 0;
+
+    // Obtener métodos de pago
+    $query_metodo = "SELECT * FROM metodo_pago WHERE activo = 1";
+    $result_metodo = $conn->query($query_metodo);
+
+    // Verificar si la dirección está confirmada
+    $direccionConfirmada = isset($_POST['direccion_pedido']) && !empty($_POST['direccion_pedido']);
+}?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>IKAT - Documentos</title>
-<head>
-	<title>Factura</title>
-	<style type="text/css">
-		*{
-			box-sizing: border-box;
-			-webkit-user-select: none; /* Chrome, Opera, Safari */
-			-moz-user-select: none; /* Firefox 2+ */
-			-ms-user-select: none; /* IE 10+ */
-			user-select: none; /* Standard syntax */
-		}
-		.bill-container{
-			width: 750px;
-			position: absolute;
-			left:0;
-			right: 0;
-			margin: auto;
-			border-collapse: collapse;
-			font-family: sans-serif;
-			font-size: 13px;
-		}
+	
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
+    crossorigin="anonymous"></script>
 
-		.bill-emitter-row td{
-			width: 50%;
-			border-bottom: 1px solid; 
-			padding-top: 10px;
-			padding-left: 10px;
-			vertical-align: top;
-		}
-		.bill-emitter-row{
-			position: relative;
-		}
-		.bill-emitter-row td:nth-child(2){
-			padding-left: 60px;
-		}
-		.bill-emitter-row td:nth-child(1){
-			padding-right: 60px;
-		}
+	<link rel="stylesheet" href="/xampp/TIS-1/IKAT/assets/css/estructura_plantilla.css">
+    <link rel="stylesheet" href="/xampp/TIS-1/IKAT/assets/scss/delete.scss">
+    <link rel="stylesheet" href="/xampp/TIS-1/IKAT/assets/css/payButton.css">
+	<link rel="stylesheet" href="/xampp/TIS-1/IKAT/assets/css/styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
-		.bill-type{
-			border: 1px solid;
-			border-top: 1px solid; 
-			border-bottom: 1px solid; 
-			margin-right: -30px;
-			background: white;
-			width: 60px;
-			height: 50px;
-			position: absolute;
-			left: 0;
-			right: 0;
-			top: -1px;
-			margin: auto;
-			text-align: center;
-			font-size: 40px;
-			font-weight: 600;
-		}
-		.text-lg{
-			font-size: 30px;
-		}
-		.text-center{
-			text-align: center;
-		}
-
-		.col-2{
-			width: 16.66666667%;
-			float: left;
-		}
-		.col-3{
-			width: 25%;
-			float: left;
-		}
-		.col-4{
-			width: 33.3333333%;
-			float: left;
-		}
-		.col-5{
-			width: 41.66666667%;
-			float: left;
-		}
-		.col-6{
-			width: 50%;
-			float: left;
-		}
-		.col-8{
-			width: 66.66666667%;
-			float: left;
-		}
-		.col-10{
-			width: 83.33333333%;
-			float: left;
-		}
-		.row{
-			overflow: hidden;
-		}
-
-		.margin-b-0{
-			margin-bottom: 0px;
-		}
-
-		.bill-row td{
-			padding-top: 5px
-		}
-
-		.bill-row td > div{
-			border-top: 1px solid; 
-			border-bottom: 1px solid; 
-			margin: 0 -1px 0 -2px;
-			padding: 0 10px 13px 10px;
-		}
-		.row-details table {
-			border-collapse: collapse;
-			width: 100%;
-		}
-		.row-details td > div, .row-qrcode td > div{
-			border: 0;
-			margin: 0 -1px 0 -2px;
-			padding: 0;
-		}
-		.row-details table td{
-			padding: 5px;
-		}
-		.row-details table tr:nth-child(1){
-			border-top: 1px solid; 
-			border-bottom: 1px solid; 
-			background: #c0c0c0;
-			font-weight: bold;
-			text-align: center;
-		}
-		.row-details table tr +  tr{
-			border-top: 1px solid #c0c0c0; 
-			
-		}
-		.text-right{
-			text-align: right;
-		}
-
-		.margin-b-10 {
-			margin-bottom: 10px;
-		}
-
-		.total-row td > div{
-			border-width: 2px;
-		}
-
-		.row-qrcode td{
-			padding: 10px;
-		}		
-
-		#qrcode {
-			width: 50%
-		}
-	</style>
 </head>
 <body>
+	<?php include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/templates/header.php'; ?>
+	<br>
+	<div class="container-f">
+	<div class="main">
 	<table class="bill-container">
 		<tr class="bill-emitter-row">
 			<td>
 				<div class="bill-type">
-					<img style="width:50px; height:50px;" src="/xampp/TIS-1/IKAT/assets/images/cat_blanco.png" alt="logo_ikat">
+					<img style="width:40px; height:50px; align-items: center;" src="/xampp/TIS-1/IKAT/assets/images/cat_blanco.png" alt="logo_ikat">
 				</div>
 				<div class="text-lg text-center">
 					IKAT
@@ -262,5 +183,13 @@
 			</td>
 		</tr>
 	</table>
+	</div>
+	</div>
+	<?php include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/templates/footer.php'; ?>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-ho+j7jyWK8fNQe+A12e2rFKoMtU5UzcLFpibcB+lNujQw8ERfZ1xJ1lAJ82FmoQU" 
+        crossorigin="anonymous"></script>
+
 </body>
 </html>
