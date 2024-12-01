@@ -119,7 +119,7 @@ $id_usuario = $_SESSION['id_usuario'] ?? null; // Asigna el valor o null si no e
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <p class="text-secondary m-0">1 - 3 de 3 opiniones realizadas</p>
+                                    <p class="text-secondary m-0">3 opiniones realizadas</p>
                                 </div>
                             </div>
 
