@@ -147,6 +147,17 @@
                 // Conectar a la base de datos
                 include_once '../config/conexion.php';
 
+                // Consulta para obtener el top 3 de productos más vendidos
+                $sqlTopVentas = "SELECT id_producto FROM producto WHERE activo = 1 ORDER BY cantidad_vendida DESC LIMIT 3";
+                $resultTopVentas = $conn->query($sqlTopVentas);
+                
+                $topVentas = [];
+                if ($resultTopVentas && $resultTopVentas->num_rows > 0) {
+                    while ($row = $resultTopVentas->fetch_assoc()) {
+                        $topVentas[] = $row['id_producto'];
+                    }
+                }
+
                 // Configuración de paginación
                 $productosPorPagina = 6;
                 $paginaActual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
@@ -197,14 +208,14 @@
                         <div id="product-container" class="row justify-content-center">
                         <?php while ($producto = $result->fetch_assoc()): ?>
                             <?php
+                            $id_producto = $producto['id_producto'];
+                            $esTopVenta = in_array($id_producto, $topVentas); // Verificar si es top venta
                             $ruta_original = $producto['foto_producto'];
                             $ruta_ajustada = str_replace("../../", "../", $ruta_original);
                                                 
                             // Verificar si el producto tiene una oferta
-                            $id_producto = $producto['id_producto'];
                             $sqlOferta = "SELECT porcentaje_descuento FROM oferta WHERE id_producto = $id_producto";
                             $resultadoOferta = $conn->query($sqlOferta);
-                                                
                             $tieneOferta = $resultadoOferta->num_rows > 0;
                             $precioOriginal = $producto['precio_unitario'];
                             $precioConDescuento = $precioOriginal;
@@ -218,14 +229,17 @@
                             <div class="col-6 col-md-4 mb-4">
                                 <div class="card d-flex flex-column h-100">
                                     <a href="producto.php?id=<?= $id_producto ?>" class="text-decoration-none">
-                                        <div class="card-img-container d-flex justify-content-center align-items-center">
+                                        <div class="card-img-container position-relative d-flex justify-content-center align-items-center">
                                             <img src="<?= $ruta_ajustada ?>" class="card-img-top img-fluid h-100" alt="Imagen del producto" style="object-fit: cover; width: 100%; height: auto;" id="product-image-<?= $id_producto ?>">
+                                            
+                                            <?php if ($esTopVenta): ?>
+                                                <!-- Indicador de Top Ventas -->
+                                                <span class="badge bg-danger position-absolute top-0 start-0 m-2">Top Ventas</span>
+                                            <?php endif; ?>
                                         </div>
                                     </a>
                                     <div class="card-body d-flex flex-column">
-                                        <div class="title-container">
-                                            <h5 class="card-title text-truncate"><?= htmlspecialchars($producto['nombre_producto']) ?></h5>
-                                        </div>
+                                        <h5 class="card-title text-truncate"><?= htmlspecialchars($producto['nombre_producto']) ?></h5>
                                         <div class="mb-3">
                                             <?php if ($tieneOferta): ?>
                                                 <span class="text-muted text-decoration-line-through" style="font-size: 0.9rem;">
@@ -239,23 +253,18 @@
                                             <?php endif; ?>
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center pe-3">
-                                            <div class="mt-auto d-flex align-items-center">
-                                                <button type="button" class="btn btn-secondary me-2 carrito-btn" onclick="agregarAlCarrito(<?= $id_producto ?>)">
-                                                    <i class="bi bi-cart-plus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-secondary lista-deseos-btn" onclick="agregarAListaDeDeseos(<?= $id_producto ?>)">
-                                                    <i class="bi bi-heart"></i>
-                                                </button>
-                                            </div>
-                                            <!-- Estrellitas dinámicas -->
-                                            <div id="stars-container-<?= $id_producto ?>" class="d-flex align-items-center gap-1">
-                                                <span>Cargando estrellas...</span> <!-- Placeholder mientras se carga AJAX -->
-                                            </div>
+                                            <button type="button" class="btn btn-secondary me-2 carrito-btn" onclick="agregarAlCarrito(<?= $id_producto ?>)">
+                                                <i class="bi bi-cart-plus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-secondary lista-deseos-btn" onclick="agregarAListaDeDeseos(<?= $id_producto ?>)">
+                                                <i class="bi bi-heart"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         <?php endwhile; ?>
+
 
                         </div>
                     </div>
