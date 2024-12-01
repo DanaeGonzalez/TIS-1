@@ -155,7 +155,7 @@ $totalFinal = $totalConDescuento + $totalIVA;
                                 echo "<input type='hidden' name='id_producto' value='{$row['id_producto']}'>";
                                 echo "<p class='mb-0 fw-bold fs-4 text-secondary'>\$" . number_format(floor($subtotal), 0, '', '.') . "</p>";
                                 echo "<br>";
-                                echo "<button type='submit' class='btn btn-danger btn-sm button mt-5'>";
+                                echo "<button type='submit' class='btn btn-danger btn-sm button_d mt-5'>";
                                 echo "<div class='icon'>";
                                 echo "<svg class='top'><use xlink:href='#top'></use></svg>";
                                 echo "<svg class='bottom'><use xlink:href='#bottom'></use></svg>";
@@ -231,7 +231,7 @@ $totalFinal = $totalConDescuento + $totalIVA;
         crossorigin="anonymous"></script>
 
     <script>
-        document.querySelectorAll('.button').forEach(button => button.addEventListener('click', e => {
+        document.querySelectorAll('.button_d').forEach(button => button.addEventListener('click', e => {
             // Evitar la acción por defecto (enviar el formulario inmediatamente)
             e.preventDefault();
 

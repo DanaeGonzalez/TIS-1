@@ -16,6 +16,8 @@ include_once '..\config\conexion.php';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../assets/scss/delete.scss">
     <link rel="stylesheet" href="../assets/scss/cartPequeño.scss">
+    <link rel="stylesheet" href="../assets/scss/cart.scss">
+
 
 
 </head>
@@ -32,7 +34,7 @@ include_once '..\config\conexion.php';
                 <div class="row">
                     <h1 class="text-center mb-3">Productos deseados</h1>
                     <hr>
-                    <div class="col-7">
+                    <div class="col-12 col-md-7">
                         <div class="list-group">
                             <?php
                             $id_usuario = $_SESSION['id_usuario'];
@@ -57,11 +59,11 @@ include_once '..\config\conexion.php';
 
                             // Obtener productos de la lista de deseos
                             $consulta_productos = $conn->prepare("
-                        SELECT p.id_producto, p.nombre_producto, p.precio_unitario, p.foto_producto 
-                        FROM lista_deseos_producto ldp
-                        JOIN producto p ON ldp.id_producto = p.id_producto
-                        WHERE ldp.id_lista_deseos = ?
-                    ");
+                    SELECT p.id_producto, p.nombre_producto, p.precio_unitario, p.foto_producto 
+                    FROM lista_deseos_producto ldp
+                    JOIN producto p ON ldp.id_producto = p.id_producto
+                    WHERE ldp.id_lista_deseos = ?
+                ");
                             $consulta_productos->bind_param("i", $id_lista_deseos);
                             $consulta_productos->execute();
                             $resultado_productos = $consulta_productos->get_result();
@@ -73,8 +75,9 @@ include_once '..\config\conexion.php';
                                 while ($producto = $resultado_productos->fetch_assoc()) {
                                     $productos_deseados[] = $producto; // Almacenar productos para el resumen
                                     $total_precio += $producto['precio_unitario'];
-                            ?>
-                                    <div class="list-group-item d-flex justify-content-between align-items-center bg-light border mb-4 rounded shadow-sm p-3">
+                                    ?>
+                                    <div
+                                        class="list-group-item d-flex justify-content-between align-items-center bg-light border mb-4 rounded shadow-sm p-3">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <label class="d-flex align-items-center" style="cursor: pointer;">
                                                 <a href="producto.php?id=<?= $producto['id_producto']; ?>">
@@ -83,19 +86,24 @@ include_once '..\config\conexion.php';
                                                     $ruta_original = $producto['foto_producto'];
                                                     $ruta_ajustada = str_replace("../../", "../", $ruta_original);
                                                     ?>
-                                                    <img src="<?= $ruta_ajustada ?>" alt="<?= $producto['nombre_producto']; ?>" class="me-3 rounded img-fluid" style="max-width: 150px;">
+                                                    <img src="<?= $ruta_ajustada ?>" alt="<?= $producto['nombre_producto']; ?>"
+                                                        class="me-3 rounded img-fluid" style="max-width: 150px;">
                                                 </a>
                                                 <div>
                                                     <h4 class="mb-1 text-dark"><?= $producto['nombre_producto']; ?></h4>
-                                                    <h6 class="text-dark">$<?= number_format($producto['precio_unitario'], 0, '', '.'); ?></h6>
+                                                    <h6 class="text-dark">
+                                                        $<?= number_format($producto['precio_unitario'], 0, '', '.'); ?></h6>
                                                 </div>
                                             </label>
                                         </div>
                                         <div class="d-flex flex-column flex-sm-row align-items-center">
                                             <!-- botón de eliminar -->
-                                            <form action="../assets/php/eliminarProducto_deseos.php" method="POST" class="d-inline-block text-center mb-3 mb-sm-0 ms-sm-1 ms-3">
-                                                <input type="hidden" name="id_producto" value="<?= htmlspecialchars($producto['id_producto']) ?>">
-                                                <button type="submit" class="btn btn-danger btn-sm button me-3" style="height:35px;">
+                                            <form action="../assets/php/eliminarProducto_deseos.php" method="POST"
+                                                class="d-inline-block text-center mb-3 mb-sm-0 ms-sm-1 ms-3">
+                                                <input type="hidden" name="id_producto"
+                                                    value="<?= htmlspecialchars($producto['id_producto']) ?>">
+                                                <button type="submit" class="btn btn-danger btn-sm button_d me-3"
+                                                    style="height:35px;">
                                                     <div class="icon">
                                                         <svg class="top">
                                                             <use xlink:href="#top"></use>
@@ -108,32 +116,68 @@ include_once '..\config\conexion.php';
                                                 </button>
                                             </form>
 
-                                            <!-- botón de añadir al carrito -->
-                                            <form action="../assets/php/deseoAcarrito.php" method="POST" class="d-inline-block">
-                                                <input type="hidden" name="id_producto" value="<?= htmlspecialchars($producto['id_producto']); ?>">
-                                                <button type="submit" class="button_c" style="height:35px;">
-                                                    <span>Carrito</span>
-                                                    <div class="cart">
-                                                        <svg viewBox="0 0 36 26">
-                                                            <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
-                                                            </polyline>
-                                                            <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
-                                                        </svg>
-                                                    </div>
+                                            <?php
+                                            // Obtener el id del producto actual
+                                            $id_producto = $producto['id_producto'];
+
+                                            // Consulta para obtener el stock total del producto
+                                            $consulta_stock = $conn->prepare("SELECT stock_producto FROM producto WHERE id_producto = ?");
+                                            $consulta_stock->bind_param("i", $id_producto);
+                                            $consulta_stock->execute();
+                                            $consulta_stock->bind_result($stock_total);
+                                            $consulta_stock->fetch();
+                                            $consulta_stock->close();
+
+                                            // Consulta para obtener la cantidad del producto que ya está en el carrito
+                                            $consulta_carrito = $conn->prepare("SELECT cantidad FROM carrito WHERE id_usuario = ? AND id_producto = ?");
+                                            $consulta_carrito->bind_param("ii", $id_usuario, $id_producto);
+                                            $consulta_carrito->execute();
+                                            $consulta_carrito->bind_result($cantidad_en_carrito);
+                                            $consulta_carrito->fetch();
+                                            $consulta_carrito->close();
+
+                                            // Calcular el stock disponible restando lo que ya está en el carrito
+                                            $stock_disponible = $stock_total - $cantidad_en_carrito;
+                                            ?>
+
+                                            <?php if ($stock_disponible > 0): ?>
+                                                <!-- Mostrar el botón solo si hay stock disponible -->
+                                                <form action="../assets/php/deseoAcarrito.php" method="POST"
+                                                    class="d-inline-block text-center">
+                                                    <input type="hidden" name="id_producto"
+                                                        value="<?= htmlspecialchars($producto['id_producto']); ?>">
+                                                    <button type="submit" class="button_c" style="height:35px;">
+                                                        <span>Carrito</span>
+                                                        <div class="cart">
+                                                            <svg viewBox="0 0 36 26">
+                                                                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
+                                                                </polyline>
+                                                                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+                                                            </svg>
+                                                        </div>
+                                                    </button>
+                                                </form>
+                                            <?php else: ?>
+                                                <!-- Mostrar el botón "Sin Stock" si no hay disponibilidad -->
+                                                <button class="btn btn-dark rounded-3" style="height:35px; width:100px" disabled>
+                                                    <span class="text-center">Agotado</span>
                                                 </button>
-                                            </form>
+                                            <?php endif; ?>
+
                                         </div>
                                     </div>
-                            <?php
+                                    <?php
                                 }
                             } else {
                                 echo "
-                                <div class='text-center text-muted'>
-                                    <p>No tienes productos en tu lista de deseos.</p>
-                                    <a href='catalogo.php' class='btn btn-primary mt-3'>
-                                        <i class='bi bi-box-arrow-in-right'></i> Explorar productos
-                                    </a>
-                                </div>";
+                        <div class='d-flex justify-content-center align-items-center'>
+                            <div class='text-center text-muted'>
+                                <p>No tienes productos en tu lista de deseos.</p>
+                                <a href='catalogo.php' class='btn btn-dark mt-3'>
+                                    <i class='bi bi-box-arrow-in-right'></i> Explorar productos
+                                </a>
+                            </div>
+                        </div>";
                             }
 
                             $consulta_lista->close();
@@ -142,11 +186,11 @@ include_once '..\config\conexion.php';
                         </div>
                     </div>
                     <!-- Resumen de productos -->
-                    <div class="col-md-5">
+                    <div class="col-12 col-md-5">
                         <div class="container mt-4">
                             <div class="card shadow-sm">
                                 <div class="card-body">
-                                    <h5 class="fw-bold">Resumen</h5>
+                                    <h3 class="text-center">Resumen</h3>
 
                                     <!-- Lista de productos -->
                                     <ul class="list-unstyled">
@@ -163,24 +207,42 @@ include_once '..\config\conexion.php';
 
                                     <!-- Total -->
                                     <div class="d-flex justify-content-between">
-                                        <span class="fw-bold">Total incl. IVA</span>
-                                        <span class="fw-bold fs-4">$<?= number_format($total_precio, 0, '', '.'); ?></span>
+                                        <?php if ($total_precio > 0): ?>
+                                            <span class="fw-bold">Total incl. IVA</span>
+                                            <span
+                                                class="fw-bold fs-4">$<?= number_format($total_precio, 0, '', '.'); ?></span>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Botón -->
-                            <div class="mt-4 text-center">
-                                <form action="../assets/php/deseoAcarrito.php" method="POST">
-                                    <?php foreach ($productos_deseados as $producto) { ?>
-                                        <input type="hidden" name="productos[]" value="<?= htmlspecialchars($producto['id_producto']); ?>">
-                                    <?php } ?>
-                                    <button type="submit" class="btn btn-primary btn-lg rounded-pill px-4">
-                                        <i class="bi bi-cart-plus me-2"></i>
-                                        Agregar todos los artículos al carrito
-                                    </button>
-                                </form>
-                            </div>
+
+                            <?php if ($total_precio > 0): ?>
+                                <!-- Botón de agregar todos los productos al carrito -->
+                                <div class="mt-4 text-center">
+                                    <form action="../assets/php/deseoAcarrito.php" method="POST" id="addToCartForm">
+                                        <?php foreach ($productos_deseados as $producto) { ?>
+                                            <input type="hidden" name="productos[]"
+                                                value="<?= htmlspecialchars($producto['id_producto']); ?>">
+                                        <?php } ?>
+                                        <button type="submit" id="addToCartButton" class="button mt-3"
+                                            onclick="activarAnimacion(event)">
+                                            <span>Agregar todos los artículos al carrito</span>
+                                            <div class="cart">
+                                                <svg viewBox="0 0 36 26">
+                                                    <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
+                                                    </polyline>
+                                                    <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+                                                </svg>
+                                            </div>
+                                        </button>
+                                    </form>
+                                </div>
+                            <?php else: ?>
+                                <div class="alert alert-info mt-4 text-center">
+                                    <p>Tu lista de deseos está vacía. Agrega productos para continuar.</p>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -195,8 +257,24 @@ include_once '..\config\conexion.php';
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+
     <script>
-        document.querySelectorAll('.button').forEach(button => button.addEventListener('click', e => {
+        function activarAnimacion(event) {
+            event.preventDefault();  // Evita que el formulario se envíe inmediatamente
+
+            var button = document.getElementById('addToCartButton');
+            button.classList.add('loading');  // Agrega la clase loading para activar la animación
+
+            // Después de que pase el tiempo de la animación, enviar el formulario
+            setTimeout(function () {
+                document.getElementById('addToCartForm').submit();  // Enviar el formulario después de la animación
+            }, 3700);  // 3.7 segundos (duración de la animación)
+        }
+
+    </script>
+
+    <script>
+        document.querySelectorAll('.button_d').forEach(button => button.addEventListener('click', e => {
             // Evitar la acción por defecto (enviar el formulario inmediatamente)
             e.preventDefault();
 
