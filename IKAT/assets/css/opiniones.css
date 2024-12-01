@@ -49,10 +49,10 @@
 
 .star-rating {
     display: flex;
-    justify-content: center; /* Centra horizontalmente las estrellas dentro de su contenedor */
-    align-items: center; /* Asegura que las estrellas estén centradas verticalmente */
-    flex-direction: row-reverse; /* Invertimos el orden para que las estrellas funcionen correctamente */
-    gap: 0.25rem;
+    flex-direction: row-reverse; /* Invierte el orden de las estrellas visualmente */
+    justify-content: center;
+    align-items: center;
+    gap: 0.25rem; /* Espaciado entre estrellas */
 }
 
 .star-rating i {
@@ -61,7 +61,8 @@
     font-size: 1.5rem;
 }
 
+/* Aplica el hover correctamente */
 .star-rating i:hover,
 .star-rating i:hover ~ i {
-    color: #ffc107;
+    color: #ffc107; /* Llena las estrellas anteriores (que ahora están visualmente al revés) */
 }
