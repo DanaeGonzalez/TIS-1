@@ -66,3 +66,7 @@
 .star-rating i:hover ~ i {
     color: #ffc107; /* Llena las estrellas anteriores (que ahora están visualmente al revés) */
 }
+
+.star-rating i.bi-star-fill {
+    color: #ffc107; /* Color amarillo para las estrellas seleccionadas */
+}
