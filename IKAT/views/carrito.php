@@ -11,7 +11,18 @@ if (!isset($_SESSION['id_usuario'])) {
 // Inicializar un array para almacenar productos con stock insuficiente
 $productosSinStock = [];
 $alerta = false;
+$descuento = 0;
+$puntos_disp = 0;
 
+// Consultar por los puntos totales
+$sqlPuntos = "SELECT puntos_totales FROM usuario WHERE id_usuario = ?";
+$stmtPuntos = $conn->prepare($sqlPuntos);
+$stmtPuntos->bind_param("i", $_SESSION['id_usuario']);
+$stmtPuntos->execute();
+$resultPuntos = $stmtPuntos->get_result();
+if ($rowPuntos = $resultPuntos->fetch_assoc()) {
+    $puntos_disp = $rowPuntos['puntos_totales'];
+}
 
 // Consultar productos en el carrito del usuario
 $sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, p.foto_producto, 
@@ -40,6 +51,20 @@ while ($row = $result->fetch_assoc()) {
 
     $productos[] = $row; // Almacenar productos para mostrar
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['puntos_usar'])) {
+    $puntosUsar = intval($_POST['puntos_usar']);
+    if ($puntosUsar > 0 && $puntosUsar <= $puntos_disp) {
+        // Cada punto otorga un descuento de $10
+        $descuento = $puntosUsar * 10;
+        if ($descuento > $total) {
+            $descuento = $total; // No se puede descontar más que el total
+        }
+    }
+}
+$totalConDescuento = $total - $descuento;
+$totalIVA = $totalConDescuento * 0.19;
+$totalFinal = $totalConDescuento + $totalIVA;
 
 ?>
 
@@ -145,7 +170,7 @@ while ($row = $result->fetch_assoc()) {
                     </div>
 
                     <div class="col-md-4 mb-4 p-4 border bg-light rounded shadow-sm resumen-compra">
-                        <h3 class="mb-4 text-center">Resumen de la Compra</h3>
+                        <h3 class="mb-3 text-center">Resumen de la Compra</h3>
                         <ul class="list-group">
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
@@ -157,35 +182,38 @@ while ($row = $result->fetch_assoc()) {
                             </li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Total IVA 19% <span>$<?= number_format(floor( ($total * 0.19)), 0, '', '.') ?></span>                            </li>
+                                Total IVA 19% <span>$<?= number_format(floor( $totalIVA), 0, '', '.') ?></span></li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
-                                Total<span>$<?= number_format(floor($total + ($total * 0.19)), 0, '', '.') ?></span>                            </li>
-                        </ul>
-                        <?php if ($total > 0): ?>
-                            <form action="procesarCompra.php" method="POST">
-                                <input type="hidden" name="total" value="<?= $total ?>">
-                                <button type="submit" class="BtnPay mt-4">
-                                    Procesar compra
+                                Total<span>$<?= number_format(floor($totalFinal), 0, '', '.') ?></span></li>
+                            </ul>
+                            <?php if ($total > 0): ?>
+                                <form action="procesarCompra.php" method="POST">
+                                    <input type="hidden" name="total" value="<?= $total ?>">
+                                    <label for="puntos_usar">Tienes <?= $puntos_disp ?> puntos.</label>
+                                    <input type="number" name="puntos_usar" id="puntos_usar" class="form-control"
+                                        max="<?= $puntos_disp ?>" min="0" placeholder="Cantidad de puntos a usar">
+                                    <button type="submit" class="BtnPay mt-3">
+                                        Procesar compra
+                                        <path
+                                            d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
+                                        </path>
+                                        </svg>
+                                    </button>
+                                </form>
+                                <a type="button" class="BtnPay mt-3" href="cotizacion.php" style="text-decoration: none;">
+                                    Generar Cotización
                                     <path
                                         d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
                                     </path>
                                     </svg>
-                                </button>
-                            </form>
-                            <a type="button" class="BtnPay mt-4" href="cotizacion.php" style="text-decoration: none;">
-                                Generar Cotización
-                                <path
-                                    d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
-                                </path>
-                                </svg>
-                            </a>
-
-                        <?php else: ?>
-                            <div class="alert alert-info mt-4 text-center">
-                                Tu carrito está vacío. Agrega productos para continuar con la compra.
-                            </div>
-                        <?php endif; ?>
+                                </a>
+    
+                            <?php else: ?>
+                                <div class="alert alert-info mt-4 text-center">
+                                    Tu carrito está vacío. Agrega productos para continuar con la compra.
+                                </div>
+                            <?php endif; ?>
                     </div>
 
                 </div>
