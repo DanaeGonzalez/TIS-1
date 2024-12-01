@@ -31,13 +31,13 @@ $result = mysqli_query($conn, $query);
                 <div class="d-flex align-items-center justify-content-end gap-3 ms-auto">
 
                     <!-- Botón de búsqueda -->
-                    <button class="btn btn-link d-lg-none p-0" data-bs-toggle="modal" data-bs-target="#searchModal">
-                        <i class="bi bi-search fs-4  text-secondary"></i>
+                    <button class="btn btn-link d-lg-none p-0 button-style-header busqueda-btn" data-bs-toggle="modal"
+                        data-bs-placement="top" title="Buscar" data-bs-target="#searchModal">
+                        <i class="bi bi-search fs-4 text-white"></i>
                     </button>
 
                     <!-- Botón de catálogo -->
-                    <a href="../catalogo.php"
-                        class="btn btn-link d-none d-lg-flex p-0 button-style-header catalogo-btn"
+                    <a href="../catalogo.php" class="btn btn-link d-lg-none p-0 button-style-header catalogo-btn"
                         data-bs-toggle="tooltip" data-bs-placement="top" title="Ir al catálogo">
                         <div class="p-1">
                             <i class="bi bi-bag fs-4 text-white"></i>
@@ -45,8 +45,7 @@ $result = mysqli_query($conn, $query);
                     </a>
 
                     <!-- Botón de lista de deseos -->
-                    <a href="login.php"
-                        class="btn btn-link p-0 d-none d-lg-flex button-style-header wishlist-btn"
+                    <a href="login.php" class="btn btn-link p-0 d-lg-none d-flex button-style-header wishlist-btn"
                         data-bs-toggle="tooltip" data-bs-placement="top" title="Lista de deseos">
                         <div class="p-1">
                             <i class="bi bi-heart fs-4 text-white"></i>
@@ -54,18 +53,17 @@ $result = mysqli_query($conn, $query);
                     </a>
 
                     <!-- Botón del carrito -->
-                    <a href="login.php"
-                        class="btn btn-link p-0 d-none d-lg-flex button-style-header cart-btn" data-bs-toggle="tooltip"
-                        data-bs-placement="top" title="Ver carrito">
+                    <a href="login.php" class="btn btn-link p-0 d-lg-none d-flex button-style-header cart-btn"
+                        data-bs-toggle="tooltip" data-bs-placement="top" title="Ver carrito">
                         <div class="p-1">
                             <i class="bi bi-cart fs-4 text-white"></i>
                         </div>
                     </a>
 
                     <!-- Botón de menú -->
-                    <button class="btn btn-link d-lg-none p-0" data-bs-toggle="collapse"
-                        data-bs-target="#navbarContent">
-                        <i class="bi bi-list fs-4  text-secondary"></i>
+                    <button class="btn btn-link d-lg-none p-0 button-style-header menu-btn" data-bs-toggle="collapse"
+                        data-bs-target="#navbarContent" data-bs-placement="top" title="Ver carrito">
+                        <i class="bi bi-list fs-4  text-white"></i>
                     </button>
                 </div>
 

@@ -43,32 +43,45 @@ button.carousel-control-next {
   transition: background-color 0.3s, transform 0.3s, color 0.3s, box-shadow 0.3s;
   text-decoration: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 10px 20px; 
-  width: auto; 
-  height: 35px; 
+  padding: 10px 20px;
+  width: 35px;
+  height: 35px;
 }
 
 /* Efecto hover: cambio de fondo y sombra, sin cambiar el tamaño */
 .catalogo-btn:hover {
   background-color: #8c5c32 !important;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transform: none; /* Sin transformación de tamaño */
+  transform: scale(1.1);
 }
 
 /* Efecto hover para la lista de deseos */
 .wishlist-btn:hover {
   background-color: #b7272f !important;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transform: none; /* Sin transformación de tamaño */
+  transform: scale(1.1);
 }
 
 /* Efecto hover para el carrito */
 .cart-btn:hover {
   background-color: #2d5b38 !important;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transform: none; /* Sin transformación de tamaño */
+  transform: scale(1.1);
 }
 
+/* Efecto hover para la busqueda */
+.busqueda-btn:hover {
+  background-color: #8c5c32 !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: scale(1.1);
+}
+
+/* Efecto hover para el menu */
+.menu-btn:hover {
+  background-color: #8c5c32 !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: scale(1.1);
+}
 
 /*NAVBAR*/
 .navbar {
@@ -90,8 +103,9 @@ button.carousel-control-next {
 }
 #sidebar .accordion-button {
   background-color: #343434;
-  color: rgb(255, 255, 255);
+  color: white;
 }
+
 .sidebar-link {
   background-color: #bcbaba;
   color: rgb(0, 0, 0);
@@ -101,6 +115,20 @@ button.carousel-control-next {
 }
 .sidebar-link:hover {
   background-color: #d5d5d5;
+}
+
+.accordion-body ul {
+  margin-bottom: 0;
+}
+
+/* Cambiar el color de fondo de los elementos del dropdown al hacer clic */
+.dropdown-item:active {
+  background-color: #6c757d !important;
+}
+
+/* Cambiar el color de fondo del item cuando se encuentra en foco (en el caso de que se navegue con teclado) */
+.dropdown-item:focus {
+  background-color: #6c757d !important;
 }
 
 /*IMG USUARIO*/
