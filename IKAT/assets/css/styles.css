@@ -6,7 +6,7 @@
 }
 
 body {
-  cursor: url("../../assets/images/cathand.png"), auto;
+  /*cursor: url("../../assets/images/cathand.png"), auto;*/
   font-family: "Newsreader", serif !important;
 }
 
@@ -25,7 +25,27 @@ h4, h5, h6 {
   font-style:normal;
 }
 
-a.btn,
+/*input[type="checkbox"] {
+  cursor: default !important; /* Cambia a la flecha predeterminada 
+}
+/* Cambiar el cursor a default para el checkbox 
+.form-check-input {
+  cursor: default !important; /* Asegura que el cursor sea la flecha predeterminada 
+}
+
+/* Cambiar el cursor a default para el label 
+.form-check-label {
+  cursor: default !important; /* Asegura que el cursor sea la flecha predeterminada
+}
+
+También puedes añadir este estilo por si el checkbox está deshabilitado 
+input[type="checkbox"]:disabled {
+  cursor: default !important; /* Asegura que el cursor sea la flecha predeterminada 
+}
+*/
+
+
+/*a.btn,
 a.nav-link,
 a.link-primary,
 button,
@@ -55,7 +75,7 @@ button.carousel-control-next {
 .container input[type="checkbox"] {
   cursor: url("../../assets/images/pointer.png"), pointer !important;
 }
-
+*/
 /* Estilo base para los botones */
 .button-style-header {
   display: inline-flex;
