@@ -300,19 +300,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
             // Obtener subtotal desde PHP (el formato ya debe ser correcto para parseFloat)
             const subtotal = parseFloat('<?= number_format(floor($total), 0, '', '.') ?>'.replace(/\./g, '').replace('$', '')) || 0;
     
-            // Configurar tasas e inputs
-            const tasaImpuestos = 1.19; // Tasa de impuestos (por ejemplo, 19%)
-            const subtotal = parseFloat('<?= number_format(floor($total), 0, '', '.') ?>'.replace(/\./g, '').replace('$', '')); // Obtiene el subtotal desde PHP
+            // Configurar tasas y valor del subtotal de la compra (sin valor envío)
             const tasaImpuestos = 1.19;
-            const valorEnvio = parseFloat(document.getElementById('valorEnvioInput').value) || 0;
+            const subtotal = parseFloat('<?= number_format(floor($total), 0, '', '.') ?>'.replace(/\./g, '').replace('$', ''));
 
             // Calcular impuestos integrados en los productos para que sea visible
             const impuestos = subtotal - (subtotal / tasaImpuestos);
-            // Calcular impuestos
-            const impuestos = subtotal - ( subtotal / tasaImpuestos);
 
             // Calcular el total final
-            const totalFinal = subtotal + valorEnvio;
             const totalFinal = subtotal + valorEnvio;
 
             // Actualiza la interfaz correctamente ahora

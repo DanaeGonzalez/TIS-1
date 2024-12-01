@@ -362,7 +362,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
             // Calcular el total final
             const totalFinal = subtotal + valorEnvio;
-            const totalFinal = subtotal + valorEnvio;
 
             // Actualiza la interfaz correctamente ahora
             document.getElementById('valorImpuestos').textContent = `$${formatNumber(impuestos.toFixed(2))}`;
