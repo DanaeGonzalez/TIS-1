@@ -21,7 +21,7 @@ unset($_SESSION['mensaje']);
     <!-- Header -->
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/templates/header.php'; ?>
 
-    <div class="container-fluid d-flex flex-wrap">
+    <div class="container-fluid d-flex flex-wrap p-0">
         <!-- Sidebar -->
         <?php include '../sidebar-mantenedores.php'; ?>
 
@@ -93,7 +93,6 @@ unset($_SESSION['mensaje']);
             <!-- Botón para agregar categoría -->
             <div class="text-center">
                 <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#agregarCategoriaModal">Agregar Categoría</button>
-                <a href="../menu/menu.html" class="btn btn-secondary mt-3">Volver al menú</a>
             </div>
         </div>
     </div>
