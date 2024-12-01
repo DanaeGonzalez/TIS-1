@@ -38,8 +38,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     $direccion_pedido = $_POST['direccion_pedido'];
     $id_metodo = $_POST['id_metodo'];
     $total_compra = $_POST['total_calculado'];
+    $valor_envio = $_POST['valor_envio'] ?? 0;
     $fecha_compra = date('Y-m-d H:i:s');
     $puntos_ganados = $total_compra * 0.05;
+
+    if ($valor_envio>0) {
+        $total_compra += $_POST['valor_envio'];
+    }
 
     // Insertar en la base de datos
     $query = "INSERT INTO compra (id_compra, fecha_compra, total_compra, puntos_ganados, direccion_pedido, id_metodo, id_usuario) 
@@ -54,10 +59,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 } else {
 
     $total = $_POST['total'] ?? 0;
+    $puntos_usados = $_POST['puntos_usar'];
 
     if ($total == 0) {
         header("Location: carrito.php");
     }
+
+    $total -= $puntos_usados*5;
+    $totalIVA = $total * 0.19;
+    $totalFinal = $total + $totalIVA;
 
     // Obtener métodos de pago
     $query_metodo = "SELECT * FROM metodo_pago WHERE activo = 1";
@@ -202,13 +212,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
                                     Total IVA 19%<span
-                                        id="valorImpuestos">$<?= number_format(floor(($total * 0.19)), 0, '', '.') ?></span>
+                                        id="valorImpuestos">$<?= number_format(floor($totalIVA), 0, '', '.') ?></span>
                                 </li>
 
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
                                     Total<span
-                                        id="totalConEnvioImpuestos">$<?= number_format(floor($total + ($total * 0.19)), 0, '', '.') ?></span>
+                                        id="totalConEnvioImpuestos">$<?= number_format(floor($totalFinal), 0, '', '.') ?></span>
                                 </li>
                             </ul>
                         </div>
@@ -295,21 +305,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
         }
 
         function calcularTotal() {
-            const subtotal = parseFloat('<?= number_format(floor($total), 0, '', '.') ?>'.replace(/\./g, '').replace('$', '')); // Obtiene el subtotal desde PHP
-            const tasaImpuestos = 1.19;
+            const subtotal = parseFloat(document.querySelector('input[name="total"]').value); 
             const valorEnvio = parseFloat(document.getElementById('valorEnvioInput').value) || 0;
+            const tasaImpuestos = 0.19;
 
-            // Calcular impuestos
-            const impuestos = subtotal - ( subtotal / tasaImpuestos);
+            const totalIVA = subtotal * tasaImpuestos;
+            const totalFinal = subtotal + totalIVA + valorEnvio;
 
-            // Calcular el total final
-            const totalFinal = subtotal + valorEnvio;
-
-            // Actualiza el valor de impuestos y el total en la interfaz
-            document.getElementById('valorImpuestos').textContent = `$${formatNumber(impuestos)}`;
-            document.querySelector('.list-group-item.fw-bold span').textContent = `$${formatNumber(totalFinal)}`;
-            document.getElementById('totalCalculado').value = totalFinal;
-
+            document.getElementById('valorImpuestos').textContent = `$${formatNumber(totalIVA)}`;
+            document.getElementById('totalConEnvioImpuestos').textContent = `$${formatNumber(totalFinal)}`;
+            document.getElementById('totalCalculado').value = totalFinal; // Asignar el total final
         }
 
         function formatNumber(num) {
