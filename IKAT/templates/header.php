@@ -2,6 +2,8 @@
 include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/views/menu_registro/auth.php';
 ?>
 
+
+
 <!-- Header/Navbar -->
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">

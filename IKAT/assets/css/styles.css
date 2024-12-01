@@ -312,6 +312,28 @@ button.btn.btn-outline-dark:hover {
   transform: translateY(-5px);
 }
 
+/* IMAGEN PRODUCTO */
+.product-image {
+  transition: transform 0.3s ease;
+}
+.product-image:hover {
+  transform: translateY(-5px);
+}
+
+
+
+.tooltip-inner {
+  background-color: var(--tooltip-bg, #bf8b4bf4) !important; /* Fondo del tooltip */
+  color: var(--tooltip-text, #ffffff) !important; /* Color del texto */
+  border-radius: 4px !important; /* Bordes redondeados */
+}
+
+
+/* Eliminar la flecha */
+body .tooltip .tooltip-arrow {
+  display: none !important; /* Elimina la flecha */
+}
+
 .resumen-compra {
   max-height: 400px;
 }
