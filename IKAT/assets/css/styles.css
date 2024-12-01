@@ -34,17 +34,19 @@ button,
   cursor: url("../../assets/images/pointer.png"), pointer;
 }
 
-a, button.btn, .input-group-text,
-button.input-group-text{
+a,
+button.btn,
+.input-group-text,
+button.input-group-text {
   cursor: url("../../assets/images/pointer.png"), pointer !important;
 }
 
-.carousel-item a, 
-.carousel-item button, 
-.carousel-item [type="button"], 
+.carousel-item a,
+.carousel-item button,
+.carousel-item [type="button"],
 .carousel-item [type="submit"],
 button.carousel-control-prev,
-button.carousel-control-next{
+button.carousel-control-next {
   cursor: url("../../assets/images/pointer.png"), pointer !important;
 }
 
@@ -54,28 +56,79 @@ button.carousel-control-next{
   cursor: url("../../assets/images/pointer.png"), pointer !important;
 }
 
+/* Estilo base para los botones */
+.button-style-header {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #79684174 !important;
+  border-radius: 8px !important;
+  transition: background-color 0.3s, transform 0.3s, color 0.3s, box-shadow 0.3s;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+  width: 35px;
+  height: 35px;
+}
+
+/* Efecto hover: cambio de fondo y sombra, sin cambiar el tamaño */
+.catalogo-btn:hover {
+  background-color: #8c5c32 !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: scale(1.1);
+}
+
+/* Efecto hover para la lista de deseos */
+.wishlist-btn:hover {
+  background-color: #b7272f !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: scale(1.1);
+}
+
+/* Efecto hover para el carrito */
+.cart-btn:hover {
+  background-color: #2d5b38 !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: scale(1.1);
+}
+
+/* Efecto hover para la busqueda */
+.busqueda-btn:hover {
+  background-color: #8c5c32 !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: scale(1.1);
+}
+
+/* Efecto hover para el menu */
+.menu-btn:hover {
+  background-color: #8c5c32 !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: scale(1.1);
+}
+
 /*NAVBAR*/
 .navbar {
   background-color: #d5d5d5;
 }
 
-.container-f{
+.container-f {
   min-height: 100dvh;
   display: grid;
-  grid-template-rows:auto 1fr auto ;
+  grid-template-rows: auto 1fr auto;
 }
 
 /*SIDEBAR*/
 #sidebar {
   min-height: 100vh;
   width: 250px;
-  background-color: #D5D5D5;
+  background-color: #d5d5d5;
   transition: transform 0.3s ease;
 }
 #sidebar .accordion-button {
   background-color: #343434;
-  color: rgb(255, 255, 255);
+  color: white;
 }
+
 .sidebar-link {
   background-color: #bcbaba;
   color: rgb(0, 0, 0);
@@ -85,6 +138,20 @@ button.carousel-control-next{
 }
 .sidebar-link:hover {
   background-color: #d5d5d5;
+}
+
+.accordion-body ul {
+  margin-bottom: 0;
+}
+
+/* Cambiar el color de fondo de los elementos del dropdown al hacer clic */
+.dropdown-item:active {
+  background-color: #6c757d !important;
+}
+
+/* Cambiar el color de fondo del item cuando se encuentra en foco (en el caso de que se navegue con teclado) */
+.dropdown-item:focus {
+  background-color: #6c757d !important;
 }
 
 /*IMG USUARIO*/
@@ -108,19 +175,73 @@ button.carousel-control-next{
 /*CARRUSEL INICIO*/
 .carousel-item img {
   width: 100%;
-  height: 500px;          
-  object-fit: cover;      
-  object-position: center; 
-  filter: contrast(0.8); 
+  height: 500px;
+  object-fit: cover;
+  object-position: center;
+  filter: contrast(0.8);
 }
 
 .carousel-caption {
   max-width: 550px;
   min-width: none;
   backdrop-filter: blur(5px);
-  background-color: rgba(67, 67, 67, 0.3); 
+  background-color: rgba(67, 67, 67, 0.3);
   padding: 10px;
-  border-radius: 5px; 
+  border-radius: 5px;
+}
+
+/* Estilo general para los botones del carrusel */
+#carouselExampleIndicators .carousel-control-prev,
+#carouselExampleIndicators .carousel-control-next {
+  width: 60px;
+  height: 60px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute; /* Asegura que estén en la posición correcta */
+  top: 50%; /* Centra verticalmente */
+  transform: translateY(-50%); /* Ajusta para el centro exacto */
+  z-index: 10; /* Asegura que los botones estén encima del contenido */
+  transition: all 0.3s ease;
+}
+
+#carouselExampleIndicators .carousel-control-prev {
+  left: 10px; /* Ajusta la distancia del lado izquierdo */
+}
+
+#carouselExampleIndicators .carousel-control-next {
+  right: 10px; /* Ajusta la distancia del lado derecho */
+}
+
+#carouselExampleIndicators .carousel-control-prev:hover,
+#carouselExampleIndicators .carousel-control-next:hover {
+  background-color: rgba(0, 0, 0, 0.8); /* Fondo más oscuro al pasar el mouse */
+  transform: translateY(-50%) scale(1.1); /* Conserva la posición y aumenta tamaño */
+}
+
+#carouselExampleIndicators .carousel-control-prev-icon,
+#carouselExampleIndicators .carousel-control-next-icon {
+  color: #fff; /* Flecha blanca */
+  transition: transform 0.3s ease;
+}
+
+#carouselExampleIndicators
+  .carousel-control-prev:hover
+  .carousel-control-prev-icon,
+#carouselExampleIndicators
+  .carousel-control-next:hover
+  .carousel-control-next-icon {
+  transform: translateX(
+    -5px
+  ); /* Movimiento sutil hacia la izquierda para prev */
+}
+
+#carouselExampleIndicators
+  .carousel-control-next:hover
+  .carousel-control-next-icon {
+  transform: translateX(5px); /* Movimiento sutil hacia la derecha para next */
 }
 
 .inicio-categoria {
@@ -131,21 +252,20 @@ button.carousel-control-next{
   width: auto;
   padding: 8px 12px;
   background-color: rgba(136, 57, 28, 0.663);
-  font-size: 1.2rem; 
+  font-size: 1.2rem;
   font-weight: bold;
-  color: #fff; 
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
-  border-radius: 8px; 
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
   position: absolute;
   bottom: 0px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 3;
   text-align: center;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); 
-  letter-spacing: 1px; 
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
 }
-
 
 /*BARRA BUSQUEDA INICIO*/
 .search-bar-container {
@@ -159,7 +279,7 @@ button.carousel-control-next{
   display: flex;
 }
 .search-bar-container .form-control {
-  border-radius: 20px 0 0 20px; 
+  border-radius: 20px 0 0 20px;
   padding: 10px 20px;
   flex-grow: 1;
 }
@@ -198,11 +318,11 @@ button.btn.btn-outline-dark:hover {
 }
 
 /* EFECTO AUMENTO INICIO*/
-.inicio img{
-  transition: transform 0.3s; 
+.inicio img {
+  transition: transform 0.3s;
   border-radius: 10px;
 }
-.inicio img:hover{
+.inicio img:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
@@ -215,10 +335,31 @@ button.btn.btn-outline-dark:hover {
   transform: translateY(-5px);
 }
 
+/* IMAGEN PRODUCTO */
+.product-image {
+  transition: transform 0.3s ease;
+}
+.product-image:hover {
+  transform: translateY(-5px);
+}
+
+
+
+.tooltip-inner {
+  background-color: var(--tooltip-bg, #bf8b4bf4) !important; /* Fondo del tooltip */
+  color: var(--tooltip-text, #ffffff) !important; /* Color del texto */
+  border-radius: 4px !important; /* Bordes redondeados */
+}
+
+
+/* Eliminar la flecha */
+body .tooltip .tooltip-arrow {
+  display: none !important; /* Elimina la flecha */
+}
+
 .resumen-compra {
   max-height: 400px;
 }
-
 
 .categoria-img {
   width: 300px;
@@ -233,25 +374,24 @@ button.btn.btn-outline-dark:hover {
   justify-content: center;
 }
 
-
 /* Botón de agregar al carrito (hover verde) */
 .carrito-btn:hover {
-    background-color: #2d5b38;
-    border-color: #2d5b38;
+  background-color: #2d5b38;
+  border-color: #2d5b38;
 }
 
 .carrito-btn:hover i {
-    color: white;
+  color: white;
 }
 
 /* Botón de agregar a la lista de deseos (hover rojo) */
 .lista-deseos-btn:hover {
-    background-color: #c22131;
-    border-color: #c22131;
+  background-color: #c22131;
+  border-color: #c22131;
 }
 
 .lista-deseos-btn:hover i {
-    color: white;
+  color: white;
 }
 
 /*#confirmar_direccion {
@@ -263,22 +403,22 @@ button.btn.btn-outline-dark:hover {
 @media (min-width: 768px) and (max-width: 1024px) {
   /* Para pantallas tipo iPad */
   .card-img-container img {
-      height: 100% !important; /* Mantiene la proporción cuadrada en pantallas tipo iPad */
-      aspect-ratio: 1/1; /* Asegura un cuadrado perfecto en pantallas tipo iPad */
+    height: 100% !important; /* Mantiene la proporción cuadrada en pantallas tipo iPad */
+    aspect-ratio: 1/1; /* Asegura un cuadrado perfecto en pantallas tipo iPad */
   }
 }
 
 @media (min-width: 1025px) {
   /* Para pantallas grandes (tablets y superiores) */
   .card-img-container img {
-      height: 400px !important; /* Altura fija de 400px en pantallas grandes */
+    height: 400px !important; /* Altura fija de 400px en pantallas grandes */
   }
 }
 
 @media (max-width: 767px) {
   /* Para pantallas pequeñas (móviles) */
   .card-img-container img {
-      height: 100% !important; /* Imagen cuadrada en pantallas pequeñas */
-      aspect-ratio: 1/1; /* Asegura un cuadrado perfecto en pantallas pequeñas */
+    height: 100% !important; /* Imagen cuadrada en pantallas pequeñas */
+    aspect-ratio: 1/1; /* Asegura un cuadrado perfecto en pantallas pequeñas */
   }
 }
