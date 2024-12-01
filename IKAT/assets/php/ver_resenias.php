@@ -63,7 +63,7 @@ function obtenerReseniasPendientes($conn, $idUsuario) {
 
 
 function obtenerReseniasRealizadas($conn, $idUsuario) {
-    $sql = "SELECT p.id_producto, p.nombre_producto, r.fecha_resenia, r.calificacion, r.comentario, p.foto_producto
+    $sql = "SELECT p.id_producto, p.nombre_producto, r.fecha_resenia, r.calificacion, r.comentario, p.foto_producto, r.id_resenia
             FROM resenia r
             JOIN producto p ON r.id_producto = p.id_producto
             WHERE r.id_usuario = ? AND r.activo = 1";

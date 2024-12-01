@@ -61,13 +61,14 @@ if ($id_usuario) {
                                                 </div>
                                             </div>
                                             <div class="col-3 d-flex justify-content-center">
-                                                <div class="star-rating">
+                                                <div class="star-rating pendientes" onclick="abrirModalResena(<?= $producto['id_producto'] ?>)">
                                                     <i class="bi bi-star" data-value="1"></i>
                                                     <i class="bi bi-star" data-value="2"></i>
                                                     <i class="bi bi-star" data-value="3"></i>
                                                     <i class="bi bi-star" data-value="4"></i>
                                                     <i class="bi bi-star" data-value="5"></i>
                                                 </div>
+
                                             </div>
                                             <div class="col-3 d-flex justify-content-center">
                                                 <small class="text-muted">Comprado el <?= $producto['fecha_compra'] ?></small>
@@ -122,7 +123,19 @@ if ($id_usuario) {
                                                 <small class="text-muted">Realizada el <?= $resenia['fecha_resenia'] ?></small>
                                             </div>
                                             <div class="col-3 d-flex justify-content-center">
-                                                <button type="button" class="btn btn-outline-primary btn-sm">Editar mi reseña</button>
+                                                <?php
+                                                $calificacion = htmlspecialchars($resenia['calificacion'] ?? '', ENT_QUOTES, 'UTF-8');
+                                                $comentario = htmlspecialchars($resenia['comentario'] ?? '', ENT_QUOTES, 'UTF-8');
+                                                $idResenia = htmlspecialchars($resenia['id_resenia'] ?? '', ENT_QUOTES, 'UTF-8');
+                                                ?>
+
+                                                <button type="button"
+                                                    class="btn btn-outline-primary btn-sm editar-resena"
+                                                    data-id="<?= $idResenia ?>"
+                                                    data-calificacion="<?= $calificacion ?>"
+                                                    data-comentario="<?= $comentario ?>">
+                                                    Editar mi reseña
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -175,6 +188,45 @@ if ($id_usuario) {
                 </div>
             </div>
         </div>
+
+        <!-- Editar reseña Modal -->
+        <div class="modal fade" id="modalEditarResena" tabindex="-1" aria-labelledby="modalEditarResenaLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalEditarResenaLabel">Editar mi reseña</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formEditarResena">
+                            <!-- Calificación -->
+                            <div class="mb-3">
+                                <label class="form-label">Calificación</label>
+                                <div class="star-rating">
+                                    <i class="bi bi-star" data-value="1"></i>
+                                    <i class="bi bi-star" data-value="2"></i>
+                                    <i class="bi bi-star" data-value="3"></i>
+                                    <i class="bi bi-star" data-value="4"></i>
+                                    <i class="bi bi-star" data-value="5"></i>
+                                </div>
+                                <input type="hidden" name="calificacion" id="editarCalificacion">
+                            </div>
+                            <!-- Comentario -->
+                            <div class="mb-3">
+                                <label for="editarComentario" class="form-label">Comentario</label>
+                                <textarea class="form-control" id="editarComentario" name="comentario" rows="4" placeholder="Edita tu reseña aquí..."></textarea>
+                            </div>
+                            <input type="hidden" id="idResena" name="id_resenia">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="guardarCambiosResena">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="../assets/js/modalResena.js"></script>
 

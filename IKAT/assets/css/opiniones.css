@@ -61,17 +61,33 @@
     font-size: 1.5rem;
 }
 
-/* Aplica el hover correctamente */
-.star-rating i:hover,
-.star-rating i:hover ~ i {
-    color: #ffc107; /* Llena las estrellas anteriores (que ahora están visualmente al revés) */
+/* Estrellas del modal: personalización global */
+.star-rating i.bi-star-fill {
+    color: #ffc107; /* Estrellas seleccionadas (amarillas) */
 }
 
-.star-rating i.bi-star-fill {
-    color: #ffc107; /* Color amarillo para las estrellas seleccionadas */
+.star-rating i:hover,
+.star-rating i:hover ~ i {
+    color: #ffc107; /* Hover funcional solo en el modal */
 }
+
 
 .star-rating.no-click i {
     pointer-events: none; /* Deshabilita cualquier interacción */
     cursor: default; /* Cambia el cursor a no interactivo */
+}
+
+/* Estrellas del contenedor de reseñas pendientes */
+.star-rating.pendientes i {
+    pointer-events: none; /* Permite el clic */
+    cursor: default; /* Muestra interactividad */
+    color: #ddd; /* Mantiene el color gris siempre */
+}
+
+/* Deshabilitar hover y clic visualmente */
+.star-rating.pendientes i:hover,
+.star-rating.pendientes i:hover ~ i,
+.star-rating.pendientes i:active {
+    color: #ddd; /* Mantiene el color gris sin cambios */
+    cursor: pointer;
 }
