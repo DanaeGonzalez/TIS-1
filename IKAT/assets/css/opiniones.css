@@ -1,0 +1,67 @@
+/* Personalización de tabs */
+.nav-tabs .nav-link {
+    color: #6c757d; /* Color gris para pestañas inactivas */
+}
+
+.nav-tabs .nav-link.active {
+    color: #007bff; /* Texto azul para la pestaña activa */
+}
+
+.nav-tabs .nav-link:hover {
+    color: #0056b3; /* Azul oscuro al pasar el cursor */
+}
+
+.tab-content {
+    border: 1px solid #ddd;
+    border-top: none;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.highlight-box {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.product-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    background-color: #f9f9f9;
+}
+
+.product-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.star-rating {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente las estrellas dentro de su contenedor */
+    align-items: center; /* Asegura que las estrellas estén centradas verticalmente */
+    flex-direction: row-reverse; /* Invertimos el orden para que las estrellas funcionen correctamente */
+    gap: 0.25rem;
+}
+
+.star-rating i {
+    color: #ddd;
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+
+.star-rating i:hover,
+.star-rating i:hover ~ i {
+    color: #ffc107;
+}
