@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="..\assets\css\barra_busqueda.css">
         <link rel="stylesheet" href="..\assets\css\rating.css">
         <script src="../assets/js/filtros.js"></script>
+        <script src="../assets/js/carritoDeseos.js"></script>
         <script src="../assets/js/etiquetas.js"></script>
         <script src="../assets/js/stars.js"></script>
         <?php include '../assets/php/dropdowns.php'; ?>
@@ -313,55 +314,6 @@
             let usuarioAutenticado = <?php echo json_encode($usuarioAutenticado); ?>;
         </script>
 
-        <script>
-            function agregarAlCarrito(productId) {
-                fetch('../assets/php/agregaralCarrito.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            id_producto: productId,
-                            cantidad: 1
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            document.getElementById('alertCarritoSuccess').style.display = 'block';
-                            setTimeout(() => document.getElementById('alertCarritoSuccess').style.display = 'none', 3000);
-                        } else {
-                            document.getElementById('alertCarritoError').style.display = 'block';
-                            setTimeout(() => document.getElementById('alertCarritoError').style.display = 'none', 3000);
-                        }
-                    })
-                    .catch((error) => console.error('Error:', error));
-            }
-        </script>
-        <script>
-            function agregarAListaDeDeseos(productId) {
-                fetch('../assets/php/agregarAdeseos.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            id_producto: productId
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            document.getElementById('alertDeseosSuccess').style.display = 'block';
-                            setTimeout(() => document.getElementById('alertDeseosSuccess').style.display = 'none', 3000);
-                        } else {
-                            document.getElementById('alertDeseosError').style.display = 'block';
-                            setTimeout(() => document.getElementById('alertDeseosError').style.display = 'none', 3000);
-                        }
-                    })
-                    .catch((error) => console.error('Error:', error));
-            }
-        </script>
 
     </body>
 

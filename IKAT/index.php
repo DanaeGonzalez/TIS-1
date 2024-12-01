@@ -25,28 +25,41 @@
           <div class="d-flex align-items-center justify-content-end gap-3 ms-auto">
 
             <!-- Botón de búsqueda -->
-            <button class="btn btn-link d-lg-none p-0" data-bs-toggle="modal" data-bs-target="#searchModal">
-              <i class="bi bi-search fs-4  text-secondary"></i>
+            <button class="btn btn-link d-lg-none p-0 button-style-header busqueda-btn" data-bs-toggle="modal"
+              data-bs-placement="top" title="Buscar" data-bs-target="#searchModal">
+              <i class="bi bi-search fs-4 text-white"></i>
             </button>
 
             <!-- Botón de catálogo -->
-            <a href="views\catalogo.php" class="btn btn-link d-lg-none p-0">
-              <i class="bi bi-bag fs-4 text-secondary"></i>
+            <a href="views\catalogo.php" class="btn btn-link d-lg-none p-0 button-style-header catalogo-btn"
+              data-bs-toggle="tooltip" data-bs-placement="top" title="Ir al catálogo">
+              <div class="p-1">
+                <i class="bi bi-bag fs-4 text-white"></i>
+              </div>
             </a>
 
             <!-- Botón de lista de deseos -->
-            <a href="views/menu_registro/login.php" class="btn btn-link p-0 d-lg-none d-flex">
-              <i class="bi bi-heart fs-4 text-secondary"></i>
+            <a href="views/menu_registro/login.php"
+              class="btn btn-link p-0 d-lg-none d-flex button-style-header wishlist-btn" data-bs-toggle="tooltip"
+              data-bs-placement="top" title="Lista de deseos">
+              <div class="p-1">
+                <i class="bi bi-heart fs-4 text-white"></i>
+              </div>
             </a>
 
             <!-- Botón del carrito -->
-            <a href="views/menu_registro/login.php" class="btn btn-link p-0 d-lg-none d-flex">
-              <i class="bi bi-cart fs-4 text-secondary"></i>
+            <a href="views/menu_registro/login.php"
+              class="btn btn-link p-0 d-lg-none d-flex button-style-header cart-btn" data-bs-toggle="tooltip"
+              data-bs-placement="top" title="Ver carrito">
+              <div class="p-1">
+                <i class="bi bi-cart fs-4 text-white"></i>
+              </div>
             </a>
 
             <!-- Botón de menú -->
-            <button class="btn btn-link d-lg-none p-0" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-              <i class="bi bi-list fs-4  text-secondary"></i>
+            <button class="btn btn-link d-lg-none p-0 button-style-header menu-btn" data-bs-toggle="collapse"
+              data-bs-target="#navbarContent" data-bs-placement="top" title="Ver carrito">
+              <i class="bi bi-list fs-4  text-white"></i>
             </button>
           </div>
 
@@ -57,25 +70,37 @@
               <li class="nav-item d-flex align-items-center gap-3">
 
                 <!-- Botón de catálogo -->
-                <a href="views/catalogo.php" class="btn btn-link d-none d-lg-flex p-0">
-                  <i class="bi bi-bag fs-4 text-secondary"></i>
+                <a href="views/catalogo.php" class="btn btn-link d-none d-lg-flex p-0 button-style-header catalogo-btn"
+                  data-bs-toggle="tooltip" data-bs-placement="top" title="Ir al catálogo">
+                  <div class="p-1">
+                    <i class="bi bi-bag fs-4 text-white"></i>
+                  </div>
                 </a>
 
                 <!-- Botón de lista de deseos -->
-                <a href="views/menu_registro/login.php" class="btn btn-link p-0 d-none d-lg-flex">
-                  <i class="bi bi-heart fs-4 text-secondary"></i>
+                <a href="views/menu_registro/login.php"
+                  class="btn btn-link p-0 d-none d-lg-flex button-style-header wishlist-btn" data-bs-toggle="tooltip"
+                  data-bs-placement="top" title="Lista de deseos">
+                  <div class="p-1">
+                    <i class="bi bi-heart fs-4 text-white"></i>
+                  </div>
                 </a>
 
                 <!-- Botón del carrito -->
-                <a href="views/menu_registro/login.php" class="btn btn-link p-0 d-none d-lg-flex">
-                  <i class="bi bi-cart fs-4 text-secondary"></i>
+                <a href="views/menu_registro/login.php"
+                  class="btn btn-link p-0 d-none d-lg-flex button-style-header cart-btn" data-bs-toggle="tooltip"
+                  data-bs-placement="top" title="Ver carrito">
+                  <div class="p-1">
+                    <i class="bi bi-cart fs-4 text-white"></i>
+                  </div>
                 </a>
+
                 <!-- Menú de usuario -->
                 <div class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="/xampp/TIS-1/IKAT/assets/images/profile/01.webp"
-                      alt="User Image" class="user-avatar me-2">
+                    <img src="/xampp/TIS-1/IKAT/assets/images/profile/01.webp" alt="User Image"
+                      class="user-avatar me-2">
                     Usuario
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
@@ -102,8 +127,8 @@
               <div class="modal-body">
                 <form>
                   <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
-                      aria-label="Buscar productos">
+                    <input type="text" class="form-control"
+                      placeholder="Escribe lo que estés buscando: mesa, cama, silla..." aria-label="Buscar productos">
                     <button class="btn btn-dark" type="submit">
                       Buscar
                     </button>
@@ -116,7 +141,8 @@
 
         <!-- Contenedor de la barra de búsqueda sobre el carrusel -->
         <div class="search-bar-container d-none d-lg-flex">
-          <input class="form-control d-inline w-75" type="text" placeholder="Escribe lo que estés buscando: mesa, cama, silla...">
+          <input class="form-control d-inline w-75" type="text"
+            placeholder="Escribe lo que estés buscando: mesa, cama, silla...">
           <button class="btn btn-dark d-inline" type="submit">
             <i class="bi bi-search"></i>
           </button>
@@ -141,7 +167,7 @@
           <div class="carousel-inner">
             <div class="carousel-item active">
               <img src="https://images.pexels.com/photos/1743226/pexels-photo-1743226.jpeg" alt="...">
-              <div class="carousel-caption mx-auto">
+              <div class="carousel-caption mx-auto bg-dark bg-opacity-50">
                 <h5>Muebles ideales para tu hogar</h5>
                 <p>Transforma cada espacio en un rincón único y acogedor.</p>
               </div>
@@ -150,18 +176,18 @@
               <img
                 src="https://images.pexels.com/photos/6969995/pexels-photo-6969995.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=5"
                 class="d-block w-100 img-fluid" alt="...">
-              <div class="carousel-caption mx-auto">
-                <h5>Muebles ideales para tu hogar</h5>
-                <p>Transforma cada espacio en un rincón único y acogedor.</p>
+              <div class="carousel-caption mx-auto bg-dark bg-opacity-50">
+                <h5>Diseños excepcionales para tu hogar</h5>
+                <p>Convierte cada habitación en un lugar lleno de estilo y confort.</p>
               </div>
             </div>
             <div class="carousel-item">
               <img
                 src="https://images.pexels.com/photos/1571463/pexels-photo-1571463.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2   "
                 class="d-block w-100 img-fluid" alt="...">
-              <div class="carousel-caption mx-auto">
-                <h5>Muebles ideales para tu hogar</h5>
-                <p>Transforma cada espacio en un rincón único y acogedor.</p>
+              <div class="carousel-caption mx-auto bg-dark bg-opacity-50">
+                <h5>Encuentra el mueble perfecto</h5>
+                <p>Diseños exclusivos que se adaptan a tu estilo y necesidades.</p>
               </div>
             </div>
           </div>
@@ -277,6 +303,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"></script>
+
+    <script>
+      // Habilitar todos los tooltips
+      document.addEventListener('DOMContentLoaded', function () {
+        var tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+          new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+      });
+    </script>
   </body>
 
 </php>
