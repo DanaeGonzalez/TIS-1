@@ -32,7 +32,7 @@ include_once '..\config\conexion.php';
                 <div class="row">
                     <h1 class="text-center mb-3">Productos deseados</h1>
                     <hr>
-                    <div class="col-12">
+                    <div class="col-7">
                         <div class="list-group">
                             <?php
                             $id_usuario = $_SESSION['id_usuario'];
@@ -66,37 +66,36 @@ include_once '..\config\conexion.php';
                             $consulta_productos->execute();
                             $resultado_productos = $consulta_productos->get_result();
 
+                            $productos_deseados = [];
+                            $total_precio = 0;
+
                             if ($resultado_productos->num_rows > 0) {
                                 while ($producto = $resultado_productos->fetch_assoc()) {
+                                    $productos_deseados[] = $producto; // Almacenar productos para el resumen
+                                    $total_precio += $producto['precio_unitario'];
                             ?>
-                                    <div
-                                        class="list-group-item d-flex justify-content-between align-items-center bg-light border mb-4 rounded shadow-sm p-3">
+                                    <div class="list-group-item d-flex justify-content-between align-items-center bg-light border mb-4 rounded shadow-sm p-3">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <label class="d-flex align-items-center" style="cursor: pointer;">
                                                 <a href="producto.php?id=<?= $producto['id_producto']; ?>">
-                                                    <?php //función para ajustar la ruta
+                                                    <?php
+                                                    // Ajustar la ruta de la imagen
                                                     $ruta_original = $producto['foto_producto'];
                                                     $ruta_ajustada = str_replace("../../", "../", $ruta_original);
                                                     ?>
-                                                    <img src="<?= $ruta_ajustada ?>"
-                                                        alt="<?= $producto['nombre_producto']; ?>"
-                                                        class="me-3 rounded img-fluid" style="max-width: 150px;">
+                                                    <img src="<?= $ruta_ajustada ?>" alt="<?= $producto['nombre_producto']; ?>" class="me-3 rounded img-fluid" style="max-width: 150px;">
                                                 </a>
                                                 <div>
                                                     <h4 class="mb-1 text-dark"><?= $producto['nombre_producto']; ?></h4>
-                                                    <h6 class="text-dark">
-                                                        $<?= number_format($producto['precio_unitario'], 0, '', '.'); ?></h6>
+                                                    <h6 class="text-dark">$<?= number_format($producto['precio_unitario'], 0, '', '.'); ?></h6>
                                                 </div>
                                             </label>
                                         </div>
                                         <div class="d-flex flex-column flex-sm-row align-items-center">
                                             <!-- botón de eliminar -->
-                                            <form action="../assets/php/eliminarProducto_deseos.php" method="POST"
-                                                class="d-inline-block text-center mb-3 mb-sm-0 ms-sm-1 ms-3">
-                                                <input type="hidden" name="id_producto"
-                                                    value="<?= htmlspecialchars($producto['id_producto']) ?>">
-                                                <button type="submit" class="btn btn-danger btn-sm button me-3"
-                                                    style="height:35px;">
+                                            <form action="../assets/php/eliminarProducto_deseos.php" method="POST" class="d-inline-block text-center mb-3 mb-sm-0 ms-sm-1 ms-3">
+                                                <input type="hidden" name="id_producto" value="<?= htmlspecialchars($producto['id_producto']) ?>">
+                                                <button type="submit" class="btn btn-danger btn-sm button me-3" style="height:35px;">
                                                     <div class="icon">
                                                         <svg class="top">
                                                             <use xlink:href="#top"></use>
@@ -111,8 +110,7 @@ include_once '..\config\conexion.php';
 
                                             <!-- botón de añadir al carrito -->
                                             <form action="../assets/php/deseoAcarrito.php" method="POST" class="d-inline-block">
-                                                <input type="hidden" name="id_producto"
-                                                    value="<?= htmlspecialchars($producto['id_producto']); ?>">
+                                                <input type="hidden" name="id_producto" value="<?= htmlspecialchars($producto['id_producto']); ?>">
                                                 <button type="submit" class="button_c" style="height:35px;">
                                                     <span>Carrito</span>
                                                     <div class="cart">
@@ -129,7 +127,13 @@ include_once '..\config\conexion.php';
                             <?php
                                 }
                             } else {
-                                echo "<p class='text-center text-muted'>No tienes productos en tu lista de deseos.</p>";
+                                echo "
+                                <div class='text-center text-muted'>
+                                    <p>No tienes productos en tu lista de deseos.</p>
+                                    <a href='catalogo.php' class='btn btn-primary mt-3'>
+                                        <i class='bi bi-box-arrow-in-right'></i> Explorar productos
+                                    </a>
+                                </div>";
                             }
 
                             $consulta_lista->close();
@@ -137,9 +141,52 @@ include_once '..\config\conexion.php';
                             ?>
                         </div>
                     </div>
+                    <!-- Resumen de productos -->
+                    <div class="col-md-5">
+                        <div class="container mt-4">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="fw-bold">Resumen</h5>
+
+                                    <!-- Lista de productos -->
+                                    <ul class="list-unstyled">
+                                        <?php foreach ($productos_deseados as $producto) { ?>
+                                            <li class="d-flex justify-content-between py-2">
+                                                <span><?= htmlspecialchars($producto['nombre_producto']); ?></span>
+                                                <span>$<?= number_format($producto['precio_unitario'], 0, '', '.'); ?></span>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+
+                                    <!-- Línea separadora -->
+                                    <hr class="my-3">
+
+                                    <!-- Total -->
+                                    <div class="d-flex justify-content-between">
+                                        <span class="fw-bold">Total incl. IVA</span>
+                                        <span class="fw-bold fs-4">$<?= number_format($total_precio, 0, '', '.'); ?></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Botón -->
+                            <div class="mt-4 text-center">
+                                <form action="../assets/php/deseoAcarrito.php" method="POST">
+                                    <?php foreach ($productos_deseados as $producto) { ?>
+                                        <input type="hidden" name="productos[]" value="<?= htmlspecialchars($producto['id_producto']); ?>">
+                                    <?php } ?>
+                                    <button type="submit" class="btn btn-primary btn-lg rounded-pill px-4">
+                                        <i class="bi bi-cart-plus me-2"></i>
+                                        Agregar todos los artículos al carrito
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
 
         <!-- Footer -->
         <?php include '../templates/footer.php'; ?>

@@ -118,24 +118,39 @@
                         <div class="col-md-6">
                             <div class="d-flex justify-content-between align-items-center me-2">
                                 <h1><?= htmlspecialchars($producto['nombre_producto']) ?></h1>
-                                <!-- Botón para agregar a la lista de deseos -->
-                                <label class="container_heart"
-                                    onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
-                                    <input type="checkbox">
-                                    <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve"
-                                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                        <path
-                                            d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z">
-                                        </path>
-                                    </svg>
-                                </label>
+
+                                <?php
+                                //Mostrar si el usuario esta registrado
+                                if (isset($_SESSION['id_usuario'])) {
+                                    ?>
+                                    <!-- Botón para agregar a la lista de deseos -->
+                                    <label class="container_heart"
+                                        onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
+                                        <input type="checkbox">
+                                        <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve"
+                                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <path
+                                                d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z">
+                                            </path>
+                                        </svg>
+                                    </label>
+                                    <?php
+                                }
+                                ?>
                             </div>
                             <h2 class="text-dark ">$<?= number_format($producto['precio_unitario'], 0, ',', '.') ?>
-                                <!-- Botón para agregar a la lista de deseos -->
-                                <button class="btn btn-danger"
-                                    onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
-                                    <i class="bi bi-heart"></i> <!-- Icono de corazón -->
-                                </button>
+                                <?php
+                                //Mostrar si el usuario esta registrado
+                                if (isset($_SESSION['id_usuario'])) {
+                                    ?>
+                                    <!-- Botón para agregar a la lista de deseos -->
+                                    <button class="btn btn-danger"
+                                        onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
+                                        <i class="bi bi-heart"></i> <!-- Icono de corazón -->
+                                    </button>
+                                    <?php
+                                }
+                                ?>
                             </h2>
                             <hr>
                             <h5>Características</h5>
@@ -153,70 +168,87 @@
                                 }
                                 ?>
                             </ul>
-                            <hr>
-                            <div class="cantidades d-flex mb-2">
-                                <h5>Cantidad &nbsp; </h5>
-                                <span id="stockStatus"></span>
-                            </div>
-
 
                             <?php
-                            $id_usuario = $_SESSION['id_usuario'];
-
-                            // Consulta SQL para obtener el stock del producto
-                            $sqlStock = "SELECT stock_producto FROM producto WHERE id_producto = $id_producto";
-
-                            // Ejecutar la consulta
-                            $resultStock = $conn->query($sqlStock);
-
-                            // Verificar si la consulta se ejecutó correctamente
-                            if (!$resultStock) {
-                                die("Error en la consulta: " . $conn->error);
-                            }
-
-                            // Inicializar la variable de stock
-                            $stockProducto = 0;
-
-                            if ($resultStock->num_rows > 0) {
-                                // Si existe una fila, obtenemos el stock del producto
-                                $row = $resultStock->fetch_assoc();
-                                $stockProducto = $row['stock_producto'];
-                            }
-
-                            // Consulta SQL para obtener la cantidad del producto en el carrito
-                            $sqlCantidad = "SELECT cantidad
-                            FROM carrito
-                            WHERE id_producto = $id_producto AND id_usuario = $id_usuario";
-
-                            // Ejecutar la consulta
-                            $resultCantidad = $conn->query($sqlCantidad);
-
-                            // Verificar si la consulta se ejecutó correctamente
-                            if (!$resultCantidad) {
-                                die("Error en la consulta: " . $conn->error);
-                            }
-
-                            // Inicializar la cantidad en el carrito
-                            $cantidadEnCarrito = 0;
-
-                            if ($resultCantidad->num_rows > 0) {
-                                // Si existe una fila, obtenemos la cantidad del producto en el carrito
-                                $row = $resultCantidad->fetch_assoc();
-                                $cantidadEnCarrito = $row['cantidad'];
+                            //Mostrar si el usuario esta registrado
+                            if (isset($_SESSION['id_usuario'])) {
+                                ?>
+                                <hr>
+                                <div class="cantidades d-flex mb-2">
+                                    <h5>Cantidad &nbsp; </h5>
+                                    <span id="stockStatus"></span>
+                                </div>
+                                <?php
                             }
                             ?>
 
 
-                            <!-- Define el stock máximo aquí -->
-                            <div class="input-group" style="width: 130px;">
-                                <button class="btn btn-outline-dark" type="button" onclick="decrementar()">-</button>
-                                <input type="number" id="cantidadInput" value="1" min="1" max="10"
-                                    class="form-control text-center custom-input">
-                                <button class="btn btn-outline-dark" type="button" onclick="incrementar()">+</button>
-                            </div>
+                            <?php
+                            //Mostrar si el usuario esta registrado
+                            if (isset($_SESSION['id_usuario'])) {
+                                $id_usuario = $_SESSION['id_usuario'];
 
-                            <div id="resultado" style="display: none;">El valor es: 1</div>
+                                // Consulta SQL para obtener el stock del producto
+                                $sqlStock = "SELECT stock_producto FROM producto WHERE id_producto = $id_producto";
 
+                                // Ejecutar la consulta
+                                $resultStock = $conn->query($sqlStock);
+
+                                // Verificar si la consulta se ejecutó correctamente
+                                if (!$resultStock) {
+                                    die("Error en la consulta: " . $conn->error);
+                                }
+
+                                // Inicializar la variable de stock
+                                $stockProducto = 0;
+
+                                if ($resultStock->num_rows > 0) {
+                                    // Si existe una fila, obtenemos el stock del producto
+                                    $row = $resultStock->fetch_assoc();
+                                    $stockProducto = $row['stock_producto'];
+                                }
+
+                                // Consulta SQL para obtener la cantidad del producto en el carrito
+                                $sqlCantidad = "SELECT cantidad
+                            FROM carrito
+                            WHERE id_producto = $id_producto AND id_usuario = $id_usuario";
+
+                                // Ejecutar la consulta
+                                $resultCantidad = $conn->query($sqlCantidad);
+
+                                // Verificar si la consulta se ejecutó correctamente
+                                if (!$resultCantidad) {
+                                    die("Error en la consulta: " . $conn->error);
+                                }
+
+                                // Inicializar la cantidad en el carrito
+                                $cantidadEnCarrito = 0;
+
+                                if ($resultCantidad->num_rows > 0) {
+                                    // Si existe una fila, obtenemos la cantidad del producto en el carrito
+                                    $row = $resultCantidad->fetch_assoc();
+                                    $cantidadEnCarrito = $row['cantidad'];
+                                }
+                            }
+                            ?>
+
+
+                            <?php
+                            //Mostrar si el usuario esta registrado
+                            if (isset($_SESSION['id_usuario'])) {
+
+                                ?>
+                                <!-- Define el stock máximo aquí -->
+                                <div class="input-group" style="width: 130px;">
+                                    <button class="btn btn-outline-dark" type="button" onclick="decrementar()">-</button>
+                                    <input type="number" id="cantidadInput" value="1" min="1" max="10"
+                                        class="form-control text-center custom-input">
+                                    <button class="btn btn-outline-dark" type="button" onclick="incrementar()">+</button>
+                                </div>
+                                <div id="resultado" style="display: none;">El valor es: 1</div>
+                                <?php
+                            }
+                            ?>
 
                             <!-- Alerta de éxito -->
                             <div id="alertSuccess" class="alert alert-success alert-dismissible fade show mt-4"
@@ -236,7 +268,7 @@
                             </div>
                             <!-- Botón de añadir al carrito -->
                             <button id="addToCartButton" class="button mt-3" style="display: none;"
-                                onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>); retrasarRecarga();">
+                                onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>, 'cantidadInput'); retrasarRecarga();">
                                 <span>Añadir al carrito</span>
                                 <div class="cart">
                                     <svg viewBox="0 0 36 26">
@@ -255,6 +287,20 @@
                             <hr>
                             <h5>Descripción del producto</h5>
                             <p><?= htmlspecialchars($producto['descripcion_producto']) ?></p>
+
+                            <?php
+                            //Mostrar si el no usuario esta registrado
+                            if (!isset($_SESSION['id_usuario'])) {
+
+                                ?>
+                                <!-- Alerta con Bootstrap -->
+                                <div class="alert alert-info fade show mt-3" role="alert">
+                                    <strong>¡Importante!</strong> Por favor, inicia sesión para disfrutar de funciones como
+                                    añadir productos al carrito, guardar en tu lista de deseos y mucho más.
+                                </div>
+                                <?php
+                            }
+                            ?>
                         </div>
                     </div>
 
@@ -366,6 +412,7 @@
 
         <!-- Archivo JS personalizado -->
         <script src="../assets/js/carruselReseñas.js"></script>
+        <script src="../assets/js/carritoDeseos.js"></script>
 
 
 
