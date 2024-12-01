@@ -278,11 +278,11 @@
                     <ul class="pagination justify-content-center">
                         <?php if ($paginaActual > 1): ?>
                             <li class="page-item">
-                                <a class="page-link" href="?pagina=<?= $paginaActual - 1 ?>">Previous</a>
+                                <a class="page-link" href="?pagina=<?= $paginaActual - 1 ?>">Anterior</a>
                             </li>
                         <?php else: ?>
                             <li class="page-item disabled">
-                                <a class="page-link">Previous</a>
+                                <a class="page-link">Anterior</a>
                             </li>
                         <?php endif; ?>
 
@@ -294,11 +294,11 @@
 
                         <?php if ($paginaActual < $totalPaginas): ?>
                             <li class="page-item">
-                                <a class="page-link" href="?pagina=<?= $paginaActual + 1 ?>">Next</a>
+                                <a class="page-link" href="?pagina=<?= $paginaActual + 1 ?>">Siguiente</a>
                             </li>
                         <?php else: ?>
                             <li class="page-item disabled">
-                                <a class="page-link">Next</a>
+                                <a class="page-link">Siguiente</a>
                             </li>
                         <?php endif; ?>
                     </ul>

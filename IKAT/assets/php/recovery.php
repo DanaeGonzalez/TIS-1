@@ -40,14 +40,31 @@
             mysqli_query($conn,$queryToken);
 
             //Contenido
+            $body = "<html>
+            <body style='font-family: Arial, sans-serif; background-color: #F2F2F2; padding: 20px;'>
+                <div style='max-width: 600px; margin: 0 auto; background-color: #FFFFFF; border: 1px solid #BFBFBF; border-radius: 8px; overflow: hidden;'>
+                    <div style='background-color: #8C5C32; padding: 15px; text-align: center; color: #FFFFFF;'>
+                        <h1 style='margin: 0;'>Recupera tu contraseña</h1>
+                    </div>
+                    <div style='padding: 20px; text-align: center;'>
+                        <h2 style='color: #8C5C32;'>Estimado cliente,
+                        <p style='color: #595959; font-size: 16px;'>Hemos notado que estás intentando recuperar tu contraseña.</p>
+                        <p style='color: #595959; font-size: 16px;'>Por favor, haz click en el botón de abajo para continuar con el proceso.</p>
+                        <a href='http://localhost/xampp/TIS-1/IKAT/views/menu_registro/change_pass.php?id=".$row["id_usuario"]."&token=".$token."'
+                            style='background-color: black; margin: 8px 0; color: white; border: none; padding: 16px 32px; text-decoration: none; display: inline-block; font-size: 16px; border-radius: 8px;'>Recuperar Contraseña</a>
+                        <p style='color: #595959; font-size: 14px; font-weight: lighter;'>Este correo ha sido generado automáticamente. Evita responder a este correo en caso de algún problema.</p>
+                    </div>
+                    <div style='background-color: #F2F2F2; padding: 15px; text-align: center;'>
+                        <p style='color: #595959; font-size: 14px;'>Gracias por confiar en nosotros.</p>
+                    </div>
+                </div>
+            </body>
+            </html>";
+
             $mail->isHTML(true);
             $mail->CharSet = 'UTF-8';
             $mail->Subject = 'Recuperación de contraseña';
-            $mail->Body    = 'Hola!<br><br>
-            Este es un correo generado automáticamente para realizar la recuperación de tu contraseña en IKAT. No debes responder a este correo en caso de algún problema.<br><br>
-            Por favor, 
-            <a href="http://localhost/xampp/TIS-1/IKAT/views/menu_registro/change_pass.php?id='.$row['id_usuario'].'&token='.$token.'">haz click aquí</a> para continuar con la operación.';
-            // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+            $mail->Body    = $body;
             
             $mail->send();
             header("Location: ../../views/menu_registro/login.php?msg=ok");
