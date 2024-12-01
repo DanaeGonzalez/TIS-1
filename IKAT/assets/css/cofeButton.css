@@ -1,5 +1,5 @@
 /* From Uiverse.io by vinodjangid07 */ 
-.BtnPay {
+.coffebtn {
     width: 100%; /* Cambiado a 100% para ocupar todo el ancho disponible */
     height: 40px;
     display: flex;
@@ -26,12 +26,12 @@
     fill: white;
 }
   
-.BtnPay::before {
+.coffebtn::before {
     width: 100%;
     height: 130px;
     position: absolute;
     content: "";
-    background-color: #2d5b38;
+    background-color: #8c5c32;
     color: white;
     border-radius: 50%;
     left: -100%;
@@ -41,13 +41,13 @@
 }
 
   
-.BtnPay:hover::before {
+.coffebtn:hover::before {
     transition-duration: .3s;
     transform: translate(100%,-50%);
     border-radius: 0;
 }
   
-.BtnPay:active {
+.coffebtn:active {
     transform: translate(5px,5px);
     transition-duration: .3s;
 }

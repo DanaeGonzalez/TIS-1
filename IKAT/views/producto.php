@@ -117,10 +117,8 @@
                                 style="border: 1px solid #f0f0f0;" alt="Imagen del Producto">
 
                             <!-- Botón de compartir (copiar al portapapeles) en la esquina inferior derecha -->
-                            <button id="copyLinkButton" class="copy"
-                                onclick="copyLink()">
-                                <span data-text-end="Copiado!" data-text-initial="Copiar enlace"
-                                    class="tooltip"></span>
+                            <button id="copyLinkButton" class="copy" onclick="copyLink()">
+                                <span data-text-end="Copiado!" data-text-initial="Copiar enlace" class="tooltip"></span>
                                 <span>
                                     <svg xml:space="preserve" style="enable-background:new 0 0 512 512"
                                         viewBox="0 0 6.35 6.35" y="0" x="0" height="20" width="20"
@@ -178,22 +176,23 @@
                                 ?>
                             </div>
                             <h2 class="text-dark">
-                                <span id="productPrice"><?= number_format($producto['precio_unitario'], 0, ',', '.') ?></span>
+                                <span
+                                    id="productPrice"><?= number_format($producto['precio_unitario'], 0, ',', '.') ?></span>
                             </h2>
 
 
-                                <?php
-                                //Mostrar si el usuario esta registrado
-                                if (isset($_SESSION['id_usuario'])) {
-                                    ?>
-                                    <!-- Botón para agregar a la lista de deseos -->
-                                    <button class="btn btn-danger"
-                                        onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
-                                        <i class="bi bi-heart"></i> <!-- Icono de corazón -->
-                                    </button>
-                                    <?php
-                                }
+                            <?php
+                            //Mostrar si el usuario esta registrado
+                            if (isset($_SESSION['id_usuario'])) {
                                 ?>
+                                <!-- Botón para agregar a la lista de deseos -->
+                                <button class="btn btn-danger"
+                                    onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
+                                    <i class="bi bi-heart"></i> <!-- Icono de corazón -->
+                                </button>
+                                <?php
+                            }
+                            ?>
                             </h2>
                             <hr>
                             <h5>Características</h5>
@@ -312,7 +311,7 @@
                             <!-- Botón de añadir al carrito -->
                             <button id="addToCartButton" class="button mt-3" style="display: none;"
                                 onclick="agregarAlCarrito(<?= $producto['id_producto'] ?>, 'cantidadInput'); retrasarRecarga();">
-                                <span>Añadir al carrito</span>
+                                <span class="fw-bold fs-6">Añadir al carrito</span>
                                 <div class="cart">
                                     <svg viewBox="0 0 36 26">
                                         <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
@@ -645,93 +644,93 @@
         </script>
         <script>
             const API_KEY = '733c6075a58957fdec754104f8e961eb';
-const BASE_URL = 'https://data.fixer.io/api/';
-const baseCurrency = 'EUR'; // Usar EUR como base por ser la permitida por FIXER
-const originalPrice = <?= $producto['precio_unitario'] ?>; // Precio original en CLP
-const currencySelector = document.getElementById('currencySelector');
-const productPriceElement = document.getElementById('productPrice');
+            const BASE_URL = 'https://data.fixer.io/api/';
+            const baseCurrency = 'EUR'; // Usar EUR como base por ser la permitida por FIXER
+            const originalPrice = <?= $producto['precio_unitario'] ?>; // Precio original en CLP
+            const currencySelector = document.getElementById('currencySelector');
+            const productPriceElement = document.getElementById('productPrice');
 
-// Función para obtener las tasas de cambio
-async function getExchangeRate(toCurrency) {
-    const cacheKey = `exchangeRate_${toCurrency}`;
-    const cacheTimeKey = `exchangeRateTime_${toCurrency}`;
-    const now = Date.now();
+            // Función para obtener las tasas de cambio
+            async function getExchangeRate(toCurrency) {
+                const cacheKey = `exchangeRate_${toCurrency}`;
+                const cacheTimeKey = `exchangeRateTime_${toCurrency}`;
+                const now = Date.now();
 
-    // Verifica si la tasa está en caché
-    const cachedRate = localStorage.getItem(cacheKey);
-    const cachedTime = localStorage.getItem(cacheTimeKey);
+                // Verifica si la tasa está en caché
+                const cachedRate = localStorage.getItem(cacheKey);
+                const cachedTime = localStorage.getItem(cacheTimeKey);
 
-    if (cachedRate && cachedTime && now - cachedTime < 3600) { // 1 hora
-        return parseFloat(cachedRate);
-    }
+                if (cachedRate && cachedTime && now - cachedTime < 3600) { // 1 hora
+                    return parseFloat(cachedRate);
+                }
 
-    // Si no está en caché, realiza la solicitud
-    try {
-        const response = await fetch(`${BASE_URL}latest?access_key=${API_KEY}&base=${baseCurrency}&symbols=${toCurrency}`);
-        const data = await response.json();
-        if (data.success) {
-            const rate = data.rates[toCurrency];
-            localStorage.setItem(cacheKey, rate);
-            localStorage.setItem(cacheTimeKey, now);
-            return rate;
-        } else {
-            console.error('Error en la API:', data.error);
-            return null;
-        }
-    } catch (error) {
-        console.error('Error en la petición:', error);
-        return null;
-    }
-}
+                // Si no está en caché, realiza la solicitud
+                try {
+                    const response = await fetch(`${BASE_URL}latest?access_key=${API_KEY}&base=${baseCurrency}&symbols=${toCurrency}`);
+                    const data = await response.json();
+                    if (data.success) {
+                        const rate = data.rates[toCurrency];
+                        localStorage.setItem(cacheKey, rate);
+                        localStorage.setItem(cacheTimeKey, now);
+                        return rate;
+                    } else {
+                        console.error('Error en la API:', data.error);
+                        return null;
+                    }
+                } catch (error) {
+                    console.error('Error en la petición:', error);
+                    return null;
+                }
+            }
 
-// Función para actualizar el precio en base a la moneda seleccionada
-async function updatePrice() {
-    const selectedCurrency = currencySelector.value; // Obtener la moneda seleccionada
+            // Función para actualizar el precio en base a la moneda seleccionada
+            async function updatePrice() {
+                const selectedCurrency = currencySelector.value; // Obtener la moneda seleccionada
 
-    // Si la moneda seleccionada es CLP, simplemente mostrar el precio original sin conversiones
-    if (selectedCurrency === 'CLP') {
-        productPriceElement.textContent = new Intl.NumberFormat('es-CL', {
-            style: 'currency',
-            currency: 'CLP'
-        }).format(originalPrice);
-        return;
-    }
+                // Si la moneda seleccionada es CLP, simplemente mostrar el precio original sin conversiones
+                if (selectedCurrency === 'CLP') {
+                    productPriceElement.textContent = new Intl.NumberFormat('es-CL', {
+                        style: 'currency',
+                        currency: 'CLP'
+                    }).format(originalPrice);
+                    return;
+                }
 
-    const exchangeRate = await getExchangeRate(selectedCurrency); // Obtener la tasa de cambio
+                const exchangeRate = await getExchangeRate(selectedCurrency); // Obtener la tasa de cambio
 
-    // Manejo de error si no se puede obtener la tasa de cambio
-    if (!exchangeRate) {
-        alert('No se pudo obtener la tasa de cambio. Mostrando precio original.');
-        productPriceElement.textContent = new Intl.NumberFormat('es-CL', {
-            style: 'currency',
-            currency: 'CLP'
-        }).format(originalPrice);
-        return; // Salir de la función para evitar errores posteriores
-    }
+                // Manejo de error si no se puede obtener la tasa de cambio
+                if (!exchangeRate) {
+                    alert('No se pudo obtener la tasa de cambio. Mostrando precio original.');
+                    productPriceElement.textContent = new Intl.NumberFormat('es-CL', {
+                        style: 'currency',
+                        currency: 'CLP'
+                    }).format(originalPrice);
+                    return; // Salir de la función para evitar errores posteriores
+                }
 
-    // Calcular y mostrar el precio convertido
-    const convertedPrice = originalPrice * exchangeRate;
-    productPriceElement.textContent = new Intl.NumberFormat('es-CL', {
-        style: 'currency',
-        currency: selectedCurrency
-    }).format(convertedPrice);
-}
+                // Calcular y mostrar el precio convertido
+                const convertedPrice = originalPrice * exchangeRate;
+                productPriceElement.textContent = new Intl.NumberFormat('es-CL', {
+                    style: 'currency',
+                    currency: selectedCurrency
+                }).format(convertedPrice);
+            }
 
-// Inicializar el precio en CLP por defecto al cargar la página
-function initializeDefaultPrice() {
-    productPriceElement.textContent = new Intl.NumberFormat('es-CL', {
-        style: 'currency',
-        currency: 'CLP'
-    }).format(originalPrice);
-}
+            // Inicializar el precio en CLP por defecto al cargar la página
+            function initializeDefaultPrice() {
+                productPriceElement.textContent = new Intl.NumberFormat('es-CL', {
+                    style: 'currency',
+                    currency: 'CLP'
+                }).format(originalPrice);
+            }
 
-// Evento para detectar cambios en el selector de moneda
-currencySelector.addEventListener('change', updatePrice);
+            // Evento para detectar cambios en el selector de moneda
+            currencySelector.addEventListener('change', updatePrice);
 
-// Llamar la función de inicialización al cargar la página
-document.addEventListener('DOMContentLoaded', initializeDefaultPrice);
+            // Llamar la función de inicialización al cargar la página
+            document.addEventListener('DOMContentLoaded', initializeDefaultPrice);
 
-    </script>
+        </script>
     </body>
 
 </php>

@@ -17,6 +17,7 @@ include_once '..\config\conexion.php';
     <link rel="stylesheet" href="../assets/scss/delete.scss">
     <link rel="stylesheet" href="../assets/scss/cartPequeño.scss">
     <link rel="stylesheet" href="../assets/scss/cart.scss">
+    <link rel="stylesheet" href="../assets/css/cofeButton.css">
 
 
 
@@ -147,7 +148,7 @@ include_once '..\config\conexion.php';
                                                     <input type="hidden" name="id_producto"
                                                         value="<?= htmlspecialchars($producto['id_producto']); ?>">
                                                     <button type="submit" class="button_c" style="height:35px;">
-                                                        <span>Carrito</span>
+                                                        <span class="fw-bold">Carrito</span>
                                                         <div class="cart">
                                                             <svg viewBox="0 0 36 26">
                                                                 <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
@@ -167,13 +168,36 @@ include_once '..\config\conexion.php';
                                         </div>
                                     </div>
                                     <?php
+
+
+
                                 }
+                                if (count($productos_deseados) > 0): ?>
+                                    <!-- Botón para eliminar todos los productos de la lista de deseos -->
+                                    <div class="d-flex justify-content-center mt-2 mb-4">
+                                        <form action="../assets/php/vaciarListaDeseos.php" method="POST">
+                                            <button type="submit" class="button_d btn btn-danger p-2" style="width:400px;">
+                                                <div class="icon d-flex justify-content-center align-items-center">
+                                                    <svg class="top">
+                                                        <use xlink:href="#top"></use>
+                                                    </svg>
+                                                    <svg class="bottom">
+                                                        <use xlink:href="#bottom"></use>
+                                                    </svg>
+                                                </div>
+                                                <span class="fw-bold fs-6">Eliminar todos los productos de la lista de
+                                                    deseos</span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                <?php endif; ?>
+                                <?php
                             } else {
                                 echo "
                         <div class='d-flex justify-content-center align-items-center'>
                             <div class='text-center text-muted'>
                                 <p>No tienes productos en tu lista de deseos.</p>
-                                <a href='catalogo.php' class='btn btn-dark mt-3'>
+                                <a href='catalogo.php' class='coffebtn text-decoration-none mt-1'>
                                     <i class='bi bi-box-arrow-in-right'></i> Explorar productos
                                 </a>
                             </div>
@@ -225,9 +249,9 @@ include_once '..\config\conexion.php';
                                             <input type="hidden" name="productos[]"
                                                 value="<?= htmlspecialchars($producto['id_producto']); ?>">
                                         <?php } ?>
-                                        <button type="submit" id="addToCartButton" class="button mt-3"
+                                        <button type="submit" id="addToCartButton" class="button mt-3 mb-4"
                                             onclick="activarAnimacion(event)">
-                                            <span>Agregar todos los artículos al carrito</span>
+                                            <span class="fw-bold fs-6">Agregar todos los artículos al carrito</span>
                                             <div class="cart">
                                                 <svg viewBox="0 0 36 26">
                                                     <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
