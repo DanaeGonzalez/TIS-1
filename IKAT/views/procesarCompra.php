@@ -198,13 +198,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
                                     Envío<span id="valorEnvio">$0</span>
-                                    Envío<span id="valorEnvio"><em>Pendiente</em></span>
                                 </li>
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
                                     IVA Incluido<span id="valorImpuestos">$0</span>
-                                    Total IVA 19%<span
-                                        id="valorImpuestos">$<?= number_format(floor(($total * 0.19)), 0, '', '.') ?></span>
                                 </li>
 
                                 <li
@@ -300,9 +297,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
             // Obtener subtotal desde PHP (el formato ya debe ser correcto para parseFloat)
             const subtotal = parseFloat('<?= number_format(floor($total), 0, '', '.') ?>'.replace(/\./g, '').replace('$', '')) || 0;
     
-            // Configurar tasas y valor del subtotal de la compra (sin valor envío)
-            const tasaImpuestos = 1.19;
-            const subtotal = parseFloat('<?= number_format(floor($total), 0, '', '.') ?>'.replace(/\./g, '').replace('$', ''));
+             // Configurar tasas y valor del subtotal de la compra (sin valor envío)
+            const tasaImpuestos = 1.19; 
+            const valorEnvio = parseFloat(document.getElementById('valorEnvioInput').value) || 0;
 
             // Calcular impuestos integrados en los productos para que sea visible
             const impuestos = subtotal - (subtotal / tasaImpuestos);
