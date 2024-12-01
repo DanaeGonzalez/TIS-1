@@ -214,7 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                             </li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Subtotal<span>$<?= number_format(floor($total), 0, '', '.') ?></span>
+                                Subtotal<span>$<?= number_format(floor($totalFinal), 0, '', '.') ?></span>
                             </li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
