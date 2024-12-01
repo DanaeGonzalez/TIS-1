@@ -68,9 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     if ($descuento > $total_previo*0.7) {
         $descuento = $total_previo*0.7; // Los puntos alcanzan a cubrir hasta el 70% del total
     }
-    $total = $total_previo - $descuento;
-    $totalIVA = $total * 0.19;
-    $totalFinal = $total + $totalIVA;
+    $totalConDescuento = $total - $descuento;
+    $totalIVA = $totalConDescuento * 0.19;
+    $totalFinal = $totalConDescuento;
 
     // Obtener métodos de pago
     $query_metodo = "SELECT * FROM metodo_pago WHERE activo = 1";
@@ -321,7 +321,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
             const tasaImpuestos = 0.19;
 
             const totalIVA = subtotal * tasaImpuestos;
-            const totalFinal = subtotal + totalIVA + valorEnvio;
+            const totalFinal = subtotal + valorEnvio;
 
             document.getElementById('valorImpuestos').textContent = `$${formatNumber(totalIVA)}`;
             document.getElementById('totalConEnvioImpuestos').textContent = `$${formatNumber(totalFinal)}`;
