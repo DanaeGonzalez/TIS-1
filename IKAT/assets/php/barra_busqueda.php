@@ -8,7 +8,8 @@ if (isset($_GET['buscar'])) {
 
     // Consulta para buscar productos con LIKE
     $sql = "SELECT id_producto, nombre_producto, foto_producto, precio_unitario 
-            FROM producto WHERE nombre_producto LIKE ? AND activo = 1";
+            FROM producto WHERE nombre_producto LIKE ? AND activo = 1
+            ORDER BY nombre_producto ASC";
     $stmt = $conn->prepare($sql);
     $param = "%" . $buscar . "%";
     $stmt->bind_param("s", $param);
