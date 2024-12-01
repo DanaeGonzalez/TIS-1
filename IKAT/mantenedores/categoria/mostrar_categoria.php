@@ -14,20 +14,19 @@ unset($_SESSION['mensaje']);
     <title>IKAT - Mantenedor de Categorías</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="..\..\assets\css\styles.css">
+    <link rel="stylesheet" href="../../assets/css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
     <!-- Header -->
-    <?php include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/templates/header.php';?>
+    <?php include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/templates/header.php'; ?>
 
-    <div class="d-flex">
+    <div class="container-fluid d-flex flex-wrap p-0">
         <!-- Sidebar -->
-        <?php include '../sidebar-mantenedores.php';?>
+        <?php include '../sidebar-mantenedores.php'; ?>
 
         <!-- Content Area -->
-        <div class="content-area flex-grow-1 p-5 col-4 col-md-10">
-
+        <div class="flex-grow-1 p-4">
             <?php if ($mensaje): ?>
                 <div class="alert alert-info alert-dismissible fade show text-center" role="alert">
                     <?php echo $mensaje; ?>
@@ -36,82 +35,88 @@ unset($_SESSION['mensaje']);
             <?php endif; ?>
 
             <h1 class="text-center p-4">Mantenedor de Categorías</h1>
+
             <div class="table-responsive">
                 <?php
-                    $sql = "SELECT * FROM categoria";
-                    $result = $conn->query($sql);
+                $sql = "SELECT * FROM categoria";
+                $result = $conn->query($sql);
 
-                    if ($result->num_rows > 0) {
-                        echo "<table class='table table-bordered table-striped'>
-                                <thead class='thead-dark'>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Nombre</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>";
-                        while($row = $result->fetch_assoc()) {
-                            echo "<tr>
-                                    <td>" . $row["id_categoria"] . "</td>
-                                    <td>" . $row["nombre_categoria"] . "</td>
+                if ($result->num_rows > 0): ?>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while($row = $result->fetch_assoc()): ?>
+                                <tr>
+                                    <td><?= $row["id_categoria"] ?></td>
+                                    <td><?= htmlspecialchars($row["nombre_categoria"]) ?></td>
                                     <td>
-                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarCategoriaModal" . $row["id_categoria"] . "'>Editar</a> |
-                                        <a href='borrar_categoria.php?id=" . $row["id_categoria"] . "' class='btn btn-danger btn-sm'>Borrar</a>
+                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarCategoriaModal<?= $row["id_categoria"] ?>">Editar</button>
+                                        <a href="borrar_categoria.php?id=<?= $row["id_categoria"] ?>" class="btn btn-danger btn-sm">Borrar</a>
                                     </td>
-                                  </tr>";
+                                </tr>
 
-                            echo "
-                            <div class='modal fade' id='editarCategoriaModal" . $row["id_categoria"] . "' tabindex='-1' aria-labelledby='editarCategoriaModalLabel' aria-hidden='true'>
-                                <div class='modal-dialog'>
-                                    <div class='modal-content'>
-                                        <div class='modal-header'>
-                                            <h5 class='modal-title' id='editarCategoriaModalLabel'>Editar Producto</h5>
-                                            <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-                                        </div>
-                                        <div class='modal-body'>
-                                            <form action='actualizar_categoria.php' method='post'>
-                                                <input type='hidden' name='id_categoria' value='" . $row['id_categoria'] ."'>
-                                                Nombre: <input type='text' class='form-control' required name='nombre_categoria' value='" . $row['nombre_categoria'] . "'><br>
-
-                                                <input class='btn btn-primary d-block' type='submit' value='Actualizar Categoría'>
-                                                <a href='mostrar_categoria.php' class='btn btn-primary mt-3 d-block'>Volver</a>
-                                            </form>
+                                <!-- Modal para editar -->
+                                <div class="modal fade" id="editarCategoriaModal<?= $row["id_categoria"] ?>" tabindex="-1" aria-labelledby="editarCategoriaModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Editar Categoría</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="actualizar_categoria.php" method="post">
+                                                    <input type="hidden" name="id_categoria" value="<?= $row['id_categoria'] ?>">
+                                                    <div class="mb-3">
+                                                        <label for="nombre_categoria" class="form-label">Nombre</label>
+                                                        <input type="text" class="form-control" id="nombre_categoria" name="nombre_categoria" value="<?= htmlspecialchars($row['nombre_categoria']) ?>" required>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>";
-                        }
-                        echo "</tbody></table>";
-                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarCategoriaModal'>Agregar categoría</a>";
-                    } else {
-                        echo "<p class='text-center'>No hay categorías registradas.</p>";
-                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarCategoriaModal'>Agregar categoría</a>";
-                        echo "<a href='../menu/menu.html' class='btn btn-primary mt-3 d-block'>Volver al menú</a>";
-                    }
-                ?>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <p class="text-center">No hay categorías registradas.</p>
+                <?php endif; ?>
             </div>
 
-            <div class="modal fade" id="agregarCategoriaModal" tabindex="-1" aria-labelledby="agregarCategoriaModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="agregarCategoriaModalLabel">Agregar Categoria</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="insert_categoria.php" method="post">
-                                Nombre: <input class="form-control" type="text" name="nombre_categoria" required><br><br>
-
-                                <input class="form-control btn btn-primary d-block" type="submit" value="Crear categoría">
-                            </form>
-                        </div>
-                    </div>
-                </div>
+            <!-- Botón para agregar categoría -->
+            <div class="text-center">
+                <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#agregarCategoriaModal">Agregar Categoría</button>
             </div>
-
         </div>
     </div>
-    
+
+    <!-- Modal para agregar categoría -->
+    <div class="modal fade" id="agregarCategoriaModal" tabindex="-1" aria-labelledby="agregarCategoriaModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar Categoría</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="insert_categoria.php" method="post">
+                        <div class="mb-3">
+                            <label for="nombre_categoria" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombre_categoria" name="nombre_categoria" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Crear Categoría</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

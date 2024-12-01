@@ -54,16 +54,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     }
 } else {
 
-    $total = $_POST['total'] ?? 0;
-    $_SESSION['puntos_usados'] = $_POST['puntos_usar'];
+    $total_previo = $_POST['total'] ?? 0;
+    $_SESSION['puntos_usados'] = isset($_POST['puntos_usar']) && is_numeric($_POST['puntos_usar']) 
+    ? (int)$_POST['puntos_usar'] 
+    : 0;
+    $descuento = $_SESSION['puntos_usados']*5;
 
-    if ($total == 0) {
+    if ($total_previo == 0) {
         header("Location: carrito.php");
+        exit;
     }
 
-    $total -= $_SESSION['puntos_usados']*5;
-    $totalIVA = $total * 0.19;
-    $totalFinal = $total + $totalIVA;
+    if ($descuento > $total_previo*0.7) {
+        $descuento = $total_previo*0.7; // Los puntos alcanzan a cubrir hasta el 70% del total
+    }
+    $totalConDescuento = $total - $descuento;
+    $totalIVA = $totalConDescuento * 0.19;
+    $totalFinal = $totalConDescuento;
 
     // Obtener métodos de pago
     $query_metodo = "SELECT * FROM metodo_pago WHERE activo = 1";
@@ -197,25 +204,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                         <div class="col-md-4 mb-4 p-4 border bg-light rounded shadow-sm resumen-compra">
                             <h3 class="mb-4 text-center">Resumen de la Compra</h3>
                             <ul class="list-group">
-                                <li
-                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                    Subtotal<span>$<?= number_format(floor($total), 0, '', '.') ?></span>
-                                </li>
-                                <li
-                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                    Envío<span id="valorEnvio"><em>Pendiente</em></span>
-                                </li>
-                                <li
-                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                    Total IVA 19%<span
-                                        id="valorImpuestos">$<?= number_format(floor($totalIVA), 0, '', '.') ?></span>
-                                </li>
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+                                Valor Anterior<span>$<?= number_format(floor($total_previo), 0, '', '.') ?></span>
+                            </li>
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+                                Descuento por Puntos<span>-$<?= number_format(floor($descuento), 0, '', '.') ?></span>
+                            </li>
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+                                Subtotal<span>$<?= number_format(floor($totalFinal), 0, '', '.') ?></span>
+                            </li>
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+                                Envío<span id="valorEnvio"><em>Pendiente</em></span>
+                            </li>
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+                                Total IVA 19%<span
+                                    id="valorImpuestos">$<?= number_format(floor($totalIVA), 0, '', '.') ?></span>
+                            </li>
 
-                                <li
-                                    class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
-                                    Total<span
-                                        id="totalConEnvioImpuestos">$<?= number_format(floor($totalFinal), 0, '', '.') ?></span>
-                                </li>
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
+                                Total<span
+                                    id="totalConEnvioImpuestos">$<?= number_format(floor($totalFinal), 0, '', '.') ?></span>
+                            </li>
                             </ul>
                         </div>
 
@@ -306,7 +321,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
             const tasaImpuestos = 0.19;
 
             const totalIVA = subtotal * tasaImpuestos;
-            const totalFinal = subtotal + totalIVA + valorEnvio;
+            const totalFinal = subtotal + valorEnvio;
 
             document.getElementById('valorImpuestos').textContent = `$${formatNumber(totalIVA)}`;
             document.getElementById('totalConEnvioImpuestos').textContent = `$${formatNumber(totalFinal)}`;

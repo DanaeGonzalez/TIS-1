@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['puntos_usar'])) {
 }
 $totalConDescuento = $total - $descuento;
 $totalIVA = $totalConDescuento * 0.19;
-$totalFinal = $totalConDescuento + $totalIVA;
+$totalFinal = $totalConDescuento;
 
 ?>
 
@@ -83,6 +83,8 @@ $totalFinal = $totalConDescuento + $totalIVA;
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../assets/scss/delete.scss">
     <link rel="stylesheet" href="../assets/css/payButton.css">
+    <link rel="stylesheet" href="../assets/css/cofeButton.css">
+
 
 </head>
 
@@ -155,7 +157,7 @@ $totalFinal = $totalConDescuento + $totalIVA;
                                 echo "<input type='hidden' name='id_producto' value='{$row['id_producto']}'>";
                                 echo "<p class='mb-0 fw-bold fs-4 text-secondary'>\$" . number_format(floor($subtotal), 0, '', '.') . "</p>";
                                 echo "<br>";
-                                echo "<button type='submit' class='btn btn-danger btn-sm button mt-5'>";
+                                echo "<button type='submit' class='btn btn-danger btn-sm button_d mt-5'>";
                                 echo "<div class='icon'>";
                                 echo "<svg class='top'><use xlink:href='#top'></use></svg>";
                                 echo "<svg class='bottom'><use xlink:href='#bottom'></use></svg>";
@@ -166,6 +168,26 @@ $totalFinal = $totalConDescuento + $totalIVA;
                                 echo "</div>";
                             }
                             ?>
+                            <?php if ($total > 0): ?>
+                                <div class="d-flex justify-content-center mt-2 mb-4">
+                                    <form action="../assets/php/vaciarCarrito.php" method="POST">
+                                        <button type="submit" class="button_d btn btn-danger p-2" style="width:340px;">
+                                            <div class="icon">
+                                                <svg class="top">
+                                                    <use xlink:href="#top"></use>
+                                                </svg>
+                                                <svg class="bottom">
+                                                    <use xlink:href="#bottom"></use>
+                                                </svg>
+                                            </div>
+                                            <span class="fw-bold fs-6">Eliminar todos los productos del carrito</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            <?php endif; ?>
+
+
+
                         </div>
                     </div>
 
@@ -182,38 +204,39 @@ $totalFinal = $totalConDescuento + $totalIVA;
                             </li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Total IVA 19% <span>$<?= number_format(floor( $totalIVA), 0, '', '.') ?></span></li>
+                                Total IVA 19% <span>$<?= number_format(floor($totalIVA), 0, '', '.') ?></span></li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
                                 Total<span>$<?= number_format(floor($totalFinal), 0, '', '.') ?></span></li>
-                            </ul>
-                            <?php if ($total > 0): ?>
-                                <form action="procesarCompra.php" method="POST">
-                                    <input type="hidden" name="total" value="<?= $total ?>">
-                                    <label for="puntos_usar">Tienes <?= $puntos_disp ?> puntos.</label>
-                                    <input type="number" name="puntos_usar" id="puntos_usar" class="form-control"
-                                        max="<?= $puntos_disp ?>" min="0" placeholder="Cantidad de puntos a usar">
-                                    <button type="submit" class="BtnPay mt-3">
-                                        Procesar compra
-                                        <path
-                                            d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
-                                        </path>
-                                        </svg>
-                                    </button>
-                                </form>
-                                <a type="button" class="BtnPay mt-3" href="cotizacion.php" style="text-decoration: none;">
-                                    Generar Cotización
+                        </ul>
+                        <?php if ($total > 0): ?>
+                            <form action="procesarCompra.php" method="POST">
+                                <input type="hidden" name="total" value="<?= $total ?>">
+                                <label for="puntos_usar">Tienes <?= $puntos_disp ?> puntos.</label>
+                                <input type="number" name="puntos_usar" id="puntos_usar" class="form-control"
+                                    max="<?= $puntos_disp ?>" min="0" placeholder="Cantidad de puntos a usar">
+                                <button type="submit" class="BtnPay mt-3">
+                                    Procesar compra
                                     <path
                                         d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
                                     </path>
                                     </svg>
-                                </a>
-    
-                            <?php else: ?>
-                                <div class="alert alert-info mt-4 text-center">
-                                    Tu carrito está vacío. Agrega productos para continuar con la compra.
-                                </div>
-                            <?php endif; ?>
+                                </button>
+                            </form>
+                            <a type="button" class="coffebtn mt-3" href="cotizacion.php"
+                                style="text-decoration: none;">
+                                Generar Cotización
+                                <path
+                                    d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
+                                </path>
+                                </svg>
+                            </a>
+
+                        <?php else: ?>
+                            <div class="alert alert-info mt-4 text-center">
+                                Tu carrito está vacío. Agrega productos para continuar con la compra.
+                            </div>
+                        <?php endif; ?>
                     </div>
 
                 </div>
@@ -231,7 +254,7 @@ $totalFinal = $totalConDescuento + $totalIVA;
         crossorigin="anonymous"></script>
 
     <script>
-        document.querySelectorAll('.button').forEach(button => button.addEventListener('click', e => {
+        document.querySelectorAll('.button_d').forEach(button => button.addEventListener('click', e => {
             // Evitar la acción por defecto (enviar el formulario inmediatamente)
             e.preventDefault();
 

@@ -1,8 +1,51 @@
-body {
-  cursor: url("../../assets/images/cathand.png"), auto;
+.newsreader {
+  font-family: "Newsreader", serif !important;
+  font-optical-sizing: auto;
+  font-weight: 450;
+  font-style: normal;
 }
 
-a.btn,
+body {
+  /*cursor: url("../../assets/images/cathand.png"), auto;*/
+  font-family: "Newsreader", serif !important;
+}
+
+h1, h2, h3 {
+  font-family: "Newsreader", serif !important;
+  font-style: italic;
+}
+
+p,a {
+  font-family: "Newsreader", serif !important;
+  font-style: normal;
+}
+
+h4, h5, h6 {
+  font-family: "Newsreader", serif !important;
+  font-style:normal;
+}
+
+/*input[type="checkbox"] {
+  cursor: default !important; /* Cambia a la flecha predeterminada 
+}
+/* Cambiar el cursor a default para el checkbox 
+.form-check-input {
+  cursor: default !important; /* Asegura que el cursor sea la flecha predeterminada 
+}
+
+/* Cambiar el cursor a default para el label 
+.form-check-label {
+  cursor: default !important; /* Asegura que el cursor sea la flecha predeterminada
+}
+
+También puedes añadir este estilo por si el checkbox está deshabilitado 
+input[type="checkbox"]:disabled {
+  cursor: default !important; /* Asegura que el cursor sea la flecha predeterminada 
+}
+*/
+
+
+/*a.btn,
 a.nav-link,
 a.link-primary,
 button,
@@ -32,7 +75,7 @@ button.carousel-control-next {
 .container input[type="checkbox"] {
   cursor: url("../../assets/images/pointer.png"), pointer !important;
 }
-
+*/
 /* Estilo base para los botones */
 .button-style-header {
   display: inline-flex;
@@ -310,6 +353,28 @@ button.btn.btn-outline-dark:hover {
 }
 .product-image:hover {
   transform: translateY(-5px);
+}
+
+/* IMAGEN PRODUCTO */
+.product-image {
+  transition: transform 0.3s ease;
+}
+.product-image:hover {
+  transform: translateY(-5px);
+}
+
+
+
+.tooltip-inner {
+  background-color: var(--tooltip-bg, #bf8b4bf4) !important; /* Fondo del tooltip */
+  color: var(--tooltip-text, #ffffff) !important; /* Color del texto */
+  border-radius: 4px !important; /* Bordes redondeados */
+}
+
+
+/* Eliminar la flecha */
+body .tooltip .tooltip-arrow {
+  display: none !important; /* Elimina la flecha */
 }
 
 .resumen-compra {

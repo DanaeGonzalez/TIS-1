@@ -37,6 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
  else {
 
     $total = $_POST['total'] ?? 0;
+    $totalIVA = $total * 0.19;
+    $totalFinal = $total;
 
     // Obtener métodos de pago
     $query_metodo = "SELECT * FROM metodo_pago WHERE activo = 1";
@@ -128,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 // Botón de eliminar producto
                                 echo "<p class='mb-0 fw-bold fs-4 text-secondary'>\$" . number_format(floor($subtotal), 0, '', '.') . "</p>";
                                 /*echo "<br>";
-                                echo "<button type='button' class='btn btn-danger btn-sm button mt-5 eliminar-producto' data-id='{$row['id_producto']}'>";
+                                echo "<button type='button' class='btn btn-danger btn-sm button_d mt-5 eliminar-producto' data-id='{$row['id_producto']}'>";
                                 echo "<div class='icon'>";
                                 echo "<svg class='top'><use xlink:href='#top'></use></svg>";
                                 echo "<svg class='bottom'><use xlink:href='#bottom'></use></svg>";
@@ -220,7 +222,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 </li>
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                    IVA Incluido<span id="valorImpuestos">$0</span>
+                                    Total IVA 19%<span
+                                        id="valorImpuestos">$<?= number_format(floor($totalIVA), 0, '', '.') ?></span>
                                 </li>
 
                                 <li
@@ -252,7 +255,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
         crossorigin="anonymous"></script>
 
     <script>
-        document.querySelectorAll('.button').forEach(button => button.addEventListener('click', e => {
+        document.querySelectorAll('.button_d').forEach(button => button.addEventListener('click', e => {
             // Evitar la acción por defecto (enviar el formulario inmediatamente)
             e.preventDefault();
 
@@ -283,7 +286,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
         }
     })
     });*/
-        let map = L.map('map').setView([-36.79849246501831, -73.05592193108434], 12);
+    let map = L.map('map').setView([-36.79849246501831, -73.05592193108434], 12);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             Zoom: 15,
         }).addTo(map);
@@ -350,25 +353,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
         }
 
         function calcularTotal() {
-            // Obtener subtotal desde PHP (el formato ya debe ser correcto para parseFloat)
-            const subtotal = parseFloat('<?= number_format(floor($total), 0, '', '.') ?>'.replace(/\./g, '').replace('$', '')) || 0;
-    
-            // Configurar tasas y valor del subtotal de la compra (sin valor envío)
-            const tasaImpuestos = 1.19;
+            const subtotal = parseFloat(document.querySelector('input[name="total"]').value); 
             const valorEnvio = parseFloat(document.getElementById('valorEnvioInput').value) || 0;
+            const tasaImpuestos = 0.19;
 
-            // Calcular impuestos integrados en los productos para que sea visible
-            const impuestos = subtotal - (subtotal / tasaImpuestos);
-
-            // Calcular el total final
+            const totalIVA = subtotal * tasaImpuestos;
             const totalFinal = subtotal + valorEnvio;
 
-            // Actualiza la interfaz correctamente ahora
-            document.getElementById('valorImpuestos').textContent = `$${formatNumber(impuestos.toFixed(2))}`;
-            document.querySelector('.list-group-item.fw-bold span').textContent = `$${formatNumber(totalFinal.toFixed(2))}`;
-            document.getElementById('totalCalculado').value = totalFinal.toFixed(2); // Guardar el total para procesamiento posterior
-
-            console.log(`Subtotal: ${subtotal}, Impuestos: ${impuestos}, Envío: ${valorEnvio}, Total: ${totalFinal}`);
+            document.getElementById('valorImpuestos').textContent = `$${formatNumber(totalIVA)}`;
+            document.getElementById('totalConEnvioImpuestos').textContent = `$${formatNumber(totalFinal)}`;
+            document.getElementById('totalCalculado').value = totalFinal;
         }
 
         function formatNumber(num) {
