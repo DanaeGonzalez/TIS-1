@@ -82,6 +82,7 @@ if (isset($_POST['identificador'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="..\..\assets\css\styles.css">
+    <script src="..\..\assets\js\tooltips.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
@@ -131,26 +132,38 @@ if (isset($_POST['identificador'])) {
                         <li class="nav-item d-flex align-items-center gap-3">
 
                             <!-- Botón de catálogo -->
-                            <a href="..\catalogo.php" class="btn btn-link d-none d-lg-flex p-0">
-                                <i class="bi bi-bag fs-4 text-secondary"></i>
+                            <a href="views/catalogo.php"
+                                class="btn btn-link d-none d-lg-flex p-0 button-style-header catalogo-btn"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Ir al catálogo">
+                                <div class="px-1">
+                                    <i class="bi bi-bag fs-4 text-white"></i>
+                                </div>
                             </a>
 
                             <!-- Botón de lista de deseos -->
-                            <a href="login.php" class="btn btn-link p-0 d-none d-lg-flex">
-                                <i class="bi bi-heart fs-4 text-secondary"></i>
+                            <a href="views/menu_registro/login.php"
+                                class="btn btn-link p-0 d-none d-lg-flex button-style-header wishlist-btn"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Lista de deseos">
+                                <div class="px-1">
+                                    <i class="bi bi-heart fs-4 text-white"></i>
+                                </div>
                             </a>
 
                             <!-- Botón del carrito -->
-                            <a href="login.php" class="btn btn-link p-0 d-none d-lg-flex">
-                                <i class="bi bi-cart fs-4 text-secondary"></i>
+                            <a href="views/menu_registro/login.php"
+                                class="btn btn-link p-0 d-none d-lg-flex button-style-header cart-btn"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Ver carrito">
+                                <div class="px-1">
+                                    <i class="bi bi-cart fs-4 text-white"></i>
+                                </div>
                             </a>
 
                             <!-- Menú de usuario -->
                             <div class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="/xampp/TIS-1/IKAT/assets/images/profile/01.webp"
-                                    alt="User Image" class="user-avatar me-2">
+                                    <img src="/xampp/TIS-1/IKAT/assets/images/profile/01.webp" alt="User Image"
+                                        class="user-avatar me-2">
                                     Usuario
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -172,23 +185,24 @@ if (isset($_POST['identificador'])) {
             <hr>
             <div class="row mt-5 d-flex justify-content-center">
                 <?php
-                    if (isset($_GET['msg'])) {
-                      switch ($_GET['msg']) {
-                        case 'ok':?>
+                if (isset($_GET['msg'])) {
+                    switch ($_GET['msg']) {
+                        case 'ok': ?>
                             <div class="alert alert-warning" role="alert">Por favor, revisa tu correo electrónico.</div>
                             <?php
                             break;
-                        case 'success_pass':?>
+                        case 'success_pass': ?>
                             <div class="alert alert-success" role="alert">¡Ya puedes iniciar sesión con tu nueva contraseña!</div>
                             <?php
                             break;
-                            
+
                         default: ?>
-                            <div class="alert alert-danger" role="alert">Algo salió mal. Por favor, intenta recuperar tu contraseña nuevamente.</div>
+                            <div class="alert alert-danger" role="alert">Algo salió mal. Por favor, intenta recuperar tu contraseña
+                                nuevamente.</div>
                             <?php
                             break;
-                      }  
-                    }    
+                    }
+                }
                 ?>
                 <!-- Formulario de inicio de sesión -->
                 <div class="col-md-6 border rounded-3 shadow-lg px-5 pt-5 pb-3 bg-light">
@@ -212,7 +226,8 @@ if (isset($_POST['identificador'])) {
                     <p class="text-center mt-4">
                         ¿No estás registrado aún? <br><a href="registro.php"
                             class="text-decoration-none text-secondary fw-semibold">Regístrate aquí</a><br><br>
-                            <a href="recovery.php" class="text-decoration-none text-dark fw-bold">¿Olvidaste tu contraseña?</a>
+                        <a href="recovery.php" class="text-decoration-none text-dark fw-bold">¿Olvidaste tu
+                            contraseña?</a>
                     </p>
                 </div>
             </div>

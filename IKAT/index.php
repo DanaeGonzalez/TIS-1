@@ -57,19 +57,31 @@
               <li class="nav-item d-flex align-items-center gap-3">
 
                 <!-- Botón de catálogo -->
-                <a href="views/catalogo.php" class="btn btn-link d-none d-lg-flex p-0">
-                  <i class="bi bi-bag fs-4 text-secondary"></i>
+                <a href="views/catalogo.php" class="btn btn-link d-none d-lg-flex p-0 button-style-header catalogo-btn"
+                  data-bs-toggle="tooltip" data-bs-placement="top" title="Ir al catálogo">
+                  <div class="p-1">
+                    <i class="bi bi-bag fs-4 text-white"></i>
+                  </div>
                 </a>
 
                 <!-- Botón de lista de deseos -->
-                <a href="views/menu_registro/login.php" class="btn btn-link p-0 d-none d-lg-flex">
-                  <i class="bi bi-heart fs-4 text-secondary"></i>
+                <a href="views/menu_registro/login.php"
+                  class="btn btn-link p-0 d-none d-lg-flex button-style-header wishlist-btn" data-bs-toggle="tooltip"
+                  data-bs-placement="top" title="Lista de deseos">
+                  <div class="p-1">
+                    <i class="bi bi-heart fs-4 text-white"></i>
+                  </div>
                 </a>
 
                 <!-- Botón del carrito -->
-                <a href="views/menu_registro/login.php" class="btn btn-link p-0 d-none d-lg-flex">
-                  <i class="bi bi-cart fs-4 text-secondary"></i>
+                <a href="views/menu_registro/login.php"
+                  class="btn btn-link p-0 d-none d-lg-flex button-style-header cart-btn" data-bs-toggle="tooltip"
+                  data-bs-placement="top" title="Ver carrito">
+                  <div class="p-1">
+                    <i class="bi bi-cart fs-4 text-white"></i>
+                  </div>
                 </a>
+
                 <!-- Menú de usuario -->
                 <div class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
@@ -278,6 +290,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"></script>
+
+    <script>
+      // Habilitar todos los tooltips
+      document.addEventListener('DOMContentLoaded', function () {
+        var tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+          new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+      });
+    </script>
   </body>
 
 </php>

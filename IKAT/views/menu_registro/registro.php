@@ -12,6 +12,7 @@ include '..\..\config\conexion.php';
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="..\..\assets\css\styles.css">
+        <script src="..\..\assets\js\tooltips.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     </head>
@@ -63,18 +64,30 @@ include '..\..\config\conexion.php';
                             <li class="nav-item d-flex align-items-center gap-3">
 
                                 <!-- Botón de catálogo -->
-                                <a href="..\catalogo.php" class="btn btn-link d-none d-lg-flex p-0">
-                                    <i class="bi bi-bag fs-4 text-secondary"></i>
+                                <a href="views/catalogo.php"
+                                    class="btn btn-link d-none d-lg-flex p-0 button-style-header catalogo-btn"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Ir al catálogo">
+                                    <div class="p-1">
+                                        <i class="bi bi-bag fs-4 text-white"></i>
+                                    </div>
                                 </a>
 
                                 <!-- Botón de lista de deseos -->
-                                <a href="login.php" class="btn btn-link p-0 d-none d-lg-flex">
-                                    <i class="bi bi-heart fs-4 text-secondary"></i>
+                                <a href="views/menu_registro/login.php"
+                                    class="btn btn-link p-0 d-none d-lg-flex button-style-header wishlist-btn"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Lista de deseos">
+                                    <div class="p-1">
+                                        <i class="bi bi-heart fs-4 text-white"></i>
+                                    </div>
                                 </a>
 
                                 <!-- Botón del carrito -->
-                                <a href="login.php" class="btn btn-link p-0 d-none d-lg-flex">
-                                    <i class="bi bi-cart fs-4 text-secondary"></i>
+                                <a href="views/menu_registro/login.php"
+                                    class="btn btn-link p-0 d-none d-lg-flex button-style-header cart-btn"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Ver carrito">
+                                    <div class="p-1">
+                                        <i class="bi bi-cart fs-4 text-white"></i>
+                                    </div>
                                 </a>
 
                                 <!-- Menú de usuario -->
