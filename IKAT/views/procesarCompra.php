@@ -42,10 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     $fecha_compra = date('Y-m-d H:i:s');
     $puntos_ganados = $total_compra * 0.05;
 
-    if ($valor_envio>0) {
-        $total_compra += $_POST['valor_envio'];
-    }
-
     // Insertar en la base de datos
     $query = "INSERT INTO compra (id_compra, fecha_compra, total_compra, puntos_ganados, direccion_pedido, id_metodo, id_usuario) 
               VALUES (NULL, '$fecha_compra', '$total_compra', '$puntos_ganados', '$direccion_pedido', '$id_metodo', '$id_usuario')";
@@ -59,13 +55,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 } else {
 
     $total = $_POST['total'] ?? 0;
-    $puntos_usados = $_POST['puntos_usar'];
+    $_SESSION['puntos_usados'] = $_POST['puntos_usar'];
 
     if ($total == 0) {
         header("Location: carrito.php");
     }
 
-    $total -= $puntos_usados*5;
+    $total -= $_SESSION['puntos_usados']*5;
     $totalIVA = $total * 0.19;
     $totalFinal = $total + $totalIVA;
 
@@ -314,7 +310,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
             document.getElementById('valorImpuestos').textContent = `$${formatNumber(totalIVA)}`;
             document.getElementById('totalConEnvioImpuestos').textContent = `$${formatNumber(totalFinal)}`;
-            document.getElementById('totalCalculado').value = totalFinal; // Asignar el total final
+            document.getElementById('totalCalculado').value = totalFinal;
         }
 
         function formatNumber(num) {
