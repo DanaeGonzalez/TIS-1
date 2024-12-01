@@ -41,6 +41,7 @@ $id_usuario = $_SESSION['id_usuario'] ?? null; // Asigna el valor o null si no e
                     <div class="tab-content">
                         <!-- Pendientes Tab -->
                         <div class="tab-pane fade show active" id="pendientes" role="tabpanel" aria-labelledby="pendientes-tab">
+                            <!-- Seccion superior -->
                             <div class="highlight-box">
                                 <i class="bi bi-star-fill" style="font-size: 2rem; color: #ffc107;"></i>
                                 <div>
@@ -48,17 +49,16 @@ $id_usuario = $_SESSION['id_usuario'] ?? null; // Asigna el valor o null si no e
                                     <p class="mb-0">Día a día, miles de personas leen opiniones antes de decidir su compra. ¡Comparte las tuyas!</p>
                                 </div>
                             </div>
-
+                            
+                            <!-- Producto -->
                             <div class="d-flex border rounded p-3 mb-3 bg-light">
                                 <div class="row align-items-center w-100">
-                                    <!-- Información del producto -->
                                     <div class="col-3 d-flex align-items-center">
                                         <img src="../assets/images/productos/1732820938-sillon rojo.jpg" alt="Producto" width="50" height="50" class="rounded me-3">
                                         <div>
                                             <p class="mb-1 fw-bold">Sillón rojo</p>
                                         </div>
                                     </div>
-                                    <!-- Estrellas centradas horizontalmente -->
                                     <div class="col-3 d-flex justify-content-center">
                                         <div class="star-rating">
                                             <i class="bi bi-star" data-value="1"></i>
@@ -77,16 +77,15 @@ $id_usuario = $_SESSION['id_usuario'] ?? null; // Asigna el valor o null si no e
                                 </div>
                             </div>
 
+                            <!-- Producto -->
                             <div class="d-flex border rounded p-3 mb-3 bg-light">
                                 <div class="row align-items-center w-100">
-                                    <!-- Información del producto -->
                                     <div class="col-3 d-flex align-items-center">
                                         <img src="../assets/images/productos/1732821050-sillon_amarillo.jpg" alt="Producto" width="50" height="50" class="rounded me-3">
                                         <div>
                                             <p class="mb-1 fw-bold">Sillón Amarillo</p>
                                         </div>
                                     </div>
-                                    <!-- Estrellas centradas horizontalmente -->
                                     <div class="col-3 d-flex justify-content-center">
                                         <div class="star-rating">
                                             <i class="bi bi-star" data-value="1"></i>
@@ -110,6 +109,7 @@ $id_usuario = $_SESSION['id_usuario'] ?? null; // Asigna el valor o null si no e
 
                         <!-- Realizadas Tab -->
                         <div class="tab-pane fade" id="realizadas" role="tabpanel" aria-labelledby="realizadas-tab">
+                            <!-- Seccion superior -->
                             <div class="d-flex justify-content-between highlight-box">
                                 <div class="d-flex align-items-center gap-3">
                                     <i class="bi bi-star-fill" style="font-size: 2rem; color: #ffc107;"></i>
@@ -120,6 +120,33 @@ $id_usuario = $_SESSION['id_usuario'] ?? null; // Asigna el valor o null si no e
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <p class="text-secondary m-0">1 - 3 de 3 opiniones realizadas</p>
+                                </div>
+                            </div>
+
+                            <!-- Producto -->
+                            <div class="d-flex border rounded p-3 mb-3 bg-light">
+                                <div class="row align-items-center w-100">
+                                    <div class="col-3 d-flex align-items-center">
+                                        <img src="../assets/images/productos/1732821050-sillon_amarillo.jpg" alt="Producto" width="50" height="50" class="rounded me-3">
+                                        <div>
+                                            <p class="mb-1 fw-bold">Sillón Amarillo</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-3 d-flex justify-content-center">
+                                        <div class="star-rating">
+                                            <i class="bi bi-star" data-value="1"></i>
+                                            <i class="bi bi-star" data-value="2"></i>
+                                            <i class="bi bi-star" data-value="3"></i>
+                                            <i class="bi bi-star" data-value="4"></i>
+                                            <i class="bi bi-star" data-value="5"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-3 d-flex align-items-center">
+                                        <small class="text-muted">Realizada el 08 de nov.</small>
+                                    </div>
+                                    <div class="col-3 d-flex justify-content-center">
+                                        <button type="button" class="btn btn-outline-primary btn-sm">Editar mi reseña</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
