@@ -1,8 +1,36 @@
-body{
-  cursor: url("../../assets/images/cathand.png"),auto;
+.newsreader {
+  font-family: "Newsreader", serif !important;
+  font-optical-sizing: auto;
+  font-weight: 450;
+  font-style: normal;
 }
 
-a.btn, a.nav-link, a.link-primary, button, [type="button"], [type="submit"] {
+body {
+  cursor: url("../../assets/images/cathand.png"), auto;
+  font-family: "Newsreader", serif !important;
+}
+
+h1, h2, h3 {
+  font-family: "Newsreader", serif !important;
+  font-style: italic;
+}
+
+p,a {
+  font-family: "Newsreader", serif !important;
+  font-style: normal;
+}
+
+h4, h5, h6 {
+  font-family: "Newsreader", serif !important;
+  font-style:normal;
+}
+
+a.btn,
+a.nav-link,
+a.link-primary,
+button,
+[type="button"],
+[type="submit"] {
   cursor: url("../../assets/images/pointer.png"), pointer;
 }
 
