@@ -36,6 +36,12 @@ unset($_SESSION['mensaje']);
             <?php endif; ?>
 
             <h1 class="text-center p-4">Mantenedor de Usuarios</h1>
+
+            <div class="d-flex justify-content-end mb-3">
+                    <a class="btn btn-success" data-bs-toggle='modal' data-bs-target='#agregarUsuarioModal'>
+                        <i class="bi bi-file-earmark-plus"></i>
+                    </a>
+                </div>
             
             <div class="table-responsive">
                 <?php
@@ -150,12 +156,8 @@ unset($_SESSION['mensaje']);
 
                         }
                         echo "</tbody></table>";
-                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarUsuarioModal'>Agregar Usuario</a>";
-                        echo "<a href='../Mantenedor_puntos/modificar_puntos_usuario.php' class='btn btn-primary mt-3 d-block'>Mantenedor Puntos</a>";
                     } else {
                         echo "<p class='text-center'>No hay usuarios registrados.</p>";
-                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarUsuarioModal'>Agregar Usuario</a>";
-                        echo "<a href='../menu/menu.html' class='btn btn-primary mt-3 d-block'>Volver al menú</a>";
                     }
                 ?>
             </div>
