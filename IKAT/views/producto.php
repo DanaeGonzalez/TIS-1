@@ -147,11 +147,16 @@
 
                         </div>
 
-
-
                         <div class="col-md-6">
                             <div class="d-flex justify-content-between align-items-center me-2">
                                 <h1><?= htmlspecialchars($producto['nombre_producto']) ?></h1>
+                                <select id="currencySelector" class="form-select" style="width: auto;">
+                                    <option value="CLP" selected>CLP (Peso chileno)</option>
+                                    <option value="USD">USD (Dólar)</option>
+                                    <option value="EUR">EUR (Euro)</option>
+                                    <option value="GBP">GBP (Libra)</option>
+                                </select>
+
 
                                 <?php
                                 //Mostrar si el usuario esta registrado
@@ -172,7 +177,11 @@
                                 }
                                 ?>
                             </div>
-                            <h2 class="text-dark ">$<?= number_format($producto['precio_unitario'], 0, ',', '.') ?>
+                            <h2 class="text-dark">
+                                <span id="productPrice"><?= number_format($producto['precio_unitario'], 0, ',', '.') ?></span>
+                            </h2>
+
+
                                 <?php
                                 //Mostrar si el usuario esta registrado
                                 if (isset($_SESSION['id_usuario'])) {
@@ -634,6 +643,95 @@
                 document.body.removeChild(tempInput);
             }
         </script>
+        <script>
+            const API_KEY = '733c6075a58957fdec754104f8e961eb';
+const BASE_URL = 'https://data.fixer.io/api/';
+const baseCurrency = 'EUR'; // Usar EUR como base por ser la permitida por FIXER
+const originalPrice = <?= $producto['precio_unitario'] ?>; // Precio original en CLP
+const currencySelector = document.getElementById('currencySelector');
+const productPriceElement = document.getElementById('productPrice');
+
+// Función para obtener las tasas de cambio
+async function getExchangeRate(toCurrency) {
+    const cacheKey = `exchangeRate_${toCurrency}`;
+    const cacheTimeKey = `exchangeRateTime_${toCurrency}`;
+    const now = Date.now();
+
+    // Verifica si la tasa está en caché
+    const cachedRate = localStorage.getItem(cacheKey);
+    const cachedTime = localStorage.getItem(cacheTimeKey);
+
+    if (cachedRate && cachedTime && now - cachedTime < 3600) { // 1 hora
+        return parseFloat(cachedRate);
+    }
+
+    // Si no está en caché, realiza la solicitud
+    try {
+        const response = await fetch(`${BASE_URL}latest?access_key=${API_KEY}&base=${baseCurrency}&symbols=${toCurrency}`);
+        const data = await response.json();
+        if (data.success) {
+            const rate = data.rates[toCurrency];
+            localStorage.setItem(cacheKey, rate);
+            localStorage.setItem(cacheTimeKey, now);
+            return rate;
+        } else {
+            console.error('Error en la API:', data.error);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error en la petición:', error);
+        return null;
+    }
+}
+
+// Función para actualizar el precio en base a la moneda seleccionada
+async function updatePrice() {
+    const selectedCurrency = currencySelector.value; // Obtener la moneda seleccionada
+
+    // Si la moneda seleccionada es CLP, simplemente mostrar el precio original sin conversiones
+    if (selectedCurrency === 'CLP') {
+        productPriceElement.textContent = new Intl.NumberFormat('es-CL', {
+            style: 'currency',
+            currency: 'CLP'
+        }).format(originalPrice);
+        return;
+    }
+
+    const exchangeRate = await getExchangeRate(selectedCurrency); // Obtener la tasa de cambio
+
+    // Manejo de error si no se puede obtener la tasa de cambio
+    if (!exchangeRate) {
+        alert('No se pudo obtener la tasa de cambio. Mostrando precio original.');
+        productPriceElement.textContent = new Intl.NumberFormat('es-CL', {
+            style: 'currency',
+            currency: 'CLP'
+        }).format(originalPrice);
+        return; // Salir de la función para evitar errores posteriores
+    }
+
+    // Calcular y mostrar el precio convertido
+    const convertedPrice = originalPrice * exchangeRate;
+    productPriceElement.textContent = new Intl.NumberFormat('es-CL', {
+        style: 'currency',
+        currency: selectedCurrency
+    }).format(convertedPrice);
+}
+
+// Inicializar el precio en CLP por defecto al cargar la página
+function initializeDefaultPrice() {
+    productPriceElement.textContent = new Intl.NumberFormat('es-CL', {
+        style: 'currency',
+        currency: 'CLP'
+    }).format(originalPrice);
+}
+
+// Evento para detectar cambios en el selector de moneda
+currencySelector.addEventListener('change', updatePrice);
+
+// Llamar la función de inicialización al cargar la página
+document.addEventListener('DOMContentLoaded', initializeDefaultPrice);
+
+    </script>
     </body>
 
 </php>
