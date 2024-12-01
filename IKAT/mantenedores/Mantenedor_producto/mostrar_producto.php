@@ -218,6 +218,11 @@
 
                         if ($result) {
                             if ($result->num_rows > 0) {
+                                echo "  <div class='d-flex justify-content-end'>
+                                            <a class='btn btn-success' data-bs-toggle='modal' data-bs-target='#agregarProductoModal'>
+                                                <i class='bi bi-file-earmark-plus'></i>
+                                            </a>
+                                        </div>";
                                 echo "<table class='table table-bordered table-striped'>
                                         <thead class='thead-dark'>
                                             <tr>
@@ -240,7 +245,11 @@
                                             <td>" . $row["nombre_producto"] . "</td>
                                             <td>" . $row["precio_unitario"] . "</td>
                                             <td>" . $row["stock_producto"] . "</td>
-                                            <td>" . $row["descripcion_producto"] . "</td>
+                                            <td>
+                                                <div class='text-truncate' style='max-width: 200px;' title='" . htmlspecialchars($row["descripcion_producto"]) . "'>
+                                                    " . htmlspecialchars($row["descripcion_producto"]) . "
+                                                </div>
+                                            </td>
                                             <td><img src='" . $row["foto_producto"] . "' alt='Foto del producto' width='50'></td>
                                             <td>" . $row["cantidad_vendida"] . "</td>
                                             <td>" . ($row["top_venta"] ? "Sí" : "No") . "</td>
@@ -253,9 +262,16 @@
                                                     <a class='btn btn-info btn-sm' data-bs-toggle='modal' data-bs-target='#agregarCaracteristicasModal" . $row["id_producto"] . "'>
                                                         <i class='bi bi-database-add'></i>
                                                     </a>
-                                                    <a href='cambiar_estado_producto.php?id=" . $row["id_producto"] . "' class='btn btn-danger btn-sm'>
+                                                    <a class='btn btn-primary btn-sm' data-bs-toggle='modal' data-bs-target='#modificarProductoStockModal" . $row["id_producto"] . "'>
+                                                        <i class='bi bi-plus-circle'></i>
+                                                    </a>
+                                                    <a class='btn btn-secondary btn-sm' href='historial_producto.php?id_producto=" . $row["id_producto"] . "' class='btn btn-info'>
+                                                        <i class='bi bi-clock-history'></i>
+                                                    </a>
+                                                    <a class='btn btn-danger btn-sm' href='cambiar_estado_producto.php?id=" . $row["id_producto"] . "'>
                                                         <i class='bi bi-trash3'></i>
                                                     </a>
+
                                                 </div>
                                             </td>
                                         </tr>";
@@ -286,6 +302,41 @@
                                             </div>
                                         </div>
                                     </div>";
+
+                                    echo "
+                                    <div class='modal fade' id='modificarProductoStockModal" . $row["id_producto"] . "' tabindex='-1' aria-labelledby='modificarProductoStockModalLabel" . $row["id_producto"] . "' aria-hidden='true'>
+                                        <div class='modal-dialog'>
+                                            <div class='modal-content'>
+                                                <div class='modal-header'>
+                                                    <h5 class='modal-title' id='modificarProductoStockModalLabel" . $row["id_producto"] . "'>Agregar Producto</h5>
+                                                    <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                                </div>
+                                                <div class='modal-body'>
+                                                    <form action='actualizar_stock.php' method='POST'>
+                                                        <input type='hidden' name='id_producto' value='" . $row['id_producto'] . "'>
+                                                        <div class='mb-3'>
+                                                            <label for='cantidad' class='form-label'>Cantidad</label>
+                                                            <input type='number' class='form-control' id='cantidad' name='cantidad' required>
+                                                        </div>
+                                                        <div class='mb-3'>
+                                                            <label for='motivo' class='form-label'>Motivo</label>
+                                                            <select class='form-select' id='motivo' name='motivo' required>
+                                                                <option value='' disabled selected>Seleccione el motivo</option>
+                                                                <option value='Ingreso'>Ingreso</option>
+                                                                <option value='Salida'>Salida</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class='mb-3'>
+                                                            <label for='explicacion' class='form-label'>Explicación</label>
+                                                            <textarea class='form-control' id='explicacion' name='explicacion' rows='3' required></textarea>
+                                                        </div>
+                                                        <button type='submit' class='btn btn-primary'>Guardar Cambio de Stock</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>";
+
 
                                     echo "
                                     <div class='modal fade' id='agregarCaracteristicasModal" . $row["id_producto"] . "' tabindex='-1' aria-labelledby='agregarCaracteristicasModalLabel" . $row["id_producto"] . "' aria-hidden='true'>
@@ -536,15 +587,16 @@
                                     </div>";
                                 }
                                 echo "</tbody></table>";
-                                echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarProductoModal'>Agregar Producto</a>";
-                                echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#modificarProductoStockModal'>Modificar Stock</a>";
-                                echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#historialProductoModal'>Ver Historial de Producto</a>";
-                            } else {
+                                } else {
                                 echo "<p class='text-center'>No hay productos registrados.</p>";
-                                echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarProductoModal'>Agregar Producto</a>";
                             }
                         } else {
                             echo "<p class='text-danger'>Error en la consulta: " . $conn->error . "</p>";
+                            echo "  <div class='d-flex justify-content-end'>
+                                            <a class='btn btn-success' data-bs-toggle='modal' data-bs-target='#agregarProductoModal'>
+                                                <i class='bi bi-file-earmark-plus'></i>
+                                            </a>
+                                        </div>";
                         }
                     ?>
                 </div>
@@ -623,34 +675,6 @@
             </div>
         </div>
 
-        <div class="modal fade" id="historialProductoModal" tabindex="-1" aria-labelledby="historialProductoModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="historialProductoModalLabel">Historial de Producto</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="historial_producto.php" method="get">
-                            <div class="mb-3">
-                                <label for="id_producto" class="form-label">Selecciona el producto</label>
-                                <select class="form-select" name="id_producto" required>
-                                    <option value="" disabled selected>Selecciona un producto</option>
-                                    <?php
-                                        echo $opcionesProducto;
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">Ver Historial</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
         <script>
             function mostrarCaracteristicas(idProducto) {
                 const tipoProducto = document.getElementById('tipoProducto' + idProducto).value;
@@ -681,11 +705,6 @@
                 }
             }
         </script>
-
-
-
-
-
     </body>
     </html>
 
