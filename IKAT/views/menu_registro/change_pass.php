@@ -36,7 +36,7 @@ $result = mysqli_query($conn, $query);
                     </button>
 
                     <!-- Botón de catálogo -->
-                    <a href="views/catalogo.php"
+                    <a href="../catalogo.php"
                         class="btn btn-link d-none d-lg-flex p-0 button-style-header catalogo-btn"
                         data-bs-toggle="tooltip" data-bs-placement="top" title="Ir al catálogo">
                         <div class="p-1">
@@ -45,7 +45,7 @@ $result = mysqli_query($conn, $query);
                     </a>
 
                     <!-- Botón de lista de deseos -->
-                    <a href="views/menu_registro/login.php"
+                    <a href="login.php"
                         class="btn btn-link p-0 d-none d-lg-flex button-style-header wishlist-btn"
                         data-bs-toggle="tooltip" data-bs-placement="top" title="Lista de deseos">
                         <div class="p-1">
@@ -54,7 +54,7 @@ $result = mysqli_query($conn, $query);
                     </a>
 
                     <!-- Botón del carrito -->
-                    <a href="views/menu_registro/login.php"
+                    <a href="login.php"
                         class="btn btn-link p-0 d-none d-lg-flex button-style-header cart-btn" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Ver carrito">
                         <div class="p-1">

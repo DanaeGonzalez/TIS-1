@@ -132,7 +132,7 @@ if (isset($_POST['identificador'])) {
                         <li class="nav-item d-flex align-items-center gap-3">
 
                             <!-- Botón de catálogo -->
-                            <a href="views/catalogo.php"
+                            <a href="../catalogo.php"
                                 class="btn btn-link d-none d-lg-flex p-0 button-style-header catalogo-btn"
                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Ir al catálogo">
                                 <div class="px-1">
@@ -141,7 +141,7 @@ if (isset($_POST['identificador'])) {
                             </a>
 
                             <!-- Botón de lista de deseos -->
-                            <a href="views/menu_registro/login.php"
+                            <a href="login.php"
                                 class="btn btn-link p-0 d-none d-lg-flex button-style-header wishlist-btn"
                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Lista de deseos">
                                 <div class="px-1">
@@ -150,7 +150,7 @@ if (isset($_POST['identificador'])) {
                             </a>
 
                             <!-- Botón del carrito -->
-                            <a href="views/menu_registro/login.php"
+                            <a href="login.php"
                                 class="btn btn-link p-0 d-none d-lg-flex button-style-header cart-btn"
                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Ver carrito">
                                 <div class="px-1">
