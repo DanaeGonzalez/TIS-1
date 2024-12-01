@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 // Botón de eliminar producto
                                 echo "<p class='mb-0 fw-bold fs-4 text-secondary'>\$" . number_format(floor($subtotal), 0, '', '.') . "</p>";
                                 /*echo "<br>";
-                                echo "<button type='button' class='btn btn-danger btn-sm button mt-5 eliminar-producto' data-id='{$row['id_producto']}'>";
+                                echo "<button type='button' class='btn btn-danger btn-sm button_d mt-5 eliminar-producto' data-id='{$row['id_producto']}'>";
                                 echo "<div class='icon'>";
                                 echo "<svg class='top'><use xlink:href='#top'></use></svg>";
                                 echo "<svg class='bottom'><use xlink:href='#bottom'></use></svg>";
@@ -252,7 +252,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
         crossorigin="anonymous"></script>
 
     <script>
-        document.querySelectorAll('.button').forEach(button => button.addEventListener('click', e => {
+        document.querySelectorAll('.button_d').forEach(button => button.addEventListener('click', e => {
             // Evitar la acción por defecto (enviar el formulario inmediatamente)
             e.preventDefault();
 

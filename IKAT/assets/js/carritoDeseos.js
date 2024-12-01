@@ -27,7 +27,7 @@ function agregarAlCarrito(productId, cantidadInputId = null) {
         .catch((error) => console.error('Error:', error));
 }
 
-function agregarAListaDeDeseos(productId, successMessage = 'Producto agregado a la lista de deseos!', errorMessage = 'Error al agregar el producto a la lista de deseos.') {
+function agregarAListaDeDeseos(productId, successMessage = 'Producto agregado a la lista de deseos!', errorMessage = 'El producto ya se encuentra en la lista de deseos.') {
     fetch('../assets/php/agregarAdeseos.php', {
             method: 'POST',
             headers: {
