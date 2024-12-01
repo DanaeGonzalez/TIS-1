@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_compra = $row['id_compra'];
             if (!isset($historial[$id_compra])) {
                 $historial[$id_compra] = [
+                    'id_compra' => $id_compra, 
                     'fecha_compra' => $row['fecha_compra'],
                     'productos' => []
                 ];
