@@ -605,7 +605,7 @@
                             setTimeout(() => document.getElementById('alertSuccess').style.display = 'none', 3000);
                         } else {
                             document.getElementById('alertError').style.display = 'block';
-                            document.getElementById('alertError').textContent = data.message || 'Error al agregar el producto a la lista de deseos.';
+                            document.getElementById('alertError').textContent = data.message || 'El producto ya se encuentra en la lista de deseos.';
                             setTimeout(() => document.getElementById('alertError').style.display = 'none', 3000);
                         }
                     })

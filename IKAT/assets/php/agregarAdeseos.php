@@ -35,7 +35,7 @@ if ($id_producto) {
         if ($result) {
             echo json_encode(['success' => true, 'message' => 'Producto agregado a la lista de deseos.']);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Error al agregar el producto a la lista de deseos.']);
+            echo json_encode(['success' => false, 'message' => 'El producto ya se encuentra en la lista de deseos.']);
         }
     }
 
