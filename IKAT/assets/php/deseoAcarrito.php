@@ -15,11 +15,6 @@ if (isset($_POST['productos']) && is_array($_POST['productos'])) {
     $id_lista_deseos = $fila_lista['id_lista_deseos'];
 
     foreach ($productos as $id_producto) {
-        // Eliminar el producto de la lista de deseos
-        $eliminar_producto_lista = $conn->prepare("DELETE FROM lista_deseos_producto WHERE id_lista_deseos = ? AND id_producto = ?");
-        $eliminar_producto_lista->bind_param("ii", $id_lista_deseos, $id_producto);
-        $eliminar_producto_lista->execute();
-
         // Verificar si el producto ya está en el carrito
         $consulta_carrito = $conn->prepare("SELECT cantidad FROM carrito WHERE id_usuario = ? AND id_producto = ?");
         $consulta_carrito->bind_param("ii", $id_usuario, $id_producto);
