@@ -87,7 +87,10 @@ $id_usuario = $_SESSION['id_usuario'] ?? null; // Asigna el valor o null si no e
 
                                 <!-- Botón -->
                                 <div>
-                                    <button class="btn btn-outline-primary btn-outline-thick">Opinar</button>
+                                    <a href="opiniones.php">
+                                        <button class="btn btn-outline-primary btn-outline-thick">Opinar</button>
+                                    </a>
+
                                 </div>
                             </div>
                         </div>
