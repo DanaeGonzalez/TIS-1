@@ -70,3 +70,8 @@
 .star-rating i.bi-star-fill {
     color: #ffc107; /* Color amarillo para las estrellas seleccionadas */
 }
+
+.star-rating.no-click i {
+    pointer-events: none; /* Deshabilita cualquier interacción */
+    cursor: default; /* Cambia el cursor a no interactivo */
+}

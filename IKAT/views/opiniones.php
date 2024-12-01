@@ -108,12 +108,14 @@ if ($id_usuario) {
                                                 </div>
                                             </div>
                                             <div class="col-3 d-flex justify-content-center">
-                                                <div class="star-rating">
-                                                    <i class="bi bi-star" data-value="1"></i>
-                                                    <i class="bi bi-star" data-value="2"></i>
-                                                    <i class="bi bi-star" data-value="3"></i>
-                                                    <i class="bi bi-star" data-value="4"></i>
-                                                    <i class="bi bi-star" data-value="5"></i>
+                                                <div class="star-rating no-click">
+                                                    <?php for ($i = 5; $i >= 1; $i--) : ?>
+                                                        <?php if ($i <= $resenia['calificacion']) : ?>
+                                                            <i class="bi bi-star-fill" data-value="<?= $i ?>"></i>
+                                                        <?php else : ?>
+                                                            <i class="bi bi-star" data-value="<?= $i ?>"></i>
+                                                        <?php endif; ?>
+                                                    <?php endfor; ?>
                                                 </div>
                                             </div>
                                             <div class="col-3 d-flex justify-content-center">
@@ -129,6 +131,7 @@ if ($id_usuario) {
                                 <p class="text-muted">No tienes reseñas realizadas.</p>
                             <?php endif; ?>
                         </div>
+
                     </div>
                 </div>
             </div>
