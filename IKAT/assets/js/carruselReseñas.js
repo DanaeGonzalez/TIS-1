@@ -14,13 +14,13 @@ if (window.matchMedia("(min-width:576px)").matches) {
     if (scrollPosition < carouselWidth - cardWidth * 3) {
       console.log("next");
       scrollPosition = scrollPosition + cardWidth;
-      $(".carousel-inner").animate({ scrollLeft: scrollPosition }, 800);
+      $(".carousel-inner").animate({ scrollLeft: scrollPosition }, 1000);  // Reducir duración
     }
   });
   $(".carousel-control-prev").on("click", function () {
     if (scrollPosition > 0) {
       scrollPosition = scrollPosition - cardWidth;
-      $(".carousel-inner").animate({ scrollLeft: scrollPosition }, 800);
+      $(".carousel-inner").animate({ scrollLeft: scrollPosition }, 1000);  // Reducir duración
     }
   });
 } else {
