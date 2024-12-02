@@ -133,7 +133,7 @@
                 include_once '../config/conexion.php';
 
                 // Configuración de paginación
-                $productosPorPagina = 6;
+                $productosPorPagina =15;
                 $paginaActual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
                 $offset = ($paginaActual - 1) * $productosPorPagina;
 
