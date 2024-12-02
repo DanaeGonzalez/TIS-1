@@ -64,6 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     <link rel="stylesheet" href="../assets/css/payButton.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="../assets/css/cofeButton.css">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
@@ -186,28 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 ?>
                                 <!-- Campo oculto para el subtotal original -->
                                 <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
-                                <!-- Contenedor de la barra de búsqueda Mapa-->
-                                <div class="mb-3">
-                                    <label class="form-label fw-bold">Dirección</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="direccion" name="direccion_pedido"
-                                            onblur="buscarDireccion();" value="<?php echo htmlspecialchars($direccion); ?>"
-                                            placeholder="Av. Alonso de Ribera 2850" required>
-                                        <!-- Botón para confirmar dirección -->
-                                        <button class="btn btn-outline-secondary" type="button" id="confirmar_direccion"
-                                            onclick="buscarDireccion()" required>
-                                            <i class="bi bi-check"></i> Confirmar
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Alerta si la dirección no está confirmada -->
-                                <?php if (!$direccionConfirmada): ?>
-                                    <div class="alert alert-info" role="alert">
-                                        ¡Por favor, confirma tu dirección antes de continuar con la cotización!
-                                    </div>
-                                <?php endif; ?>
-
+                                
                                 <!-- Mapa -->
                                 <div id="map" style="display: none;"></div>
 
@@ -220,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                             </form>
 
                             <!-- Resumen de la Compra -->
-                        <div class="col-md-7 mb-7 p-4 border bg-light rounded shadow-sm resumen-compra">
+                        <div class="col-md-10 mb-7 p-4 border bg-light rounded shadow-sm resumen-compra">
                             <h3 class="mb-7 text-center">Cotización</h3>
                             <ul class="list-group">
                                 <li
@@ -229,7 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 </li>
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                    Envío<span id="valorEnvio">$0</span>
+                                    Envío<span id="valorEnvio">Confirmación Pendiente</span>
                                 </li>
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
@@ -240,16 +220,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
                                     Total<span
-                                        id="totalConEnvioImpuestos">$<?= number_format(floor($total), 0, '', '.') ?></span>
+                                        id="totalConEnvioImpuestos">$<?= number_format(floor($totalFinal), 0, '', '.') ?></span>
                                 </li>
                             </ul>
-                            <a type="button" class="BtnPay mt-4" href="/xampp/TIS-1/IKAT/assets/plantillas/plantilla_pdf.php" style="text-decoration: none;">
-                                Generar Cotización
-                                <path
-                                    d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
-                                </path>
-                                </svg>
-                            </a>
+                            <form action="/xampp/TIS-1/IKAT/assets/plantillas/plantilla_pdf.php" method="post" target="_blank">
+                                <input type="hidden" name="total" value="<?php echo $total; ?>">
+                                <input type="hidden" name="valorImpuestos" value="<?php echo $totalIVA; ?>">
+                                <input type="hidden" id="valorEnvioInput" name="valor_envio" value="<?php echo $valorEnvio; ?>">
+                                <div class="input-group">
+                                <input type="text" class="form-control" id="direccion" name="direccion_pedido"
+                                    onblur="buscarDireccion();" value="<?php echo htmlspecialchars($direccion); ?>"
+                                    placeholder="Av. Alonso de Ribera 2850" required>
+                                <button class="btn btn-outline-secondary" type="button" id="confirmar_direccion"
+                                    onclick="buscarDireccion()" required>
+                                    <i class="bi bi-check"></i> Confirmar
+                                </button>
+                                </div>
+                                <!-- Alerta si la dirección no está confirmada -->
+                                <?php if (!$direccionConfirmada): ?>
+                                    <div class="alert alert-info" role="alert">
+                                        ¡Por favor, confirma tu dirección antes de continuar con la compra!
+                                    </div>
+                                <?php endif; ?>
+                                <button type="submit" class="coffebtn mt-3">Descargar Cotización</button>
+                            </form>
+
                         </div>
                         <br>
                         </div>
