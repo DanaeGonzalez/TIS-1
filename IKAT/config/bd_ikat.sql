@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-12-2024 a las 00:15:34
+-- Tiempo de generación: 02-12-2024 a las 13:54:25
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -72,6 +72,9 @@ CREATE TABLE `carrito` (
 --
 
 INSERT INTO `carrito` (`id_usuario`, `id_producto`, `cantidad`) VALUES
+(1, 3, 1),
+(1, 6, 1),
+(1, 9, 2),
 (1, 16, 1);
 
 -- --------------------------------------------------------
@@ -290,6 +293,7 @@ CREATE TABLE `lista_deseos_producto` (
 --
 
 INSERT INTO `lista_deseos_producto` (`id_lista_deseos`, `id_producto`) VALUES
+(1, 3),
 (1, 6),
 (1, 8),
 (1, 16),
@@ -681,7 +685,8 @@ INSERT INTO `resenia` (`id_resenia`, `calificacion`, `comentario`, `fecha_reseni
 (12, 5, 'CAMA ULTRA GOD', NULL, '', 1, 5, 3),
 (22, 5, 'Hola', '2024-12-01', NULL, 1, 1, 3),
 (23, 4, 'La silla esta bien pero le falta creo yo', '2024-12-01', NULL, 1, 1, 6),
-(24, 5, 'Me gusto esta cama', '2024-12-01', NULL, 1, 1, 7);
+(24, 5, 'Me gusto esta cama', '2024-12-01', NULL, 1, 1, 7),
+(25, 5, 'Me gusta ', '2024-12-02', NULL, 1, 1, 11);
 
 -- --------------------------------------------------------
 
@@ -1066,7 +1071,7 @@ ALTER TABLE `producto`
 -- AUTO_INCREMENT de la tabla `resenia`
 --
 ALTER TABLE `resenia`
-  MODIFY `id_resenia` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id_resenia` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT de la tabla `subcategoria`
