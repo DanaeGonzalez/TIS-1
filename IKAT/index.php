@@ -148,9 +148,6 @@
           <input id="buscarInputIndex" class="form-control d-inline w-75" type="text"
             placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
             onfocus="barraBusquedaIndex()" oninput="barraBusquedaIndex()">
-          <button id="buscarButtonIndex" class="btn btn-dark d-inline" type="button" onclick="buscarProductosIndex()">
-            <i class="bi bi-search"></i>
-          </button>
           <div id="listaIndex" class="list-group position-absolute d-none"></div>
 
           <div class="explore-button">
@@ -213,7 +210,7 @@
         <div class="container inicio mt-5">
           <div class="row justify-content-center text-center">
             <div class="col-10 col-md-5 col-lg-4 mb-4 inicio-categoria">
-              <a href="views/catalogo_silla.php">
+              <a href="views/catalogo.php">
                 <img src="assets/images/categoria_silla.png" class="img-fluid categoria-img" alt="Imagen 1">
                 <p class="text-overlay">Sillas</p>
               </a>
@@ -221,14 +218,14 @@
 
 
             <div class="col-10 col-md-5 col-lg-4 mb-4 inicio-categoria">
-              <a href="views/catalogo_mesa.php">
+              <a href="views/catalogo.php">
                 <img src="assets/images/categoria_mesa.png" class="img-fluid categoria-img" alt="Imagen 2">
                 <p class="text-overlay">Mesas</p>
               </a>
             </div>
 
             <div class="col-10 col-md-5 col-lg-4 mb-4 inicio-categoria">
-              <a href="views/catalogo_sillon.php">
+              <a href="views/catalogo.php">
                 <img src="assets/images/categoria_sillon.png" class="img-fluid categoria-img" alt="Imagen 3">
                 <p class="text-overlay">Sillones</p>
               </a>
@@ -238,14 +235,14 @@
           <div class="row justify-content-center text-center">
 
             <div class="col-10 col-md-6 col-lg-6 mb-4 inicio-categoria">
-              <a href="views/catalogo_organizacion.php">
+              <a href="views/catalogo.php">
                 <img src="assets/images/categoria_organizacion.png" class="img-fluid categoria-img" alt="Imagen 4">
                 <p class="text-overlay">Organización</p>
               </a>
             </div>
 
             <div class="col-10 col-md-6 col-lg-6 mb-4 inicio-categoria">
-              <a href="views/catalogo_cama.php">
+              <a href="views/catalogo.php">
                 <img src="assets/images/categoria_cama.png" class="img-fluid categoria-img" alt="Imagen 5">
                 <p class="text-overlay">Camas</p>
               </a>
