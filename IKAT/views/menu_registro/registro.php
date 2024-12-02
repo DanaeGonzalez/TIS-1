@@ -378,6 +378,16 @@ include '..\..\config\conexion.php';
                 icono.classList.toggle("bi-eye");
                 icono.classList.toggle("bi-eye-slash");
             }
+
+            const runInput = document.getElementById('run');
+
+            runInput.addEventListener('input', function (event) {
+                const validCharacters = /^[0-9kK]*$/;
+            
+                if (!validCharacters.test(this.value)) {
+                    this.value = this.value.replace(/[^0-9kK]/g, '');
+                }
+            });
         </script>
     </body>
 
