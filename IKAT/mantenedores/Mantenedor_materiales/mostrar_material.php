@@ -62,8 +62,8 @@ unset($_SESSION['mensaje']);
                                     <td>" . $row["id_material"] . "</td>
                                     <td>" . $row["nombre_material"] . "</td>
                                     <td>
-                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarMaterialModal" . $row["id_material"] . "'>Editar</a> |
-                                        <a href='borrar_material.php?id=" . $row["id_material"] . "' class='btn btn-danger btn-sm'>Borrar</a>
+                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarMaterialModal" . $row["id_material"] . "'><i class='bi bi-pen'></i></a> |
+                                        <a href='borrar_material.php?id=" . $row["id_material"] . "' class='btn btn-danger btn-sm'><i class='bi bi-trash3'></i></a>
                                     </td>
                                   </tr>";
 

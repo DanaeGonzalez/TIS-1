@@ -65,8 +65,8 @@ unset($_SESSION['mensaje']);
                                     <td>" . $row["nombre_subcategoria"] . "</td>
                                     <td>" . $row["nombre_categoria"] . "</td>
                                     <td>
-                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarSubcategoriaModal" . $row["id_subcategoria"] . "'>Editar</a> |
-                                        <a href='borrar_subcategoria.php?id=" . $row["id_subcategoria"] . "' class='btn btn-danger btn-sm'>Borrar</a>
+                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarSubcategoriaModal" . $row["id_subcategoria"] . "'><i class='bi bi-pen'></i></a> |
+                                        <a href='borrar_subcategoria.php?id=" . $row["id_subcategoria"] . "' class='btn btn-danger btn-sm'><i class='bi bi-trash3'></i></a>
                                     </td>
                                   </tr>";
 

@@ -71,10 +71,10 @@ unset($_SESSION['mensaje']);
                                     <td>" . $row["nombre_producto"] . "</td>
                                     <td>" . $row["porcentaje_descuento"] . "%</td>
                                     <td>
-                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarOfertaModal" . $row["id_oferta"] . "'>Editar</a> |
+                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarOfertaModal" . $row["id_oferta"] . "'><i class='bi bi-pen'></i></a> |
                                         <form action='borrar_oferta.php' method='post' style='display:inline;'>
                                             <input type='hidden' name='id_oferta' value='" . $row["id_oferta"] . "'>
-                                            <button class='btn btn-danger btn-sm' type='submit'>Borrar</button>
+                                            <button class='btn btn-danger btn-sm' type='submit'><i class='bi bi-trash3'></i></button>
                                         </form>
                                     </td>
                                   </tr>";
