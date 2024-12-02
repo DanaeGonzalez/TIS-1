@@ -26,10 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 	$total_calculado = $_POST['total_calculado'] ?? 0;
     $valorImpuestos = $_POST['valorImpuestos'] ?? 0;
     $valor_envio = $_POST['valor_envio'] ?? 0;
-    $fecha_compra = $fecha_compra ?? date('Y-m-d H:i:s');
+    $fecha_compra = $fecha_compra ?? date('d-m-Y H:i:s');
 
 } else {
-    $fecha_compra = $fecha_compra ?? date('Y-m-d H:i:s');
+    $fecha_compra = $fecha_compra ?? date('d-m-Y H:i:s');
 
     $total = $_POST['total'] ?? 0;
     $totalIVA = $total * 0.19;
@@ -185,7 +185,7 @@ if ($result_usuario->num_rows > 0) {
 							<strong>Subtotal: $</strong>
 						</p>
 						<p class="col-2 margin-b-0">
-							<strong><?php echo $total; ?></strong>
+							<strong><?php echo htmlspecialchars($total)?></strong>
 						</p>
 					</div>
 					<div class="row text-right">
@@ -193,7 +193,7 @@ if ($result_usuario->num_rows > 0) {
 							<strong>Total IVA 19%: $</strong>
 						</p>
 						<p class="col-2 margin-b-0">
-							<strong><?php echo $totalIVA; ?></strong>
+							<strong><?php echo htmlspecialchars($totalIVA) ?></strong>
 						</p>
 					</div>
 					<div class="row text-right">
@@ -201,7 +201,7 @@ if ($result_usuario->num_rows > 0) {
 							<strong>Valor Envío: $</strong>
 						</p>
 						<p class="col-2 margin-b-0">
-							<strong><?php echo $valorEnvio;?></strong>
+							<strong><?php echo htmlspecialchars($valorEnvio)?></strong>
 						</p>
 					</div>
 					<div class="row text-right">
@@ -209,7 +209,7 @@ if ($result_usuario->num_rows > 0) {
 							<strong>Total a Pagar: $</strong>
 						</p>
 						<p class="col-2 margin-b-0">
-							<strong><?php echo $totalFinal;?></strong>
+							<strong><?php echo htmlspecialchars($totalFinal)?></strong>
 						</p>
 					</div>
 				</div>
@@ -218,8 +218,8 @@ if ($result_usuario->num_rows > 0) {
 	</table>
 	</div>
 	</div>
-	<?php include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/templates/footer.php'; ?>
-
+	<!-- <?php /*include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/templates/footer.php'; */?> -->
+ 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-ho+j7jyWK8fNQe+A12e2rFKoMtU5UzcLFpibcB+lNujQw8ERfZ1xJ1lAJ82FmoQU" 
         crossorigin="anonymous"></script>

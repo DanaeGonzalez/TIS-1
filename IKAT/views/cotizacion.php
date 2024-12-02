@@ -235,6 +235,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                             </ul>
                             <form action="/xampp/TIS-1/IKAT/assets/plantillas/plantilla_pdf.php" method="post" target="_blank">
                                 <input type="hidden" name="direccion_pedido" value="<?php echo $direccion_pedido; ?>">
+                                <input type="hidden" name="total" value="<?php echo $total; ?>">
                                 <input type="hidden" name="total_calculado" value="<?php echo $total_calculado; ?>">
                                 <input type="hidden" name="valorImpuestos" value="<?php echo $totalIVA;?>">
                                 <input type="hidden" id="valorEnvioInput" name="valor_envio" value="<?php echo $valorEnvio;?>">
