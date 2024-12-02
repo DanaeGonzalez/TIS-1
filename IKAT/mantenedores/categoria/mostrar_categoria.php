@@ -36,6 +36,12 @@ unset($_SESSION['mensaje']);
 
             <h1 class="text-center p-4">Mantenedor de Categorías</h1>
 
+            <div class="d-flex justify-content-end mb-3">
+                    <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#agregarCategoriaModal">
+                        <i class="bi bi-file-earmark-plus"></i>
+                    </a>
+                </div>
+
             <div class="table-responsive">
                 <?php
                 $sql = "SELECT * FROM categoria";
@@ -88,11 +94,6 @@ unset($_SESSION['mensaje']);
                 <?php else: ?>
                     <p class="text-center">No hay categorías registradas.</p>
                 <?php endif; ?>
-            </div>
-
-            <!-- Botón para agregar categoría -->
-            <div class="text-center">
-                <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#agregarCategoriaModal">Agregar Categoría</button>
             </div>
         </div>
     </div>
