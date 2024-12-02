@@ -96,6 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="../assets/css/payButton.css">
+        <link rel="stylesheet" href="../assets/css/cofeButton.css">
     </head>
 
     <body>
@@ -318,6 +319,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
         function calcularTotal() {
             const subtotal = parseFloat(document.querySelector('input[name="total"]').value); 
             const valorEnvio = parseFloat(document.getElementById('valorEnvioInput').value) || 0;
+            const descuento = <?= $descuento ?>;
             const tasaImpuestos = 0.19;
             const descuento = parseFloat(<?= json_encode($descuento) ?>) || 0;
 

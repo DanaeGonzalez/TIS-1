@@ -19,28 +19,21 @@ while ($row = $result->fetch_assoc()) {
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_POST['id_metodo'], $_POST['total_calculado'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_POST['total_calculado'])) {
     // Capturar datos del formulario
     $id_usuario = $_SESSION['id_usuario'];
-    $direccion_pedido = $_POST['direccion_pedido'];
-    $id_metodo = $_POST['id_metodo'];
-    $total_compra = $_POST['total_calculado'];
-    $fecha_compra = date('Y-m-d H:i:s');
-    $puntos_ganados = $total_compra * 0.05;
+	$direccion_pedido = $_POST['direccion_pedido'] ?? '';
+	$total_calculado = $_POST['total_calculado'] ?? 0;
+    $valorImpuestos = $_POST['valorImpuestos'] ?? 0;
+    $valor_envio = $_POST['valor_envio'] ?? 0;
+    $fecha_compra = $fecha_compra ?? date('Y-m-d H:i:s');
 
-    // Insertar en la base de datos
-    $query = "INSERT INTO compra (id_compra, fecha_compra, total_compra, puntos_ganados, direccion_pedido, id_metodo, id_usuario) 
-              VALUES (NULL, '$fecha_compra', '$total_compra', '$puntos_ganados', '$direccion_pedido', '$id_metodo', '$id_usuario')";
-
-    if ($conn->query($query) === TRUE) {
-        echo "Compra registrada exitosamente.";
-        header("Location: https://localhost/xampp/TIS-1/IKAT/vendor/transbank/transbank-sdk/examples/webpay-plus/index.php?action=create");
-    } else {
-        echo "Error: " . $query . "<br>" . $conn->error;
-    }
 } else {
+    $fecha_compra = $fecha_compra ?? date('Y-m-d H:i:s');
 
     $total = $_POST['total'] ?? 0;
+    $totalIVA = $total * 0.19;
+    $totalFinal = $total;
 
     // Obtener métodos de pago
     $query_metodo = "SELECT * FROM metodo_pago WHERE activo = 1";
@@ -48,7 +41,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
     // Verificar si la dirección está confirmada
     $direccionConfirmada = isset($_POST['direccion_pedido']) && !empty($_POST['direccion_pedido']);
-}?>
+}
+
+// Consulta para obtener el nombre del usuario
+$sql_usuario = "SELECT nombre_usuario, apellido_usuario FROM usuario WHERE id_usuario = ?";
+$stmt_usuario = $conn->prepare($sql_usuario);
+$stmt_usuario->bind_param("i", $id_usuario);
+$stmt_usuario->execute();
+$result_usuario = $stmt_usuario->get_result();
+
+if ($result_usuario->num_rows > 0) {
+    $row_usuario = $result_usuario->fetch_assoc();
+    $nombre_usuario = $row_usuario['nombre_usuario'] . " " . $row_usuario['apellido_usuario'];
+} else {
+    $nombre_usuario = "Usuario no encontrado"; // Manejo de error si no se encuentra el usuario
+}
+
+
+?>
 
 
 <!DOCTYPE html>
@@ -69,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     <link rel="stylesheet" href="/xampp/TIS-1/IKAT/assets/scss/delete.scss">
     <link rel="stylesheet" href="/xampp/TIS-1/IKAT/assets/css/payButton.css">
 	<link rel="stylesheet" href="/xampp/TIS-1/IKAT/assets/css/styles.css">
+	<link rel="stylesheet" href="/xampp/TIS-1/IKAT/assets/css/cofeButton.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
@@ -93,9 +104,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 			<td>
 				<div>
 					<div class="text-lg">
-						Boleta/Cotización
+						Cotización
 					</div>
-					<p><strong>Fecha de Emisión:</strong> 25/10/2023</p>
+					<p><strong>Fecha de Emisión:</strong> 
+   						<?php echo isset($fecha_compra) ? htmlspecialchars($fecha_compra) : 'Fecha no disponible'; ?>
+					</p>
+
 				</div>
 			</td>
 		</tr>
@@ -105,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 				<div>
 					<div class="row">
 						<p class="col-8 margin-b-0">
-							<strong>Apellido y Nombre / Razón social: </strong>Usuario
+							<strong>Nombre Solicitante</strong> <?php echo htmlspecialchars($nombre_usuario) ?>
 						</p>
 					</div>
 					<div class="row">
@@ -113,11 +127,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 							<strong>Condición Frente al IVA: </strong>Consumidor final
 						</p>
 						<p class="col-6 margin-b-0">
-							<strong>Domicilio: </strong>Direccion envio
+							<strong>Dirección Entrega: </strong><?php echo htmlspecialchars($direccion_pedido) ?>
 						</p>
 					</div>
 					<p>
-						<strong>Condicion de venta: </strong>Débito/Credito
+						<strong>Condición de venta: </strong>Débito/Credito
 					</p>
 				</div>
 			</td>
@@ -127,26 +141,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 				<div>
 					<table>
 						<tr>
-							<td>Código</td>
-							<td>Producto / Servicio</td>
+							<td>Producto</td>
 							<td>Cantidad</td>
-							<td>U. Medida</td>
 							<td>Precio Unit.</td>
-							<td>% Bonif.</td>
-							<td>Imp. Bonif.</td>
 							<td>Subtotal</td>
 						</tr>
 						
-							<tr>
-								<td>321</td>
-								<td>Madera</td>
-								<td>1,00</td>
-								<td>Unidad</td>
-								<td>150,00</td>
-								<td>0,00</td>
-								<td>0,00</td>
-								<td>150,00</td>
-							</tr>
+						<tr>
+							<?php
+                            // Consulta para obtener los productos del carrito
+                            $sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, cp.cantidad, p.precio_unitario, p.foto_producto
+                            FROM carrito cp 
+                            JOIN producto p ON cp.id_producto = p.id_producto 
+                            WHERE cp.id_usuario = ?";
+                            $stmt = $conn->prepare($sql);
+                            $stmt->bind_param("i", $_SESSION['id_usuario']);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+
+                            $total = 0;
+
+                            // Mostrar productos en el carrito
+                            while ($row = $result->fetch_assoc()) {
+                                $subtotal = $row['precio_unitario'] * $row['cantidad'];
+                                $total += $subtotal;
+                                echo "<td>{$row['nombre_producto']}</td>";
+								echo "<td>{$row['cantidad']}</td>";
+								echo "<td>{$row['precio_unitario']}</td>";
+								echo "<td>\$" . number_format(floor($subtotal), 0, '', '.') . "</td>";   
+                            }
+                            ?>
+						</tr>
 							
 					</table>
 				</div>
@@ -160,23 +185,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 							<strong>Subtotal: $</strong>
 						</p>
 						<p class="col-2 margin-b-0">
-							<strong>150,00</strong>
+							<strong><?php echo $total; ?></strong>
 						</p>
 					</div>
 					<div class="row text-right">
 						<p class="col-10 margin-b-0">
-							<strong>Importe Otros Tributos: $</strong>
+							<strong>Total IVA 19%: $</strong>
 						</p>
 						<p class="col-2 margin-b-0">
-							<strong>0,00</strong>
+							<strong><?php echo $totalIVA; ?></strong>
 						</p>
 					</div>
 					<div class="row text-right">
 						<p class="col-10 margin-b-0">
-							<strong>Importe total: $</strong>
+							<strong>Valor Envío: $</strong>
 						</p>
 						<p class="col-2 margin-b-0">
-							<strong>150,00</strong>
+							<strong><?php echo $valorEnvio;?></strong>
+						</p>
+					</div>
+					<div class="row text-right">
+						<p class="col-10 margin-b-0">
+							<strong>Total a Pagar: $</strong>
+						</p>
+						<p class="col-2 margin-b-0">
+							<strong><?php echo $totalFinal;?></strong>
 						</p>
 					</div>
 				</div>
@@ -191,5 +224,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
         integrity="sha384-ho+j7jyWK8fNQe+A12e2rFKoMtU5UzcLFpibcB+lNujQw8ERfZ1xJ1lAJ82FmoQU" 
         crossorigin="anonymous"></script>
 
+	<script>
+    	window.onload = function() {
+        window.print();
+    	};
+
+		function calcularTotal() {
+    		const subtotal = parseFloat(document.querySelector('input[name="total"]').value) || 0;
+    		const valorEnvio = parseFloat(document.getElementById('valorEnvioInput').value) || 0;
+    		const tasaImpuestos = 0.19;
+
+    		const totalIVA = Math.round(subtotal * tasaImpuestos);
+    		const totalFinal = subtotal + valorEnvio;
+
+    		document.getElementById('valorImpuestos').textContent = `$${formatNumber(totalIVA)}`;
+    		document.getElementById('totalConEnvioImpuestos').textContent = `$${formatNumber(totalFinal)}`;
+    		document.getElementById('totalCalculado').value = totalFinal.toFixed(2);
+		}
+
+		function formatNumber(num) {
+    		return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+		}
+    </script>
 </body>
 </html>
