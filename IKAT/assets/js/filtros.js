@@ -1,3 +1,14 @@
+const nombresFiltros = {
+    categoria: {
+        5: "Silla",
+        6: "Mesa",
+        7: "Sillón",
+        8: "Cama",
+        9: "Almacenamiento y organización"
+    },
+    // Otros filtros...
+};
+
 function buscarProductos() {
     const buscarInput = document.getElementById('buscarInputMain');
     const productContainer = document.getElementById("product-container");
@@ -199,7 +210,6 @@ function cargarFiltrosYProductosPorCategoria(idCategoria) {
         });
 }
 
-
 function seleccionarCategoria(idCategoria) {
     console.log("Seleccionando categoría:", idCategoria);
 
@@ -211,19 +221,39 @@ function seleccionarCategoria(idCategoria) {
     .then(response => response.text())
     .then(data => {
         console.log(data);
+
         // Recargar filtros y productos con la nueva categoría
         cargarFiltrosYProductosPorCategoria(idCategoria);
-        
+
         // Crear etiqueta para la categoría
-        const formData = new FormData();
-        formData.append("categoria", idCategoria);
-        actualizarEtiquetasFiltros(formData);
+        const appliedFilters = document.getElementById("applied-filters");
+
+        // Limpia cualquier etiqueta de categoría anterior
+        const categoriaTag = appliedFilters.querySelector("[data-filter='categoria']");
+        if (categoriaTag) categoriaTag.remove();
+
+        const nombreCategoria = nombresFiltros.categoria[idCategoria] || "Categoría desconocida";
+
+        const tag = document.createElement("span");
+        tag.className = "badge bg-primary p-2 d-flex align-items-center";
+        tag.setAttribute("data-filter", "categoria");
+
+        tag.innerHTML = `
+            Categoría: ${nombreCategoria}
+            <button type="button" class="btn-close ms-2" aria-label="Eliminar"></button>
+        `;
+
+        // Evento para eliminar la categoría seleccionada
+        tag.querySelector(".btn-close").addEventListener("click", () => {
+            eliminarCategoria();
+        });
+
+        appliedFilters.appendChild(tag);
     })
     .catch(error => {
         console.error("Error al seleccionar la categoría:", error);
     });
 }
-
 
 function cargarEstrellasDinamicamente() {
     const productContainers = document.querySelectorAll('[id^="stars-container-"]');
@@ -328,5 +358,28 @@ function filtrarProductos() {
             productContainer.innerHTML = "<p>Error al cargar los productos. Intenta nuevamente.</p>";
         });
 }
+
+function eliminarCategoria() {
+    console.log("Eliminando categoría seleccionada");
+
+    fetch('../assets/php/seleccionar_categoria.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `id_categoria=`
+    })
+    .then(() => {
+        // Elimina la etiqueta de categoría
+        const appliedFilters = document.getElementById("applied-filters");
+        const categoriaTag = appliedFilters.querySelector("[data-filter='categoria']");
+        if (categoriaTag) categoriaTag.remove();
+
+        // Recargar el catálogo sin categoría seleccionada
+        cargarFiltrosYProductosPorCategoria(null);
+    })
+    .catch(error => {
+        console.error("Error al eliminar la categoría:", error);
+    });
+}
+
 
 

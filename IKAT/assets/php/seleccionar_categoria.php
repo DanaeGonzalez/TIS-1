@@ -1,11 +1,17 @@
 <?php
 session_start();
 
-// Verificar que se haya recibido un id_categoria válido
-if (!empty($_POST['id_categoria'])) {
-    $_SESSION['id_categoria'] = intval($_POST['id_categoria']);
-    echo "Categoría seleccionada: " . $_SESSION['id_categoria'];
+if (isset($_POST['id_categoria'])) {
+    if ($_POST['id_categoria'] === '') {
+        // Eliminar la categoría seleccionada
+        unset($_SESSION['id_categoria']);
+    } else {
+        // Guardar la categoría seleccionada en la sesión
+        $_SESSION['id_categoria'] = intval($_POST['id_categoria']);
+    }
+    echo "Categoría actualizada en la sesión.";
 } else {
-    echo "Error: Categoría no válida.";
+    echo "No se recibió id_categoria.";
 }
+
 ?>
