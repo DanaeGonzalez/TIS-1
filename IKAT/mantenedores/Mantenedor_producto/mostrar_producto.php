@@ -251,7 +251,7 @@
                                                         <i class='bi bi-pen'></i>
                                                     </a>
                                                     <a class='btn btn-info btn-sm' data-bs-toggle='modal' data-bs-target='#agregarCaracteristicasModal" . $row["id_producto"] . "'>
-                                                        <i class='bi bi-database-add'></i>
+                                                        <i class='bi bi-plus-circle'></i>
                                                     </a>
                                                     <a href='cambiar_estado_producto.php?id=" . $row["id_producto"] . "' class='btn btn-danger btn-sm'>
                                                         <i class='bi bi-trash3'></i>
@@ -538,6 +538,7 @@
                                 echo "</tbody></table>";
                                 echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarProductoModal'>Agregar Producto</a>";
                                 echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#modificarProductoStockModal'>Modificar Stock</a>";
+                                echo "<a href='../Mantenedor_ofertas/mostrar_ofertas.php' class='btn btn-primary mt-3 d-block'>Mantenedor Ofertas</a>";
                                 echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#historialProductoModal'>Ver Historial de Producto</a>";
                             } else {
                                 echo "<p class='text-center'>No hay productos registrados.</p>";

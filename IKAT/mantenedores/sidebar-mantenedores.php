@@ -38,7 +38,6 @@
             <div id="productoLinks" class="accordion-collapse collapse" aria-labelledby="headingProducto" data-bs-parent="#accordionSidebar">
                 <div class="accordion-body p-0">
                     <ul class="list-unstyled">
-                    <li><a href="/xampp/TIS-1/IKAT/mantenedores/Mantenedor_ofertas/mostrar_ofertas.php" class="sidebar-link d-block py-2 px-3">Ofertas</a></li>
                         <li><a href="/xampp/TIS-1/IKAT/mantenedores/Mantenedor_producto/mostrar_producto.php" class="sidebar-link d-block py-2 px-3">Productos</a></li>
                         <li><a href="/xampp/TIS-1/IKAT/mantenedores/Mantenedor_reseña/mostrar_resenia.php" class="sidebar-link d-block py-2 px-3">Reseñas</a></li>
                         <li><a href="/xampp/TIS-1/IKAT/mantenedores/Mantenedor_top_ventas/mostrar_top_ventas.php" class="sidebar-link d-block py-2 px-3">Ventas</a></li>
