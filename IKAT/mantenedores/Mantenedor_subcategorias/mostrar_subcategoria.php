@@ -36,6 +36,11 @@ unset($_SESSION['mensaje']);
             <?php endif; ?>
 
             <h1 class="text-center p-4">Mantenedor de Subcategorías</h1>
+            <div class="d-flex justify-content-end mb-3">
+                    <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#agregarSubcategoriaModal">
+                        <i class="bi bi-file-earmark-plus"></i>
+                    </a>
+                </div>
             <div class="table-responsive">
                 <?php
                     $sql = "SELECT s.id_subcategoria, s.nombre_subcategoria, c.nombre_categoria 
@@ -60,8 +65,8 @@ unset($_SESSION['mensaje']);
                                     <td>" . $row["nombre_subcategoria"] . "</td>
                                     <td>" . $row["nombre_categoria"] . "</td>
                                     <td>
-                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarSubcategoriaModal" . $row["id_subcategoria"] . "'>Editar</a> |
-                                        <a href='borrar_subcategoria.php?id=" . $row["id_subcategoria"] . "' class='btn btn-danger btn-sm'>Borrar</a>
+                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarSubcategoriaModal" . $row["id_subcategoria"] . "'><i class='bi bi-pen'></i></a> |
+                                        <a href='borrar_subcategoria.php?id=" . $row["id_subcategoria"] . "' class='btn btn-danger btn-sm'><i class='bi bi-trash3'></i></a>
                                     </td>
                                   </tr>";
 
@@ -78,7 +83,6 @@ unset($_SESSION['mensaje']);
                                                 <input type='hidden' name='id_subcategoria' value='" . $row['id_subcategoria'] . "'>
                                                 Nombre: <input type='text' class='form-control' required name='nombre_subcategoria' value='" . $row['nombre_subcategoria'] . "'><br>
                                                 <input class='form-control btn btn-primary d-block' type='submit' value='Actualizar Subcategoría'>
-                                                <a href='mostrar_subcategoria.php' class='btn btn-primary mt-3 d-block'>Volver</a>
                                             </form>
                                         </div>
                                     </div>
@@ -86,11 +90,8 @@ unset($_SESSION['mensaje']);
                             </div>";
                         }
                         echo "</tbody></table>";
-                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarSubcategoriaModal'>Agregar Subcategoría</a>";
                     } else {
                         echo "<p class='text-center'>No hay subcategorías registradas.</p>";
-                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarSubcategoriaModal'>Agregar Subcategoría</a>";
-                        echo "<a href='../menu/menu.html' class='btn btn-primary mt-3 d-block'>Volver al menú</a>";
                     }
                 ?>
             </div>

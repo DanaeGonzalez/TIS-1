@@ -150,54 +150,7 @@ include '../menu_registro/auth.php';
     </div>
 
     <!-- Footer -->
-    <footer class="py-4">
-      <div class="container">
-        <div class="row">
-          <div class="col-12 col-md-3 mb-3 text-center text-md-start">
-            <h5>Tu perfil en IKAT</h5>
-            <div class="col-md-9 col-12">
-              <p class="text-justify">Administra tu información personal para
-                aprovechar al máximo tu experiencia en IKAT.</p>
-              <div class="text-center">
-                <a href="../perfil.php" class="btn btn-light border-dark btn-sm text-black text-decoration-none">
-                  Ver mi perfil
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 col-md-3 mb-3 text-center text-md-start">
-            <h5>Servicio</h5>
-            <ul class="list-unstyled">
-              <li><a href="#" class="text-black text-decoration-none">Sigue tu pedido</a></li>
-              <li><a href="#" class="text-black text-decoration-none">IKAT Points</a></li>
-              <li><a href="#" class="text-black text-decoration-none">Despacho a domicilio</a></li>
-              <li><a href="#" class="text-black text-decoration-none">Métodos de pago</a></li>
-            </ul>
-          </div>
-          <div class="col-12 col-md-3 mb-3 text-center text-md-start">
-            <h5>Sobre IKAT</h5>
-            <ul class="list-unstyled">
-              <li><a href="#" class="text-black text-decoration-none">Quienes somos</a></li>
-              <li><a href="#" class="text-black text-decoration-none">Misión y Visión</a></li>
-            </ul>
-          </div>
-          <div class="col-12 col-md-3 mb-3 text-center text-md-start">
-            <h5>Redes Sociales</h5>
-            <ul class="list-unstyled">
-              <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-facebook"></i>
-                  Facebook</a></li>
-              <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-instagram"></i>
-                  Instagram</a></li>
-              <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-threads"></i>
-                  Threads</a></li>
-              <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-twitter-x"></i>
-                  X</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </footer>
+    <?php include '../templates/footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

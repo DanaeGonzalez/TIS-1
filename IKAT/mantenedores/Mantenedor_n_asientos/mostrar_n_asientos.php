@@ -36,6 +36,11 @@ unset($_SESSION['mensaje']);
             <?php endif; ?>
 
             <h1 class="text-center p-4">Mantenedor de Asientos</h1>
+            <div class="d-flex justify-content-end mb-3">
+                    <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#agregarNasientosModal">
+                        <i class="bi bi-file-earmark-plus"></i>
+                    </a>
+                </div>
             <div class="table-responsive">
                 <?php
                     $sql = "SELECT * FROM n_asientos";
@@ -56,8 +61,8 @@ unset($_SESSION['mensaje']);
                                     <td>" . $row["id_n_asientos"] . "</td>
                                     <td>" . $row["cantidad_asientos"] . "</td>
                                     <td>
-                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarNasientosModal" . $row["id_n_asientos"] . "'>Editar</a> |
-                                        <a href='borrar_n_asientos.php?id=" . $row["id_n_asientos"] . "' class='btn btn-danger btn-sm'>Borrar</a>
+                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarNasientosModal" . $row["id_n_asientos"] . "'><i class='bi bi-pen'></i></a> |
+                                        <a href='borrar_n_asientos.php?id=" . $row["id_n_asientos"] . "' class='btn btn-danger btn-sm'><i class='bi bi-trash3'></i></a>
                                     </td>
                                   </tr>";
 
@@ -83,11 +88,8 @@ unset($_SESSION['mensaje']);
                             </div>";
                         }
                         echo "</tbody></table>";
-                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarNasientosModal'>Agregar N°Asientos</a>";
                     } else {
                         echo "<p class='text-center'>No hay asientos registrados.</p>";
-                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarNasientosModal'>Agregar N°Asientos</a>";
-                        echo "<a href='../menu/menu.html' class='btn btn-primary mt-3 d-block'>Volver al menú</a>";
                     }
                 ?>
             </div>

@@ -154,7 +154,8 @@
                     ?>
 
                     <h1 class="text-center text-success mb-3 fw-bold">¡Gracias por tu compra,
-                        <?= htmlspecialchars($nombre_usuario) ?>!</h1>
+                        <?= htmlspecialchars($nombre_usuario) ?>!
+                    </h1>
 
                     <div class="listado">
                         <div class="summary-box mb-4">
@@ -173,7 +174,6 @@
                             <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Imagen</th>
                                         <th>Producto</th>
                                         <th>Precio Unitario</th>
                                         <th>Cantidad</th>
@@ -182,16 +182,26 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                    // Obtener los detalles de los productos de la compra
-                                    $query = "SELECT 
-                                    p.nombre_producto, 
-                                    p.precio_unitario, 
-                                    p.foto_producto, 
-                                    cp.cantidad, 
-                                    (p.precio_unitario * cp.cantidad) AS total
-                                  FROM compra_producto cp
-                                  JOIN producto p ON cp.id_producto = p.id_producto
-                                  WHERE cp.id_compra = ?";
+                                    // Consulta SQL para obtener los datos de la compra y los productos
+                                    $query = "
+                                    SELECT 
+                                        c.id_compra, 
+                                        c.fecha_compra, 
+                                        c.total_compra, 
+                                        c.puntos_ganados, 
+                                        c.direccion_pedido, 
+                                        c.id_metodo, 
+                                        c.id_usuario,
+                                        p.nombre_producto, 
+                                        p.precio_unitario, 
+                                        p.foto_producto, 
+                                        cp.cantidad, 
+                                        (p.precio_unitario * cp.cantidad) AS total_producto
+                                    FROM compra c
+                                    JOIN compra_producto cp ON c.id_compra = cp.id_compra
+                                    JOIN producto p ON cp.id_producto = p.id_producto
+                                    WHERE c.id_compra = ?
+                                ";
 
                                     $stmt = $conn->prepare($query);
                                     $stmt->bind_param("i", $id_compra);
@@ -199,22 +209,19 @@
                                     $result = $stmt->get_result();
 
                                     while ($row = $result->fetch_assoc()) {
-                                        $total_compra += $row['total'];
-                                        $imagen = !empty($row['foto_producto']) ? $row['foto_producto'] : '../assets/images/default.png';
-
+                                        $total_compra = $row['total_compra'];
                                         echo "<tr>
-                                    <td><img src='$imagen' alt='Imagen de {$row['nombre_producto']}' class='product-img'></td>
                                     <td>{$row['nombre_producto']}</td>
                                     <td>$" . number_format($row['precio_unitario'], 0, ',', '.') . "</td>
                                     <td>{$row['cantidad']}</td>
-                                    <td>$" . number_format($row['total'], 0, ',', '.') . "</td>
+                                    <td>$" . number_format($row['total_producto'], 0, ',', '.') . "</td>
                                   </tr>";
                                     }
                                     ?>
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="4" class="text-end"><strong>Total Pagado:</strong></td>
+                                        <td colspan="3" class="text-end"><strong>Total Pagado:</strong></td>
                                         <td><strong>$<?= number_format($total_compra, 0, ',', '.') ?></strong></td>
                                     </tr>
                                 </tfoot>

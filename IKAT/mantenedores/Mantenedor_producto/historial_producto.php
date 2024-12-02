@@ -94,7 +94,6 @@ unset($_SESSION['mensaje']);
                                     <thead>
                                         <tr>
                                             <th>ID Control</th>
-                                            <th>ID Producto</th>
                                             <th>Cantidad</th>
                                             <th>Motivo</th>
                                             <th>Explicación</th>
@@ -106,7 +105,6 @@ unset($_SESSION['mensaje']);
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>
                                         <td>" . $row["id_control"] . "</td>
-                                        <td>" . $row["id_producto"] . "</td>
                                         <td>" . $row["cantidad"] . "</td>
                                         <td>" . $row["motivo"] . "</td>
                                         <td>" . $row["explicacion"] . "</td>

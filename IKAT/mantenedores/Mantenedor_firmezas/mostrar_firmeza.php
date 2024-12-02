@@ -36,6 +36,13 @@ unset($_SESSION['mensaje']);
             <?php endif; ?>
 
             <h1 class="text-center p-4">Mantenedor de firmezas</h1>
+
+            <div class="d-flex justify-content-end mb-3">
+                    <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#agregarFirmezaModal">
+                        <i class="bi bi-file-earmark-plus"></i>
+                    </a>
+                </div>
+
             <div class="table-responsive">
                 <?php
                     $sql = "SELECT * FROM firmeza";
@@ -56,8 +63,8 @@ unset($_SESSION['mensaje']);
                                     <td>" . $row["id_firmeza"] . "</td>
                                     <td>" . $row["nivel_firmeza"] . "</td>
                                     <td>
-                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarFirmezaModal" . $row["id_firmeza"] . "'>Editar</a> |
-                                        <a href='borrar_firmeza.php?id=" . $row["id_firmeza"] . "' class='btn btn-danger btn-sm'>Borrar</a>
+                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarFirmezaModal" . $row["id_firmeza"] . "'><i class='bi bi-pen'></i></a> |
+                                        <a href='borrar_firmeza.php?id=" . $row["id_firmeza"] . "' class='btn btn-danger btn-sm'><i class='bi bi-trash3'></i></a>
                                     </td>
                                   </tr>";
 
@@ -83,11 +90,8 @@ unset($_SESSION['mensaje']);
                             </div>";
                         }
                         echo "</tbody></table>";
-                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarFirmezaModal'>Agregar firmeza</a>";
                     } else {
                         echo "<p class='text-center'>No hay firmezas registradas.</p>";
-                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarFirmezaModal'>Agregar firmeza</a>";
-                        echo "<a href='../menu/menu.html' class='btn btn-primary mt-3 d-block'>Volver al menú</a>";
                     }
                 ?>
             </div>

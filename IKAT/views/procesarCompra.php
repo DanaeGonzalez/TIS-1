@@ -6,6 +6,7 @@ include_once '..\config\conexion.php';
 $productosSinStock = [];
 $alerta = false;
 
+
 // Consultar productos en el carrito
 $sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, cp.cantidad 
         FROM carrito cp 
@@ -55,23 +56,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 } else {
 
     $total_previo = $_POST['total'] ?? 0;
-    $_SESSION['puntos_usados'] = isset($_POST['puntos_usar']) && is_numeric($_POST['puntos_usar']) 
-    ? (int)$_POST['puntos_usar'] 
-    : 0;
-    $descuento = $_SESSION['puntos_usados']*5;
+    $_SESSION['puntos_usados'] = isset($_POST['puntos_usar']) && is_numeric($_POST['puntos_usar'])
+        ? (int) $_POST['puntos_usar']
+        : 0;
+    $descuento = $_SESSION['puntos_usados'] * 0.25;
+    ?>
+    <!-- Elemento oculto para pasar el descuento a JavaScript -->
+    <div id="descuento" data-descuento="<?php echo $descuento; ?>"></div>
+    <?php
 
     if ($total_previo == 0) {
         header("Location: carrito.php");
         exit;
     }
 
-    if ($descuento > $total_previo*0.7) {
-        $descuento = $total_previo*0.7; // Los puntos alcanzan a cubrir hasta el 70% del total
+    if ($descuento > $total_previo * 0.7) {
+        $descuento = $total_previo * 0.7; // Los puntos alcanzan a cubrir hasta el 70% del total
     }
-    $totalConDescuento = $total - $descuento;
-    $totalIVA = $totalConDescuento * 0.19;
-    $totalFinal = $totalConDescuento;
-
     // Obtener métodos de pago
     $query_metodo = "SELECT * FROM metodo_pago WHERE activo = 1";
     $result_metodo = $conn->query($query_metodo);
@@ -102,6 +103,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
         <div class="container-f">
             <?php include '../templates/header.php'; ?>
 
+            <?php
+            $total = isset($_POST['total']) ? (float) $_POST['total'] : 0;
+            $totalIVA = isset($_POST['totalIVA']) ? (float) $_POST['totalIVA'] : 0;
+            $totalFinal = isset($_POST['totalFinal']) ? (float) $_POST['totalFinal'] : 0;
+            ?>
             <div class="main">
                 <div class="container mt-4">
                     <div class="row align-items-center">
@@ -204,33 +210,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                         <div class="col-md-4 mb-4 p-4 border bg-light rounded shadow-sm resumen-compra">
                             <h3 class="mb-4 text-center">Resumen de la Compra</h3>
                             <ul class="list-group">
-                            <li
-                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Valor Anterior<span>$<?= number_format(floor($total_previo), 0, '', '.') ?></span>
-                            </li>
-                            <li
-                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Descuento por Puntos<span>-$<?= number_format(floor($descuento), 0, '', '.') ?></span>
-                            </li>
-                            <li
-                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Subtotal<span>$<?= number_format(floor($totalFinal), 0, '', '.') ?></span>
-                            </li>
-                            <li
-                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Envío<span id="valorEnvio"><em>Pendiente</em></span>
-                            </li>
-                            <li
-                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Total IVA 19%<span
-                                    id="valorImpuestos">$<?= number_format(floor($totalIVA), 0, '', '.') ?></span>
-                            </li>
+                                <li
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+                                    Valor Anterior<span>$<?= number_format(floor($total_previo), 0, '', '.') ?></span>
+                                </li>
+                                <li
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+                                    Descuento por Puntos<span>-$<?= number_format(floor($descuento), 0, '', '.') ?></span>
+                                </li>
+                                <li
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+                                    Subtotal<span>$<?= number_format(floor($totalFinal - $descuento), 0, '', '.') ?></span>
+                                </li>
+                                <li
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+                                    Envío<span id="valorEnvio"><em>Pendiente</em></span>
+                                </li>
+                                <li
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
+                                    Total IVA 19%<span
+                                        id="valorImpuestos">$<?= number_format(floor($totalIVA), 0, '', '.') ?></span>
+                                </li>
 
-                            <li
-                                class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
-                                Total<span
-                                    id="totalConEnvioImpuestos">$<?= number_format(floor($totalFinal), 0, '', '.') ?></span>
-                            </li>
+                                <li
+                                    class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
+                                    Total (Subtotal + Envío)<span
+                                        id="totalConEnvioImpuestos">$<?= number_format(floor($totalFinal - $descuento), 0, '', '.') ?></span>
+                                </li>
                             </ul>
                         </div>
 
@@ -315,18 +321,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
             calcularTotal();
         }
 
+
         function calcularTotal() {
-            const subtotal = parseFloat(document.querySelector('input[name="total"]').value); 
+            // Cargar el descuento desde PHP
+            var descuento = <?php echo $descuento; ?>;
+
+            // Obtener el subtotal y valor de envío
+            const subtotal = parseFloat(document.querySelector('input[name="total"]').value);
             const valorEnvio = parseFloat(document.getElementById('valorEnvioInput').value) || 0;
+            
+
+            // Tasa de impuestos
             const tasaImpuestos = 0.19;
 
+            // Calcular IVA y total final
             const totalIVA = subtotal * tasaImpuestos;
-            const totalFinal = subtotal + valorEnvio;
+            const totalFinal = subtotal + valorEnvio - descuento;
 
+            // Mostrar los valores en la interfaz
             document.getElementById('valorImpuestos').textContent = `$${formatNumber(totalIVA)}`;
             document.getElementById('totalConEnvioImpuestos').textContent = `$${formatNumber(totalFinal)}`;
             document.getElementById('totalCalculado').value = totalFinal;
+
+
         }
+
 
         function formatNumber(num) {
             return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");

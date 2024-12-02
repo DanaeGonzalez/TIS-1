@@ -202,10 +202,6 @@
                         </div>
                     </div>
 
-
-
-
-
                 <?php
                 else:
                     echo "<p>No se encontraron productos.</p>";

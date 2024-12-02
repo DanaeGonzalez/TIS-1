@@ -36,6 +36,12 @@ unset($_SESSION['mensaje']);
             <?php endif; ?>
 
             <h1 class="text-center p-4">Mantenedor de Colores</h1>
+
+            <div class="d-flex justify-content-end mb-3">
+                    <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#agregarColorModal">
+                        <i class="bi bi-file-earmark-plus"></i>
+                    </a>
+                </div>
             <div class="table-responsive">
                 <?php
                     $sql = "SELECT * FROM color";
@@ -56,8 +62,8 @@ unset($_SESSION['mensaje']);
                                     <td>" . $row["id_color"] . "</td>
                                     <td>" . $row["nombre_color"] . "</td>
                                     <td>
-                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarColorModal" . $row["id_color"] . "'>Editar</a> |
-                                        <a href='borrar_color.php?id=" . $row["id_color"] . "' class='btn btn-danger btn-sm'>Borrar</a>
+                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarColorModal" . $row["id_color"] . "'><i class='bi bi-pen'></i></a> |
+                                        <a href='borrar_color.php?id=" . $row["id_color"] . "' class='btn btn-danger btn-sm'><i class='bi bi-trash3'></i></a>
                                     </td>
                                   </tr>";
 
@@ -83,11 +89,8 @@ unset($_SESSION['mensaje']);
                             </div>";
                         }
                         echo "</tbody></table>";
-                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarColorModal'>Agregar color</a>";
                     } else {
                         echo "<p class='text-center'>No hay colores registrados.</p>";
-                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarColorModal'>Agregar color</a>";
-                        echo "<a href='../menu/menu.html' class='btn btn-primary mt-3 d-block'>Volver al menú</a>";
                     }
                 ?>
             </div>

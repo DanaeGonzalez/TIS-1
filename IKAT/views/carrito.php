@@ -25,10 +25,12 @@ if ($rowPuntos = $resultPuntos->fetch_assoc()) {
 }
 
 // Consultar productos en el carrito del usuario
+// Consultar productos en el carrito del usuario junto con las ofertas
 $sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, p.foto_producto, 
-               p.precio_unitario, c.cantidad 
+               p.precio_unitario, c.cantidad, o.porcentaje_descuento 
         FROM carrito c 
         JOIN producto p ON c.id_producto = p.id_producto 
+        LEFT JOIN oferta o ON p.id_producto = o.id_producto 
         WHERE c.id_usuario = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $_SESSION['id_usuario']);
@@ -41,7 +43,12 @@ $total = 0;
 
 // Recorrer los productos del carrito
 while ($row = $result->fetch_assoc()) {
-    $subtotal = $row['precio_unitario'] * $row['cantidad'];
+    // Calcular el precio con descuento si aplica
+    $precio_unitario = $row['precio_unitario'];
+    if (!is_null($row['porcentaje_descuento'])) {
+        $precio_unitario = $precio_unitario - ($precio_unitario * $row['porcentaje_descuento'] / 100);
+    }
+    $subtotal = $precio_unitario * $row['cantidad'];
     $total += $subtotal;
 
     if ($row['cantidad'] > $row['stock_producto']) {
@@ -49,7 +56,8 @@ while ($row = $result->fetch_assoc()) {
         $alerta = true;
     }
 
-    $productos[] = $row; // Almacenar productos para mostrar
+    // Agregar datos procesados a productos
+    $productos[] = array_merge($row, ['precio_unitario' => $precio_unitario, 'subtotal' => $subtotal]);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['puntos_usar'])) {
@@ -63,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['puntos_usar'])) {
     }
 }
 $totalConDescuento = $total - $descuento;
-$totalIVA = $totalConDescuento * 0.19;
+$totalIVA = $total * 0.19;
 $totalFinal = $totalConDescuento;
 
 ?>
@@ -117,11 +125,12 @@ $totalFinal = $totalConDescuento;
                     <div class="col-md-8">
                         <div class="list-group me-3">
                             <?php
-                            // Consultar productos en el carrito del usuario
+                            // Consultar productos en el carrito del usuario junto con las ofertas
                             $sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, p.foto_producto, 
-                            p.precio_unitario, c.cantidad 
+                            p.precio_unitario, c.cantidad, o.porcentaje_descuento 
                             FROM carrito c 
                             JOIN producto p ON c.id_producto = p.id_producto 
+                            LEFT JOIN oferta o ON p.id_producto = o.id_producto 
                             WHERE c.id_usuario = ?";
                             $stmt = $conn->prepare($sql);
                             $stmt->bind_param("i", $_SESSION['id_usuario']);
@@ -132,11 +141,18 @@ $totalFinal = $totalConDescuento;
                             $productos = [];
                             $total = 0;
 
+
+
                             while ($row = $result->fetch_assoc()) {
-                                $subtotal = $row['precio_unitario'] * $row['cantidad'];
+                                // Calcular el precio con descuento si aplica
+                                $precio_unitario = $row['precio_unitario'];
+                                if (!is_null($row['porcentaje_descuento'])) {
+                                    $precio_unitario = $precio_unitario - ($precio_unitario * $row['porcentaje_descuento'] / 100);
+                                }
+                                $subtotal = $precio_unitario * $row['cantidad'];
                                 $total += $subtotal;
 
-                                //Ajustar la ruta de la imagen
+                                // Ajustar la ruta de la imagen
                                 $ruta_original = $row['foto_producto'];
                                 $ruta_ajustada = str_replace("../../", "../", $ruta_original);
 
@@ -145,17 +161,33 @@ $totalFinal = $totalConDescuento;
                                 echo "<a href='producto.php?id={$row['id_producto']}'><img src='{$ruta_ajustada}' alt='{$row['nombre_producto']}' class='me-3 rounded' style='width: 170px;'></a>";
                                 echo "<div>";
                                 echo "<h4 class='mb-1 text-dark '>{$row['nombre_producto']}</h4>";
-                                echo "<h6 class='text-dark'>\$" . number_format(floor($row['precio_unitario']), 0, '', '.') . "</h6>";
+                                echo "<h6 class='text-dark'>\$" . number_format(floor($precio_unitario), 0, '', '.') . "</h6>";
                                 echo "<div class='d-flex align-items-center'>";
-                                echo "<div class='input-group input-group-sm' style='width: 40px;'>";
-                                echo "<input type='text' value='{$row['cantidad']}' min='1' class='form-control text-center' readonly>";
-                                echo "</div></div></div>";
+
+                                // Botones para incrementar y decrementar cantidad con stock máximo
+                                echo "<div class='input-group' style='width: 130px;'>";
+                                echo "<button class='btn btn-outline-secondary btn-sm decrease-qty' data-id='{$row['id_producto']}' data-stock='{$row['stock_producto']}'>-</button>"; ?>
+                                <input type='number' value='<?php echo $row['cantidad']; ?>' min='1'
+                                    max='<?php echo $row['stock_producto']; ?>'
+                                    class='border border-1 border-secondary form-control text-center qty-input form-control-sm'
+                                    data-id='<?php echo $row['id_producto']; ?>' readonly>
+
+                                <?php
+                                echo "<button class='btn btn-outline-secondary btn-sm increase-qty' data-id='{$row['id_producto']}' data-stock='{$row['stock_producto']}'>+</button>";
                                 echo "</div>";
 
+
+
+                                echo "</div></div>";
+                                echo "</div>";
+
+
+                                // Subtotal del producto
+                            
                                 // Botón de eliminar producto con SVG
                                 echo "<form action='../assets/php/eliminarProducto_carrito.php' method='POST' class='d-inline-block text-center'>";
                                 echo "<input type='hidden' name='id_producto' value='{$row['id_producto']}'>";
-                                echo "<p class='mb-0 fw-bold fs-4 text-secondary'>\$" . number_format(floor($subtotal), 0, '', '.') . "</p>";
+                                echo "<p class='mb-0 fw-bold fs-4 text-secondary subtotal' data-id='{$row['id_producto']}'>\$" . number_format(floor($subtotal), 0, '', '.') . "</p>";
                                 echo "<br>";
                                 echo "<button type='submit' class='btn btn-danger btn-sm button_d mt-5'>";
                                 echo "<div class='icon'>";
@@ -168,6 +200,9 @@ $totalFinal = $totalConDescuento;
                                 echo "</div>";
                             }
                             ?>
+
+
+
                             <?php if ($total > 0): ?>
                                 <div class="d-flex justify-content-center mt-2 mb-4">
                                     <form action="../assets/php/vaciarCarrito.php" method="POST">
@@ -185,9 +220,6 @@ $totalFinal = $totalConDescuento;
                                     </form>
                                 </div>
                             <?php endif; ?>
-
-
-
                         </div>
                     </div>
 
@@ -196,7 +228,7 @@ $totalFinal = $totalConDescuento;
                         <ul class="list-group">
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Subtotal<span>$<?= number_format(floor($total), 0, '', '.') ?></span>
+                                Subtotal <span class="total">$<?= number_format(floor($total), 0, '', '.') ?></span>
                             </li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
@@ -204,14 +236,19 @@ $totalFinal = $totalConDescuento;
                             </li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                Total IVA 19% <span>$<?= number_format(floor($totalIVA), 0, '', '.') ?></span></li>
+                                Total IVA 19% <span
+                                    class="iva">$<?= number_format(floor($totalIVA), 0, '', '.') ?></span></li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
-                                Total<span>$<?= number_format(floor($totalFinal), 0, '', '.') ?></span></li>
+                                Total<span class="total">$<?= number_format(floor($totalFinal), 0, '', '.') ?></span>
+                            </li>
                         </ul>
                         <?php if ($total > 0): ?>
-                            <form action="procesarCompra.php" method="POST">
-                                <input type="hidden" name="total" value="<?= $total ?>">
+                            <form action="procesarCompra.php" method="POST" onsubmit="actualizarValoresHidden();">
+                                <input type="hidden" name="total" id="inputTotal" value="<?= $total ?>">
+                                <input type="hidden" name="totalIVA" id="inputTotalIVA" value="<?= $totalIVA ?>">
+                                <input type="hidden" name="totalFinal" id="inputTotalFinal" value="<?= $totalFinal ?>">
+
                                 <label for="puntos_usar">Tienes <?= $puntos_disp ?> puntos.</label>
                                 <input type="number" name="puntos_usar" id="puntos_usar" class="form-control"
                                     max="<?= $puntos_disp ?>" min="0" placeholder="Cantidad de puntos a usar">
@@ -223,8 +260,7 @@ $totalFinal = $totalConDescuento;
                                     </svg>
                                 </button>
                             </form>
-                            <a type="button" class="coffebtn mt-3" href="cotizacion.php"
-                                style="text-decoration: none;">
+                            <a type="button" class="coffebtn mt-3" href="cotizacion.php" style="text-decoration: none;">
                                 Generar Cotización
                                 <path
                                     d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
@@ -252,6 +288,101 @@ $totalFinal = $totalConDescuento;
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Evento para incrementar la cantidad
+            $(".increase-qty").click(function () {
+                var cantidadInput = $(this).siblings(".qty-input");
+                var cantidad = parseInt(cantidadInput.val());
+                var stock = $(this).data('stock');
+                var idProducto = $(this).data('id');
+                var button = $(this); // Guardamos el botón para deshabilitarlo
+
+                // Asegurarse de que la cantidad no exceda el stock
+                if (cantidad < stock) {
+                    cantidad++; // Incrementa la cantidad
+                    cantidadInput.val(cantidad); // Actualiza el valor en el input
+
+
+                    actualizarCantidad(idProducto, cantidad, function (response) {
+                        // Actualiza los subtotales y totales
+                        actualizarSubtotal(cantidadInput);
+                        actualizarTotales();
+
+
+                        // Recargar la página después de la actualización
+                        location.reload(); // Recarga la página después de realizar los cambios
+                    });
+                }
+            });
+
+            // Evento para decrementar la cantidad
+            $(".decrease-qty").click(function () {
+                var cantidadInput = $(this).siblings(".qty-input");
+                var cantidad = parseInt(cantidadInput.val());
+                var idProducto = $(this).data('id');
+                var button = $(this); // Guardamos el botón para deshabilitarlo
+
+                // Asegurarse de que la cantidad no sea menor que 1
+                if (cantidad > 1) {
+                    cantidad--; // Decrementa la cantidad
+                    cantidadInput.val(cantidad); // Actualiza el valor en el input
+
+                    // Llamar a la función para actualizar la cantidad en la base de datos
+                    actualizarCantidad(idProducto, cantidad, function (response) {
+                        // Actualiza los subtotales y totales
+                        actualizarSubtotal(cantidadInput);
+                        actualizarTotales();
+
+                        // Recargar la página después de la actualización
+                        location.reload(); // Recarga la página después de realizar los cambios
+                    });
+                }
+            });
+
+            // Función para actualizar la cantidad en la base de datos
+            function actualizarCantidad(idProducto, cantidad, callback) {
+                $.ajax({
+                    url: 'actualizarCantidad.php',
+                    method: 'POST',
+                    data: { id_producto: idProducto, cantidad: cantidad },
+                    success: function (response) {
+                        console.log(response); // Debugging
+                        callback(response); // Ejecutar la función de callback después de la actualización
+                    }
+                });
+            }
+
+            // Función para actualizar el subtotal de un producto
+            function actualizarSubtotal(cantidadInput) {
+                const precio = parseFloat(cantidadInput.closest('.list-group-item').find('h6').text().replace('$', '').replace('.', '').trim());
+                const cantidad = parseInt(cantidadInput.val());
+                const subtotal = cantidad * precio;
+                cantidadInput.closest('.list-group-item').find('.subtotal').text(`$${subtotal.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`);
+            }
+
+            // Función para actualizar los totales (suma de subtotales y cálculo del IVA)
+            function actualizarTotales() {
+                let total = 0;
+                $(".subtotal").each(function () {
+                    total += parseFloat($(this).text().replace('$', '').replace('.', '').trim());
+                });
+
+                const iva = total * 0.19;
+                const totalConIva = total + iva;
+
+                // Actualizar los totales en la interfaz
+                $(".total").text(`$${total.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`);
+                $(".iva").text(`$${iva.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`);
+                $(".total-iva").text(`$${totalConIva.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`);
+            }
+        });
+    </script>
+
+
 
     <script>
         document.querySelectorAll('.button_d').forEach(button => button.addEventListener('click', e => {
