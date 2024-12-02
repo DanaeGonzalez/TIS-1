@@ -6,7 +6,6 @@ const nombresFiltros = {
         8: "Cama",
         9: "Almacenamiento y organización"
     },
-    // Otros filtros...
 };
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -36,10 +35,10 @@ function buscarProductos() {
                 if (!response.ok) {
                     throw new Error('Error en la respuesta del servidor');
                 }
-                return response.text(); // Recibimos HTML directamente
+                return response.text(); // Recibimos HTML 
             })
             .then((html) => {
-                productContainer.innerHTML = html; // Reemplazar contenido del contenedor con el HTML recibido
+                productContainer.innerHTML = html; 
                 
                 // Cargar las estrellas dinámicamente después de renderizar las cartas
                 const productContainers = document.querySelectorAll('[id^="stars-container-"]');
@@ -69,7 +68,6 @@ function buscarProductos() {
     }
 }
 
-// Agregar evento de cambio a los filtros
 document.addEventListener("change", event => {
     if (event.target.closest("#form-filtros")) {
         filtrarProductos();
@@ -90,8 +88,8 @@ function barraBusqueda() {
     // Función para mostrar resultados
     function realizarBusqueda(buscar = '') {
         if (listaResultados) {
-            listaResultados.innerHTML = '<li class="list-group-item text-muted">Buscando...</li>'; // Mostrar un mensaje temporal
-            listaResultados.classList.remove('d-none'); // Asegurar que la lista sea visible
+            listaResultados.innerHTML = '<li class="list-group-item text-muted">Buscando...</li>'; 
+            listaResultados.classList.remove('d-none'); 
         }
 
         fetch(`../assets/php/barra_busqueda.php?buscar=${encodeURIComponent(buscar)}`)
