@@ -28,8 +28,6 @@
                 
                     <img src="../assets/images/ikat.png" alt="Promoción IKAT Points"
                         class="img-fluid" style="max-height: 300px;">
-                
-                
                     <!-- Texto promocional -->
                     <div class="text-content">
                     <h1 class="fw-bold mb-3">¡Descubre el poder de tus IKAT Points!</h1>

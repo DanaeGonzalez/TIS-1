@@ -18,15 +18,13 @@
 
         <!-- Main -->
         <div class="main d-flex flex-column align-items-center justify-content-center text-center py-5">
-            <div class="container py-5">
-                <!-- Espacio para la imagen -->
-                <div class="mb-5">
+            <div class="d-flex justify-content-center">
+                <div class="col-md-10 mb-10 p-5 border bg-light rounded shadow-sm">
                     <img src="../assets/images/ikat.png" alt="Métodos de Pago"
-                        class="img-fluid" style="max-height: 300px;">
-                </div>
-                
-                <!-- Texto informativo -->
-                <div class="text-content">
+                        class="img-fluid" style="max-height: 250px;">
+                    <br>
+                    <!-- Texto informativo -->
+                    <div class="text-content">
                     <h1 class="fw-bold mb-3">Nuestros Métodos de Pago</h1>
                     <p class="fs-5 mb-4">
                         En IKAT, hacemos que tus compras sean fáciles y seguras. Actualmente, aceptamos los
@@ -40,10 +38,10 @@
                         Estamos comprometidos con ofrecerte más opciones para que siempre encuentres el método
                         que mejor se adapte a ti.
                     </p>
-                </div>
+                    </div>
+                </div>    
             </div>
         </div>
-
         <!-- Footer -->
         <?php include '../templates/footer.php'; ?>
     </div>
