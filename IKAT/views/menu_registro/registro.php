@@ -217,13 +217,8 @@ include '..\..\config\conexion.php';
                                                     VALUES ('$nombre', '$apellido', '$run', '$correo', '$numero', '$contrasenia', 'Registrado', '0', '1', NOW())";
     
                                     if (mysqli_query($conn, $query_usuario)) {
-                                        echo "
-                                        <div class='container-fluid d-flex justify-content-center align-items-center bg-light' style='height: 100vh;'>
-                                            <div class='alert alert-success text-center shadow-lg p-5 rounded-3' role='alert' style='max-width: 500px;'>
-                                                <h3 class='fw-bold'>¡Te has registrado correctamente!</h3>
-                                                <p>Haz clic aquí para <a href='login.php' class='alert-link'>Iniciar sesión</a></p>
-                                            </div>
-                                        </div>";
+                                        header('Location: login.php?msg=reg_ok');
+                                        exit;
                                     } else {
                                         die("Error en la inserción de usuario: " . mysqli_error($conn));
                                     }
