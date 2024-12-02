@@ -51,9 +51,6 @@ include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/views/menu_registro/auth.
           <input id="buscarInputIndex" class="form-control d-inline w-75" type="text"
             placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
             onfocus="barraBusquedaIndex()" oninput="barraBusquedaIndex()">
-          <button id="buscarButtonIndex" class="btn btn-dark d-inline" type="button" onclick="buscarProductosIndex()">
-            <i class="bi bi-search"></i>
-          </button>
           <div id="listaIndex" class="list-group position-absolute d-none"></div>
 
           <div class="explore-button">

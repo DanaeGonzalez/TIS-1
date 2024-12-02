@@ -109,7 +109,7 @@ include '../assets/php/ver_resenias.php';
                                             alt="<?= htmlspecialchars($primerProductoPendiente['nombre_producto'], ENT_QUOTES, 'UTF-8'); ?>"
                                             class="rounded-circle image-contour" width="50" height="50">
                                     <?php else: ?>
-                                        <img src="../assets/images/ikat.png" alt="Sin productos pendientes"
+                                        <img src="../assets/images/cat_blanco.png" alt="Sin productos pendientes"
                                             class="rounded-circle image-contour" width="50" height="50">
                                     <?php endif; ?>
                                 </div>
