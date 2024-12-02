@@ -29,9 +29,8 @@
         <?php
         // Conectar a la base de datos
         include_once '../config/conexion.php';
-        include_once '../assets/php/calcular_top_ventas.php'; // Incluir la función para obtener el top de ventas
+        include_once '../assets/php/calcular_top_ventas.php'; 
 
-        // Obtener el top de ventas
         $topVentas = obtenerTopVentas($conn);
         ?>
         <div class="container-f">
