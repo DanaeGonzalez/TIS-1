@@ -321,11 +321,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
             const descuento = parseFloat(<?= number_format($descuento,0,'','.') ?>)
             const tasaImpuestos = 0.19;
 
-            if (isNaN(subtotal)) {
-                console.error('Error: Subtotal no válido.');
-                return;
-            }
-
             const totalIVA = subtotal * tasaImpuestos;
             const totalFinal = subtotal - descuento + valorEnvio;
 
