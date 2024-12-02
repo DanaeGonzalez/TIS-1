@@ -36,7 +36,7 @@
                 <h5>Servicio</h5>
                 <ul class="list-unstyled">
                     <li><a href="#" class="text-black text-decoration-none">Sigue tu pedido</a></li>
-                    <li><a href="#" class="text-black text-decoration-none">IKAT Points</a></li>
+                    <li><a href="/xampp/TIS-1/IKAT/views/ikatpoints.php" class="text-black text-decoration-none">IKAT Points</a></li>
                     <li><a href="#" class="text-black text-decoration-none">Despacho a domicilio</a></li>
                     <li><a href="#" class="text-black text-decoration-none">Métodos de pago</a></li>
                 </ul>
