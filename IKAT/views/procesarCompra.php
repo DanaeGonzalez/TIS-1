@@ -321,20 +321,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
             calcularTotal();
         }
 
-        var descuento = <?php echo $descuento; ?>;
 
         function calcularTotal() {
+            // Cargar el descuento desde PHP
+            var descuento = <?php echo $descuento; ?>;
+
+            // Obtener el subtotal y valor de envío
             const subtotal = parseFloat(document.querySelector('input[name="total"]').value);
             const valorEnvio = parseFloat(document.getElementById('valorEnvioInput').value) || 0;
+            
+
+            // Tasa de impuestos
             const tasaImpuestos = 0.19;
 
+            // Calcular IVA y total final
             const totalIVA = subtotal * tasaImpuestos;
-            const totalFinal = subtotal + valorEnvio-descuento;
+            const totalFinal = subtotal + valorEnvio - descuento;
 
+            // Mostrar los valores en la interfaz
             document.getElementById('valorImpuestos').textContent = `$${formatNumber(totalIVA)}`;
             document.getElementById('totalConEnvioImpuestos').textContent = `$${formatNumber(totalFinal)}`;
             document.getElementById('totalCalculado').value = totalFinal;
+
+
         }
+
 
         function formatNumber(num) {
             return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
