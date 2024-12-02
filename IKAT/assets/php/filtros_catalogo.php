@@ -100,9 +100,30 @@ if ($result && $result->num_rows > 0) {
     while ($producto = $result->fetch_assoc()) {
         $id_producto = $producto['id_producto'];
         $esTopVenta = in_array($id_producto, $topVentas);
-
-        echo generarCartaProducto($id_producto, $producto, $esTopVenta);
-    }
+    
+        // Verificar si el producto tiene una oferta
+        $sqlOferta = "SELECT porcentaje_descuento FROM oferta WHERE id_producto = $id_producto";
+        $resultadoOferta = $conn->query($sqlOferta);
+        $tieneOferta = $resultadoOferta && $resultadoOferta->num_rows > 0;
+        $precioOriginal = $producto['precio_unitario'] ?? 0;
+        $precioConDescuento = $precioOriginal;
+    
+        if ($tieneOferta) {
+            $oferta = $resultadoOferta->fetch_assoc();
+            $porcentajeDescuento = $oferta['porcentaje_descuento'] ?? 0;
+            $precioConDescuento = $precioOriginal - ($precioOriginal * $porcentajeDescuento / 100);
+        }
+    
+        // Generar la carta del producto con precios y descuentos
+        echo generarCartaProducto(
+            $id_producto,
+            $producto,
+            $esTopVenta,
+            $tieneOferta,
+            $precioOriginal,
+            $precioConDescuento
+        );
+    }   
 } else {
     echo '<p>No se encontraron productos.</p>';
 }

@@ -56,58 +56,12 @@ function buscarProductos() {
     }
 }
 
-function filtrarProductos() {
-    const form = document.getElementById("form-filtros");
-    const productContainer = document.getElementById("product-container");
-
-    if (!form || !productContainer) {
-        console.error("Formulario o contenedor de productos no encontrado.");
-        return;
-    }
-
-    // Declarar formData correctamente antes de usarlo
-    const formData = new FormData(form);
-
-    console.log("Filtros enviados:");
-    for (let [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-    }
-
-    // Mostrar un mensaje de carga mientras se obtienen los productos
-    productContainer.innerHTML = "<p>Cargando productos...</p>";
-
-    // Enviar los filtros seleccionados al servidor
-    fetch(`../assets/php/filtros_catalogo.php`, {
-        method: "POST",
-        body: formData,
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Error al filtrar los productos.");
-            }
-            return response.text(); // Recibe el HTML de los productos
-        })
-        .then(html => {
-            productContainer.innerHTML = html; // Actualiza el contenedor con los productos filtrados
-            cargarEstrellasDinamicamente(); // Llamar la función para cargar estrellas
-        })
-        .catch(error => {
-            console.error("Error al filtrar los productos:", error);
-            productContainer.innerHTML = "<p>Error al cargar los productos. Intenta nuevamente.</p>";
-        });
-}
-
-
 // Agregar evento de cambio a los filtros
 document.addEventListener("change", event => {
     if (event.target.closest("#form-filtros")) {
         filtrarProductos();
     }
 });
-
-
-
-
 
 function barraBusqueda() {
     const buscarInputMain = document.getElementById('buscarInputMain');
@@ -259,11 +213,17 @@ function seleccionarCategoria(idCategoria) {
         console.log(data);
         // Recargar filtros y productos con la nueva categoría
         cargarFiltrosYProductosPorCategoria(idCategoria);
+        
+        // Crear etiqueta para la categoría
+        const formData = new FormData();
+        formData.append("categoria", idCategoria);
+        actualizarEtiquetasFiltros(formData);
     })
     .catch(error => {
         console.error("Error al seleccionar la categoría:", error);
     });
 }
+
 
 function cargarEstrellasDinamicamente() {
     const productContainers = document.querySelectorAll('[id^="stars-container-"]');
@@ -273,5 +233,100 @@ function cargarEstrellasDinamicamente() {
     });
 }
 
+function actualizarEtiquetasFiltros(formData) {
+    const appliedFilters = document.getElementById("applied-filters");
+
+    if (!appliedFilters) {
+        console.error("Contenedor de etiquetas de filtros no encontrado.");
+        return;
+    }
+
+    // Limpia las etiquetas existentes
+    appliedFilters.innerHTML = "";
+
+    // Genera etiquetas para cada filtro aplicado
+    formData.forEach((value, key) => {
+        // Ignorar la categoría ya que es un filtro base
+        if (key === "categoria") return;
+
+        // Crear etiqueta
+        const tag = document.createElement("span");
+        tag.className = "badge bg-secondary p-2 d-flex align-items-center";
+
+        // Texto de la etiqueta
+        tag.innerHTML = `
+            ${key}: ${value}
+            <button type="button" class="btn-close ms-2" aria-label="Eliminar"></button>
+        `;
+
+        // Evento para eliminar el filtro asociado
+        tag.querySelector(".btn-close").addEventListener("click", () => {
+            eliminarFiltro(key, value);
+        });
+
+        appliedFilters.appendChild(tag);
+    });
+}
+
+function eliminarFiltro(key, value) {
+    const form = document.getElementById("form-filtros");
+
+    if (!form) {
+        console.error("Formulario no encontrado.");
+        return;
+    }
+
+    // Actualizar el formulario eliminando el filtro
+    const elements = form.querySelectorAll(`[name="${key}"]`);
+    elements.forEach(element => {
+        if (element.type === "checkbox" && element.value === value) {
+            element.checked = false; // Deseleccionar
+        }
+    });
+
+    // Reaplicar los filtros sin el filtro eliminado
+    filtrarProductos();
+}
+
+function filtrarProductos() {
+    const form = document.getElementById("form-filtros");
+    const productContainer = document.getElementById("product-container");
+
+    if (!form || !productContainer) {
+        console.error("Formulario o contenedor de productos no encontrado.");
+        return;
+    }
+
+    const formData = new FormData(form);
+
+    // Actualizar etiquetas de filtros aplicados
+    actualizarEtiquetasFiltros(formData);
+
+    console.log("Filtros enviados:");
+    formData.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+    });
+
+    productContainer.innerHTML = "<p>Cargando productos...</p>";
+
+    fetch(`../assets/php/filtros_catalogo.php`, {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al filtrar los productos.");
+            }
+            return response.text();
+        })
+        .then(html => {
+            productContainer.innerHTML = html;
+            cargarEstrellasDinamicamente(); // Llamar la función para cargar estrellas
+        })
+        .catch(error => {
+            console.error("Error al filtrar los productos:", error);
+            productContainer.innerHTML = "<p>Error al cargar los productos. Intenta nuevamente.</p>";
+        });
+}
 
 

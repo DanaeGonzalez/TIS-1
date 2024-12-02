@@ -113,6 +113,9 @@
                             </div>
                         </div>
                     </form> <!-- Fin del formulario -->
+                    <div class="container mt-3">
+                        <div id="applied-filters" class="d-flex flex-wrap gap-2"></div>
+                    </div> 
                 </div>
 
 
