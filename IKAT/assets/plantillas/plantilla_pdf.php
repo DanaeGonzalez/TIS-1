@@ -22,18 +22,20 @@ while ($row = $result->fetch_assoc()) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_POST['total_calculado'])) {
     // Capturar datos del formulario
     $id_usuario = $_SESSION['id_usuario'];
-	$direccion_pedido = $_POST['direccion_pedido'] ?? '';
+	$direccion_pedido = $_POST['direccion_pedido'] ?? 'Dirección no especificada';
 	$total_calculado = $_POST['total_calculado'] ?? 0;
     $valorImpuestos = $_POST['valorImpuestos'] ?? 0;
-    $valor_envio = $_POST['valor_envio'] ?? 0;
+    $valor_envio = $_POST['valorEnvio'] ?? 0;
     $fecha_compra = $fecha_compra ?? date('d-m-Y H:i:s');
 
 } else {
     $fecha_compra = $fecha_compra ?? date('d-m-Y H:i:s');
+	$direccion_pedido = $_POST['direccion_pedido'] ?? 'Dirección no especificada';
 
-    $total = $_POST['total'] ?? 0;
-    $totalIVA = $total * 0.19;
-    $totalFinal = $total;
+    $total = (float) ($_POST['total'] ?? 0); // Convierte a número flotante
+	$valor_envio = (float) ($_POST['valorEnvio'] ?? 0); // Convierte a número flotante
+	$totalIVA = $total * 0.19;
+	$totalFinal = $total + $valor_envio;
 
     // Obtener métodos de pago
     $query_metodo = "SELECT * FROM metodo_pago WHERE activo = 1";
@@ -127,7 +129,7 @@ if ($result_usuario->num_rows > 0) {
 							<strong>Condición Frente al IVA: </strong>Consumidor final
 						</p>
 						<p class="col-6 margin-b-0">
-							<strong>Dirección Entrega: </strong><?php echo htmlspecialchars($direccion_pedido) ?>
+							<strong>Dirección Entrega: </strong><?php echo htmlspecialchars($direccion_pedido); ?>
 						</p>
 					</div>
 					<p>
@@ -160,7 +162,7 @@ if ($result_usuario->num_rows > 0) {
                             $result = $stmt->get_result();
 
                             $total = 0;
-
+							$oferta = "SELECT id_oferta FROM oferta JOIN producto using(id_producto)";
                             // Mostrar productos en el carrito
                             while ($row = $result->fetch_assoc()) {
                                 $subtotal = $row['precio_unitario'] * $row['cantidad'];
@@ -201,7 +203,7 @@ if ($result_usuario->num_rows > 0) {
 							<strong>Valor Envío: $</strong>
 						</p>
 						<p class="col-2 margin-b-0">
-							<strong><?php echo htmlspecialchars($valorEnvio)?></strong>
+							<strong><?php echo htmlspecialchars($valor_envio)?></strong>
 						</p>
 					</div>
 					<div class="row text-right">
@@ -228,20 +230,6 @@ if ($result_usuario->num_rows > 0) {
     	window.onload = function() {
         window.print();
     	};
-
-		function calcularTotal() {
-    		const subtotal = parseFloat(document.querySelector('input[name="total"]').value) || 0;
-    		const valorEnvio = parseFloat(document.getElementById('valorEnvioInput').value) || 0;
-    		const tasaImpuestos = 0.19;
-
-    		const totalIVA = Math.round(subtotal * tasaImpuestos);
-    		const totalFinal = subtotal + valorEnvio;
-
-    		document.getElementById('valorImpuestos').textContent = `$${formatNumber(totalIVA)}`;
-    		document.getElementById('totalConEnvioImpuestos').textContent = `$${formatNumber(totalFinal)}`;
-    		document.getElementById('totalCalculado').value = totalFinal.toFixed(2);
-		}
-
 		function formatNumber(num) {
     		return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 		}

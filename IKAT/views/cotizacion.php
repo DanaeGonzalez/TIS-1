@@ -187,28 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 ?>
                                 <!-- Campo oculto para el subtotal original -->
                                 <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
-                                <!-- Contenedor de la barra de búsqueda Mapa-->
-                                <div class="mb-3">
-                                    <label class="form-label fw-bold">Dirección</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="direccion" name="direccion_pedido"
-                                            onblur="buscarDireccion();" value="<?php echo htmlspecialchars($direccion); ?>"
-                                            placeholder="Av. Alonso de Ribera 2850" required>
-                                        <!-- Botón para confirmar dirección -->
-                                        <button class="btn btn-outline-secondary" type="button" id="confirmar_direccion"
-                                            onclick="buscarDireccion()" required>
-                                            <i class="bi bi-check"></i> Confirmar
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Alerta si la dirección no está confirmada -->
-                                <?php if (!$direccionConfirmada): ?>
-                                    <div class="alert alert-info" role="alert">
-                                        ¡Por favor, confirma tu dirección antes de continuar con la cotización!
-                                    </div>
-                                <?php endif; ?>
-
+                                
                                 <!-- Mapa -->
                                 <div id="map" style="display: none;"></div>
 
@@ -221,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                             </form>
 
                             <!-- Resumen de la Compra -->
-                        <div class="col-md-9 mb-7 p-4 border bg-light rounded shadow-sm resumen-compra">
+                        <div class="col-md-10 mb-7 p-4 border bg-light rounded shadow-sm resumen-compra">
                             <h3 class="mb-7 text-center">Cotización</h3>
                             <ul class="list-group">
                                 <li
@@ -230,7 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 </li>
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
-                                    Envío<span id="valorEnvio">$0</span>
+                                    Envío<span id="valorEnvio">Confirmación Pendiente</span>
                                 </li>
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 bg-light">
@@ -245,13 +224,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 </li>
                             </ul>
                             <form action="/xampp/TIS-1/IKAT/assets/plantillas/plantilla_pdf.php" method="post" target="_blank">
-                                <input type="hidden" name="direccion_pedido" value="<?php echo $direccion_pedido; ?>">
                                 <input type="hidden" name="total" value="<?php echo $total; ?>">
-                                <input type="hidden" name="total_calculado" value="<?php echo $total_calculado; ?>">
-                                <input type="hidden" name="valorImpuestos" value="<?php echo $totalIVA;?>">
-                                <input type="hidden" id="valorEnvioInput" name="valor_envio" value="<?php echo $valorEnvio;?>">
+                                <input type="hidden" name="valorImpuestos" value="<?php echo $totalIVA; ?>">
+                                <input type="hidden" id="valorEnvioInput" name="valor_envio" value="<?php echo $valorEnvio; ?>">
+                                <div class="input-group">
+                                <input type="text" class="form-control" id="direccion" name="direccion_pedido"
+                                    onblur="buscarDireccion();" value="<?php echo htmlspecialchars($direccion); ?>"
+                                    placeholder="Av. Alonso de Ribera 2850" required>
+                                <button class="btn btn-outline-secondary" type="button" id="confirmar_direccion"
+                                    onclick="buscarDireccion()" required>
+                                    <i class="bi bi-check"></i> Confirmar
+                                </button>
+                                </div>
+                                <!-- Alerta si la dirección no está confirmada -->
+                                <?php if (!$direccionConfirmada): ?>
+                                    <div class="alert alert-info" role="alert">
+                                        ¡Por favor, confirma tu dirección antes de continuar con la compra!
+                                    </div>
+                                <?php endif; ?>
                                 <button type="submit" class="coffebtn mt-3">Descargar Cotización</button>
                             </form>
+
                         </div>
                         <br>
                         </div>
