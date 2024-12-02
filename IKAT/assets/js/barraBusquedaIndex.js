@@ -25,7 +25,7 @@ function barraBusquedaIndex() {
                         const rutaAjustada = producto.foto_producto;
                         item.classList.add('list-group-item', 'sugerencia-item');
                         item.innerHTML = `
-                            <a href="producto.php?id=${producto.id_producto}" class="d-flex align-items-center" style="text-decoration: none;">
+                            <a href="../producto.php?id=${producto.id_producto}" class="d-flex align-items-center" style="text-decoration: none;">
                                 <img src="${rutaAjustada}" alt="${producto.nombre_producto}" class="sugerencia-img me-2">
                                 <span>${producto.nombre_producto}</span>
                             </a>`;
