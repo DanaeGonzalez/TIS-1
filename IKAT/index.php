@@ -8,11 +8,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="assets\css\styles.css">
+    <link rel="stylesheet" href="assets\css\barra_busqueda_index.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
-
+    <script src="assets/js/barraBusquedaIndex.js"></script>
   </head>
 
   <body>
@@ -144,18 +145,20 @@
 
         <!-- Contenedor de la barra de búsqueda sobre el carrusel -->
         <div class="search-bar-container d-none d-lg-flex">
-          <input class="form-control d-inline w-75" type="text"
-            placeholder="Escribe lo que estés buscando: mesa, cama, silla...">
-          <button class="btn btn-dark d-inline" type="submit">
+          <input id="buscarInputIndex" class="form-control d-inline w-75" type="text"
+            placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
+            onfocus="barraBusquedaIndex()" oninput="barraBusquedaIndex()">
+          <button id="buscarButtonIndex" class="btn btn-dark d-inline" type="button" onclick="buscarProductosIndex()">
             <i class="bi bi-search"></i>
           </button>
+          <div id="listaIndex" class="list-group position-absolute d-none"></div>
 
-          <!-- Boton de busqueda -->
           <div class="explore-button">
-            <a href="views\catalogo.php" class="btn btn-dark text-white fw-medium rounded-pill" role="button">Explorar
+            <a href="views/catalogo.php" class="btn btn-dark text-white fw-medium rounded-pill" role="button">Explorar
               productos</a>
           </div>
         </div>
+
 
         <!-- Carousel -->
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
@@ -309,9 +312,9 @@
 
     <script>
       // Habilitar todos los tooltips
-      document.addEventListener('DOMContentLoaded', function () {
+      document.addEventListener('DOMContentLoaded', function() {
         var tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+        tooltipTriggerList.forEach(function(tooltipTriggerEl) {
           new bootstrap.Tooltip(tooltipTriggerEl)
         })
       });

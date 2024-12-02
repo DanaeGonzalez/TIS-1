@@ -16,7 +16,6 @@
         <script src="../assets/js/stars.js"></script>
         <?php
         include '../assets/php/dropdowns.php';
-        include '../assets/php/generar_carta_producto.php';
         ?>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,6 +25,7 @@
     </head>
 
     <body>
+
         <?php
         // Conectar a la base de datos
         include_once '../config/conexion.php';
@@ -115,7 +115,7 @@
                     </form> <!-- Fin del formulario -->
                     <div class="container mt-3">
                         <div id="applied-filters" class="d-flex flex-wrap gap-2"></div>
-                    </div> 
+                    </div>
                 </div>
 
 
@@ -133,7 +133,7 @@
                 include_once '../config/conexion.php';
 
                 // Configuración de paginación
-                $productosPorPagina =15;
+                $productosPorPagina = 15;
                 $paginaActual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
                 $offset = ($paginaActual - 1) * $productosPorPagina;
 
@@ -197,7 +197,7 @@
                                     $porcentajeDescuento = $oferta['porcentaje_descuento'];
                                     $precioConDescuento = $precioOriginal - ($precioOriginal * $porcentajeDescuento / 100);
                                 }
-
+                                include_once '../assets/php/generar_carta_producto.php';
                                 // Usar la función para generar la carta
                                 echo generarCartaProducto($id_producto, $producto, $esTopVenta, $tieneOferta, $precioOriginal, $precioConDescuento);
                                 ?>

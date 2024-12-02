@@ -10,9 +10,11 @@ include '../menu_registro/auth.php';
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>IKAT - Página de Inicio </title>
     <link rel="stylesheet" href="..\..\assets\css\styles.css">
+    <link rel="stylesheet" href="../../assets\css\barra_busqueda_index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="../../assets/js/barraBusquedaIndex.js"></script>
   </head>
 
   <body>
@@ -46,18 +48,19 @@ include '../menu_registro/auth.php';
 
       <!-- Contenedor de la barra de búsqueda sobre el carrusel -->
       <div class="search-bar-container d-none d-lg-flex">
-        <input class="form-control d-inline w-75" type="text"
-          placeholder="Escribe lo que estés buscando: mesa, cama, silla...">
-        <button class="btn btn-dark d-inline" type="submit">
-          <i class="bi bi-search"></i>
-        </button>
+          <input id="buscarInputIndex" class="form-control d-inline w-75" type="text"
+            placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
+            onfocus="barraBusquedaIndex()" oninput="barraBusquedaIndex()">
+          <button id="buscarButtonIndex" class="btn btn-dark d-inline" type="button" onclick="buscarProductosIndex()">
+            <i class="bi bi-search"></i>
+          </button>
+          <div id="listaIndex" class="list-group position-absolute d-none"></div>
 
-        <!-- Boton de busqueda -->
-        <div class="explore-button">
-          <a href="..\catalogo.php" class="btn btn-dark text-white fw-medium rounded-pill" role="button">Explorar
-            productos</a>
+          <div class="explore-button">
+            <a href="../catalogo.php" class="btn btn-dark text-white fw-medium rounded-pill" role="button">Explorar
+              productos</a>
+          </div>
         </div>
-      </div>
 
       <!-- Carousel -->
       <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
@@ -112,19 +115,19 @@ include '../menu_registro/auth.php';
       <div class="container inicio mt-5">
         <div class="row justify-content-center text-center">
           <div class="col-10 col-md-5 col-lg-4 mb-4 inicio-categoria">
-            <a href="../catalogo_silla.php">
+            <a href="../catalogo.php">
               <img src="../../assets/images/categoria_silla.png" class="img-fluid categoria-img" alt="Imagen 1">
               <p class="text-overlay">Sillas</p>
             </a>
           </div>
           <div class="col-10 col-md-5 col-lg-4 mb-4 inicio-categoria">
-            <a href="../catalogo_mesa.php">
+            <a href="../catalogo.php">
               <img src="../../assets/images/categoria_mesa.png" class="img-fluid categoria-img" alt="Imagen 2">
               <p class="text-overlay">Mesas</p>
             </a>
           </div>
           <div class="col-10 col-md-5 col-lg-4 mb-4 inicio-categoria">
-            <a href="../catalogo_sillon.php">
+            <a href="../catalogo.php">
               <img src="../../assets/images/categoria_sillon.png" class="img-fluid categoria-img" alt="Imagen 3">
               <p class="text-overlay">Sillones</p>
 
@@ -134,13 +137,13 @@ include '../menu_registro/auth.php';
 
         <div class="row justify-content-center text-center">
           <div class="col-10 col-md-6 col-lg-6 mb-4 inicio-categoria">
-            <a href="../catalogo_organizacion.php">
+            <a href="../catalogo.php">
               <img src="../../assets/images/categoria_organizacion.png" class="img-fluid categoria-img" alt="Imagen 4">
               <p class="text-overlay">Organización</p>
             </a>
           </div>
           <div class="col-10 col-md-6 col-lg-6 mb-4 inicio-categoria">
-            <a href="../catalogo_cama.php">
+            <a href="../catalogo.php">
               <img src="../../assets/images/categoria_cama.png" class="img-fluid categoria-img" alt="Imagen 5">
               <p class="text-overlay">Camas</p>
             </a>

@@ -1,0 +1,53 @@
+#listaIndex {
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    z-index: 1050;
+    position: absolute;
+    top: calc(100% + 5px);
+    width: 90%; /* Ajusta al ancho del contenedor */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Para una sombra más elegante */
+}
+
+#listaIndex li:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+.sugerencia-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    gap: 15px; /* Espacio entre imagen y texto */
+}
+
+.sugerencia-img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 5px;
+    flex-shrink: 0; /* Evita que la imagen se reduzca */
+}
+
+#listaIndex span {
+    font-size: 16px; /* Ajusta el tamaño del texto */
+    color: #333; /* Asegúrate de que el texto sea neutro */
+    line-height: 1.2; /* Espaciado entre líneas */
+}
+
+#buscarInputIndex {
+    border-radius: 15px;
+    padding: 10px 15px;
+}
+
+#listaIndex a {
+    color: #333; /* Cambia a un color neutro */
+    text-decoration: none; /* Elimina el subrayado */
+}
+
+#listaIndex a:hover {
+    color: #000; /* Resalta en negro al pasar el cursor */
+    text-decoration: none; /* Mantén sin subrayar */
+}
