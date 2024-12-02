@@ -34,7 +34,7 @@
             <?php include '../templates/header.php'; ?>
 
             <!-- Main -->
-            <div class="main">
+            <div class="main py-4">
                 <!-- Modal para la barra de búsqueda -->
                 <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel"
                     aria-hidden="true">
@@ -57,22 +57,6 @@
                                     </div>
                                 </form>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Contenedor de la barra de búsqueda -->
-                <div class="d-none d-lg-flex justify-content-center align-items-center mt-4">
-                    <div class="search-container col-lg-7 col-10">
-                        <div class="input-group">
-
-                            <input type="text" class="form-control p-2"
-                                placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
-                                aria-label="Escribe lo que estés buscando: mesa, cama, silla..."
-                                aria-describedby="search-addon">
-                            <button class="input-group-text" id="search-addon" type="button">
-                                <i class="bi bi-search"></i>
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -107,45 +91,50 @@
 
                 <div class="container mt-4">
                     <div class="row">
-                        <div class="col-md-6 text-center position-relative">
+                        <div class="col-md-6 text-center position-relative d-flex">
                             <?php
                             //función para ajustar la ruta
                             $ruta_original = $producto['foto_producto'];
                             $ruta_ajustada = str_replace("../../", "../", $ruta_original);
                             ?>
-                            <img width="90%" src="<?= $ruta_ajustada ?>" class="img-fluid rounded product-image"
-                                style="border: 1px solid #f0f0f0;" alt="Imagen del Producto">
-
-                            <!-- Botón de compartir (copiar al portapapeles) en la esquina inferior derecha -->
-                            <button id="copyLinkButton" class="copy" onclick="copyLink()">
-                                <span data-text-end="Copiado!" data-text-initial="Copiar enlace" class="tooltip"></span>
-                                <span>
-                                    <svg xml:space="preserve" style="enable-background:new 0 0 512 512"
-                                        viewBox="0 0 6.35 6.35" y="0" x="0" height="20" width="20"
-                                        xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
-                                        xmlns="http://www.w3.org/2000/svg" class="clipboard">
-                                        <g>
-                                            <path fill="currentColor"
-                                                d="M2.43.265c-.3 0-.548.236-.573.53h-.328a.74.74 0 0 0-.735.734v3.822a.74.74 0 0 0 .735.734H4.82a.74.74 0 0 0 .735-.734V1.529a.74.74 0 0 0-.735-.735h-.328a.58.58 0 0 0-.573-.53zm0 .529h1.49c.032 0 .049.017.049.049v.431c0 .032-.017.049-.049.049H2.43c-.032 0-.05-.017-.05-.049V.843c0-.032.018-.05.05-.05zm-.901.53h.328c.026.292.274.528.573.528h1.49a.58.58 0 0 0 .573-.529h.328a.2.2 0 0 1 .206.206v3.822a.2.2 0 0 1-.206.205H1.53a.2.2 0 0 1-.206-.205V1.529a.2.2 0 0 1 .206-.206z">
-                                            </path>
-                                        </g>
-                                    </svg>
-                                    <svg xml:space="preserve" style="enable-background:new 0 0 512 512"
-                                        viewBox="0 0 24 24" y="0" x="0" height="18" width="18"
-                                        xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
-                                        xmlns="http://www.w3.org/2000/svg" class="checkmark">
-                                        <g>
-                                            <path data-original="#000000" fill="currentColor"
-                                                d="M9.707 19.121a.997.997 0 0 1-1.414 0l-5.646-5.647a1.5 1.5 0 0 1 0-2.121l.707-.707a1.5 1.5 0 0 1 2.121 0L9 14.171l9.525-9.525a1.5 1.5 0 0 1 2.121 0l.707.707a1.5 1.5 0 0 1 0 2.121z">
-                                            </path>
-                                        </g>
-                                    </svg>
-                                </span>
-                            </button>
-
+                            <div class="botonImagen d-flex flex-column align-items-center">
+                                <div class="botonCopy d-flex justify-content-end w-100 me-5">
+                                    <!-- Botón de compartir (copiar al portapapeles) -->
+                                    <button id="copyLinkButton" class="copy" onclick="copyLink()">
+                                        <span data-text-end="Copiado!" data-text-initial="Copiar enlace"
+                                            class="tooltip py-0"></span>
+                                        <span>
+                                            <svg xml:space="preserve" style="enable-background:new 0 0 512 512"
+                                                viewBox="0 0 6.35 6.35" y="0" x="0" height="20" width="20"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                                                xmlns="http://www.w3.org/2000/svg" class="clipboard">
+                                                <g>
+                                                    <path fill="currentColor"
+                                                        d="M2.43.265c-.3 0-.548.236-.573.53h-.328a.74.74 0 0 0-.735.734v3.822a.74.74 0 0 0 .735.734H4.82a.74.74 0 0 0 .735-.734V1.529a.74.74 0 0 0-.735-.735h-.328a.58.58 0 0 0-.573-.53zm0 .529h1.49c.032 0 .049.017.049.049v.431c0 .032-.017.049-.049.049H2.43c-.032 0-.05-.017-.05-.049V.843c0-.032.018-.05.05-.05zm-.901.53h.328c.026.292.274.528.573.528h1.49a.58.58 0 0 0 .573-.529h.328a.2.2 0 0 1 .206.206v3.822a.2.2 0 0 1-.206.205H1.53a.2.2 0 0 1-.206-.205V1.529a.2.2 0 0 1 .206-.206z">
+                                                    </path>
+                                                </g>
+                                            </svg>
+                                            <svg xml:space="preserve" style="enable-background:new 0 0 512 512"
+                                                viewBox="0 0 24 24" y="0" x="0" height="18" width="18"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                                                xmlns="http://www.w3.org/2000/svg" class="checkmark">
+                                                <g>
+                                                    <path data-original="#000000" fill="currentColor"
+                                                        d="M9.707 19.121a.997.997 0 0 1-1.414 0l-5.646-5.647a1.5 1.5 0 0 1 0-2.121l.707-.707a.5 1.5 0 0 1 2.121 0L9 14.171l9.525-9.525a.5 1.5 0 0 1 2.121 0l.707.707a.5 1.5 0 0 1 0 2.121z">
+                                                    </path>
+                                                </g>
+                                            </svg>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="imagenProducto">
+                                    <img width="90%" src="<?= $ruta_ajustada ?>" class="img-fluid rounded product-image"
+                                        style="border: 1px solid #f0f0f0;" alt="Imagen del Producto">
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 mt-5">
                             <div class="d-flex justify-content-between align-items-center me-2">
                                 <h1><?= htmlspecialchars($producto['nombre_producto']) ?></h1>
                                 <select id="currencySelector" class="form-select" style="width: auto;">
@@ -181,7 +170,9 @@
                                 </button>
                                 <?php
                             }
+
                             ?>
+
                             </h2>
                             <hr>
                             <h5>Características</h5>
@@ -271,10 +262,12 @@
                                 ?>
                                 <!-- Define el stock máximo aquí -->
                                 <div class="input-group" style="width: 130px;">
-                                    <button class="btn btn-outline-secondary" type="button" onclick="decrementar()">-</button>
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        onclick="decrementar()">-</button>
                                     <input type="number" id="cantidadInput" value="1" min="1" max="10"
                                         class="form-control text-center custom-input border border-secondary">
-                                    <button class="btn btn-outline-secondary" type="button" onclick="incrementar()">+</button>
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        onclick="incrementar()">+</button>
                                 </div>
                                 <div id="resultado" style="display: none;">El valor es: 1</div>
                                 <?php
@@ -378,7 +371,8 @@
                                                 <div class="carousel-item">
                                                     <div class="card">
                                                         <div class="header">
-                                                            <div class="image"><img src="../assets/images/profile/01.webp" alt=""></div>
+                                                            <div class="image"><img src="../assets/images/profile/01.webp"
+                                                                    alt=""></div>
                                                             <div>
                                                                 <div class="stars">
                                                                     <?php for ($i = 0; $i < 5; $i++): ?>

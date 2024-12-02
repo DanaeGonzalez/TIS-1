@@ -1,8 +1,9 @@
 .copy {
     /* button */
-    position: absolute;
-    top: 275px;
-    right: 46px;
+    top:37px;
+    right: 5px;
+    width: 50px !important;
+    z-index: 1010;
     --button-bg: #353434;
     --button-hover-bg: #464646;
     --button-text-color: #CCCCCC;
