@@ -97,49 +97,60 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                     <hr>
                     <div class="col-md-7">
                         <div class="list-group me-3">
-                            <?php
+                        <?php
                             // Consulta para obtener los productos del carrito
                             $sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, cp.cantidad, p.precio_unitario, p.foto_producto
-                            FROM carrito cp 
-                            JOIN producto p ON cp.id_producto = p.id_producto 
-                            WHERE cp.id_usuario = ?";
+                                    FROM carrito cp 
+                                    JOIN producto p ON cp.id_producto = p.id_producto 
+                                    WHERE cp.id_usuario = ?";
                             $stmt = $conn->prepare($sql);
                             $stmt->bind_param("i", $_SESSION['id_usuario']);
                             $stmt->execute();
                             $result = $stmt->get_result();
-
+                                                        
                             $total = 0;
-
+                                                        
                             // Mostrar productos en el carrito
                             while ($row = $result->fetch_assoc()) {
-                                $subtotal = $row['precio_unitario'] * $row['cantidad'];
+                                // Consultar si existe un descuento para este producto en la tabla "oferta"
+                                $queryOferta = "SELECT porcentaje_descuento FROM oferta WHERE id_producto = ?";
+                                $stmtOferta = $conn->prepare($queryOferta);
+                                $stmtOferta->bind_param("i", $row['id_producto']);
+                                $stmtOferta->execute();
+                                $resultOferta = $stmtOferta->get_result();
+                                $oferta = $resultOferta->fetch_assoc();
+                            
+                                // Calcular el precio con descuento si hay uno
+                                if ($oferta && $oferta['porcentaje_descuento'] > 0) {
+                                    $descuento = $oferta['porcentaje_descuento'];
+                                    $precioConDescuento = $row['precio_unitario'] - ($row['precio_unitario'] * $descuento / 100);
+                                } else {
+                                    // Si no hay descuento, el precio se mantiene igual
+                                    $precioConDescuento = $row['precio_unitario'];
+                                }
+                            
+                                // Calcular el subtotal con el precio con descuento
+                                $subtotal = $precioConDescuento * $row['cantidad'];
                                 $total += $subtotal;
-
+                            
                                 echo "<div class='list-group-item d-flex justify-content-between align-items-center bg-light border mb-4 rounded shadow-sm p-3'>";
                                 echo "<div class='d-flex align-items-center'>";
                                 echo "<a href='producto.php?id={$row['id_producto']}'><img src='{$row['foto_producto']}' alt='{$row['nombre_producto']}' class='me-3 rounded' style='width: 170px;'></a>";
                                 echo "<div>";
                                 echo "<h4 class='mb-1 text-dark '>{$row['nombre_producto']}</h4>";
-                                echo "<h6 class='text-dark'>\$" . number_format(floor($row['precio_unitario']), 0, '', '.') . "</h6>";
+                                echo "<h6 class='text-dark'>\$" . number_format(floor($precioConDescuento), 0, '', '.') . "</h6>";
                                 echo "<div class='d-flex align-items-center'>";
                                 echo "<div class='input-group input-group-sm' style='width: 40px;'>";
                                 echo "<input type='text' value='{$row['cantidad']}' min='1' class='form-control text-center' readonly>";
                                 echo "</div></div></div>";
                                 echo "</div>";
-
-                                // Botón de eliminar producto
+                            
+                                // Mostrar el subtotal con el precio con descuento
                                 echo "<p class='mb-0 fw-bold fs-4 text-secondary'>\$" . number_format(floor($subtotal), 0, '', '.') . "</p>";
-                                /*echo "<br>";
-                                echo "<button type='button' class='btn btn-danger btn-sm button_d mt-5 eliminar-producto' data-id='{$row['id_producto']}'>";
-                                echo "<div class='icon'>";
-                                echo "<svg class='top'><use xlink:href='#top'></use></svg>";
-                                echo "<svg class='bottom'><use xlink:href='#bottom'></use></svg>";
-                                echo "</div>";
-                                echo "<span>Eliminar</span>";
-                                echo "</button>";*/
                                 echo "</div>";
                             }
-                            ?>
+                        ?>
+
                         </div>
                     </div>
                         <div class="col-md-5">

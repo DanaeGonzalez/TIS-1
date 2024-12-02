@@ -8,21 +8,33 @@ $alerta = false;
 
 
 // Consultar productos en el carrito
-$sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, cp.cantidad 
+// Consultar productos en el carrito junto con posibles descuentos
+$sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, cp.cantidad, p.precio_unitario, 
+               o.porcentaje_descuento 
         FROM carrito cp 
         JOIN producto p ON cp.id_producto = p.id_producto 
+        LEFT JOIN oferta o ON p.id_producto = o.id_producto 
         WHERE cp.id_usuario = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $_SESSION['id_usuario']);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Recorrer los productos del carrito
+// Inicializar variables
+$total = 0; // Variable para el total antes de descuentos
 while ($row = $result->fetch_assoc()) {
+    // Calcular precio con descuento si aplica
+    $precio_unitario = $row['precio_unitario'];
+    if (!is_null($row['porcentaje_descuento'])) {
+        $precio_unitario = $precio_unitario - ($precio_unitario * $row['porcentaje_descuento'] / 100);
+    }
+    $subtotal = $precio_unitario * $row['cantidad'];
+    $total += $subtotal;
+
+    // Verificar stock insuficiente
     if ($row['cantidad'] > $row['stock_producto']) {
-        // Si hay stock insuficiente, agregar el producto al array
         $productosSinStock[] = $row;
-        $alerta = true;  // Marcar que hay un problema con el stock
+        $alerta = true;
     }
 }
 
@@ -34,7 +46,7 @@ if ($alerta) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_POST['id_metodo'], $_POST['total_calculado'])) {
-    // Capturar datos del formulario
+    // Resto del código para procesar el pedido
     $id_usuario = $_SESSION['id_usuario'];
     $direccion_pedido = $_POST['direccion_pedido'];
     $id_metodo = $_POST['id_metodo'];
@@ -43,7 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     $fecha_compra = date('Y-m-d H:i:s');
     $puntos_ganados = $total_compra * 0.05;
 
-    // Insertar en la base de datos
     $query = "INSERT INTO compra (id_compra, fecha_compra, total_compra, puntos_ganados, direccion_pedido, id_metodo, id_usuario) 
               VALUES (NULL, '$fecha_compra', '$total_compra', '$puntos_ganados', '$direccion_pedido', '$id_metodo', '$id_usuario')";
 
@@ -53,13 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     } else {
         echo "Error: " . $query . "<br>" . $conn->error;
     }
-} else {
-
+    } else {
     $total_previo = $_POST['total'] ?? 0;
-    $_SESSION['puntos_usados'] = isset($_POST['puntos_usar']) && is_numeric($_POST['puntos_usar'])
-        ? (int) $_POST['puntos_usar']
-        : 0;
-    $descuento = $_SESSION['puntos_usados'] * 5;
+    $_SESSION['puntos_usados'] = isset($_POST['puntos_usar']) && is_numeric($_POST['puntos_usar']) 
+    ? (int)$_POST['puntos_usar'] 
+    : 0;
+    $descuento = $_SESSION['puntos_usados']*0.25;
 
     if ($total_previo == 0) {
         header("Location: carrito.php");
@@ -75,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
     // Verificar si la dirección está confirmada
     $direccionConfirmada = isset($_POST['direccion_pedido']) && !empty($_POST['direccion_pedido']);
+    }
     ?>
 
     <!doctype html>
@@ -112,11 +123,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                         <div class="col-md-8">
                             <form method="POST" action="procesarCompra.php">
                                 <!-- Campo oculto para enviar el total de la compra -->
-                                <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
+                                <input type="hidden" name="total" value="<?= htmlspecialchars($total_previo); ?>">
 
                                 <!-- Campo oculto para el total calculado -->
                                 <input type="hidden" id="totalCalculado" name="total_calculado"
-                                    value="<?= htmlspecialchars($total); ?>">
+                                    value="<?= htmlspecialchars($totalFinal); ?>">
 
                                 <input type="hidden" id="valorEnvioInput" name="valor_envio" value="0">
 
@@ -141,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 ?>
 
                                 <!-- Campo oculto para el subtotal original -->
-                                <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
+                                <input type="hidden" name="total" value="<?= htmlspecialchars($total_previo); ?>">
                                 <!-- Contenedor de la barra de búsqueda Mapa-->
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Dirección</label>
@@ -228,11 +239,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                         id="valorImpuestos">$<?= number_format(floor($totalIVA), 0, '', '.') ?></span>
                                 </li>
 
-                                <li
-                                    class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
-                                    Total<span
-                                        id="totalConEnvioImpuestos">$<?= number_format(floor($totalFinal), 0, '', '.') ?></span>
-                                </li>
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
+                                Total (Subtotal + Envío)<span
+                                    id="totalConEnvioImpuestos">$<?= number_format(floor($totalFinal), 0, '', '.') ?></span>
+                            </li>
                             </ul>
                         </div>
 
@@ -243,8 +254,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
             <?php include '../templates/footer.php'; ?>
         </div>
-        <?php $conn->close();
-} ?>
+    <?php $conn->close(); ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -321,9 +331,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
             const subtotal = parseFloat(document.querySelector('input[name="total"]').value);
             const valorEnvio = parseFloat(document.getElementById('valorEnvioInput').value) || 0;
             const tasaImpuestos = 0.19;
+            const descuento = parseFloat(<?= json_encode($descuento) ?>) || 0;
+
+            // Asegurando que el descuento no exceda el subtotal
+            const subtotal_descuento = Math.max(subtotal - descuento, 0);
 
             const totalIVA = subtotal * tasaImpuestos;
-            const totalFinal = subtotal + valorEnvio;
+            const totalFinal = subtotal_descuento + valorEnvio;
 
             document.getElementById('valorImpuestos').textContent = `$${formatNumber(totalIVA)}`;
             document.getElementById('totalConEnvioImpuestos').textContent = `$${formatNumber(totalFinal)}`;

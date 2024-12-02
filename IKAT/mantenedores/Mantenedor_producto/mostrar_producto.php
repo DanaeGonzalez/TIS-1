@@ -264,21 +264,45 @@ foreach ($productos as $producto) {
                                             <td>" . ($row["activo"] ? "Sí" : "No") . "</td>
                                             <td>
                                                 <div class='d-flex justify-content-center flex-wrap gap-1'>
-                                                    <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarProductoModal" . $row["id_producto"] . "'>
-                                                        <i class='bi bi-pen'></i>
-                                                    </a>
-                                                    <a class='btn btn-info btn-sm' data-bs-toggle='modal' data-bs-target='#agregarCaracteristicasModal" . $row["id_producto"] . "'>
-                                                        <i class='bi bi-database-add'></i>
-                                                    </a>
-                                                    <a class='btn btn-primary btn-sm' data-bs-toggle='modal' data-bs-target='#modificarProductoStockModal" . $row["id_producto"] . "'>
-                                                        <i class='bi bi-plus-circle'></i>
-                                                    </a>
-                                                    <a class='btn btn-secondary btn-sm' href='historial_producto.php?id_producto=" . $row["id_producto"] . "'>
-                                                        <i class='bi bi-clock-history'></i>
-                                                    </a>
-                                                    <a class='btn btn-danger btn-sm' href='cambiar_estado_producto.php?id=" . $row["id_producto"] . "'>
-                                                        <i class='bi bi-trash3'></i>
-                                                    </a>
+                                                    <div class='btn-group d-block d-sm-none'> <!-- Dropdown para pantallas pequeñas -->
+                                                        <button type='button' class='btn btn-secondary btn-sm dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='false'>
+                                                            <i class='bi bi-gear'></i>
+                                                        </button>
+                                                        <ul class='dropdown-menu'>
+                                                            <li><a class='dropdown-item' data-bs-toggle='modal' data-bs-target='#editarProductoModal" . $row["id_producto"] . "'>
+                                                                <i class='bi bi-pen'></i> Editar
+                                                            </a></li>
+                                                            <li><a class='dropdown-item' data-bs-toggle='modal' data-bs-target='#agregarCaracteristicasModal" . $row["id_producto"] . "'>
+                                                                <i class='bi bi-database-add'></i> Agregar características
+                                                            </a></li>
+                                                            <li><a class='dropdown-item' data-bs-toggle='modal' data-bs-target='#modificarProductoStockModal" . $row["id_producto"] . "'>
+                                                                <i class='bi bi-plus-circle'></i> Modificar stock
+                                                            </a></li>
+                                                            <li><a class='dropdown-item' href='historial_producto.php?id_producto=" . $row["id_producto"] . "'>
+                                                                <i class='bi bi-clock-history'></i> Historial
+                                                            </a></li>
+                                                            <li><a class='dropdown-item' href='cambiar_estado_producto.php?id=" . $row["id_producto"] . "'>
+                                                                <i class='bi bi-trash3'></i> Cambiar estado
+                                                            </a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class='d-none d-sm-flex flex-wrap gap-1'> <!-- Botones normales para pantallas grandes -->
+                                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarProductoModal" . $row["id_producto"] . "'>
+                                                            <i class='bi bi-pen'></i>
+                                                        </a>
+                                                        <a class='btn btn-info btn-sm' data-bs-toggle='modal' data-bs-target='#agregarCaracteristicasModal" . $row["id_producto"] . "'>
+                                                            <i class='bi bi-database-add'></i>
+                                                        </a>
+                                                        <a class='btn btn-primary btn-sm' data-bs-toggle='modal' data-bs-target='#modificarProductoStockModal" . $row["id_producto"] . "'>
+                                                            <i class='bi bi-plus-circle'></i>
+                                                        </a>
+                                                        <a class='btn btn-secondary btn-sm' href='historial_producto.php?id_producto=" . $row["id_producto"] . "'>
+                                                            <i class='bi bi-clock-history'></i>
+                                                        </a>
+                                                        <a class='btn btn-danger btn-sm' href='cambiar_estado_producto.php?id=" . $row["id_producto"] . "'>
+                                                            <i class='bi bi-trash3'></i>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>";

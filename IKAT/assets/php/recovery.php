@@ -52,7 +52,8 @@
                         <p style='color: #595959; font-size: 16px;'>Por favor, haz click en el botón de abajo para continuar con el proceso.</p>
                         <a href='http://localhost/xampp/TIS-1/IKAT/views/menu_registro/change_pass.php?id=".$row["id_usuario"]."&token=".$token."'
                             style='background-color: black; margin: 8px 0; color: white; border: none; padding: 16px 32px; text-decoration: none; display: inline-block; font-size: 16px; border-radius: 8px;'>Recuperar Contraseña</a>
-                        <p style='color: #595959; font-size: 14px; font-weight: lighter;'>Este correo ha sido generado automáticamente. Evita responder a este correo en caso de algún problema.</p>
+                        <p style='color: #595959; font-size: 14px; font-weight: lighter;'>Este correo ha sido generado automáticamente.<br>
+                        Evita responder a este correo en caso de algún problema.</p>
                     </div>
                     <div style='background-color: #F2F2F2; padding: 15px; text-align: center;'>
                         <p style='color: #595959; font-size: 14px;'>Gracias por confiar en nosotros.</p>
