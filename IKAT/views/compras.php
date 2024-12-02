@@ -90,26 +90,43 @@ include '../assets/php/ver_resenias.php';
                         <div class="container mt-2">
                             <div class="d-flex align-items-center justify-content-between p-3 border rounded shadow-sm mb-5"
                                 style="background-color: #f2f2f2;">
-                                <!-- Imágenes circulares -->
-                                <div class="d-flex">
-                                    <img src="../assets/images/estrellita.png" alt="Producto 1"
-                                        class="rounded-circle me-2" width="50" height="50">
-                                    <img src="../assets/images/productos/1732821050-sillon_amarillo.jpg"
-                                        alt="Producto 2" class="rounded-circle image-contour" width="50" height="50">
-                                </div>
                                 <?php
                                 $pendientes = obtenerReseniasPendientes($conn, $id_usuario);
                                 $productosPendientesCount = count($pendientes);
+                                $primerProductoPendiente = !empty($pendientes) ? $pendientes[0] : null; // Obtener el primer producto pendiente
                                 ?>
+
+                                <!-- Contenedor con las imágenes -->
+                                <div class="d-flex">
+                                    <!-- Imagen fija o de decoración -->
+                                    <img src="../assets/images/estrellita.png" alt="Estrellita"
+                                        class="rounded-circle me-2" width="50" height="50">
+
+                                    <!-- Imagen del primer producto pendiente o una imagen por defecto -->
+                                    <?php if ($primerProductoPendiente): ?>
+                                        <?php $rutaImagen = str_replace("../../", "../", $primerProductoPendiente['foto_producto']); ?>
+                                        <img src="<?= htmlspecialchars($rutaImagen, ENT_QUOTES, 'UTF-8'); ?>"
+                                            alt="<?= htmlspecialchars($primerProductoPendiente['nombre_producto'], ENT_QUOTES, 'UTF-8'); ?>"
+                                            class="rounded-circle image-contour" width="50" height="50">
+                                    <?php else: ?>
+                                        <img src="../assets/images/ikat.png" alt="Sin productos pendientes"
+                                            class="rounded-circle image-contour" width="50" height="50">
+                                    <?php endif; ?>
+                                </div>
 
                                 <!-- Texto -->
                                 <div>
                                     <span id="productos-opinion" style="font-size: 18px;">
                                         <?php
-                                        echo "Tienes $productosPendientesCount producto/s esperando tu reseña.";
+                                        if ($productosPendientesCount > 0) {
+                                            echo "Tienes $productosPendientesCount producto/s esperando tu reseña.";
+                                        } else {
+                                            echo "No tienes productos pendientes de reseñar.";
+                                        }
                                         ?>
                                     </span>
                                 </div>
+
 
                                 <!-- Botón -->
                                 <div>
@@ -138,7 +155,7 @@ include '../assets/php/ver_resenias.php';
             crossorigin="anonymous"></script>
         <script src="../assets/js/historialCompras.js"></script>
         <script>
-            const idUsuario = <?php echo json_encode($id_usuario); ?>; 
+            const idUsuario = <?php echo json_encode($id_usuario); ?>;
         </script>
     </body>
 
