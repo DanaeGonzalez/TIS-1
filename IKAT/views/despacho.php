@@ -16,16 +16,14 @@
     <div class="container-f">
         <!-- Header/Navbar -->
         <?php include '../templates/header.php'; ?>
-
         <!-- Main -->
         <div class="main d-flex flex-column align-items-center justify-content-center text-center py-5">
-            <div class="container py-5">
-                <div class="mb-5">
-                        <img src="../assets/images/despacho.JPEG" alt="Envíos a Domicilio"
-                            class="img-fluid" style="max-height: 200px;">
-                </div>
                 <div class="d-flex justify-content-center">
                 <div class="col-md-10 mb-10 p-5 border bg-light rounded shadow-sm">
+
+                    <img src="../assets/images/entrega-rapida.png" alt="Envíos a Domicilio"
+                    class="img-fluid" style="max-height: 200px;">
+                        
                     <!-- Texto informativo -->
                     <div class="text-content">
                         <h1 class="fw-bold mb-3">Envíos de muebles a domicilio en tiempo récord</h1>
@@ -45,10 +43,9 @@
                             ¡Confía en nosotros para llevar tus muebles a donde los necesites!
                         </p>
                     </div>
-                </div>
             </div>
         </div>
-
+        <br>
         <!-- Footer -->
         <?php include '../templates/footer.php'; ?>
     </div>
