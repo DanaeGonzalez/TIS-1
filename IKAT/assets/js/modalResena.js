@@ -26,7 +26,6 @@ document.querySelectorAll('.star-rating i').forEach((star, index, stars) => {
         // Asignar el valor correcto al input oculto
         document.getElementById('calificacion').value = valor;
 
-        // Limpiar todas las estrellas
         stars.forEach(s => {
             s.classList.remove('bi-star-fill');
             s.classList.add('bi-star');

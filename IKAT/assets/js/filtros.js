@@ -439,6 +439,8 @@ function eliminarCategoria() {
     });
 }
 
+//------------------------------------------------------------------------------------------------------------------------
+
 function cambiarPagina(pagina) {
     const form = document.getElementById("form-filtros");
     const productContainer = document.getElementById("product-container");

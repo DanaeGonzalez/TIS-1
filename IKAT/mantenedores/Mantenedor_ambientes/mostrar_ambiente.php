@@ -64,7 +64,7 @@ unset($_SESSION['mensaje']);
                                     <td>" . $row["nombre_ambiente"] . "</td>
                                     <td>
                                         <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarAmbienteModal" . $row["id_ambiente"] . "'><i class='bi bi-pen'></i></a> |
-                                        <a href='borrar_ambiente.php?id=" . $row["id_ambiente"] . "' class='btn btn-danger btn-sm'><i class=bi bi-trash3'></i></a>
+                                        <a href='borrar_ambiente.php?id=" . $row["id_ambiente"] . "' class='btn btn-danger btn-sm'><i class='bi bi-trash3'></i></a>
                                     </td>
                                   </tr>";
 
