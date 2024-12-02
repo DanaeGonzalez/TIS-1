@@ -25,10 +25,12 @@ if ($rowPuntos = $resultPuntos->fetch_assoc()) {
 }
 
 // Consultar productos en el carrito del usuario
+// Consultar productos en el carrito del usuario junto con las ofertas
 $sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, p.foto_producto, 
-               p.precio_unitario, c.cantidad 
+               p.precio_unitario, c.cantidad, o.porcentaje_descuento 
         FROM carrito c 
         JOIN producto p ON c.id_producto = p.id_producto 
+        LEFT JOIN oferta o ON p.id_producto = o.id_producto 
         WHERE c.id_usuario = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $_SESSION['id_usuario']);
@@ -41,7 +43,12 @@ $total = 0;
 
 // Recorrer los productos del carrito
 while ($row = $result->fetch_assoc()) {
-    $subtotal = $row['precio_unitario'] * $row['cantidad'];
+    // Calcular el precio con descuento si aplica
+    $precio_unitario = $row['precio_unitario'];
+    if (!is_null($row['porcentaje_descuento'])) {
+        $precio_unitario = $precio_unitario - ($precio_unitario * $row['porcentaje_descuento'] / 100);
+    }
+    $subtotal = $precio_unitario * $row['cantidad'];
     $total += $subtotal;
 
     if ($row['cantidad'] > $row['stock_producto']) {
@@ -49,7 +56,8 @@ while ($row = $result->fetch_assoc()) {
         $alerta = true;
     }
 
-    $productos[] = $row; // Almacenar productos para mostrar
+    // Agregar datos procesados a productos
+    $productos[] = array_merge($row, ['precio_unitario' => $precio_unitario, 'subtotal' => $subtotal]);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['puntos_usar'])) {
@@ -117,11 +125,12 @@ $totalFinal = $totalConDescuento;
                     <div class="col-md-8">
                         <div class="list-group me-3">
                             <?php
-                            // Consultar productos en el carrito del usuario
+                            // Consultar productos en el carrito del usuario junto con las ofertas
                             $sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, p.foto_producto, 
-                            p.precio_unitario, c.cantidad 
+                            p.precio_unitario, c.cantidad, o.porcentaje_descuento 
                             FROM carrito c 
                             JOIN producto p ON c.id_producto = p.id_producto 
+                            LEFT JOIN oferta o ON p.id_producto = o.id_producto 
                             WHERE c.id_usuario = ?";
                             $stmt = $conn->prepare($sql);
                             $stmt->bind_param("i", $_SESSION['id_usuario']);
@@ -133,25 +142,30 @@ $totalFinal = $totalConDescuento;
                             $total = 0;
 
                             while ($row = $result->fetch_assoc()) {
-                                $subtotal = $row['precio_unitario'] * $row['cantidad'];
+                                // Calcular el precio con descuento si aplica
+                                $precio_unitario = $row['precio_unitario'];
+                                if (!is_null($row['porcentaje_descuento'])) {
+                                    $precio_unitario = $precio_unitario - ($precio_unitario * $row['porcentaje_descuento'] / 100);
+                                }
+                                $subtotal = $precio_unitario * $row['cantidad'];
                                 $total += $subtotal;
-
-                                //Ajustar la ruta de la imagen
+                            
+                                // Ajustar la ruta de la imagen
                                 $ruta_original = $row['foto_producto'];
                                 $ruta_ajustada = str_replace("../../", "../", $ruta_original);
-
+                            
                                 echo "<div class='list-group-item d-flex justify-content-between align-items-center bg-light border mb-4 rounded shadow-sm p-3'>";
                                 echo "<div class='d-flex align-items-center'>";
                                 echo "<a href='producto.php?id={$row['id_producto']}'><img src='{$ruta_ajustada}' alt='{$row['nombre_producto']}' class='me-3 rounded' style='width: 170px;'></a>";
                                 echo "<div>";
                                 echo "<h4 class='mb-1 text-dark '>{$row['nombre_producto']}</h4>";
-                                echo "<h6 class='text-dark'>\$" . number_format(floor($row['precio_unitario']), 0, '', '.') . "</h6>";
+                                echo "<h6 class='text-dark'>\$" . number_format(floor($precio_unitario), 0, '', '.') . "</h6>";
                                 echo "<div class='d-flex align-items-center'>";
                                 echo "<div class='input-group input-group-sm' style='width: 40px;'>";
                                 echo "<input type='text' value='{$row['cantidad']}' min='1' class='form-control text-center' readonly>";
                                 echo "</div></div></div>";
                                 echo "</div>";
-
+                            
                                 // Botón de eliminar producto con SVG
                                 echo "<form action='../assets/php/eliminarProducto_carrito.php' method='POST' class='d-inline-block text-center'>";
                                 echo "<input type='hidden' name='id_producto' value='{$row['id_producto']}'>";
