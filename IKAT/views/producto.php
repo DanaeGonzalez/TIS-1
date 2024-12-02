@@ -368,7 +368,16 @@
                                             </div>
                                         <?php else: ?>
                                             <?php foreach ($resenias as $index => $resenia): ?>
-                                                <div class="carousel-item">
+                                                <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
+
+                                                    <style>
+                                                        .carousel-inner {
+                                                     /* Asegura que el contenido esté centrado verticalmente también */
+                                                            margin-left: 8%;
+                                                            height: fit-content;
+
+                                                        }
+                                                    </style>
                                                     <div class="card">
                                                         <div class="header">
                                                             <div class="image"><img src="../assets/images/profile/01.webp"
