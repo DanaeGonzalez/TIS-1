@@ -138,7 +138,7 @@ include '../assets/php/ver_resenias.php';
             crossorigin="anonymous"></script>
         <script src="../assets/js/historialCompras.js"></script>
         <script>
-            const idUsuario = <?php echo json_encode($id_usuario); ?>; // Pasar id_usuario a JavaScript
+            const idUsuario = <?php echo json_encode($id_usuario); ?>; 
         </script>
     </body>
 
