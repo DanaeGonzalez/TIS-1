@@ -170,55 +170,71 @@
                         </div>
 
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Imagen</th>
-                                        <th>Producto</th>
-                                        <th>Precio Unitario</th>
-                                        <th>Cantidad</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    // Obtener los detalles de los productos de la compra
-                                    $query = "SELECT 
-                                    p.nombre_producto, 
-                                    p.precio_unitario, 
-                                    p.foto_producto, 
-                                    cp.cantidad, 
-                                    (p.precio_unitario * cp.cantidad) AS total
-                                  FROM compra_producto cp
-                                  JOIN producto p ON cp.id_producto = p.id_producto
-                                  WHERE cp.id_compra = ?";
-
-                                    $stmt = $conn->prepare($query);
-                                    $stmt->bind_param("i", $id_compra);
-                                    $stmt->execute();
-                                    $result = $stmt->get_result();
-
-                                    while ($row = $result->fetch_assoc()) {
-                                        $total_compra += $row['total'];
-                                        $imagen = !empty($row['foto_producto']) ? $row['foto_producto'] : '../assets/images/default.png';
-
-                                        echo "<tr>
-                                    <td><img src='$imagen' alt='Imagen de {$row['nombre_producto']}' class='product-img'></td>
-                                    <td>{$row['nombre_producto']}</td>
-                                    <td>$" . number_format($row['precio_unitario'], 0, ',', '.') . "</td>
-                                    <td>{$row['cantidad']}</td>
-                                    <td>$" . number_format($row['total'], 0, ',', '.') . "</td>
-                                  </tr>";
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Imagen</th>
+                                    <th>Producto</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Cantidad</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                // Inicializar el total de la compra
+                                $total_compra = 0;
+                                                
+                                // Obtener los detalles de los productos de la compra con posibles descuentos
+                                $query = "SELECT 
+                                            p.nombre_producto, 
+                                            p.precio_unitario, 
+                                            p.foto_producto, 
+                                            cp.cantidad, 
+                                            o.porcentaje_descuento
+                                          FROM compra_producto cp
+                                          JOIN producto p ON cp.id_producto = p.id_producto
+                                          LEFT JOIN oferta o ON p.id_producto = o.id_producto
+                                          WHERE cp.id_compra = ?";
+                        
+                                $stmt = $conn->prepare($query);
+                                $stmt->bind_param("i", $id_compra);
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+                                                
+                                while ($row = $result->fetch_assoc()) {
+                                    // Calcular precio con descuento si aplica
+                                    $precio_unitario = $row['precio_unitario'];
+                                    if (!is_null($row['porcentaje_descuento'])) {
+                                        $precio_unitario -= ($precio_unitario * $row['porcentaje_descuento'] / 100);
                                     }
-                                    ?>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="4" class="text-end"><strong>Total Pagado:</strong></td>
-                                        <td><strong>$<?= number_format($total_compra, 0, ',', '.') ?></strong></td>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                                
+                                    // Calcular el total del producto
+                                    $subtotal = $precio_unitario * $row['cantidad'];
+                                    $total_compra += $subtotal;
+                                
+                                    // Usar imagen predeterminada si no hay foto
+                                    $imagen = !empty($row['foto_producto']) ? $row['foto_producto'] : '../assets/images/default.png';
+                                
+                                    // Mostrar fila del producto
+                                    echo "<tr>
+                                        <td><img src='$imagen' alt='Imagen de {$row['nombre_producto']}' class='product-img'></td>
+                                        <td>{$row['nombre_producto']}</td>
+                                        <td>$" . number_format($precio_unitario, 0, ',', '.') . "</td>
+                                        <td>{$row['cantidad']}</td>
+                                        <td>$" . number_format($subtotal, 0, ',', '.') . "</td>
+                                      </tr>";
+                                }
+                                ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" class="text-end"><strong>Total Pagado:</strong></td>
+                                    <td><strong>$<?= number_format($total_compra, 0, ',', '.') ?></strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
                         </div>
                     </div>
 
