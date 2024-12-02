@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchBar = document.getElementById("search-bar");
   const searchIcon = document.getElementById("search-icon");
   const totalComprasSpan = document.getElementById("total-compras");
-  let comprasOriginales = []; // Guardar el historial original para filtrar
+  let comprasOriginales = []; 
 
   // Fetch para obtener las compras del usuario
   fetch("/xampp/TIS-1/IKAT/assets/php/mostrarHistorial.php", {
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(data.error);
       }
 
-      comprasOriginales = data; // Guardar el historial original
+      comprasOriginales = data; 
 
       if (data.length === 0) {
         historialContenedor.innerHTML = `<p class="text-muted text-center">No hay productos en el historial de compras.</p>`;
@@ -193,7 +193,6 @@ function agregarTodaLaCompraAlCarrito(idCompra) {
         return;
       }
 
-      // Iterar sobre los productos y agregarlos al carrito
       productos.forEach((producto) => {
         agregarAlCarrito(producto.id_producto, producto.cantidad);
       });
@@ -264,10 +263,8 @@ function showAlert(message, type = "success", duration = 3000) {
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     `;
 
-  // Agregar la alerta al contenedor
   alertContainer.appendChild(alert);
 
-  // Eliminar la alerta después de la duración especificada
   setTimeout(() => {
     alert.classList.remove("show");
     alert.addEventListener("transitionend", () => alert.remove());
