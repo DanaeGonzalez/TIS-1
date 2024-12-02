@@ -10,9 +10,11 @@ include '../menu_registro/auth.php';
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>IKAT - Página de Inicio </title>
     <link rel="stylesheet" href="..\..\assets\css\styles.css">
+    <link rel="stylesheet" href="../../assets\css\barra_busqueda_index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="../../assets/js/barraBusquedaIndex.js"></script>
   </head>
 
   <body>
@@ -45,17 +47,19 @@ include '../menu_registro/auth.php';
 
       <!-- Contenedor de la barra de búsqueda sobre el carrusel -->
       <div class="search-bar-container d-none d-lg-flex">
-        <input class="form-control d-inline w-75" type="text" placeholder="Escribe lo que estés buscando: mesa, cama, silla...">
-        <button class="btn btn-dark d-inline" type="submit">
-          <i class="bi bi-search"></i>
-        </button>
+          <input id="buscarInputIndex" class="form-control d-inline w-75" type="text"
+            placeholder="Escribe lo que estés buscando: mesa, cama, silla..."
+            onfocus="barraBusquedaIndex()" oninput="barraBusquedaIndex()">
+          <button id="buscarButtonIndex" class="btn btn-dark d-inline" type="button" onclick="buscarProductosIndex()">
+            <i class="bi bi-search"></i>
+          </button>
+          <div id="listaIndex" class="list-group position-absolute d-none"></div>
 
-        <!-- Boton de busqueda -->
-        <div class="explore-button">
-          <a href="..\catalogo.php" class="btn btn-dark text-white fw-medium rounded-pill" role="button">Explorar
-            productos</a>
+          <div class="explore-button">
+            <a href="../catalogo.php" class="btn btn-dark text-white fw-medium rounded-pill" role="button">Explorar
+              productos</a>
+          </div>
         </div>
-      </div>
 
       <!-- Carousel -->
       <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
@@ -110,19 +114,19 @@ include '../menu_registro/auth.php';
       <div class="container inicio mt-5">
         <div class="row justify-content-center text-center">
           <div class="col-10 col-md-5 col-lg-4 mb-4 inicio-categoria">
-            <a href="../catalogo_silla.php">
+            <a href="../catalogo.php">
               <img src="../../assets/images/categoria_silla.png" class="img-fluid categoria-img" alt="Imagen 1">
               <p class="text-overlay">Sillas</p>
             </a>
           </div>
           <div class="col-10 col-md-5 col-lg-4 mb-4 inicio-categoria">
-            <a href="../catalogo_mesa.php">
+            <a href="../catalogo.php">
               <img src="../../assets/images/categoria_mesa.png" class="img-fluid categoria-img" alt="Imagen 2">
               <p class="text-overlay">Mesas</p>
             </a>
           </div>
           <div class="col-10 col-md-5 col-lg-4 mb-4 inicio-categoria">
-            <a href="../catalogo_sillon.php">
+            <a href="../catalogo.php">
               <img src="../../assets/images/categoria_sillon.png" class="img-fluid categoria-img" alt="Imagen 3">
               <p class="text-overlay">Sillones</p>
 
@@ -132,13 +136,13 @@ include '../menu_registro/auth.php';
 
         <div class="row justify-content-center text-center">
           <div class="col-10 col-md-6 col-lg-6 mb-4 inicio-categoria">
-            <a href="../catalogo_organizacion.php">
+            <a href="../catalogo.php">
               <img src="../../assets/images/categoria_organizacion.png" class="img-fluid categoria-img" alt="Imagen 4">
               <p class="text-overlay">Organización</p>
             </a>
           </div>
           <div class="col-10 col-md-6 col-lg-6 mb-4 inicio-categoria">
-            <a href="../catalogo_cama.php">
+            <a href="../catalogo.php">
               <img src="../../assets/images/categoria_cama.png" class="img-fluid categoria-img" alt="Imagen 5">
               <p class="text-overlay">Camas</p>
             </a>
@@ -148,54 +152,7 @@ include '../menu_registro/auth.php';
     </div>
 
     <!-- Footer -->
-    <footer class="py-4">
-      <div class="container">
-        <div class="row">
-        <div class="col-12 col-md-3 mb-3 text-center text-md-start">
-            <h5>Tu perfil en IKAT</h5>
-            <div class="col-md-9 col-12">
-              <p class="text-justify">Administra tu información personal para
-                aprovechar al máximo tu experiencia en IKAT.</p>
-              <div class="text-center">
-                <a href="../perfil.php" class="btn btn-light border-dark btn-sm text-black text-decoration-none">
-                  Ver mi perfil
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 col-md-3 mb-3 text-center text-md-start">
-            <h5>Servicio</h5>
-            <ul class="list-unstyled">
-              <li><a href="#" class="text-black text-decoration-none">Sigue tu pedido</a></li>
-              <li><a href="#" class="text-black text-decoration-none">IKAT Points</a></li>
-              <li><a href="#" class="text-black text-decoration-none">Despacho a domicilio</a></li>
-              <li><a href="#" class="text-black text-decoration-none">Métodos de pago</a></li>
-            </ul>
-          </div>
-          <div class="col-12 col-md-3 mb-3 text-center text-md-start">
-            <h5>Sobre IKAT</h5>
-            <ul class="list-unstyled">
-              <li><a href="#" class="text-black text-decoration-none">Quienes somos</a></li>
-              <li><a href="#" class="text-black text-decoration-none">Misión y Visión</a></li>
-            </ul>
-          </div>
-          <div class="col-12 col-md-3 mb-3 text-center text-md-start">
-            <h5>Redes Sociales</h5>
-            <ul class="list-unstyled">
-              <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-facebook"></i>
-                  Facebook</a></li>
-              <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-instagram"></i>
-                  Instagram</a></li>
-              <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-threads"></i>
-                  Threads</a></li>
-              <li><a href="#" class="text-black text-decoration-none"><i class="bi bi-twitter-x"></i>
-                  X</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </footer>
+    <?php include '../templates/footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

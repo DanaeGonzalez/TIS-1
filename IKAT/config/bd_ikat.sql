@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-11-2024 a las 18:52:09
+-- Tiempo de generación: 02-12-2024 a las 13:54:25
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -66,6 +66,16 @@ CREATE TABLE `carrito` (
   `id_producto` int(10) NOT NULL,
   `cantidad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `carrito`
+--
+
+INSERT INTO `carrito` (`id_usuario`, `id_producto`, `cantidad`) VALUES
+(1, 3, 1),
+(1, 6, 1),
+(1, 9, 2),
+(1, 16, 1);
 
 -- --------------------------------------------------------
 
@@ -141,7 +151,10 @@ INSERT INTO `compra` (`id_compra`, `fecha_compra`, `total_compra`, `puntos_ganad
 (4, '2024-11-23', 25990, 1300, 'Angol 921, Concepción', 6, 1),
 (5, '2024-11-27', 2358437, 117922, 'a', 7, 2),
 (6, '2024-11-27', 2390046, 119502, 'pekin', 7, 2),
-(7, '2024-11-28', 157413, 7871, 'Angol 931, Concepción', 5, 1);
+(7, '2024-11-28', 157413, 7871, 'Angol 931, Concepción', 5, 1),
+(8, '2024-11-30', 1014177, 50709, 'Angol 931, Concepción', 5, 1),
+(9, '2024-11-30', 1014177, 50709, 'Angol 931, Concepción', 5, 1),
+(10, '2024-11-30', 811882, 40594, 'Angol 931, Concepción', 5, 1);
 
 -- --------------------------------------------------------
 
@@ -164,7 +177,14 @@ INSERT INTO `compra_producto` (`id_compra`, `id_producto`, `cantidad`, `tipo_est
 (4, 3, 1, 'Entregado'),
 (5, 3, 1, 'Devuelto a origen'),
 (5, 6, 1, 'Preparando pedido'),
-(7, 17, 1, 'Preparando pedido');
+(7, 17, 1, 'Preparando pedido'),
+(9, 6, 1, 'Preparando pedido'),
+(9, 17, 1, 'Preparando pedido'),
+(9, 19, 2, 'Preparando pedido'),
+(10, 7, 1, 'Preparando pedido'),
+(10, 11, 1, 'Preparando pedido'),
+(10, 13, 1, 'Preparando pedido'),
+(10, 16, 1, 'Preparando pedido');
 
 -- --------------------------------------------------------
 
@@ -199,7 +219,8 @@ INSERT INTO `control_stock` (`id_control`, `id_producto`, `cantidad`, `motivo`, 
 (11, 5, 15, 'Ingreso', 'Llegan productos a nuestra bodega n° de envio 1', '2024-11-04 05:58:11'),
 (12, 6, 31, 'Ingreso', 'Llegan productos a nuestra bodega n° de envio 1', '2024-11-04 05:58:23'),
 (13, 8, 12, 'Ingreso', 'Llegan productos a nuestra bodega n° de envio 1', '2024-11-04 05:58:36'),
-(14, 17, 5, 'Ingreso', 'Llego nueva mercadería de sillones', '2024-11-28 20:15:41');
+(14, 17, 5, 'Ingreso', 'Llego nueva mercadería de sillones', '2024-11-28 20:15:41'),
+(15, 19, 30, 'Ingreso', 'a', '2024-11-30 16:50:37');
 
 -- --------------------------------------------------------
 
@@ -273,9 +294,9 @@ CREATE TABLE `lista_deseos_producto` (
 
 INSERT INTO `lista_deseos_producto` (`id_lista_deseos`, `id_producto`) VALUES
 (1, 3),
-(1, 5),
-(1, 7),
+(1, 6),
 (1, 8),
+(1, 16),
 (1, 17),
 (2, 5);
 
@@ -452,20 +473,20 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`id_producto`, `nombre_producto`, `precio_unitario`, `stock_producto`, `descripcion_producto`, `foto_producto`, `cantidad_vendida`, `top_venta`, `activo`, `id_subcategoria`) VALUES
-(3, 'Cama gato', 25990, 9, 'Una linda camita para tu felino :3 miau', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/127645737_01/w=1500,h=1500,fit=pad', 1, 1, 1, 5),
+(3, 'Cama gato', 25990, 99, 'Una linda camita para tu felino :3 miau', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/127645737_01/w=1500,h=1500,fit=pad', 1, 1, 1, 5),
 (5, 'Mesa roble', 30990, 15, 'Una mesa de roble barnizada', 'https://www.cic.cl/dw/image/v2/BDXB_PRD/on/demandware.static/-/Sites-masterCatalog_CIC/es_CL/dw742de45c/original/images/products/mesa-centro-nuble-caramelo-110x70x40-cm-01.jpg?sw=1500&sh=1500&sm=fit', 0, 0, 1, 3),
-(6, 'Pluma Silla de Cuero y Madera', 19990, 30, 'Una silla de madera con sillones de cuero', 'https://www.cueroydiseno.cl/wp-content/uploads/2021/04/sillapluma-scaled.jpg', 1, 0, 1, 2),
-(7, 'Cama estructural MALM', 369980, 0, 'Una elegante cama de color con dos cajones en la parte de abajo', 'https://www.ikea.com/cl/es/images/products/malm-cama-estructural-con-2-cajones-negro-loenset__1101552_pe866728_s5.jpg?f=s', 0, 0, 1, 4),
+(6, 'Pluma Silla de Cuero y Madera', 19990, 29, 'Una silla de madera con sillones de cuero', 'https://www.cueroydiseno.cl/wp-content/uploads/2021/04/sillapluma-scaled.jpg', 2, 0, 1, 2),
+(7, 'Cama estructural MALM', 369980, 49, 'Una elegante cama de color con dos cajones en la parte de abajo', 'https://www.ikea.com/cl/es/images/products/malm-cama-estructural-con-2-cajones-negro-loenset__1101552_pe866728_s5.jpg?f=s', 1, 0, 1, 4),
 (8, 'Cajonera Alex', 79990, 12, 'Una cajonera muy elegante.', 'https://www.ikea.com/cl/es/images/products/alex-cajonera-negro__0977786_pe813770_s5.jpg?f=s', 0, 0, 1, 6),
-(9, 'Silla de escritorio MARKUS', 119990, 4, 'Una elegante silla de color blanco ideal para tu escritorio de trabajo.', 'https://www.ikea.com/cl/es/images/products/markus-silla-escritorio-vissle-gris-claro__1101440_pe866425_s5.jpg?f=s', 0, 0, 1, 7),
-(10, 'Clóset Rakkestad', 119990, 0, 'Sencillo y práctico. Un clóset que ofrece todas las funciones básicas. Y si te falta espacio de almacenaje, puedes añadir otro clóset de la serie RAKKESTAD.', 'https://www.ikea.com/cl/es/images/products/rakkestad-closet-con-2-puertas-negro__0780372_pe760493_s5.jpg?f=s', 0, 0, 1, 8),
-(11, 'Buffet blanco VIHALS', 159990, 0, 'Los dos cajones te permiten organizar tus cosas fácilmente, y tienes más espacio en las repisas detrás de las puertas.', 'https://www.ikea.com/cl/es/images/products/vihals-buffet-blanco__1035578_pe838113_s5.jpg?f=s', 0, 0, 1, 9),
-(12, 'ESCRITORIO PERAL', 69990, 0, 'Un escritorio para tu computador perfecto para que hagas todas tus tareas.', 'https://ideamarketspa.cl/wp-content/uploads/2022/01/ESCRITORIO-2.png', 0, 0, 1, 1),
-(13, 'Estante billy', 59990, 0, 'Según nuestros cálculos, cada 5 segundos se vende un estante BILLY en algún lugar del mundo. Un dato impresionante, y más teniendo en cuenta que lanzamos BILLY en 1979. Es la opción preferida por los lectores y nunca se pasa de moda.', 'https://www.ikea.com/cl/es/images/products/billy-estante-blanco__0625599_pe692385_s5.jpg?f=s', 0, 0, 1, 10),
-(16, 'Sillón rojo', 89990, 0, 'Un elegante sillón con un color distinguido', '../../assets/images/productos/1732820938-sillon rojo.jpg', 0, 0, 1, NULL),
-(17, 'Sillón amarillo', 129990, 5, 'Un sillón de la mas alta calidad muy cómodo y de un color amarillo.', '../../assets/images/productos/1732821050-sillon_amarillo.jpg', 0, 0, 1, NULL),
-(18, 'Sillón de cuero roma', 191500, 0, 'El Sillón Roma se ubica entre los mejores sillones ejecutivos del mercado...¿porqué?\r\n\r\nTapizado en cuero tipo Búfalo, destaca por su sobriedad y comodidad. Se adapta bien a espacios gerenciales, escritorios ejecutivos, ideal para ofrecer descanso y comodidad a personas exigentes. \r\n\r\nCuenta con apoyabrazos incorporados con acolchado y tapiz en Eco cuero tipo Búfalo. Además de un mecanismo basculante y la posibilidad de ajustar la tensión con su perilla bajo el asiento.\r\n\r\nEstrella Aluminio ultra resistente con ruedas dobles de 50 mm.', '../../assets/images/productos/1732823165-sillon-de-cuero-roma.jpg', 0, 0, 1, NULL),
-(19, 'Sillón Florencia', 349990, 0, 'Un elegante sillón de color negro para cubrir las necesidades de tu hogar.', '../../assets/images/productos/1732837514-1CC21271241.jpg', 0, 0, 1, NULL);
+(9, 'Silla de escritorio MARKUS', 119990, 46, 'Una elegante silla de color blanco ideal para tu escritorio de trabajo.', 'https://www.ikea.com/cl/es/images/products/markus-silla-escritorio-vissle-gris-claro__1101440_pe866425_s5.jpg?f=s', 0, 0, 1, 7),
+(10, 'Clóset Rakkestad', 119990, 50, 'Sencillo y práctico. Un clóset que ofrece todas las funciones básicas. Y si te falta espacio de almacenaje, puedes añadir otro clóset de la serie RAKKESTAD.', 'https://www.ikea.com/cl/es/images/products/rakkestad-closet-con-2-puertas-negro__0780372_pe760493_s5.jpg?f=s', 0, 0, 1, 8),
+(11, 'Buffet blanco VIHALS', 159990, 49, 'Los dos cajones te permiten organizar tus cosas fácilmente, y tienes más espacio en las repisas detrás de las puertas.', 'https://www.ikea.com/cl/es/images/products/vihals-buffet-blanco__1035578_pe838113_s5.jpg?f=s', 1, 0, 1, 9),
+(12, 'ESCRITORIO PERAL', 69990, 50, 'Un escritorio para tu computador perfecto para que hagas todas tus tareas.', 'https://ideamarketspa.cl/wp-content/uploads/2022/01/ESCRITORIO-2.png', 0, 0, 1, 1),
+(13, 'Estante billy', 59990, 29, 'Según nuestros cálculos, cada 5 segundos se vende un estante BILLY en algún lugar del mundo. Un dato impresionante, y más teniendo en cuenta que lanzamos BILLY en 1979. Es la opción preferida por los lectores y nunca se pasa de moda.', 'https://www.ikea.com/cl/es/images/products/billy-estante-blanco__0625599_pe692385_s5.jpg?f=s', 1, 0, 1, 10),
+(16, 'Sillón rojo', 89990, 29, 'Un elegante sillón con un color distinguido', '../../assets/images/productos/1732820938-sillon rojo.jpg', 1, 0, 1, NULL),
+(17, 'Sillón amarillo', 129990, 42, 'Un sillón de la mas alta calidad muy cómodo y de un color amarillo.', '../../assets/images/productos/1732821050-sillon_amarillo.jpg', 1, 0, 1, NULL),
+(18, 'Sillón de cuero roma', 191500, 66, 'El Sillón Roma se ubica entre los mejores sillones ejecutivos del mercado...¿porqué?\r\n\r\nTapizado en cuero tipo Búfalo, destaca por su sobriedad y comodidad. Se adapta bien a espacios gerenciales, escritorios ejecutivos, ideal para ofrecer descanso y comodidad a personas exigentes. \r\n\r\nCuenta con apoyabrazos incorporados con acolchado y tapiz en Eco cuero tipo Búfalo. Además de un mecanismo basculante y la posibilidad de ajustar la tensión con su perilla bajo el asiento.\r\n\r\nEstrella Aluminio ultra resistente con ruedas dobles de 50 mm.', '../../assets/images/productos/1732823165-sillon-de-cuero-roma.jpg', 0, 0, 1, NULL),
+(19, 'Sillón Florencia', 349990, 28, 'Un elegante sillón de color negro para cubrir las necesidades de tu hogar.', '../../assets/images/productos/1732837514-1CC21271241.jpg', 2, 0, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -644,7 +665,8 @@ CREATE TABLE `resenia` (
   `id_resenia` int(100) NOT NULL,
   `calificacion` int(1) NOT NULL,
   `comentario` text DEFAULT NULL,
-  `razon` text NOT NULL,
+  `fecha_resenia` date DEFAULT NULL,
+  `razon` text DEFAULT NULL,
   `activo` tinyint(1) NOT NULL,
   `id_usuario` int(100) NOT NULL,
   `id_producto` int(10) NOT NULL
@@ -654,12 +676,17 @@ CREATE TABLE `resenia` (
 -- Volcado de datos para la tabla `resenia`
 --
 
-INSERT INTO `resenia` (`id_resenia`, `calificacion`, `comentario`, `razon`, `activo`, `id_usuario`, `id_producto`) VALUES
-(5, 5, 'A mi gatito le encanta esta cama', '', 1, 1, 3),
-(6, 5, 'AMOOO ESTA CAMA OMG MÁXIMO LA ADORA TAMBIEN esta muy feliz!!!1', '', 1, 3, 3),
-(7, 3, 'La mesa se se raya muy facilmente, el barniz deja mucho que desear', '', 1, 4, 5),
-(8, 4, 'La silla es bastante elegante, nada mas que decir.', '', 1, 1, 6),
-(9, 1, 'Esta cajonera no sirve para nada es inutil.', '', 1, 5, 8);
+INSERT INTO `resenia` (`id_resenia`, `calificacion`, `comentario`, `fecha_resenia`, `razon`, `activo`, `id_usuario`, `id_producto`) VALUES
+(6, 5, 'AMOOO ESTA CAMA OMG MÁXIMO LA ADORA TAMBIEN esta muy feliz!!!1', NULL, '', 1, 3, 3),
+(7, 3, 'La mesa se se raya muy facilmente, el barniz deja mucho que desear', NULL, '', 1, 4, 5),
+(9, 1, 'Esta cajonera no sirve para nada es inutil.', NULL, '', 1, 5, 8),
+(10, 5, 'LINDA CAMA', NULL, '', 1, 4, 3),
+(11, 5, 'CAMA GOD', NULL, '', 1, 2, 3),
+(12, 5, 'CAMA ULTRA GOD', NULL, '', 1, 5, 3),
+(22, 5, 'Hola', '2024-12-01', NULL, 1, 1, 3),
+(23, 4, 'La silla esta bien pero le falta creo yo', '2024-12-01', NULL, 1, 1, 6),
+(24, 5, 'Me gusto esta cama', '2024-12-01', NULL, 1, 1, 7),
+(25, 5, 'Me gusta ', '2024-12-02', NULL, 1, 1, 11);
 
 -- --------------------------------------------------------
 
@@ -716,7 +743,7 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `run_usuario`, `correo_usuario`, `numero_usuario`, `contrasenia_usuario`, `direccion_usuario`, `tipo_usuario`, `puntos_totales`, `activo`, `ultima_sesion`, `token_rec`) VALUES
-(1, 'Javier', 'Pino', '208460730', 'jpinoh@ing.ucsc.cl', '+56932365067', '$2y$10$FleiHYb0jPoueiI064rr1O92e30.3Ss5imRAI1yxRsqm4wEW47Qle', NULL, 'Superadmin', 0, 1, '2024-11-27', NULL),
+(1, 'Javier', 'Pino', '208460730', 'jpinoh@ing.ucsc.cl', '+56932365067', '$2y$10$FleiHYb0jPoueiI064rr1O92e30.3Ss5imRAI1yxRsqm4wEW47Qle', NULL, 'Superadmin', 91303, 1, '2024-12-01', NULL),
 (2, 'Camilo', 'Campos', '21233765k', 'ccamposg@ing.ucsc.cl', '+56988275096', '$2y$10$VJN9UetBgsVYRfajlvPta.eMaldA5iwrpW7dI/YGrOD907azjhH4.', NULL, 'Superadmin', 0, 1, '2024-11-27', NULL),
 (3, 'Danae', 'Gonzalez', '210653163', 'dgonzalezv@ing.ucsc.cl', '+56931173800', '$2y$10$vKXZksm8sGgg9G/HurQZL.ycLlY7SAfGk/UNYPYpqHbIM2tEG865u', NULL, 'Registrado', 0, 1, '2024-11-04', NULL),
 (4, 'Maicol', 'Ramirez', '212725021', 'mramirezm@ing.ucsc.cl', '+56968365262', '$2y$10$TmwGuN5O6N37SQKbc9Dy2OXVUoXIoe44XiO7DAIis/MZO6mGZWSFS', NULL, 'Registrado', 0, 1, '2024-11-04', NULL),
@@ -966,13 +993,13 @@ ALTER TABLE `color`
 -- AUTO_INCREMENT de la tabla `compra`
 --
 ALTER TABLE `compra`
-  MODIFY `id_compra` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_compra` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `control_stock`
 --
 ALTER TABLE `control_stock`
-  MODIFY `id_control` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_control` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `envio`
@@ -1044,7 +1071,7 @@ ALTER TABLE `producto`
 -- AUTO_INCREMENT de la tabla `resenia`
 --
 ALTER TABLE `resenia`
-  MODIFY `id_resenia` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_resenia` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT de la tabla `subcategoria`

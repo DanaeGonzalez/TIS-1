@@ -30,24 +30,29 @@ if ($id_usuario) {
             <?php include '../templates/header.php'; ?>
 
             <div class="main">
-                <div class="container mt-4">
+                <div class="container mt-4 mb-4">
                     <h1 class="text-center mb-3">Mis Opiniones</h1>
                     <hr><br>
 
                     <ul class="nav nav-tabs" id="opinionesTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="pendientes-tab" data-bs-toggle="tab" data-bs-target="#pendientes" type="button" role="tab" aria-controls="pendientes" aria-selected="true">Pendientes</button>
+                            <button class="nav-link active text-dark border border-2" id="pendientes-tab"
+                                data-bs-toggle="tab" data-bs-target="#pendientes" type="button" role="tab"
+                                aria-controls="pendientes" aria-selected="true">Pendientes</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="realizadas-tab" data-bs-toggle="tab" data-bs-target="#realizadas" type="button" role="tab" aria-controls="realizadas" aria-selected="false">Realizadas</button>
+                            <button class="nav-link text-dark border border-2" id="realizadas-tab" data-bs-toggle="tab"
+                                data-bs-target="#realizadas" type="button" role="tab" aria-controls="realizadas"
+                                aria-selected="false">Realizadas</button>
                         </li>
                     </ul>
 
                     <div class="tab-content">
                         <!-- Reseñas Pendientes -->
-                        <div class="tab-pane fade show active" id="pendientes" role="tabpanel" aria-labelledby="pendientes-tab">
-                            <?php if (!empty($pendientes)) : ?>
-                                <?php foreach ($pendientes as $producto) : ?>
+                        <div class="tab-pane fade show active" id="pendientes" role="tabpanel"
+                            aria-labelledby="pendientes-tab">
+                            <?php if (!empty($pendientes)): ?>
+                                <?php foreach ($pendientes as $producto): ?>
                                     <div class="d-flex border rounded p-3 mb-3 bg-light">
                                         <div class="row align-items-center w-100">
                                             <div class="col-3 d-flex align-items-center">
@@ -55,13 +60,15 @@ if ($id_usuario) {
                                                 $ruta_original = $producto['foto_producto'];
                                                 $ruta_ajustada = str_replace("../../", "../", $ruta_original);
                                                 ?>
-                                                <img src="<?= $ruta_ajustada ?>" alt="Producto" width="50" height="50" class="rounded me-3">
+                                                <img src="<?= $ruta_ajustada ?>" alt="Producto" width="50" height="50"
+                                                    class="rounded me-3">
                                                 <div>
                                                     <p class="mb-1 fw-bold"><?= $producto['nombre_producto'] ?></p>
                                                 </div>
                                             </div>
                                             <div class="col-3 d-flex justify-content-center">
-                                                <div class="star-rating pendientes" onclick="abrirModalResena(<?= $producto['id_producto'] ?>)">
+                                                <div class="star-rating pendientes"
+                                                    onclick="abrirModalResena(<?= $producto['id_producto'] ?>)">
                                                     <i class="bi bi-star" data-value="1"></i>
                                                     <i class="bi bi-star" data-value="2"></i>
                                                     <i class="bi bi-star" data-value="3"></i>
@@ -74,10 +81,7 @@ if ($id_usuario) {
                                                 <small class="text-muted">Comprado el <?= $producto['fecha_compra'] ?></small>
                                             </div>
                                             <div class="col-3 d-flex justify-content-center">
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-outline-secondary btn-sm"
-                                                    data-bs-toggle="modal"
+                                                <button type="button" class="btn btn-cafe-opinar btn-sm" data-bs-toggle="modal"
                                                     data-bs-target="#modalResena"
                                                     onclick="abrirModalResena(<?= $producto['id_producto'] ?>)">
                                                     Escribir mi reseña
@@ -87,33 +91,34 @@ if ($id_usuario) {
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
-                            <?php else : ?>
+                            <?php else: ?>
                                 <p class="text-muted">No tienes reseñas pendientes.</p>
                             <?php endif; ?>
                         </div>
 
                         <!-- Reseñas Realizadas -->
                         <div class="tab-pane fade" id="realizadas" role="tabpanel" aria-labelledby="realizadas-tab">
-                            <?php if (!empty($realizadas)) : ?>
-                                <?php foreach ($realizadas as $resenia) : ?>
-                                    <div class="d-flex border rounded p-3 mb-3 bg-light">
+                            <?php if (!empty($realizadas)): ?>
+                                <?php foreach ($realizadas as $resenia): ?>
+                                    <div class="d-flex border rounded p-3 mb-2 bg-light">
                                         <div class="row align-items-center w-100">
                                             <div class="col-3 d-flex align-items-center">
                                                 <?php
                                                 $ruta_original = $resenia['foto_producto'];
                                                 $ruta_ajustada = str_replace("../../", "../", $ruta_original);
                                                 ?>
-                                                <img src="<?= $ruta_ajustada ?>" alt="Producto" width="50" height="50" class="rounded me-3">
+                                                <img src="<?= $ruta_ajustada ?>" alt="Producto" width="50" height="50"
+                                                    class="rounded me-3">
                                                 <div>
                                                     <p class="mb-1 fw-bold"><?= $resenia['nombre_producto'] ?></p>
                                                 </div>
                                             </div>
                                             <div class="col-3 d-flex justify-content-center">
                                                 <div class="star-rating no-click">
-                                                    <?php for ($i = 5; $i >= 1; $i--) : ?>
-                                                        <?php if ($i <= $resenia['calificacion']) : ?>
+                                                    <?php for ($i = 5; $i >= 1; $i--): ?>
+                                                        <?php if ($i <= $resenia['calificacion']): ?>
                                                             <i class="bi bi-star-fill" data-value="<?= $i ?>"></i>
-                                                        <?php else : ?>
+                                                        <?php else: ?>
                                                             <i class="bi bi-star" data-value="<?= $i ?>"></i>
                                                         <?php endif; ?>
                                                     <?php endfor; ?>
@@ -129,10 +134,8 @@ if ($id_usuario) {
                                                 $idResenia = htmlspecialchars($resenia['id_resenia'] ?? '', ENT_QUOTES, 'UTF-8');
                                                 ?>
 
-                                                <button type="button"
-                                                    class="btn btn-outline-primary btn-sm editar-resena"
-                                                    data-id="<?= $idResenia ?>"
-                                                    data-calificacion="<?= $calificacion ?>"
+                                                <button type="button" class="btn btn-cafe-opinar btn-sm editar-resena"
+                                                    data-id="<?= $idResenia ?>" data-calificacion="<?= $calificacion ?>"
                                                     data-comentario="<?= $comentario ?>">
                                                     Editar mi reseña
                                                 </button>
@@ -140,7 +143,7 @@ if ($id_usuario) {
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
-                            <?php else : ?>
+                            <?php else: ?>
                                 <p class="text-muted">No tienes reseñas realizadas.</p>
                             <?php endif; ?>
                         </div>
@@ -176,21 +179,23 @@ if ($id_usuario) {
                             <!-- Comentario -->
                             <div class="mb-3">
                                 <label for="comentario" class="form-label">Comentario</label>
-                                <textarea class="form-control" id="comentario" name="comentario" rows="4" placeholder="Escribe tu reseña aquí..."></textarea>
+                                <textarea class="form-control" id="comentario" name="comentario" rows="4"
+                                    placeholder="Escribe tu reseña aquí..."></textarea>
                             </div>
                             <input type="hidden" id="productoId" name="producto_id">
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" id="guardarResena">Guardar Reseña</button>
+                        <button type="button" class="btn btn-cafe-opinar" id="guardarResena">Guardar Reseña</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Editar reseña Modal -->
-        <div class="modal fade" id="modalEditarResena" tabindex="-1" aria-labelledby="modalEditarResenaLabel" aria-hidden="true">
+        <div class="modal fade" id="modalEditarResena" tabindex="-1" aria-labelledby="modalEditarResenaLabel"
+            aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -214,14 +219,15 @@ if ($id_usuario) {
                             <!-- Comentario -->
                             <div class="mb-3">
                                 <label for="editarComentario" class="form-label">Comentario</label>
-                                <textarea class="form-control" id="editarComentario" name="comentario" rows="4" placeholder="Edita tu reseña aquí..."></textarea>
+                                <textarea class="form-control" id="editarComentario" name="comentario" rows="4"
+                                    placeholder="Edita tu reseña aquí..."></textarea>
                             </div>
                             <input type="hidden" id="idResena" name="id_resenia">
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" id="guardarCambiosResena">Guardar Cambios</button>
+                        <button type="button" class="btn btn-cafe-opinar" id="guardarCambiosResena">Guardar Cambios</button>
                     </div>
                 </div>
             </div>

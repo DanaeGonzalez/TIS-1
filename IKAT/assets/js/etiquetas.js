@@ -1,4 +1,3 @@
-
 // Selección del contenedor de etiquetas dinámicas
 const selectedFiltersContainer = document.getElementById("selectedFilters");
 
@@ -16,7 +15,6 @@ ${filterName}: ${filterValue}
 <button type="button" class="btn-close btn-close-white btn-sm ms-1" aria-label="Remove"></button>
 `;
 
-    // Añadir evento para eliminar la etiqueta
     tag.querySelector("button").addEventListener("click", () => {
         removeFilterTag(tag, filterName, filterValue);
     });
@@ -28,7 +26,6 @@ ${filterName}: ${filterValue}
 function removeFilterTag(tag, filterName, filterValue) {
     selectedFiltersContainer.removeChild(tag);
 
-    // Desmarcar el checkbox correspondiente
     const checkbox = document.querySelector(
         `input[name="${filterName}"][value="${filterValue}"]`
     );

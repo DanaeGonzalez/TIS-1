@@ -29,40 +29,53 @@ function obtenerReseniasProducto($conn, $idProducto)
 }
 
 
-function obtenerReseniasPendientes($conn, $idUsuario) {
+function obtenerReseniasPendientes($conn, $idUsuario)
+{
+    // Consulta para obtener productos que no han sido reseñados
     $sql = "SELECT DISTINCT p.id_producto, p.nombre_producto, p.foto_producto, MIN(c.fecha_compra) AS fecha_compra
             FROM producto p
             JOIN compra_producto cp ON p.id_producto = cp.id_producto
             JOIN compra c ON cp.id_compra = c.id_compra
-            LEFT JOIN resenia r ON r.id_producto = p.id_producto AND r.id_usuario = ?
-            WHERE c.id_usuario = ? AND r.id_resenia IS NULL
-            GROUP BY p.id_producto, p.nombre_producto, p.foto_producto";
+            LEFT JOIN resenia r ON r.id_producto = p.id_producto AND r.id_usuario = ?  -- Solo nos interesa la reseña del usuario
+            WHERE c.id_usuario = ?  -- Productos comprados por el usuario
+            AND r.id_resenia IS NULL  -- Solo los productos sin reseña
+            GROUP BY p.id_producto, p.nombre_producto, p.foto_producto";  // Agrupar por producto para evitar duplicados
 
+    // Preparar la consulta
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
-        die("Error en la preparación de la consulta: " . $conn->error);
+        die("Error en la preparación de la consulta: " . $conn->error);  // Error en la preparación de la consulta
     }
 
+    // Asociar parámetros con la consulta preparada
     $stmt->bind_param("ii", $idUsuario, $idUsuario);
+
+    // Ejecutar la consulta
     $stmt->execute();
 
+    // Obtener el resultado de la consulta
     $result = $stmt->get_result();
     if (!$result) {
-        die("Error al ejecutar la consulta: " . $stmt->error);
+        die("Error al ejecutar la consulta: " . $stmt->error);  // Error al ejecutar la consulta
     }
 
+    // Crear un array para almacenar los productos pendientes
     $pendientes = [];
     while ($producto = $result->fetch_assoc()) {
-        $pendientes[] = $producto;
+        $pendientes[] = $producto;  // Almacenar cada producto en el array
     }
 
+    // Cerrar la declaración y la conexión
     $stmt->close();
+
+    // Devolver los productos pendientes
     return $pendientes;
 }
 
 
 
-function obtenerReseniasRealizadas($conn, $idUsuario) {
+function obtenerReseniasRealizadas($conn, $idUsuario)
+{
     $sql = "SELECT p.id_producto, p.nombre_producto, r.fecha_resenia, r.calificacion, r.comentario, p.foto_producto, r.id_resenia
             FROM resenia r
             JOIN producto p ON r.id_producto = p.id_producto

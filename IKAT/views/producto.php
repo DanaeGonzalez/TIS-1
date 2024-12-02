@@ -160,17 +160,6 @@
                                 //Mostrar si el usuario esta registrado
                                 if (isset($_SESSION['id_usuario'])) {
                                     ?>
-                                    <!-- Botón para agregar a la lista de deseos -->
-                                    <label class="container_heart"
-                                        onclick="agregarAListaDeDeseos(<?= $producto['id_producto'] ?>)">
-                                        <input type="checkbox">
-                                        <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve"
-                                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                            <path
-                                                d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z">
-                                            </path>
-                                        </svg>
-                                    </label>
                                     <?php
                                 }
                                 ?>
@@ -282,10 +271,10 @@
                                 ?>
                                 <!-- Define el stock máximo aquí -->
                                 <div class="input-group" style="width: 130px;">
-                                    <button class="btn btn-outline-dark" type="button" onclick="decrementar()">-</button>
+                                    <button class="btn btn-outline-secondary" type="button" onclick="decrementar()">-</button>
                                     <input type="number" id="cantidadInput" value="1" min="1" max="10"
-                                        class="form-control text-center custom-input">
-                                    <button class="btn btn-outline-dark" type="button" onclick="incrementar()">+</button>
+                                        class="form-control text-center custom-input border border-secondary">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="incrementar()">+</button>
                                 </div>
                                 <div id="resultado" style="display: none;">El valor es: 1</div>
                                 <?php
@@ -389,7 +378,7 @@
                                                 <div class="carousel-item">
                                                     <div class="card">
                                                         <div class="header">
-                                                            <div class="image"></div>
+                                                            <div class="image"><img src="../assets/images/profile/01.webp" alt=""></div>
                                                             <div>
                                                                 <div class="stars">
                                                                     <?php for ($i = 0; $i < 5; $i++): ?>
