@@ -151,11 +151,11 @@ $totalFinal = $totalConDescuento;
                                 }
                                 $subtotal = $precio_unitario * $row['cantidad'];
                                 $total += $subtotal;
-                            
+
                                 // Ajustar la ruta de la imagen
                                 $ruta_original = $row['foto_producto'];
                                 $ruta_ajustada = str_replace("../../", "../", $ruta_original);
-                            
+
                                 echo "<div class='list-group-item d-flex justify-content-between align-items-center bg-light border mb-4 rounded shadow-sm p-3'>";
                                 echo "<div class='d-flex align-items-center'>";
                                 echo "<a href='producto.php?id={$row['id_producto']}'><img src='{$ruta_ajustada}' alt='{$row['nombre_producto']}' class='me-3 rounded' style='width: 170px;'></a>";
@@ -169,8 +169,9 @@ $totalFinal = $totalConDescuento;
                                 echo "<button class='btn btn-outline-secondary btn-sm decrease-qty' data-id='{$row['id_producto']}' data-stock='{$row['stock_producto']}'>-</button>"; ?>
                                 <input type='number' value='<?php echo $row['cantidad']; ?>' min='1'
                                     max='<?php echo $row['stock_producto']; ?>'
-                                    class='border border-1 border-secondary form-control text-center qty-input form-control-sm readonly'
-                                    data-id='<?php echo $row['id_producto']; ?>'>
+                                    class='border border-1 border-secondary form-control text-center qty-input form-control-sm'
+                                    data-id='<?php echo $row['id_producto']; ?>' readonly>
+
                                 <?php
                                 echo "<button class='btn btn-outline-secondary btn-sm increase-qty' data-id='{$row['id_producto']}' data-stock='{$row['stock_producto']}'>+</button>";
                                 echo "</div>";
@@ -290,7 +291,6 @@ $totalFinal = $totalConDescuento;
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-
     <script>
         $(document).ready(function () {
             // Evento para incrementar la cantidad
@@ -299,14 +299,23 @@ $totalFinal = $totalConDescuento;
                 var cantidad = parseInt(cantidadInput.val());
                 var stock = $(this).data('stock');
                 var idProducto = $(this).data('id');
+                var button = $(this); // Guardamos el botón para deshabilitarlo
 
                 // Asegurarse de que la cantidad no exceda el stock
                 if (cantidad < stock) {
                     cantidad++; // Incrementa la cantidad
                     cantidadInput.val(cantidad); // Actualiza el valor en el input
-                    actualizarCantidad(idProducto, cantidad); // Actualiza la base de datos
-                    actualizarSubtotal(cantidadInput); // Actualiza el subtotal
-                    actualizarTotales(); // Actualiza los totales
+
+
+                    actualizarCantidad(idProducto, cantidad, function (response) {
+                        // Actualiza los subtotales y totales
+                        actualizarSubtotal(cantidadInput);
+                        actualizarTotales();
+
+
+                        // Recargar la página después de la actualización
+                        location.reload(); // Recarga la página después de realizar los cambios
+                    });
                 }
             });
 
@@ -315,25 +324,34 @@ $totalFinal = $totalConDescuento;
                 var cantidadInput = $(this).siblings(".qty-input");
                 var cantidad = parseInt(cantidadInput.val());
                 var idProducto = $(this).data('id');
+                var button = $(this); // Guardamos el botón para deshabilitarlo
 
                 // Asegurarse de que la cantidad no sea menor que 1
                 if (cantidad > 1) {
                     cantidad--; // Decrementa la cantidad
                     cantidadInput.val(cantidad); // Actualiza el valor en el input
-                    actualizarCantidad(idProducto, cantidad); // Actualiza la base de datos
-                    actualizarSubtotal(cantidadInput); // Actualiza el subtotal
-                    actualizarTotales(); // Actualiza los totales
+
+                    // Llamar a la función para actualizar la cantidad en la base de datos
+                    actualizarCantidad(idProducto, cantidad, function (response) {
+                        // Actualiza los subtotales y totales
+                        actualizarSubtotal(cantidadInput);
+                        actualizarTotales();
+
+                        // Recargar la página después de la actualización
+                        location.reload(); // Recarga la página después de realizar los cambios
+                    });
                 }
             });
 
             // Función para actualizar la cantidad en la base de datos
-            function actualizarCantidad(idProducto, cantidad) {
+            function actualizarCantidad(idProducto, cantidad, callback) {
                 $.ajax({
                     url: 'actualizarCantidad.php',
                     method: 'POST',
                     data: { id_producto: idProducto, cantidad: cantidad },
                     success: function (response) {
                         console.log(response); // Debugging
+                        callback(response); // Ejecutar la función de callback después de la actualización
                     }
                 });
             }
@@ -363,6 +381,8 @@ $totalFinal = $totalConDescuento;
             }
         });
     </script>
+
+
 
     <script>
         document.querySelectorAll('.button_d').forEach(button => button.addEventListener('click', e => {

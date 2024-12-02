@@ -221,33 +221,15 @@
                                     <td>$" . number_format($row['total_producto'], 0, ',', '.') . "</td>
                                   </tr>";
                                     }
-                                
-                                    // Calcular el total del producto
-                                    $subtotal = $precio_unitario * $row['cantidad'];
-                                    $total_compra += $subtotal;
-                                
-                                    // Usar imagen predeterminada si no hay foto
-                                    $imagen = !empty($row['foto_producto']) ? $row['foto_producto'] : '../assets/images/default.png';
-                                
-                                    // Mostrar fila del producto
-                                    echo "<tr>
-                                        <td><img src='$imagen' alt='Imagen de {$row['nombre_producto']}' class='product-img'></td>
-                                        <td>{$row['nombre_producto']}</td>
-                                        <td>$" . number_format($precio_unitario, 0, ',', '.') . "</td>
-                                        <td>{$row['cantidad']}</td>
-                                        <td>$" . number_format($subtotal, 0, ',', '.') . "</td>
-                                      </tr>";
-                                }
-                                ?>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="4" class="text-end"><strong>Total Pagado:</strong></td>
-                                    <td><strong>$<?= number_format($total_compra, 0, ',', '.') ?></strong></td>
-                                </tr>
-                            </tfoot>
-                        </table>
-
+                                    ?>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4" class="text-end"><strong>Total Pagado:</strong></td>
+                                        <td><strong>$<?= number_format($total_compra, 0, ',', '.') ?></strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
                     </div>
 
