@@ -62,8 +62,8 @@ unset($_SESSION['mensaje']);
                                     <td><?= $row["id_categoria"] ?></td>
                                     <td><?= htmlspecialchars($row["nombre_categoria"]) ?></td>
                                     <td>
-                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarCategoriaModal<?= $row["id_categoria"] ?>">Editar</button> |
-                                        <a href="borrar_categoria.php?id=<?= $row["id_categoria"] ?>" class="btn btn-danger btn-sm">Borrar</a>
+                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarCategoriaModal<?= $row["id_categoria"] ?>"><i class="bi bi-pen"></i></button> |
+                                        <a href="borrar_categoria.php?id=<?= $row["id_categoria"] ?>" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></a>
                                     </td>
                                 </tr>
 
@@ -72,7 +72,7 @@ unset($_SESSION['mensaje']);
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title">Editar Categoría</h5>
+                                                <h5 class="modal-title"><i class="bi bi-pen"></i> Categoría</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">

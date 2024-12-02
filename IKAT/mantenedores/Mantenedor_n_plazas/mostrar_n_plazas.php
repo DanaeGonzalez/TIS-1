@@ -61,8 +61,8 @@ unset($_SESSION['mensaje']);
                                     <td>" . $row["id_n_plazas"] . "</td>
                                     <td>" . $row["tamaño_plaza"] . "</td>
                                     <td>
-                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarNplazasModal" . $row["id_n_plazas"] . "'>Editar</a> |
-                                        <a href='borrar_n_plazas.php?id=" . $row["id_n_plazas"] . "' class='btn btn-danger btn-sm'>Borrar</a>
+                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarNplazasModal" . $row["id_n_plazas"] . "'><i class='bi bi-pen'></i></a> |
+                                        <a href='borrar_n_plazas.php?id=" . $row["id_n_plazas"] . "' class='btn btn-danger btn-sm'><i class='bi bi-trash3'></i></a>
                                     </td>
                                   </tr>";
 
