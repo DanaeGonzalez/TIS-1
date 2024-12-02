@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     $_SESSION['puntos_usados'] = isset($_POST['puntos_usar']) && is_numeric($_POST['puntos_usar']) 
     ? (int)$_POST['puntos_usar'] 
     : 0;
-    $descuento = $_SESSION['puntos_usados']*5;
+    $descuento = $_SESSION['puntos_usados']*0.25;
 
     if ($total_previo == 0) {
         header("Location: carrito.php");
@@ -78,8 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     if ($descuento > $total_previo*0.7) {
         $descuento = $total_previo*0.7; // Los puntos alcanzan a cubrir hasta el 70% del total
     }
-    $totalConDescuento = $total - $descuento;
-    $totalIVA = $totalConDescuento * 0.19;
+    $totalConDescuento = $total_previo - $descuento;
+    $totalIVA = $total_previo * 0.19;
     $totalFinal = $totalConDescuento;
 
     // Obtener métodos de pago
@@ -121,11 +121,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                         <div class="col-md-8">
                             <form method="POST" action="procesarCompra.php">
                                 <!-- Campo oculto para enviar el total de la compra -->
-                                <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
+                                <input type="hidden" name="total" value="<?= htmlspecialchars($total_previo); ?>">
 
                                 <!-- Campo oculto para el total calculado -->
                                 <input type="hidden" id="totalCalculado" name="total_calculado"
-                                    value="<?= htmlspecialchars($total); ?>">
+                                    value="<?= htmlspecialchars($totalFinal); ?>">
 
                                 <input type="hidden" id="valorEnvioInput" name="valor_envio" value="0">
 
@@ -150,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 ?>
 
                                 <!-- Campo oculto para el subtotal original -->
-                                <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
+                                <input type="hidden" name="total" value="<?= htmlspecialchars($total_previo); ?>">
                                 <!-- Contenedor de la barra de búsqueda Mapa-->
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Dirección</label>
@@ -239,7 +239,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
-                                Total<span
+                                Total (Subtotal + Envío)<span
                                     id="totalConEnvioImpuestos">$<?= number_format(floor($totalFinal), 0, '', '.') ?></span>
                             </li>
                             </ul>
@@ -329,9 +329,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
             const subtotal = parseFloat(document.querySelector('input[name="total"]').value); 
             const valorEnvio = parseFloat(document.getElementById('valorEnvioInput').value) || 0;
             const tasaImpuestos = 0.19;
+            const descuento = parseFloat(<?= json_encode($descuento) ?>) || 0;
+
+            // Asegurando que el descuento no exceda el subtotal
+            const subtotal_descuento = Math.max(subtotal - descuento, 0);
 
             const totalIVA = subtotal * tasaImpuestos;
-            const totalFinal = subtotal + valorEnvio;
+            const totalFinal = subtotal_descuento + valorEnvio;
 
             document.getElementById('valorImpuestos').textContent = `$${formatNumber(totalIVA)}`;
             document.getElementById('totalConEnvioImpuestos').textContent = `$${formatNumber(totalFinal)}`;
