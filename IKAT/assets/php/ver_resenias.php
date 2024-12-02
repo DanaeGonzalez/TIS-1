@@ -32,23 +32,37 @@ function obtenerReseniasProducto($conn, $idProducto)
 function obtenerReseniasPendientes($conn, $idUsuario)
 {
     // Consulta para obtener productos que no han sido reseñados
-    $sql = "SELECT DISTINCT p.id_producto, p.nombre_producto, p.foto_producto, MIN(c.fecha_compra) AS fecha_compra
-            FROM producto p
-            JOIN compra_producto cp ON p.id_producto = cp.id_producto
-            JOIN compra c ON cp.id_compra = c.id_compra
-            LEFT JOIN resenia r ON r.id_producto = p.id_producto AND r.id_usuario = ?  -- Solo nos interesa la reseña del usuario
-            WHERE c.id_usuario = ?  -- Productos comprados por el usuario
-            AND r.id_resenia IS NULL  -- Solo los productos sin reseña
-            GROUP BY p.id_producto, p.nombre_producto, p.foto_producto";  // Agrupar por producto para evitar duplicados
+    $sql = "SELECT DISTINCT 
+                p.id_producto, 
+                p.nombre_producto, 
+                p.foto_producto, 
+                MIN(c.fecha_compra) AS fecha_compra
+            FROM 
+                producto p
+            JOIN 
+                compra_producto cp ON p.id_producto = cp.id_producto
+            JOIN 
+                compra c ON cp.id_compra = c.id_compra
+            LEFT JOIN 
+                resenia r ON r.id_producto = p.id_producto AND r.id_usuario = c.id_usuario
+            WHERE 
+                c.id_usuario = ?  -- Productos comprados por el usuario
+                AND r.id_resenia IS NULL  -- Solo los productos sin reseña
+                AND cp.tipo_estado = 'entregado'  
+            GROUP BY 
+                p.id_producto, 
+                p.nombre_producto, 
+                p.foto_producto;
+            ";  // Agrupar por producto para evitar duplicados
 
-    // Preparar la consulta
+    // Preparar la consulta 
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         die("Error en la preparación de la consulta: " . $conn->error);  // Error en la preparación de la consulta
     }
 
     // Asociar parámetros con la consulta preparada
-    $stmt->bind_param("ii", $idUsuario, $idUsuario);
+    $stmt->bind_param("i", $idUsuario);
 
     // Ejecutar la consulta
     $stmt->execute();
@@ -102,4 +116,3 @@ function obtenerReseniasRealizadas($conn, $idUsuario)
     $stmt->close();
     return $realizadas;
 }
-?>
