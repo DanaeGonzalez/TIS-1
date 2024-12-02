@@ -125,7 +125,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/views/menu_registro/auth.
                             if ($_SESSION['tipo_usuario'] === 'Superadmin') { ?>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li><a class="dropdown-item" href="/xampp/TIS-1/IKAT/views/compras.php">Mis Compras</a></li>
-                                    <li><a class="dropdown-item" href="/xampp/TIS-1/IKAT/views/opiniones.php">Mis opiniones</a></li>
+                                    <li><a class="dropdown-item" href="/xampp/TIS-1/IKAT/views/opiniones.php">Mis Opiniones</a></li>
                                     <li><a class="dropdown-item" href="/xampp/TIS-1/IKAT/views/deseados.php">Lista de deseados</a></li>
                                     <li><a class="dropdown-item" href="/xampp/TIS-1/IKAT/views/perfil.php">Mi Perfil</a></li>
                                     <li><a class="dropdown-item"
@@ -140,7 +140,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/views/menu_registro/auth.
                             <?php } elseif ($_SESSION['tipo_usuario'] === 'Admin') { ?>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li><a class="dropdown-item" href="/xampp/TIS-1/IKAT/views/compras.php">Mis Compras</a></li>
-                                    <li><a class="dropdown-item" href="/xampp/TIS-1/IKAT/views/opiniones.php">Mis opiniones</a></li>
+                                    <li><a class="dropdown-item" href="/xampp/TIS-1/IKAT/views/opiniones.php">Mis Opiniones</a></li>
                                     <li><a class="dropdown-item" href="/xampp/TIS-1/IKAT/views/deseados.php">Lista de deseados</a></li>
                                     <li><a class="dropdown-item" href="/xampp/TIS-1/IKAT/views/perfil.php">Mi Perfil</a></li>
                                     <li><a class="dropdown-item"
@@ -154,7 +154,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/views/menu_registro/auth.
                             <?php } elseif ($_SESSION['tipo_usuario'] === 'Registrado') { ?>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li><a class="dropdown-item" href="/xampp/TIS-1/IKAT/views/compras.php">Mis Compras</a></li>
-                                    <li><a class="dropdown-item" href="/xampp/TIS-1/IKAT/views/opiniones.php">Mis opiniones</a></li>
+                                    <li><a class="dropdown-item" href="/xampp/TIS-1/IKAT/views/opiniones.php">Mis Opiniones</a></li>
                                     <li><a class="dropdown-item" href="/xampp/TIS-1/IKAT/views/deseados.php">Lista de deseados</a></li>
                                     <li><a class="dropdown-item" href="/xampp/TIS-1/IKAT/views/perfil.php">Mi Perfil</a></li>
                                     <li>
