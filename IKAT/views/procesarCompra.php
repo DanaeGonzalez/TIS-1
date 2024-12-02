@@ -318,11 +318,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
         function calcularTotal() {
             const subtotal = parseFloat(document.querySelector('input[name="total"]').value); 
             const valorEnvio = parseFloat(document.getElementById('valorEnvioInput').value) || 0;
-            const descuento = parseFloat(<?= number_format($descuento,0,'','.') ?>)
             const tasaImpuestos = 0.19;
+            const descuento = parseFloat(<?= json_encode($descuento) ?>) || 0;
+
+            // Asegurando que el descuento no exceda el subtotal
+            const subtotal_descuento = Math.max(subtotal - descuento, 0);
 
             const totalIVA = subtotal * tasaImpuestos;
-            const totalFinal = subtotal - descuento + valorEnvio;
+            const totalFinal = subtotal_descuento + valorEnvio;
 
             document.getElementById('valorImpuestos').textContent = `$${formatNumber(totalIVA)}`;
             document.getElementById('totalConEnvioImpuestos').textContent = `$${formatNumber(totalFinal)}`;
