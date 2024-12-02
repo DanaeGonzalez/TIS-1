@@ -4,7 +4,7 @@ function cargarEstrellas(idProducto) {
     fetch(`../assets/php/stars.php?id_producto=${idProducto}`)
         .then(response => response.text())
         .then(html => {
-            container.innerHTML = html; // Reemplazar el placeholder con las estrellas cargadas
+            container.innerHTML = html; 
         })
         .catch(error => {
             console.error('Error cargando las estrellas:', error);
@@ -16,7 +16,7 @@ function cargarEstrellas(idProducto) {
 document.addEventListener('DOMContentLoaded', () => {
     const productContainers = document.querySelectorAll('[id^="stars-container-"]');
     productContainers.forEach(container => {
-        const idProducto = container.id.split('-')[2]; // Obtener el ID del producto
+        const idProducto = container.id.split('-')[2]; 
         cargarEstrellas(idProducto);
     });
 });
