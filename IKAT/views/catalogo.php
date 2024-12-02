@@ -145,10 +145,8 @@
                 $totalProductosResult = $conn->query($sqlTotal);
                 $totalProductos = $totalProductosResult->fetch_assoc()['total'];
 
-                // Calcular el total de páginas
                 $totalPaginas = ceil($totalProductos / $productosPorPagina);
 
-                // Verificar si hay resultados
                 if ($result->num_rows > 0):
                 ?>
 
@@ -197,7 +195,7 @@
                                     $precioConDescuento = $precioOriginal - ($precioOriginal * $porcentajeDescuento / 100);
                                 }
                                 include_once '../assets/php/generar_carta_producto.php';
-                                // Usar la función para generar la carta
+                                
                                 echo generarCartaProducto($id_producto, $producto, $esTopVenta, $tieneOferta, $precioOriginal, $precioConDescuento);
                                 ?>
                             <?php endwhile; ?>
