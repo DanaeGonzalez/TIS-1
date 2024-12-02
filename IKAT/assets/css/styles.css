@@ -414,6 +414,33 @@ body .tooltip .tooltip-arrow {
   color: white;
 }
 
+.pagination > li > a
+{
+    background-color: white;
+    color: #815124;
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover
+{
+    color: #404040;
+    background-color: #d1b090;
+    border-color: #ddd;
+}
+
+.pagination > .active > a
+{
+    color: white;
+    background-color: #7a4615 !Important;
+    border: solid 1px #7a4615 !Important;
+}
+
+.pagination > .active > a:hover
+{
+    background-color: #5c3713 !Important;
+    border: solid 1px #5c3713;
+}
+
 /*#confirmar_direccion {
   background-color: #8C5C32 !important;
   color: white !important;
