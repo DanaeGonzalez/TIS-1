@@ -110,11 +110,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                         <div class="col-md-8">
                             <form method="POST" action="procesarCompra.php">
                                 <!-- Campo oculto para enviar el total de la compra -->
-                                <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
+                                <input type="hidden" name="total" value="<?= htmlspecialchars($total_previo); ?>">
 
                                 <!-- Campo oculto para el total calculado -->
                                 <input type="hidden" id="totalCalculado" name="total_calculado"
-                                    value="<?= htmlspecialchars($total); ?>">
+                                    value="<?= htmlspecialchars($totalFinal); ?>">
 
                                 <input type="hidden" id="valorEnvioInput" name="valor_envio" value="0">
 
@@ -139,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 ?>
 
                                 <!-- Campo oculto para el subtotal original -->
-                                <input type="hidden" name="total" value="<?= htmlspecialchars($total); ?>">
+                                <input type="hidden" name="total" value="<?= htmlspecialchars($total_previo); ?>">
                                 <!-- Contenedor de la barra de búsqueda Mapa-->
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Dirección</label>
@@ -228,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center fw-bold border-0 px-0 py-2 bg-light">
-                                Total<span
+                                Total (Subtotal + Envío)<span
                                     id="totalConEnvioImpuestos">$<?= number_format(floor($totalFinal), 0, '', '.') ?></span>
                             </li>
                             </ul>
@@ -318,10 +318,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
         function calcularTotal() {
             const subtotal = parseFloat(document.querySelector('input[name="total"]').value); 
             const valorEnvio = parseFloat(document.getElementById('valorEnvioInput').value) || 0;
+            const descuento = parseFloat(<?= number_format($descuento,0,'','.') ?>)
             const tasaImpuestos = 0.19;
 
+            if (isNaN(subtotal)) {
+                console.error('Error: Subtotal no válido.');
+                return;
+            }
+
             const totalIVA = subtotal * tasaImpuestos;
-            const totalFinal = subtotal + valorEnvio;
+            const totalFinal = subtotal - descuento + valorEnvio;
 
             document.getElementById('valorImpuestos').textContent = `$${formatNumber(totalIVA)}`;
             document.getElementById('totalConEnvioImpuestos').textContent = `$${formatNumber(totalFinal)}`;
