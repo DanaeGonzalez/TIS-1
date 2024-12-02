@@ -119,10 +119,10 @@ $totalFinal = $totalConDescuento;
                             <?php
                             // Consultar productos en el carrito del usuario
                             $sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, p.foto_producto, 
-        p.precio_unitario, c.cantidad 
-        FROM carrito c 
-        JOIN producto p ON c.id_producto = p.id_producto 
-        WHERE c.id_usuario = ?";
+                            p.precio_unitario, c.cantidad 
+                            FROM carrito c 
+                            JOIN producto p ON c.id_producto = p.id_producto 
+                            WHERE c.id_usuario = ?";
                             $stmt = $conn->prepare($sql);
                             $stmt->bind_param("i", $_SESSION['id_usuario']);
                             $stmt->execute();
@@ -131,6 +131,8 @@ $totalFinal = $totalConDescuento;
                             // Inicializar variables
                             $productos = [];
                             $total = 0;
+
+
 
                             while ($row = $result->fetch_assoc()) {
                                 $subtotal = $row['precio_unitario'] * $row['cantidad'];
@@ -149,12 +151,21 @@ $totalFinal = $totalConDescuento;
                                 echo "<div class='d-flex align-items-center'>";
 
                                 // Botones para incrementar y decrementar cantidad con stock máximo
-                                echo "<button class='btn btn-sm btn-secondary decrease-qty' data-id='{$row['id_producto']}' data-stock='{$row['stock_producto']}'>-</button>";
-                                echo "<input type='number' value='{$row['cantidad']}' min='1' max='{$row['stock_producto']}' class='form-control text-center qty-input' readonly data-id='{$row['id_producto']}'>";
-                                echo "<button class='btn btn-sm btn-secondary increase-qty' data-id='{$row['id_producto']}' data-stock='{$row['stock_producto']}'>+</button>";
+                                echo "<div class='input-group' style='width: 130px;'>";
+                                echo "<button class='btn btn-outline-secondary btn-sm decrease-qty' data-id='{$row['id_producto']}' data-stock='{$row['stock_producto']}'>-</button>"; ?>
+                                <input type='number' value='<?php echo $row['cantidad']; ?>' min='1'
+                                    max='<?php echo $row['stock_producto']; ?>'
+                                    class='border border-1 border-secondary form-control text-center qty-input form-control-sm readonly'
+                                    data-id='<?php echo $row['id_producto']; ?>'>
+                                <?php
+                                echo "<button class='btn btn-outline-secondary btn-sm increase-qty' data-id='{$row['id_producto']}' data-stock='{$row['stock_producto']}'>+</button>";
+                                echo "</div>";
+
+
 
                                 echo "</div></div>";
                                 echo "</div>";
+
 
                                 // Subtotal del producto
                             
@@ -181,7 +192,15 @@ $totalFinal = $totalConDescuento;
                                 <div class="d-flex justify-content-center mt-2 mb-4">
                                     <form action="../assets/php/vaciarCarrito.php" method="POST">
                                         <button type="submit" class="button_d btn btn-danger p-2" style="width:340px;">
-                                            Eliminar todos los productos del carrito
+                                            <div class="icon">
+                                                <svg class="top">
+                                                    <use xlink:href="#top"></use>
+                                                </svg>
+                                                <svg class="bottom">
+                                                    <use xlink:href="#bottom"></use>
+                                                </svg>
+                                            </div>
+                                            <span class="fw-bold fs-6">Eliminar todos los productos del carrito</span>
                                         </button>
                                     </form>
                                 </div>
@@ -210,8 +229,11 @@ $totalFinal = $totalConDescuento;
                             </li>
                         </ul>
                         <?php if ($total > 0): ?>
-                            <form action="procesarCompra.php" method="POST">
-                                <input type="hidden" name="total" value="<?= $total ?>">
+                            <form action="procesarCompra.php" method="POST" onsubmit="actualizarValoresHidden();">
+                                <input type="hidden" name="total" id="inputTotal" value="<?= $total ?>">
+                                <input type="hidden" name="totalIVA" id="inputTotalIVA" value="<?= $totalIVA ?>">
+                                <input type="hidden" name="totalFinal" id="inputTotalFinal" value="<?= $totalFinal ?>">
+
                                 <label for="puntos_usar">Tienes <?= $puntos_disp ?> puntos.</label>
                                 <input type="number" name="puntos_usar" id="puntos_usar" class="form-control"
                                     max="<?= $puntos_disp ?>" min="0" placeholder="Cantidad de puntos a usar">
@@ -252,95 +274,79 @@ $totalFinal = $totalConDescuento;
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 
-    <script>document.addEventListener("DOMContentLoaded", function () {
-            // Obtener todos los botones de aumentar y disminuir
-            const decreaseButtons = document.querySelectorAll(".decrease-qty");
-            const increaseButtons = document.querySelectorAll(".increase-qty");
-            const qtyInputs = document.querySelectorAll(".qty-input");
-            const subtotals = document.querySelectorAll(".subtotal");
-            const totalElements = document.querySelectorAll(".total"); // Seleccionamos todos los elementos con la clase 'total'
-            const ivaElement = document.querySelector(".iva"); // Elemento donde mostrarás el IVA
-            const totalIvaElement = document.querySelector(".total-iva"); // Elemento para mostrar el total con IVA
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-            // Función para actualizar el subtotal, total y el IVA
+
+    <script>
+        $(document).ready(function () {
+            // Evento para incrementar la cantidad
+            $(".increase-qty").click(function () {
+                var cantidadInput = $(this).siblings(".qty-input");
+                var cantidad = parseInt(cantidadInput.val());
+                var stock = $(this).data('stock');
+                var idProducto = $(this).data('id');
+
+                // Asegurarse de que la cantidad no exceda el stock
+                if (cantidad < stock) {
+                    cantidad++; // Incrementa la cantidad
+                    cantidadInput.val(cantidad); // Actualiza el valor en el input
+                    actualizarCantidad(idProducto, cantidad); // Actualiza la base de datos
+                    actualizarSubtotal(cantidadInput); // Actualiza el subtotal
+                    actualizarTotales(); // Actualiza los totales
+                }
+            });
+
+            // Evento para decrementar la cantidad
+            $(".decrease-qty").click(function () {
+                var cantidadInput = $(this).siblings(".qty-input");
+                var cantidad = parseInt(cantidadInput.val());
+                var idProducto = $(this).data('id');
+
+                // Asegurarse de que la cantidad no sea menor que 1
+                if (cantidad > 1) {
+                    cantidad--; // Decrementa la cantidad
+                    cantidadInput.val(cantidad); // Actualiza el valor en el input
+                    actualizarCantidad(idProducto, cantidad); // Actualiza la base de datos
+                    actualizarSubtotal(cantidadInput); // Actualiza el subtotal
+                    actualizarTotales(); // Actualiza los totales
+                }
+            });
+
+            // Función para actualizar la cantidad en la base de datos
+            function actualizarCantidad(idProducto, cantidad) {
+                $.ajax({
+                    url: 'actualizarCantidad.php',
+                    method: 'POST',
+                    data: { id_producto: idProducto, cantidad: cantidad },
+                    success: function (response) {
+                        console.log(response); // Debugging
+                    }
+                });
+            }
+
+            // Función para actualizar el subtotal de un producto
+            function actualizarSubtotal(cantidadInput) {
+                const precio = parseFloat(cantidadInput.closest('.list-group-item').find('h6').text().replace('$', '').replace('.', '').trim());
+                const cantidad = parseInt(cantidadInput.val());
+                const subtotal = cantidad * precio;
+                cantidadInput.closest('.list-group-item').find('.subtotal').text(`$${subtotal.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`);
+            }
+
+            // Función para actualizar los totales (suma de subtotales y cálculo del IVA)
             function actualizarTotales() {
                 let total = 0;
-
-                // Sumar los subtotales
-                subtotals.forEach(subtotal => {
-                    total += parseFloat(subtotal.textContent.replace('$', '').replace('.', '').trim());
+                $(".subtotal").each(function () {
+                    total += parseFloat($(this).text().replace('$', '').replace('.', '').trim());
                 });
 
-                // Calcular IVA (19%)
                 const iva = total * 0.19;
                 const totalConIva = total + iva;
 
-                // Formatear el total sin decimales y con puntos en los miles
-                const totalFormatted = total.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-                const ivaFormatted = iva.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-                const totalConIvaFormatted = totalConIva.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-
-                // Actualizar todos los elementos con la clase 'total'
-                totalElements.forEach(totalElement => {
-                    totalElement.textContent = `\$${totalFormatted}`;
-                });
-
-                // Actualizar el IVA
-                if (ivaElement) {
-                    ivaElement.textContent = `\$${ivaFormatted}`;
-                }
-
-                // Actualizar el Total IVA 19%
-                if (totalIvaElement) {
-                    totalIvaElement.textContent = `\$${totalConIvaFormatted}`;
-                }
+                // Actualizar los totales en la interfaz
+                $(".total").text(`$${total.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`);
+                $(".iva").text(`$${iva.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`);
+                $(".total-iva").text(`$${totalConIva.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`);
             }
-
-            // Evento para decrementar la cantidad
-            decreaseButtons.forEach(button => {
-                button.addEventListener("click", function () {
-                    const qtyInput = button.nextElementSibling;
-                    const productId = qtyInput.getAttribute('data-id');
-                    let qty = parseInt(qtyInput.value);
-                    const maxStock = parseInt(button.getAttribute('data-stock'));
-
-                    if (qty > 1) {
-                        qty -= 1;
-                        qtyInput.value = qty;
-
-                        // Actualizar el subtotal
-                        const price = parseFloat(qtyInput.closest('.list-group-item').querySelector('h6').textContent.replace('$', '').replace('.', '').trim());
-                        const subtotal = qty * price;
-                        qtyInput.closest('.list-group-item').querySelector('.subtotal').textContent = `$${subtotal.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
-
-                        // Actualizar totales
-                        actualizarTotales();
-                    }
-                });
-            });
-
-            // Evento para incrementar la cantidad
-            increaseButtons.forEach(button => {
-                button.addEventListener("click", function () {
-                    const qtyInput = button.previousElementSibling;
-                    const productId = qtyInput.getAttribute('data-id');
-                    let qty = parseInt(qtyInput.value);
-                    const maxStock = parseInt(button.getAttribute('data-stock'));
-
-                    if (qty < maxStock) {
-                        qty += 1;
-                        qtyInput.value = qty;
-
-                        // Actualizar el subtotal
-                        const price = parseFloat(qtyInput.closest('.list-group-item').querySelector('h6').textContent.replace('$', '').replace('.', '').trim());
-                        const subtotal = qty * price;
-                        qtyInput.closest('.list-group-item').querySelector('.subtotal').textContent = `$${subtotal.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
-
-                        // Actualizar totales
-                        actualizarTotales();
-                    }
-                });
-            });
         });
     </script>
 

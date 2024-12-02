@@ -282,10 +282,10 @@
                                 ?>
                                 <!-- Define el stock máximo aquí -->
                                 <div class="input-group" style="width: 130px;">
-                                    <button class="btn btn-outline-dark" type="button" onclick="decrementar()">-</button>
+                                    <button class="btn btn-outline-secondary" type="button" onclick="decrementar()">-</button>
                                     <input type="number" id="cantidadInput" value="1" min="1" max="10"
-                                        class="form-control text-center custom-input">
-                                    <button class="btn btn-outline-dark" type="button" onclick="incrementar()">+</button>
+                                        class="form-control text-center custom-input border border-secondary">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="incrementar()">+</button>
                                 </div>
                                 <div id="resultado" style="display: none;">El valor es: 1</div>
                                 <?php
