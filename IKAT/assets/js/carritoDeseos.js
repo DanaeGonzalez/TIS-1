@@ -1,5 +1,4 @@
 function agregarAlCarrito(productId, cantidadInputId = null) {
-    // Determinar la cantidad, si se especifica un input, usar su valor
     const cantidad = cantidadInputId 
         ? parseInt(document.getElementById(cantidadInputId).value) || 1 
         : 1;
