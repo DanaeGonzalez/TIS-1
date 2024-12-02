@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-12-2024 a las 16:27:45
+-- Tiempo de generación: 02-12-2024 a las 19:06:51
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -43,17 +43,6 @@ INSERT INTO `ambiente` (`id_ambiente`, `nombre_ambiente`) VALUES
 (4, 'Comedor'),
 (5, 'Dormitorio'),
 (6, 'Living');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `boleta`
---
-
-CREATE TABLE `boleta` (
-  `id_boleta` int(100) NOT NULL,
-  `id_compra` int(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -239,22 +228,6 @@ INSERT INTO `control_stock` (`id_control`, `id_producto`, `cantidad`, `motivo`, 
 (23, 28, 13, 'Ingreso', 'Compra Stock', '2024-12-02 15:10:22'),
 (24, 29, 11, 'Ingreso', 'Compra Stock', '2024-12-02 15:10:28'),
 (25, 30, 12, 'Ingreso', 'Compra Stock', '2024-12-02 15:10:34');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `envio`
---
-
-CREATE TABLE `envio` (
-  `id_envio` int(100) NOT NULL,
-  `distancia` float NOT NULL,
-  `coordenadas_origen` varchar(20) DEFAULT NULL,
-  `coordenadas_destino` varchar(20) DEFAULT NULL,
-  `tarifa_base` float DEFAULT NULL,
-  `costo_envio` float DEFAULT NULL,
-  `id_compra` int(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -889,13 +862,6 @@ ALTER TABLE `ambiente`
   ADD PRIMARY KEY (`id_ambiente`);
 
 --
--- Indices de la tabla `boleta`
---
-ALTER TABLE `boleta`
-  ADD PRIMARY KEY (`id_boleta`),
-  ADD KEY `id_compra` (`id_compra`);
-
---
 -- Indices de la tabla `carrito`
 --
 ALTER TABLE `carrito`
@@ -935,13 +901,6 @@ ALTER TABLE `compra_producto`
 ALTER TABLE `control_stock`
   ADD PRIMARY KEY (`id_control`),
   ADD KEY `id_producto` (`id_producto`);
-
---
--- Indices de la tabla `envio`
---
-ALTER TABLE `envio`
-  ADD PRIMARY KEY (`id_envio`),
-  ADD KEY `id_compra` (`id_compra`);
 
 --
 -- Indices de la tabla `firmeza`
@@ -1101,12 +1060,6 @@ ALTER TABLE `ambiente`
   MODIFY `id_ambiente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT de la tabla `boleta`
---
-ALTER TABLE `boleta`
-  MODIFY `id_boleta` int(100) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
@@ -1129,12 +1082,6 @@ ALTER TABLE `compra`
 --
 ALTER TABLE `control_stock`
   MODIFY `id_control` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
-
---
--- AUTO_INCREMENT de la tabla `envio`
---
-ALTER TABLE `envio`
-  MODIFY `id_envio` int(100) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `firmeza`
@@ -1219,12 +1166,6 @@ ALTER TABLE `usuario`
 --
 
 --
--- Filtros para la tabla `boleta`
---
-ALTER TABLE `boleta`
-  ADD CONSTRAINT `boleta_ibfk_1` FOREIGN KEY (`id_compra`) REFERENCES `compra` (`id_compra`);
-
---
 -- Filtros para la tabla `carrito`
 --
 ALTER TABLE `carrito`
@@ -1250,12 +1191,6 @@ ALTER TABLE `compra_producto`
 --
 ALTER TABLE `control_stock`
   ADD CONSTRAINT `control_stock_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`) ON DELETE CASCADE;
-
---
--- Filtros para la tabla `envio`
---
-ALTER TABLE `envio`
-  ADD CONSTRAINT `envio_ibfk_1` FOREIGN KEY (`id_compra`) REFERENCES `compra` (`id_compra`);
 
 --
 -- Filtros para la tabla `lista_deseos_producto`
