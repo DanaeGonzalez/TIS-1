@@ -9,6 +9,8 @@ const nombresFiltros = {
     // Otros filtros...
 };
 
+//------------------------------------------------------------------------------------------------------------------------
+
 function buscarProductos() {
     const buscarInput = document.getElementById('buscarInputMain');
     const productContainer = document.getElementById("product-container");
@@ -73,6 +75,8 @@ document.addEventListener("change", event => {
         filtrarProductos();
     }
 });
+
+//------------------------------------------------------------------------------------------------------------------------
 
 function barraBusqueda() {
     const buscarInputMain = document.getElementById('buscarInputMain');
@@ -142,6 +146,8 @@ function barraBusqueda() {
     });
 }
 
+//------------------------------------------------------------------------------------------------------------------------
+
 function cargarFiltrosPorCategoria(idCategoria) {
     console.log("Cargando filtros para la categoría:", idCategoria); // Depuración
     const filtrosContainer = document.getElementById("form-filtros");
@@ -175,6 +181,8 @@ function cargarFiltrosPorCategoria(idCategoria) {
             filtrosContainer.innerHTML = "<p>Error al cargar los filtros. Intenta nuevamente.</p>";
         });
 }
+
+//------------------------------------------------------------------------------------------------------------------------
 
 function cargarFiltrosYProductosPorCategoria(idCategoria) {
     cargarFiltrosPorCategoria(idCategoria); // Llama a la función existente para cargar los filtros
@@ -210,6 +218,8 @@ function cargarFiltrosYProductosPorCategoria(idCategoria) {
         });
 }
 
+//------------------------------------------------------------------------------------------------------------------------
+
 function seleccionarCategoria(idCategoria) {
     console.log("Seleccionando categoría:", idCategoria);
 
@@ -237,6 +247,7 @@ function seleccionarCategoria(idCategoria) {
         const tag = document.createElement("span");
         tag.className = "badge bg-primary p-2 d-flex align-items-center";
         tag.setAttribute("data-filter", "categoria");
+        tag.setAttribute("data-id", idCategoria);
 
         tag.innerHTML = `
             Categoría: ${nombreCategoria}
@@ -255,6 +266,8 @@ function seleccionarCategoria(idCategoria) {
     });
 }
 
+//------------------------------------------------------------------------------------------------------------------------
+
 function cargarEstrellasDinamicamente() {
     const productContainers = document.querySelectorAll('[id^="stars-container-"]');
     productContainers.forEach(container => {
@@ -262,6 +275,8 @@ function cargarEstrellasDinamicamente() {
         cargarEstrellas(idProducto);
     });
 }
+
+//------------------------------------------------------------------------------------------------------------------------
 
 function actualizarEtiquetasFiltros(formData) {
     const appliedFilters = document.getElementById("applied-filters");
@@ -271,21 +286,29 @@ function actualizarEtiquetasFiltros(formData) {
         return;
     }
 
-    // Limpia las etiquetas existentes
-    appliedFilters.innerHTML = "";
+    // Mantener la etiqueta de categoría si existe
+    const categoriaTag = document.querySelector("[data-filter='categoria']");
+    const categoriaEtiquetaHTML = categoriaTag ? categoriaTag.outerHTML : null;
 
-    // Genera etiquetas para cada filtro aplicado
+    // Limpia las etiquetas excepto la de categoría
+    appliedFilters.innerHTML = categoriaEtiquetaHTML || "";
+
+    // Regenerar evento para eliminar categoría
+    if (categoriaTag) {
+        const closeButton = categoriaTag.querySelector(".btn-close");
+        if (closeButton) {
+            closeButton.addEventListener("click", eliminarCategoria);
+        }
+    }
+
+    // Generar etiquetas para otros filtros
     formData.forEach((value, key) => {
-        // Ignorar la categoría ya que es un filtro base
-        if (key === "categoria") return;
+        if (key === "categoria") return; // Ignorar categoría, ya está manejada
 
-        // Crear etiqueta
         const tag = document.createElement("span");
         tag.className = "badge bg-secondary p-2 d-flex align-items-center";
-
-        // Texto de la etiqueta
         tag.innerHTML = `
-            ${key}: ${value}
+            ${key}: ${nombresFiltros[key]?.[value] || value}
             <button type="button" class="btn-close ms-2" aria-label="Eliminar"></button>
         `;
 
@@ -297,6 +320,8 @@ function actualizarEtiquetasFiltros(formData) {
         appliedFilters.appendChild(tag);
     });
 }
+
+//------------------------------------------------------------------------------------------------------------------------
 
 function eliminarFiltro(key, value) {
     const form = document.getElementById("form-filtros");
@@ -318,6 +343,8 @@ function eliminarFiltro(key, value) {
     filtrarProductos();
 }
 
+//------------------------------------------------------------------------------------------------------------------------
+
 function filtrarProductos() {
     const form = document.getElementById("form-filtros");
     const productContainer = document.getElementById("product-container");
@@ -328,6 +355,17 @@ function filtrarProductos() {
     }
 
     const formData = new FormData(form);
+
+    // Agregar categoría si existe
+    const categoriaTag = document.querySelector("[data-filter='categoria']");
+    if (categoriaTag) {
+        const categoriaId = categoriaTag.getAttribute("data-id");
+        if (categoriaId) {
+            formData.append("categoria", categoriaId);
+        }
+    } else {
+        formData.delete("categoria"); // Asegurar que la categoría no esté presente
+    }
 
     // Actualizar etiquetas de filtros aplicados
     actualizarEtiquetasFiltros(formData);
@@ -351,7 +389,7 @@ function filtrarProductos() {
         })
         .then(html => {
             productContainer.innerHTML = html;
-            cargarEstrellasDinamicamente(); // Llamar la función para cargar estrellas
+            cargarEstrellasDinamicamente(); // Asegura que las estrellas se carguen
         })
         .catch(error => {
             console.error("Error al filtrar los productos:", error);
@@ -359,27 +397,89 @@ function filtrarProductos() {
         });
 }
 
+//------------------------------------------------------------------------------------------------------------------------
+
 function eliminarCategoria() {
-    console.log("Eliminando categoría seleccionada");
+    console.log("Eliminando categoría...");
 
     fetch('../assets/php/seleccionar_categoria.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `id_categoria=`
+        body: 'id_categoria=' // Vacía la categoría
     })
-    .then(() => {
-        // Elimina la etiqueta de categoría
-        const appliedFilters = document.getElementById("applied-filters");
-        const categoriaTag = appliedFilters.querySelector("[data-filter='categoria']");
+    .then(response => response.text())
+    .then(data => {
+        console.log("Categoría eliminada:", data);
+
+        // Eliminar etiqueta de categoría
+        const categoriaTag = document.querySelector("[data-filter='categoria']");
         if (categoriaTag) categoriaTag.remove();
 
-        // Recargar el catálogo sin categoría seleccionada
-        cargarFiltrosYProductosPorCategoria(null);
+        // Recargar filtros para permitir elegir una nueva categoría
+        const filtrosContainer = document.getElementById("form-filtros");
+        if (filtrosContainer) {
+            filtrosContainer.innerHTML = `
+                <div class="dropdown d-flex justify-content-center mt-3">
+                    <button class="btn btn-light border dropdown-toggle rounded-pill" type="button" id="dropdownCategory" data-bs-toggle="dropdown" aria-expanded="false">
+                        Selecciona una categoría
+                    </button>
+                    <div class="dropdown-menu p-2" aria-labelledby="dropdownCategory">
+                        ${Object.entries(nombresFiltros.categoria).map(([id, nombre]) => `
+                            <button class="dropdown-item" onclick="seleccionarCategoria(${id})">${nombre}</button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Recargar productos sin categoría seleccionada
+        filtrarProductos();
     })
     .catch(error => {
         console.error("Error al eliminar la categoría:", error);
     });
 }
+
+function cambiarPagina(pagina) {
+    const form = document.getElementById("form-filtros");
+    const productContainer = document.getElementById("product-container");
+
+    if (!form || !productContainer) {
+        console.error("Formulario o contenedor de productos no encontrado.");
+        return;
+    }
+
+    const formData = new FormData(form);
+    formData.append("pagina", pagina); // Añadir el número de página
+
+    console.log("Filtros enviados:");
+    formData.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+    });
+
+    productContainer.innerHTML = "<p>Cargando productos...</p>";
+
+    fetch(`../assets/php/filtros_catalogo.php`, {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al cargar los productos.");
+            }
+            return response.text();
+        })
+        .then(html => {
+            productContainer.innerHTML = html;
+            cargarEstrellasDinamicamente(); // Cargar las estrellas
+        })
+        .catch(error => {
+            console.error("Error al cargar los productos:", error);
+            productContainer.innerHTML = "<p>Error al cargar los productos. Intenta nuevamente.</p>";
+        });
+}
+
+
 
 
 
