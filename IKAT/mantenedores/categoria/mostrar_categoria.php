@@ -56,7 +56,7 @@ unset($_SESSION['mensaje']);
                                     <td><?= $row["id_categoria"] ?></td>
                                     <td><?= htmlspecialchars($row["nombre_categoria"]) ?></td>
                                     <td>
-                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarCategoriaModal<?= $row["id_categoria"] ?>">Editar</button>
+                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarCategoriaModal<?= $row["id_categoria"] ?>">Editar</button> |
                                         <a href="borrar_categoria.php?id=<?= $row["id_categoria"] ?>" class="btn btn-danger btn-sm">Borrar</a>
                                     </td>
                                 </tr>

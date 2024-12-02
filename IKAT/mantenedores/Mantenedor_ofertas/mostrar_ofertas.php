@@ -41,6 +41,12 @@ unset($_SESSION['mensaje']);
 
             <h1 class="text-center p-4">Mantenedor de Ofertas</h1>
 
+            <div class="d-flex justify-content-end mb-3">
+                    <a class="btn btn-success" data-bs-toggle='modal' data-bs-target='#agregarOfertaModal'>
+                        <i class="bi bi-file-earmark-plus"></i>
+                    </a>
+                </div>
+
             <div class="table-responsive">
                 <?php
                     $query = "SELECT o.id_oferta, o.porcentaje_descuento, p.id_producto, p.nombre_producto
@@ -65,11 +71,11 @@ unset($_SESSION['mensaje']);
                                     <td>" . $row["nombre_producto"] . "</td>
                                     <td>" . $row["porcentaje_descuento"] . "%</td>
                                     <td>
+                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarOfertaModal" . $row["id_oferta"] . "'>Editar</a> |
                                         <form action='borrar_oferta.php' method='post' style='display:inline;'>
                                             <input type='hidden' name='id_oferta' value='" . $row["id_oferta"] . "'>
-                                            <button class='btn btn-danger btn-sm' type='submit'>Eliminar</button>
+                                            <button class='btn btn-danger btn-sm' type='submit'>Borrar</button>
                                         </form>
-                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarOfertaModal" . $row["id_oferta"] . "'>Editar</a> |
                                     </td>
                                   </tr>";
                         
@@ -95,7 +101,6 @@ unset($_SESSION['mensaje']);
                                                            value='" . $row['porcentaje_descuento'] . "' required>
                                                 </div>
                                                 <button type='submit' class='btn btn-primary d-block w-100'>Actualizar Descuento</button>
-                                                <a href='mostrar_ofertas.php' class='btn btn-primary mt-3 d-block w-100'>Volver</a>
                                             </form>
                                         </div>
                                     </div>
@@ -103,12 +108,8 @@ unset($_SESSION['mensaje']);
                             </div>";
                         }
                         echo "</tbody></table>";
-                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarOfertaModal'>Agregar Oferta</a>";
-                        echo "<a href='../Mantenedor_producto/mostrar_producto.php' class='btn btn-primary mt-3 d-block'>Volver</a>";
                     } else {
                         echo "<p class='text-center'>No hay ofertas disponibles.</p>";
-                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarOfertaModal'>Agregar Oferta</a>";
-                        echo "<a href='../Mantenedor_producto/mostrar_producto.php' class='btn btn-primary mt-3 d-block'>Volver</a>";
                     }
                 ?>
             </div>
