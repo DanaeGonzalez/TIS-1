@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IKAT - Métodos de Pago</title>
+    <title>IKAT - Seguimiento de Pedidos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="../assets/css/styles.css">
@@ -21,24 +21,25 @@
             <div class="container py-5">
                 <!-- Espacio para la imagen -->
                 <div class="mb-5">
-                    <img src="../assets/images/ikat.png" alt="Métodos de Pago"
+                    <img src="../assets/images/ikat.png" alt="Seguimiento de Pedidos"
                         class="img-fluid" style="max-height: 300px;">
                 </div>
                 
                 <!-- Texto informativo -->
                 <div class="text-content">
-                    <h1 class="fw-bold mb-3">Nuestros Métodos de Pago</h1>
+                    <h1 class="fw-bold mb-3">Sigue tu pedido con nosotros</h1>
                     <p class="fs-5 mb-4">
-                        En IKAT, hacemos que tus compras sean fáciles y seguras. Actualmente, aceptamos los
-                        siguientes métodos de pago:
+                        En IKAT, queremos que estés siempre informado sobre el estado de tus pedidos. 
+                        Por eso, te ofrecemos un sistema de seguimiento fácil y práctico:
                     </p>
                     <ul class="list-unstyled fs-5 mb-4" style="color: #8c5c32;">
-                        <li><i class="bi bi-credit-card me-2"></i> Tarjetas de Crédito</li>
-                        <li><i class="bi bi-credit-card-2-back me-2"></i> Tarjetas de Débito</li>
+                        <li><i class="bi bi-envelope me-2"></i> Recibe actualizaciones en tu correo electrónico</li>
+                        <li><i class="bi bi-truck me-2"></i> Conoce el estado de tu pedido en tiempo real</li>
+                        <li><i class="bi bi-check-circle me-2"></i> Notificaciones sobre el envío y entrega</li>
                     </ul>
                     <p class="fs-5">
-                        Estamos comprometidos con ofrecerte más opciones para que siempre encuentres el método
-                        que mejor se adapte a ti.
+                        Estamos aquí para asegurarnos de que disfrutes de la mejor experiencia de compra,
+                        manteniéndote informado en cada paso del proceso.
                     </p>
                 </div>
             </div>

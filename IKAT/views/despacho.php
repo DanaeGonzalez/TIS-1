@@ -4,11 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IKAT - Métodos de Pago</title>
+    <title>IKAT - Envíos a Domicilio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="../assets/css/styles.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap.min.css">
 </head>
 
 <body>
@@ -21,24 +21,26 @@
             <div class="container py-5">
                 <!-- Espacio para la imagen -->
                 <div class="mb-5">
-                    <img src="../assets/images/ikat.png" alt="Métodos de Pago"
-                        class="img-fluid" style="max-height: 300px;">
+                    <img src="../assets/images/despacho.JPEG" alt="Envíos a Domicilio"
+                        class="img-fluid" style="max-height: 200px;">
                 </div>
                 
                 <!-- Texto informativo -->
                 <div class="text-content">
-                    <h1 class="fw-bold mb-3">Nuestros Métodos de Pago</h1>
+                    <h1 class="fw-bold mb-3">Envíos de muebles a domicilio en tiempo récord</h1>
                     <p class="fs-5 mb-4">
-                        En IKAT, hacemos que tus compras sean fáciles y seguras. Actualmente, aceptamos los
-                        siguientes métodos de pago:
+                        En IKAT, sabemos que la rapidez importa. Por eso, ofrecemos un servicio de 
+                        <span class="text-primary fw-bold">envíos a domicilio</span> que garantiza que tus muebles 
+                        lleguen a tu hogar en tiempo récord y en perfectas condiciones.
                     </p>
                     <ul class="list-unstyled fs-5 mb-4" style="color: #8c5c32;">
-                        <li><i class="bi bi-credit-card me-2"></i> Tarjetas de Crédito</li>
-                        <li><i class="bi bi-credit-card-2-back me-2"></i> Tarjetas de Débito</li>
+                        <li><i class=""></i> Envíos rápidos y seguros</li>
+                        <li><i class=""></i> Entrega directa hasta tu puerta</li>
+                        <li><i class=""></i> Tiempo de entrega garantizado</li>
                     </ul>
                     <p class="fs-5">
-                        Estamos comprometidos con ofrecerte más opciones para que siempre encuentres el método
-                        que mejor se adapte a ti.
+                        Nos aseguramos de que cada entrega sea una experiencia excelente. 
+                        ¡Confía en nosotros para llevar tus muebles a donde los necesites!
                     </p>
                 </div>
             </div>
