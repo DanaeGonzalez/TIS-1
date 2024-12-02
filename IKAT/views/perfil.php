@@ -113,7 +113,7 @@ require("../config/conexion.php");
 
                             <!-- Botón Guardar Cambios -->
                             <div class="text-center">
-                                <button type="submit" class="btn btn-dark w-50 mt-4">Guardar Cambios</button>
+                                <button type="submit" class="btn btn-dark w-50 mt-4" onclick="return confirm('¿Estás seguro de que deseas guardar los cambios en tu perfil?');">Guardar Cambios</button>
                             </div>
                         </form>
                     </div>

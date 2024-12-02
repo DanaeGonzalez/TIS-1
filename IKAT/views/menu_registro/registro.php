@@ -194,34 +194,44 @@ include '..\..\config\conexion.php';
 
                             $contrasenia = stripslashes($_REQUEST['contrasenia']);
 
-                            // Validar la longitud y espacios de la contraseña
-                            if (strlen($contrasenia) >= 8 && strlen($contrasenia) <= 15 && !preg_match('/\s/', $contrasenia)) {
-                                $contrasenia = password_hash($contrasenia, PASSWORD_BCRYPT);
-
-                                // Inserción en la tabla usuario
-                                $query_usuario = "INSERT INTO usuario (nombre_usuario, apellido_usuario, run_usuario, correo_usuario, numero_usuario, contrasenia_usuario, tipo_usuario, puntos_totales, activo, ultima_sesion)
-                                                VALUES ('$nombre', '$apellido', '$run', '$correo', '$numero', '$contrasenia', 'Registrado', '0', '1', NOW())";
-
-                                if (mysqli_query($conn, $query_usuario)) {
-                                    echo "
-                                    <div class='container-fluid d-flex justify-content-center align-items-center bg-light' style='height: 100vh;'>
-                                        <div class='alert alert-success text-center shadow-lg p-5 rounded-3' role='alert' style='max-width: 500px;'>
-                                            <h3 class='fw-bold'>¡Te has registrado correctamente!</h3>
-                                            <p>Haz clic aquí para <a href='login.php' class='alert-link'>Iniciar sesión</a></p>
-                                        </div>
-                                    </div>";
-                                } else {
-                                    die("Error en la inserción de usuario: " . mysqli_error($conn));
-                                }
-                            } else {
+                            $query_validacion = "SELECT * FROM usuario WHERE run_usuario = '$run' OR correo_usuario = '$correo'";
+                            $result_validacion = mysqli_query($conn,$query_validacion);
+                            
+                            // Validar la existencia del correo y RUT ingresados en la base de datos
+                            if (mysqli_num_rows($result_validacion) > 0) {
                                 echo "
                                 <div class='container-fluid d-flex justify-content-center align-items-center bg-light' style='height: 100vh;'>
                                     <div class='alert alert-danger text-center shadow-lg p-5 rounded-3' role='alert' style='max-width: 500px;'>
-                                        <h3>Error en la contraseña</h3>
-                                        <p>La contraseña debe tener entre 8 y 15 caracteres y no contener espacios.</p>
+                                        <h3>Error: Usuario ya registrado</h3>
+                                        <p>El RUT o correo ya está en uso. Por favor, intenta con otros datos.</p>
                                         <a href='registro.php' class='btn btn-dark mt-3'>Volver a Intentar</a>
                                     </div>
                                 </div>";
+                            }else {
+                                // Validar la longitud y espacios de la contraseña
+                                if (strlen($contrasenia) >= 8 && strlen($contrasenia) <= 15 && !preg_match('/\s/', $contrasenia)) {
+                                    $contrasenia = password_hash($contrasenia, PASSWORD_BCRYPT);
+    
+                                    // Inserción en la tabla usuario
+                                    $query_usuario = "INSERT INTO usuario (nombre_usuario, apellido_usuario, run_usuario, correo_usuario, numero_usuario, contrasenia_usuario, tipo_usuario, puntos_totales, activo, ultima_sesion)
+                                                    VALUES ('$nombre', '$apellido', '$run', '$correo', '$numero', '$contrasenia', 'Registrado', '0', '1', NOW())";
+    
+                                    if (mysqli_query($conn, $query_usuario)) {
+                                        header('Location: login.php?msg=reg_ok');
+                                        exit;
+                                    } else {
+                                        die("Error en la inserción de usuario: " . mysqli_error($conn));
+                                    }
+                                } else {
+                                    echo "
+                                    <div class='container-fluid d-flex justify-content-center align-items-center bg-light' style='height: 100vh;'>
+                                        <div class='alert alert-danger text-center shadow-lg p-5 rounded-3' role='alert' style='max-width: 500px;'>
+                                            <h3>Error en la contraseña</h3>
+                                            <p>La contraseña debe tener entre 8 y 15 caracteres y no contener espacios.</p>
+                                            <a href='registro.php' class='btn btn-dark mt-3'>Volver a Intentar</a>
+                                        </div>
+                                    </div>";
+                                }
                             }
                         }
                     }
@@ -247,7 +257,7 @@ include '..\..\config\conexion.php';
                                     <div class="mb-4">
                                         <label for="run" class="form-label ms-1 fw-semibold">RUT</label>
                                         <input type="text" id="run" name="run" class="form-control border-dark" size="9"
-                                            placeholder="123456789" required>
+                                            placeholder="Formato: 123456789" required>
                                     </div>
                                     <div class="mb-4">
                                         <label for="numero" class="form-label ms-1 fw-semibold">Número de Teléfono</label>

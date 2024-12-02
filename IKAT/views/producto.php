@@ -265,7 +265,7 @@
                                     <button class="btn btn-outline-secondary" type="button"
                                         onclick="decrementar()">-</button>
                                     <input type="number" id="cantidadInput" value="1" min="1" max="10"
-                                        class="form-control text-center custom-input border border-secondary">
+                                        class="form-control text-center custom-input border border-secondary" readonly>
                                     <button class="btn btn-outline-secondary" type="button"
                                         onclick="incrementar()">+</button>
                                 </div>

@@ -204,6 +204,10 @@ if (isset($_POST['identificador'])) {
                             <div class="alert alert-success" role="alert">¡Ya puedes iniciar sesión con tu nueva contraseña!</div>
                             <?php
                             break;
+                        case 'reg_ok': ?>
+                            <div class="alert alert-success" role="alert">¡Tu nueva cuenta ha sido creada con éxito! Ya puedes iniciar sesión.</div>
+                            <?php
+                            break;
 
                         default: ?>
                             <div class="alert alert-danger" role="alert">Algo salió mal. Por favor, intenta recuperar tu contraseña

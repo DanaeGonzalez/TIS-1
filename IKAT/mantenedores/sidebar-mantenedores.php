@@ -32,6 +32,8 @@
                                 class="sidebar-link d-block py-2 px-3">Colores</a></li>
                         <li><a href="/xampp/TIS-1/IKAT/mantenedores/Mantenedor_firmezas/mostrar_firmeza.php"
                                 class="sidebar-link d-block py-2 px-3">Firmeza</a></li>
+                                <li><a href="/xampp/TIS-1/IKAT/mantenedores/Mantenedor_formas/mostrar_forma.php"
+                                class="sidebar-link d-block py-2 px-3">Forma</a></li>
                         <li><a href="/xampp/TIS-1/IKAT/mantenedores/Mantenedor_materiales/mostrar_material.php"
                                 class="sidebar-link d-block py-2 px-3">Materiales</a></li>
                         <li><a href="/xampp/TIS-1/IKAT/mantenedores/Mantenedor_metodo_pago/mostrar_metodo_pago.php"
