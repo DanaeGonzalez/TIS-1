@@ -10,19 +10,24 @@ body {
   font-family: "Newsreader", serif !important;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: "Newsreader", serif !important;
   font-style: italic;
 }
 
-p,a {
+p,
+a {
   font-family: "Newsreader", serif !important;
   font-style: normal;
 }
 
-h4, h5, h6 {
+h4,
+h5,
+h6 {
   font-family: "Newsreader", serif !important;
-  font-style:normal;
+  font-style: normal;
 }
 
 /*input[type="checkbox"] {
@@ -43,7 +48,6 @@ input[type="checkbox"]:disabled {
   cursor: default !important; /* Asegura que el cursor sea la flecha predeterminada 
 }
 */
-
 
 /*a.btn,
 a.nav-link,
@@ -76,6 +80,42 @@ button.carousel-control-next {
   cursor: url("../../assets/images/pointer.png"), pointer !important;
 }
 */
+
+.btn-cafe-opinar {
+  background-color: #a0591ade;
+  color: #fff;
+  border-color: #a0591ade;
+  transition: all 0.3s ease, transform 0.3s ease; 
+}
+
+.btn-cafe-opinar:hover {
+  background-color: #8c5c32;
+  color: #fff;
+  border-color: #8c5c32;
+  transform: scale(1.05); 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.text-cafe {
+  color: #a0591a; /* Color café */
+  transition: color 0.3s ease; /* Transición suave al pasar el cursor */
+}
+
+.text-cafe:hover {
+  color: #8c5c32; /* Color café más oscuro para hover */
+  text-decoration: underline; /* Subrayado al pasar el cursor */
+}
+
+#pendientes-tab.nav-link.active {
+  background-color: rgba(0, 0, 0, 0.226);
+  color: white;
+}
+
+#realizadas-tab.nav-link.active {
+  background-color: rgba(0, 0, 0, 0.226);
+  color: white;
+}
+
 /* Estilo base para los botones */
 .button-style-header {
   display: inline-flex;
@@ -363,14 +403,14 @@ button.btn.btn-outline-dark:hover {
   transform: translateY(-5px);
 }
 
-
-
 .tooltip-inner {
-  background-color: var(--tooltip-bg, #bf8b4bf4) !important; /* Fondo del tooltip */
+  background-color: var(
+    --tooltip-bg,
+    #bf8b4bf4
+  ) !important; /* Fondo del tooltip */
   color: var(--tooltip-text, #ffffff) !important; /* Color del texto */
   border-radius: 4px !important; /* Bordes redondeados */
 }
-
 
 /* Eliminar la flecha */
 body .tooltip .tooltip-arrow {
@@ -414,31 +454,27 @@ body .tooltip .tooltip-arrow {
   color: white;
 }
 
-.pagination > li > a
-{
-    background-color: white;
-    color: #815124;
+.pagination > li > a {
+  background-color: white;
+  color: #815124;
 }
 
 .pagination > li > a:focus,
-.pagination > li > a:hover
-{
-    color: #404040;
-    background-color: #d1b090;
-    border-color: #ddd;
+.pagination > li > a:hover {
+  color: #404040;
+  background-color: #d1b090;
+  border-color: #ddd;
 }
 
-.pagination > .active > a
-{
-    color: white;
-    background-color: #7a4615 !Important;
-    border: solid 1px #7a4615 !Important;
+.pagination > .active > a {
+  color: white;
+  background-color: #7a4615 !important;
+  border: solid 1px #7a4615 !important;
 }
 
-.pagination > .active > a:hover
-{
-    background-color: #5c3713 !Important;
-    border: solid 1px #5c3713;
+.pagination > .active > a:hover {
+  background-color: #5c3713 !important;
+  border: solid 1px #5c3713;
 }
 
 /*#confirmar_direccion {

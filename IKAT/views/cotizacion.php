@@ -33,12 +33,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     $direccion_pedido = $_POST['direccion_pedido'];
     $total_compra = $_POST['total_calculado'];
     $fecha_compra = date('Y-m-d H:i:s');
+    $valorEnvio = $_POST['valor_envio'];
 }
  else {
 
     $total = $_POST['total'] ?? 0;
     $totalIVA = $total * 0.19;
     $totalFinal = $total;
+    $valorEnvio = 0;
+
+    if (isset($_POST['valor_envio'])) {
+        $valorEnvio = $_POST['valor_envio'];
+        echo 'Valor de Envío: ' . $valorEnvio;
+    }
 
     // Obtener métodos de pago
     $query_metodo = "SELECT * FROM metodo_pago WHERE activo = 1";
@@ -227,6 +234,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
                                 <input type="hidden" name="total" value="<?php echo $total; ?>">
                                 <input type="hidden" name="valorImpuestos" value="<?php echo $totalIVA; ?>">
                                 <input type="hidden" id="valorEnvioInput" name="valor_envio" value="<?php echo $valorEnvio; ?>">
+
                                 <div class="input-group">
                                 <input type="text" class="form-control" id="direccion" name="direccion_pedido"
                                     onblur="buscarDireccion();" value="<?php echo htmlspecialchars($direccion); ?>"
@@ -352,6 +360,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
             const distancia_km = R * c;
 
             const valorEnvio = Math.round(distancia_km * 1500);
+            console.log('Nuevo valor de Envío actualizado en input: ', document.getElementById('valorEnvioInput').value);
+
 
             document.getElementById('valorEnvioInput').value = valorEnvio;
             document.getElementById('valorEnvio').textContent = `$${formatNumber(valorEnvio)}`;
