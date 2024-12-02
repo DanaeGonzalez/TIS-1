@@ -86,21 +86,17 @@
                     </div>
                 </div>
 
-
-
                 <!-- Contenedor de filtros -->
-                <div class="container mt-3">
-                    <form id="form-filtros" method="GET" action="javascript:void(0);"
-                        onsubmit="return filtrarProductos()"> <!-- Añadimos el formulario -->
+                <div class="container mt-5">
+                    <h1 class="text-center m-0">Productos</h1>
+                    <hr class="mb-4 mt-0">
+                    <form id="form-filtros" method="GET" action="javascript:void(0);" onsubmit="return filtrarProductos()"> <!-- Añadimos el formulario -->
                         <div class="row justify-content-center">
-                            <h1 class="text-center mb-3">Productos</h1>
-                            <hr class="mb-4">
-
                             <!-- Filtro de Categoría -->
-                            <div class="dropdown">
+                            <div class="dropdown d-flex justify-content-center">
                                 <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
                                     id="dropdownCategory" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Categoría
+                                    Comienza eligiendo una categoría
                                 </button>
                                 <div class="dropdown-menu p-2" aria-labelledby="dropdownCategory">
                                     <?php
@@ -109,48 +105,16 @@
 
                                     if ($result && $result->num_rows > 0) {
                                         while ($fila = $result->fetch_assoc()) {
-                                            echo "<button class='dropdown-item' onclick='cargarFiltrosPorCategoria(" . $fila['id_categoria'] . ")'>" . $fila['nombre_categoria'] . "</button>";
+                                            echo "<button class='dropdown-item' onclick='seleccionarCategoria(" . $fila['id_categoria'] . ")'>" . $fila['nombre_categoria'] . "</button>";
                                         }
                                     }
                                     ?>
                                 </div>
                             </div>
-
-
-                            <!-- Filtro de Color -->
-                            <div class="col-auto mb-3">
-                                <div class="dropdown">
-                                    <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                        id="dropdownColor" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Color
-                                    </button>
-                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownColor">
-                                        <?php generarDropdown('color', 'color', 'id_color', 'nombre_color'); ?>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Filtro de Material -->
-                            <div class="col-auto mb-3">
-                                <div class="dropdown">
-                                    <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                        id="dropdownMaterial" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Material
-                                    </button>
-                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownMaterial">
-                                        <?php generarDropdown('material', 'material', 'id_material', 'nombre_material'); ?>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Botón para aplicar los filtros -->
-                            <div class="col-auto mb-3">
-                                <button type="submit" class="btn btn-dark rounded-pill">Aplicar filtros</button>
-                            </div>
-
                         </div>
                     </form> <!-- Fin del formulario -->
                 </div>
+
 
                 <!-- Contenedor de la barra de etiquetas -->
                 <div class="container mt-3">
@@ -288,6 +252,7 @@
             <?php include '../templates/footer.php'; ?>
         </div>
 
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
         </script>

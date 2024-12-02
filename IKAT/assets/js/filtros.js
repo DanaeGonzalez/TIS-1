@@ -56,43 +56,57 @@ function buscarProductos() {
     }
 }
 
-
-
-
 function filtrarProductos() {
     const form = document.getElementById("form-filtros");
+    const productContainer = document.getElementById("product-container");
 
-    if (!form) {
-        console.error("Formulario de filtros no encontrado.");
+    if (!form || !productContainer) {
+        console.error("Formulario o contenedor de productos no encontrado.");
         return;
     }
 
-    form.addEventListener("submit", function (event) {
-        event.preventDefault();
+    // Declarar formData correctamente antes de usarlo
+    const formData = new FormData(form);
 
-        const formData = new FormData(form);
-        const queryString = new URLSearchParams(formData).toString();
-        const productContainer = document.getElementById("product-container");
+    console.log("Filtros enviados:");
+    for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+    }
 
-        // Mostrar un mensaje de carga mientras se obtienen los datos
-        productContainer.innerHTML = "<p>Filtrando productos...</p>";
+    // Mostrar un mensaje de carga mientras se obtienen los productos
+    productContainer.innerHTML = "<p>Cargando productos...</p>";
 
-        fetch(`../assets/php/filtros_catalogo.php?${queryString}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Error en la respuesta del servidor");
-                }
-                return response.text(); // Recibe HTML directamente
-            })
-            .then(html => {
-                productContainer.innerHTML = html; // Inserta el HTML recibido en el contenedor
-            })
-            .catch(error => {
-                productContainer.innerHTML = "<p>Error al filtrar los productos. Intenta nuevamente.</p>";
-                console.error('Error al filtrar:', error);
-            });
-    });
+    // Enviar los filtros seleccionados al servidor
+    fetch(`../assets/php/filtros_catalogo.php`, {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al filtrar los productos.");
+            }
+            return response.text(); // Recibe el HTML de los productos
+        })
+        .then(html => {
+            productContainer.innerHTML = html; // Actualiza el contenedor con los productos filtrados
+            cargarEstrellasDinamicamente(); // Llamar la función para cargar estrellas
+        })
+        .catch(error => {
+            console.error("Error al filtrar los productos:", error);
+            productContainer.innerHTML = "<p>Error al cargar los productos. Intenta nuevamente.</p>";
+        });
 }
+
+
+// Agregar evento de cambio a los filtros
+document.addEventListener("change", event => {
+    if (event.target.closest("#form-filtros")) {
+        filtrarProductos();
+    }
+});
+
+
+
 
 
 function barraBusqueda() {
@@ -160,6 +174,102 @@ function barraBusqueda() {
         if (event.key === 'Escape') {
             listaResultados.classList.add('d-none');
         }
+    });
+}
+
+function cargarFiltrosPorCategoria(idCategoria) {
+    console.log("Cargando filtros para la categoría:", idCategoria); // Depuración
+    const filtrosContainer = document.getElementById("form-filtros");
+
+    if (!filtrosContainer) {
+        console.error("Contenedor de filtros no encontrado.");
+        return;
+    }
+
+    filtrosContainer.innerHTML = "<p>Cargando filtros...</p>";
+
+    fetch(`../assets/php/cargar_filtros.php?id_categoria=${idCategoria}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al cargar los filtros.");
+            }
+            return response.text(); // Recibe HTML de los nuevos filtros
+        })
+        .then(html => {
+            //console.log("HTML recibido:", html); // Depuración
+            filtrosContainer.innerHTML = html;
+
+            // Inicializar dropdowns de Bootstrap
+            const dropdowns = document.querySelectorAll('.dropdown-toggle');
+            dropdowns.forEach(dropdown => {
+                new bootstrap.Dropdown(dropdown);
+            });
+        })
+        .catch(error => {
+            console.error("Error al cargar los filtros:", error);
+            filtrosContainer.innerHTML = "<p>Error al cargar los filtros. Intenta nuevamente.</p>";
+        });
+}
+
+function cargarFiltrosYProductosPorCategoria(idCategoria) {
+    cargarFiltrosPorCategoria(idCategoria); // Llama a la función existente para cargar los filtros
+
+    const productContainer = document.getElementById("product-container");
+
+    if (!productContainer) {
+        console.error("Contenedor de productos no encontrado.");
+        return;
+    }
+
+    // Mostrar un mensaje de carga mientras se obtienen los productos
+    productContainer.innerHTML = "<p>Cargando productos...</p>";
+
+    // Realizar la llamada para filtrar productos por categoría
+    fetch(`../assets/php/filtros_catalogo.php`, {
+        method: "POST",
+        body: new URLSearchParams({ categoria: idCategoria }),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al cargar los productos.");
+            }
+            return response.text(); // Recibe el HTML de los productos
+        })
+        .then(html => {
+            productContainer.innerHTML = html; // Actualiza el contenedor con los productos filtrados
+            cargarEstrellasDinamicamente(); // Llamar la función para cargar estrellas
+        })
+        .catch(error => {
+            console.error("Error al cargar los productos:", error);
+            productContainer.innerHTML = "<p>Error al cargar los productos. Intenta nuevamente.</p>";
+        });
+}
+
+
+function seleccionarCategoria(idCategoria) {
+    console.log("Seleccionando categoría:", idCategoria);
+
+    fetch('../assets/php/seleccionar_categoria.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `id_categoria=${idCategoria}`
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log(data);
+        // Recargar filtros y productos con la nueva categoría
+        cargarFiltrosYProductosPorCategoria(idCategoria);
+    })
+    .catch(error => {
+        console.error("Error al seleccionar la categoría:", error);
+    });
+}
+
+function cargarEstrellasDinamicamente() {
+    const productContainers = document.querySelectorAll('[id^="stars-container-"]');
+    productContainers.forEach(container => {
+        const idProducto = container.id.split('-')[2]; // Obtener el ID del producto
+        cargarEstrellas(idProducto);
     });
 }
 
