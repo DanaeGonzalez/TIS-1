@@ -24,7 +24,6 @@ if ($rowPuntos = $resultPuntos->fetch_assoc()) {
     $puntos_disp = $rowPuntos['puntos_totales'];
 }
 
-// Consultar productos en el carrito del usuario
 // Consultar productos en el carrito del usuario junto con las ofertas
 $sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, p.foto_producto, 
                p.precio_unitario, c.cantidad, o.porcentaje_descuento 

@@ -25,15 +25,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 	$direccion_pedido = $_POST['direccion_pedido'] ?? 'Dirección no especificada';
 	$total_calculado = $_POST['total_calculado'] ?? 0;
     $valorImpuestos = $_POST['valorImpuestos'] ?? 0;
-    $valor_envio = $_POST['valorEnvio'] ?? 0;
+	$valor_envio = (int) ($_POST['valor_envio'] ?? 0); 
     $fecha_compra = $fecha_compra ?? date('d-m-Y H:i:s');
 
 } else {
     $fecha_compra = $fecha_compra ?? date('d-m-Y H:i:s');
 	$direccion_pedido = $_POST['direccion_pedido'] ?? 'Dirección no especificada';
 
-    $total = (float) ($_POST['total'] ?? 0); // Convierte a número flotante
-	$valor_envio = (float) ($_POST['valorEnvio'] ?? 0); // Convierte a número flotante
+    $total = (int) ($_POST['total'] ?? 0);
+	$valor_envio = (int) ($_POST['valor_envio'] ?? 0); 
 	$totalIVA = $total * 0.19;
 	$totalFinal = $total + $valor_envio;
 
@@ -46,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 }
 
 // Consulta para obtener el nombre del usuario
+$id_usuario = $_SESSION['id_usuario'];
 $sql_usuario = "SELECT nombre_usuario, apellido_usuario FROM usuario WHERE id_usuario = ?";
 $stmt_usuario = $conn->prepare($sql_usuario);
 $stmt_usuario->bind_param("i", $id_usuario);
@@ -59,16 +60,14 @@ if ($result_usuario->num_rows > 0) {
     $nombre_usuario = "Usuario no encontrado"; // Manejo de error si no se encuentra el usuario
 }
 
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>IKAT - Documentos</title>
+	<title>IKAT - Cotización</title>
 	
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -94,11 +93,8 @@ if ($result_usuario->num_rows > 0) {
 	<table class="bill-container">
 		<tr class="bill-emitter-row">
 			<td>
-				<div class="bill-type">
-					<img style="width:40px; height:50px; align-items: center;" src="/xampp/TIS-1/IKAT/assets/images/cat_blanco.png" alt="logo_ikat">
-				</div>
 				<div class="text-lg text-center">
-					IKAT
+					<img src="/xampp/TIS-1/IKAT/assets/images/ikat.png" alt="logo_ikat">
 				</div>
 				<p><strong>Razón social:</strong> IKAT S.A.</p>
 				<p><strong>Domicilio Comercial:</strong> Av. Alonso de Ribera 2850</p>
@@ -121,7 +117,7 @@ if ($result_usuario->num_rows > 0) {
 				<div>
 					<div class="row">
 						<p class="col-8 margin-b-0">
-							<strong>Nombre Solicitante</strong> <?php echo htmlspecialchars($nombre_usuario) ?>
+							<strong>Nombre Solicitante: </strong> <?php echo htmlspecialchars($nombre_usuario) ?>
 						</p>
 					</div>
 					<div class="row">
@@ -149,32 +145,49 @@ if ($result_usuario->num_rows > 0) {
 							<td>Subtotal</td>
 						</tr>
 						
-						<tr>
+					
 							<?php
                             // Consulta para obtener los productos del carrito
                             $sql = "SELECT p.id_producto, p.nombre_producto, p.stock_producto, cp.cantidad, p.precio_unitario, p.foto_producto
-                            FROM carrito cp 
-                            JOIN producto p ON cp.id_producto = p.id_producto 
-                            WHERE cp.id_usuario = ?";
+                                    FROM carrito cp 
+                                    JOIN producto p ON cp.id_producto = p.id_producto 
+                                    WHERE cp.id_usuario = ?";
                             $stmt = $conn->prepare($sql);
                             $stmt->bind_param("i", $_SESSION['id_usuario']);
                             $stmt->execute();
                             $result = $stmt->get_result();
-
+                                                        
                             $total = 0;
-							$oferta = "SELECT id_oferta FROM oferta JOIN producto using(id_producto)";
                             // Mostrar productos en el carrito
                             while ($row = $result->fetch_assoc()) {
-                                $subtotal = $row['precio_unitario'] * $row['cantidad'];
+								// Consultar si existe un descuento para este producto en la tabla "oferta"
+                                $queryOferta = "SELECT porcentaje_descuento FROM oferta WHERE id_producto = ?";
+                                $stmtOferta = $conn->prepare($queryOferta);
+                                $stmtOferta->bind_param("i", $row['id_producto']);
+                                $stmtOferta->execute();
+                                $resultOferta = $stmtOferta->get_result();
+                                $oferta = $resultOferta->fetch_assoc();
+                            
+                                // Calcular el precio con descuento si hay uno
+                                if ($oferta && $oferta['porcentaje_descuento'] > 0) {
+                                    $descuento = $oferta['porcentaje_descuento'];
+                                    $precioConDescuento = $row['precio_unitario'] - ($row['precio_unitario'] * $descuento / 100);
+                                } else {
+                                    // Si no hay descuento, el precio se mantiene igual
+                                    $precioConDescuento = $row['precio_unitario'];
+                                }
+								// Calcular el subtotal con el precio con descuento
+                                $subtotal = $precioConDescuento * $row['cantidad'];
                                 $total += $subtotal;
+
+								echo "<tr>";
                                 echo "<td>{$row['nombre_producto']}</td>";
 								echo "<td>{$row['cantidad']}</td>";
-								echo "<td>{$row['precio_unitario']}</td>";
+								echo "<td>\$" . number_format(floor($precioConDescuento), 0, '', '.') . "</td>";   
 								echo "<td>\$" . number_format(floor($subtotal), 0, '', '.') . "</td>";   
-                            }
+								echo "</tr>";
+							}
                             ?>
-						</tr>
-							
 					</table>
 				</div>
 			</td>
@@ -182,20 +195,20 @@ if ($result_usuario->num_rows > 0) {
 		<tr class="bill-row total-row">
 			<td colspan="2">
 				<div>
-					<div class="row text-right">
-						<p class="col-10 margin-b-0">
-							<strong>Subtotal: $</strong>
-						</p>
-						<p class="col-2 margin-b-0">
-							<strong><?php echo htmlspecialchars($total)?></strong>
-						</p>
-					</div>
+				<div class="row text-right">
+    				<p class="col-10 margin-b-0">
+        				<strong>Subtotal: $</strong>
+    				</p>
+    				<p class="col-2 margin-b-0">
+        				<strong><?php echo number_format(floor($total), 0, '', '.') ?></strong>
+    				</p>
+				</div>
 					<div class="row text-right">
 						<p class="col-10 margin-b-0">
 							<strong>Total IVA 19%: $</strong>
 						</p>
 						<p class="col-2 margin-b-0">
-							<strong><?php echo htmlspecialchars($totalIVA) ?></strong>
+							<strong><?php echo number_format(floor($totalIVA), 0, '', '.') ?></strong>
 						</p>
 					</div>
 					<div class="row text-right">
@@ -203,7 +216,7 @@ if ($result_usuario->num_rows > 0) {
 							<strong>Valor Envío: $</strong>
 						</p>
 						<p class="col-2 margin-b-0">
-							<strong><?php echo htmlspecialchars($valor_envio)?></strong>
+							<strong><?php echo number_format(floor($valor_envio),0,'','.')?></strong>
 						</p>
 					</div>
 					<div class="row text-right">
@@ -211,7 +224,7 @@ if ($result_usuario->num_rows > 0) {
 							<strong>Total a Pagar: $</strong>
 						</p>
 						<p class="col-2 margin-b-0">
-							<strong><?php echo htmlspecialchars($totalFinal)?></strong>
+							<strong><?php echo number_format(floor($totalFinal),0,'','.')?></strong>
 						</p>
 					</div>
 				</div>
