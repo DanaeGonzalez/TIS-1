@@ -18,15 +18,14 @@
 
         <!-- Main -->
         <div class="main d-flex flex-column align-items-center justify-content-center text-center py-5">
-            <div class="container py-5">
-                <!-- Espacio para la imagen -->
-                <div class="mb-5">
+            <div class="d-flex justify-content-center">
+                <div class="col-md-10 mb-10 p-5 border bg-light rounded shadow-sm">
                     <img src="../assets/images/ikat.png" alt="Seguimiento de Pedidos"
                         class="img-fluid" style="max-height: 300px;">
-                </div>
                 
-                <!-- Texto informativo -->
-                <div class="text-content">
+                
+                    <!-- Texto informativo -->
+                    <div class="text-content">
                     <h1 class="fw-bold mb-3">Sigue tu pedido con nosotros</h1>
                     <p class="fs-5 mb-4">
                         En IKAT, queremos que estés siempre informado sobre el estado de tus pedidos. 
@@ -41,6 +40,8 @@
                         Estamos aquí para asegurarnos de que disfrutes de la mejor experiencia de compra,
                         manteniéndote informado en cada paso del proceso.
                     </p>
+                    </div>
+                
                 </div>
             </div>
         </div>
