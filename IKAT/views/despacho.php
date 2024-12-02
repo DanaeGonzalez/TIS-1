@@ -20,29 +20,31 @@
         <!-- Main -->
         <div class="main d-flex flex-column align-items-center justify-content-center text-center py-5">
             <div class="container py-5">
-                <!-- Espacio para la imagen -->
                 <div class="mb-5">
-                    <img src="../assets/images/despacho.JPEG" alt="Envíos a Domicilio"
-                        class="img-fluid" style="max-height: 200px;">
+                        <img src="../assets/images/despacho.JPEG" alt="Envíos a Domicilio"
+                            class="img-fluid" style="max-height: 200px;">
                 </div>
-                
-                <!-- Texto informativo -->
-                <div class="text-content">
-                    <h1 class="fw-bold mb-3">Envíos de muebles a domicilio en tiempo récord</h1>
-                    <p class="fs-5 mb-4">
-                        En IKAT, sabemos que la rapidez importa. Por eso, ofrecemos un servicio de 
-                        <span class="text-primary fw-bold">envíos a domicilio</span> que garantiza que tus muebles 
-                        lleguen a tu hogar en tiempo récord y en perfectas condiciones.
-                    </p>
-                    <ul class="list-unstyled fs-5 mb-4" style="color: #8c5c32;">
-                        <li><i class=""></i> Envíos rápidos y seguros</li>
-                        <li><i class=""></i> Entrega directa hasta tu puerta</li>
-                        <li><i class=""></i> Tiempo de entrega garantizado</li>
-                    </ul>
-                    <p class="fs-5">
-                        Nos aseguramos de que cada entrega sea una experiencia excelente. 
-                        ¡Confía en nosotros para llevar tus muebles a donde los necesites!
-                    </p>
+                <div class="d-flex justify-content-center">
+                <div class="col-md-10 mb-10 p-5 border bg-light rounded shadow-sm">
+                    <!-- Texto informativo -->
+                    <div class="text-content">
+                        <h1 class="fw-bold mb-3">Envíos de muebles a domicilio en tiempo récord</h1>
+                        <p class="fs-5 mb-4">
+                            En IKAT, sabemos que la rapidez importa. Por eso, ofrecemos un servicio de 
+                            <span class="fw-bold" style="color: #8c5c32;">envíos a domicilio</span> que garantiza que tus muebles 
+                            lleguen a tu hogar en tiempo récord y en perfectas condiciones.
+                        </p>
+                        <ul class="list-unstyled fs-5 mb-4" style="color: #8c5c32;">
+                            <li><i class="bi bi-truck"></i> Envíos rápidos y seguros</li>
+                            <li><i class="bi bi-door-open"></i> Entrega directa hasta tu puerta</li>
+                            <li><i class="bi bi-calendar-check"></i> Tiempo de entrega garantizado</li>
+                        </ul>
+                        <p class="fs-5">
+                            Nos aseguramos de que cada entrega sea una experiencia inolvidable.
+                            <br>
+                            ¡Confía en nosotros para llevar tus muebles a donde los necesites!
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
