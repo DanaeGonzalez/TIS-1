@@ -181,35 +181,43 @@
     
     ?>
 
-    <!DOCTYPE html>
-    <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>IKAT - Mantenedor de Productos</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="..\..\assets\css\styles.css">
-    </head>
-    <body>
-        <!-- Header -->
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/templates/header.php';?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IKAT - Mantenedor de Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="..\..\assets\css\styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <?php include $_SERVER['DOCUMENT_ROOT'] . '/xampp/TIS-1/IKAT/templates/header.php';?>
 
-        <div class="d-flex">
-            <?php include '../sidebar-mantenedores.php';?>
-            
-            <div class="content-area flex-grow-1 p-5 col-4 col-md-10">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-lg-2">
+                <?php include '../sidebar-mantenedores.php';?>
+            </div>
 
-            <?php if ($mensaje): ?>
-                <div class="alert alert-info alert-dismissible fade show text-center" role="alert">
-                    <?php echo $mensaje; ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="col-md-9 col-lg-10 content-area p-3">
+                <?php if ($mensaje): ?>
+                    <div class="alert alert-info alert-dismissible fade show text-center" role="alert">
+                        <?php echo $mensaje; ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
+
+                <h1 class="text-center py-3">Mantenedor de Productos</h1>
+
+                <div class="d-flex justify-content-end mb-3">
+                    <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#agregarProductoModal">
+                        <i class="bi bi-file-earmark-plus"></i>
+                    </a>
                 </div>
-            <?php endif; ?>
-
-                <h1 class="text-center p-4">Mantenedor de Productos</h1>
 
                 <div class="table-responsive">
                     <?php
@@ -234,26 +242,34 @@
                                             </tr>
                                         </thead>
                                         <tbody>";
-                                while($row = $result->fetch_assoc()) {
+                                while ($row = $result->fetch_assoc()) {
                                     echo "<tr>
                                             <td>" . $row["id_producto"] . "</td>
-                                            <td>" . $row["nombre_producto"] . "</td>
+                                            <td class='text-truncate' style='max-width: 150px;'>" . htmlspecialchars($row["nombre_producto"]) . "</td>
                                             <td>" . $row["precio_unitario"] . "</td>
                                             <td>" . $row["stock_producto"] . "</td>
-                                            <td>" . $row["descripcion_producto"] . "</td>
-                                            <td><img src='" . $row["foto_producto"] . "' alt='Foto del producto' width='50'></td>
+                                            <td class='text-truncate' style='max-width: 200px;' title='" . htmlspecialchars($row["descripcion_producto"]) . "'>
+                                                " . htmlspecialchars($row["descripcion_producto"]) . "
+                                            </td>
+                                            <td><img src='" . $row["foto_producto"] . "' alt='Foto del producto' class='img-fluid' style='max-width: 50px;'></td>
                                             <td>" . $row["cantidad_vendida"] . "</td>
                                             <td>" . ($row["top_venta"] ? "Sí" : "No") . "</td>
                                             <td>" . ($row["activo"] ? "Sí" : "No") . "</td>
                                             <td>
-                                                <div style='display: flex; justify-content: center; gap: 5px;'>
+                                                <div class='d-flex justify-content-center flex-wrap gap-1'>
                                                     <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarProductoModal" . $row["id_producto"] . "'>
                                                         <i class='bi bi-pen'></i>
                                                     </a>
                                                     <a class='btn btn-info btn-sm' data-bs-toggle='modal' data-bs-target='#agregarCaracteristicasModal" . $row["id_producto"] . "'>
                                                         <i class='bi bi-database-add'></i>
                                                     </a>
-                                                    <a href='cambiar_estado_producto.php?id=" . $row["id_producto"] . "' class='btn btn-danger btn-sm'>
+                                                    <a class='btn btn-primary btn-sm' data-bs-toggle='modal' data-bs-target='#modificarProductoStockModal" . $row["id_producto"] . "'>
+                                                        <i class='bi bi-plus-circle'></i>
+                                                    </a>
+                                                    <a class='btn btn-secondary btn-sm' href='historial_producto.php?id_producto=" . $row["id_producto"] . "'>
+                                                        <i class='bi bi-clock-history'></i>
+                                                    </a>
+                                                    <a class='btn btn-danger btn-sm' href='cambiar_estado_producto.php?id=" . $row["id_producto"] . "'>
                                                         <i class='bi bi-trash3'></i>
                                                     </a>
                                                 </div>
@@ -288,6 +304,41 @@
                                     </div>";
 
                                     echo "
+                                    <div class='modal fade' id='modificarProductoStockModal" . $row["id_producto"] . "' tabindex='-1' aria-labelledby='modificarProductoStockModalLabel" . $row["id_producto"] . "' aria-hidden='true'>
+                                        <div class='modal-dialog'>
+                                            <div class='modal-content'>
+                                                <div class='modal-header'>
+                                                    <h5 class='modal-title' id='modificarProductoStockModalLabel" . $row["id_producto"] . "'>Agregar Producto</h5>
+                                                    <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                                </div>
+                                                <div class='modal-body'>
+                                                    <form action='actualizar_stock.php' method='POST'>
+                                                        <input type='hidden' name='id_producto' value='" . $row['id_producto'] . "'>
+                                                        <div class='mb-3'>
+                                                            <label for='cantidad' class='form-label'>Cantidad</label>
+                                                            <input type='number' class='form-control' id='cantidad' name='cantidad' required>
+                                                        </div>
+                                                        <div class='mb-3'>
+                                                            <label for='motivo' class='form-label'>Motivo</label>
+                                                            <select class='form-select' id='motivo' name='motivo' required>
+                                                                <option value='' disabled selected>Seleccione el motivo</option>
+                                                                <option value='Ingreso'>Ingreso</option>
+                                                                <option value='Salida'>Salida</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class='mb-3'>
+                                                            <label for='explicacion' class='form-label'>Explicación</label>
+                                                            <textarea class='form-control' id='explicacion' name='explicacion' rows='3' required></textarea>
+                                                        </div>
+                                                        <button type='submit' class='btn btn-primary'>Guardar Cambio de Stock</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>";
+
+
+                                    echo "
                                     <div class='modal fade' id='agregarCaracteristicasModal" . $row["id_producto"] . "' tabindex='-1' aria-labelledby='agregarCaracteristicasModalLabel" . $row["id_producto"] . "' aria-hidden='true'>
                                         <div class='modal-dialog'>
                                             <div class='modal-content'>
@@ -302,7 +353,7 @@
                                                             
                                                         <!-- Selección de tipo de producto -->  
                                                         <label for='tipoProducto'>Tipo de Producto:</label>
- 
+    
                                                         <select class='form-select' id='tipoProducto" . $row["id_producto"] . "' name='categoria' required onchange='mostrarCaracteristicas(\"" . $row["id_producto"] . "\")'>
                                                             <option value=''>Seleccione el tipo de producto</option>
                                                             $opcionesCategoria
@@ -536,12 +587,8 @@
                                     </div>";
                                 }
                                 echo "</tbody></table>";
-                                echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarProductoModal'>Agregar Producto</a>";
-                                echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#modificarProductoStockModal'>Modificar Stock</a>";
-                                echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#historialProductoModal'>Ver Historial de Producto</a>";
                             } else {
                                 echo "<p class='text-center'>No hay productos registrados.</p>";
-                                echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarProductoModal'>Agregar Producto</a>";
                             }
                         } else {
                             echo "<p class='text-danger'>Error en la consulta: " . $conn->error . "</p>";
@@ -550,142 +597,95 @@
                 </div>
             </div>
         </div>
-
-        <div class="modal fade" id="agregarProductoModal" tabindex="-1" aria-labelledby="agregarProductoModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="agregarProductoModalLabel">Agregar Producto</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-
-                        <form action="insertar_producto.php" method="POST" enctype="multipart/form-data">
-                            Nombre del Producto: <input class="form-control" type="text" name="nombre_producto" id="nombre_producto" required><br>
-
-                            Precio Unitario: <input class="form-control" type="number" name="precio_unitario" id="precio_unitario" required><br>
-
-                            Descripción: <textarea class="form-control" name="descripcion_producto" id="descripcion_producto" required></textarea><br>
-
-                            Imagen (Tipos de archivo aceptados: .gif .jpeg .jpg .png): <input class="form-control" type="file" name="foto_producto" id="foto_producto" accept="image/*" required><br>
-
-                            <button type="submit" class="btn btn-primary">Guardar Producto</button>
-                        </form>
-                    </div>
+    </div>
+    <div class="modal fade" id="agregarProductoModal" tabindex="-1" aria-labelledby="agregarProductoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="agregarProductoModalLabel">Agregar Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="modificarProductoStockModal" tabindex="-1" aria-labelledby="modificarProductoStockModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modificarProductoStockModalLabel">Agregar Producto</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-
-                    <form action="actualizar_stock.php" method="POST">
-
-                        <div class="mb-3">
-                            <label for="id_producto" class="form-label">Selecciona el producto</label>
-                            <select class="form-select" name="id_producto" required>
-                                <option value="" disabled selected>Selecciona un producto</option>
-                                <?php
-                                    echo $opcionesProducto;
-                                ?>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="cantidad" class="form-label">Cantidad</label>
-                            <input type="number" class="form-control" id="cantidad" name="cantidad" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="motivo" class="form-label">Motivo</label>
-                            <select class="form-select" id="motivo" name="motivo" required>
-                                <option value="" disabled selected>Seleccione el motivo</option>
-                                <option value="Ingreso">Ingreso</option>
-                                <option value="Salida">Salida</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="explicacion" class="form-label">Explicación</label>
-                            <textarea class="form-control" id="explicacion" name="explicacion" rows="3" required></textarea>
-                        </div>
-
-                        <button type="submit" class='btn btn-primary'>Guardar Cambio de Stock</button>
+                <div class="modal-body">
+                    <form action="insertar_producto.php" method="POST" enctype="multipart/form-data">
+                        Nombre del Producto: <input class="form-control" type="text" name="nombre_producto" id="nombre_producto" required><br>
+                        Precio Unitario: <input class="form-control" type="number" name="precio_unitario" id="precio_unitario" required><br>
+                        Descripción: <textarea class="form-control" name="descripcion_producto" id="descripcion_producto" required></textarea><br>
+                        Imagen (Tipos de archivo aceptados: .gif .jpeg .jpg .png): <input class="form-control" type="file" name="foto_producto" id="foto_producto" accept="image/*" required><br>
+                        <button type="submit" class="btn btn-primary">Guardar Producto</button>
                     </form>
-                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="modal fade" id="historialProductoModal" tabindex="-1" aria-labelledby="historialProductoModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="historialProductoModalLabel">Historial de Producto</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal fade" id="modificarProductoStockModal" tabindex="-1" aria-labelledby="modificarProductoStockModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modificarProductoStockModalLabel">Agregar Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <form action="actualizar_stock.php" method="POST">
+                    <div class="mb-3">
+                        <label for="id_producto" class="form-label">Selecciona el producto</label>
+                        <select class="form-select" name="id_producto" required>
+                            <option value="" disabled selected>Selecciona un producto</option>
+                            <?php
+                                echo $opcionesProducto;
+                            ?>
+                        </select>
                     </div>
-                    <div class="modal-body">
-                        <form action="historial_producto.php" method="get">
-                            <div class="mb-3">
-                                <label for="id_producto" class="form-label">Selecciona el producto</label>
-                                <select class="form-select" name="id_producto" required>
-                                    <option value="" disabled selected>Selecciona un producto</option>
-                                    <?php
-                                        echo $opcionesProducto;
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">Ver Historial</button>
-                            </div>
-                        </form>
+                    <div class="mb-3">
+                        <label for="cantidad" class="form-label">Cantidad</label>
+                        <input type="number" class="form-control" id="cantidad" name="cantidad" required>
                     </div>
+                    <div class="mb-3">
+                        <label for="motivo" class="form-label">Motivo</label>
+                        <select class="form-select" id="motivo" name="motivo" required>
+                            <option value="" disabled selected>Seleccione el motivo</option>
+                            <option value="Ingreso">Ingreso</option>
+                            <option value="Salida">Salida</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="explicacion" class="form-label">Explicación</label>
+                        <textarea class="form-control" id="explicacion" name="explicacion" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class='btn btn-primary'>Guardar Cambio de Stock</button>
+                </form>
                 </div>
             </div>
         </div>
-
-
-        <script>
-            function mostrarCaracteristicas(idProducto) {
-                const tipoProducto = document.getElementById('tipoProducto' + idProducto).value;
-
-                const formularios = ['caracteristicasSilla', 'caracteristicasMesa', 'caracteristicasSillon', 'caracteristicasCama', 'caracteristicasA/O'];
-                const valores = ['5', '6', '7', '8', '9'];
-
-                formularios.forEach(form => {
-                    const elemento = document.getElementById(form + idProducto);
-                    if (elemento) {
-                        elemento.style.display = 'none';
-                        Array.from(elemento.querySelectorAll("[required]")).forEach(input => {
-                            input.disabled = true;
-                        });
-                    }
-                });
-            
-                const index = valores.indexOf(tipoProducto);
-                if (index !== -1) {
-                    const formSeleccionado = document.getElementById(formularios[index] + idProducto);
-                    if (formSeleccionado) {
-                        formSeleccionado.style.display = 'block';
-                        Array.from(formSeleccionado.querySelectorAll("select")).forEach(input => {
-                            input.disabled = false;
-                            input.setAttribute("required", "required");
-                        });
-                    }
+    </div>
+    <script>
+        function mostrarCaracteristicas(idProducto) {
+            const tipoProducto = document.getElementById('tipoProducto' + idProducto).value;
+            const formularios = ['caracteristicasSilla', 'caracteristicasMesa', 'caracteristicasSillon', 'caracteristicasCama', 'caracteristicasA/O'];
+            const valores = ['5', '6', '7', '8', '9'];
+            formularios.forEach(form => {
+                const elemento = document.getElementById(form + idProducto);
+                if (elemento) {
+                    elemento.style.display = 'none';
+                    Array.from(elemento.querySelectorAll("[required]")).forEach(input => {
+                        input.disabled = true;
+                    });
+                }
+            });
+        
+            const index = valores.indexOf(tipoProducto);
+            if (index !== -1) {
+                const formSeleccionado = document.getElementById(formularios[index] + idProducto);
+                if (formSeleccionado) {
+                    formSeleccionado.style.display = 'block';
+                    Array.from(formSeleccionado.querySelectorAll("select")).forEach(input => {
+                        input.disabled = false;
+                        input.setAttribute("required", "required");
+                    });
                 }
             }
-        </script>
+        }
+    </script>
+</body>
+</html>
 
-
-
-
-
-    </body>
-    </html>
 
