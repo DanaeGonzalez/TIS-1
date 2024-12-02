@@ -22,15 +22,16 @@
 
         <!-- Main -->
         <div class="main d-flex flex-column align-items-center justify-content-center text-center py-5">
-            <div class="container py-5">
-                <!-- Espacio para la imagen -->
-                <div class="mb-5">
+            
+            <div class="d-flex justify-content-center">
+                <div class="col-md-10 mb-10 p-5 border bg-light rounded shadow-sm">
+                
                     <img src="../assets/images/ikat.png" alt="Promoción IKAT Points"
                         class="img-fluid" style="max-height: 300px;">
-                </div>
                 
-                <!-- Texto promocional -->
-                <div class="text-content">
+                
+                    <!-- Texto promocional -->
+                    <div class="text-content">
                     <h1 class="fw-bold mb-3">¡Descubre el poder de tus IKAT Points!</h1>
                     <p class="fs-5 mb-4">
                         Cada compra suma IKAT Points a tu cuenta, y estos puntos pueden ser usados como
@@ -38,6 +39,7 @@
                         ¡Es fácil, rápido y totalmente beneficioso para ti!
                     </p>
                     <a href="catalogo.php"><button class="btn btn-outline-primary btn-lg">Empieza a ganar puntos ahora</button></a>
+                    </div>
                 </div>
             </div>
         </div>
