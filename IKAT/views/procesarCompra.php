@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     $_SESSION['puntos_usados'] = isset($_POST['puntos_usar']) && is_numeric($_POST['puntos_usar']) 
     ? (int)$_POST['puntos_usar'] 
     : 0;
-    $descuento = $_SESSION['puntos_usados']*5;
+    $descuento = $_SESSION['puntos_usados']*0.2;
 
     if ($total_previo == 0) {
         header("Location: carrito.php");
