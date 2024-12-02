@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
 	$valor_envio = (int) ($_POST['valor_envio'] ?? 0); 
 	$totalIVA = $total * 0.19;
 	$totalFinal = $total + $valor_envio;
+	$valor_envio= $totalFinal-$total;
 
     // Obtener métodos de pago
     $query_metodo = "SELECT * FROM metodo_pago WHERE activo = 1";
