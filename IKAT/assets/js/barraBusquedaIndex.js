@@ -72,7 +72,7 @@ function buscarProductosIndex() {
     }
 
     // Redirige al catálogo con el término de búsqueda como parámetro
-    window.location.href = `views/catalogo.php?buscar=${encodeURIComponent(buscar)}`;
+    window.location.href = `../catalogo.php?buscar=${encodeURIComponent(buscar)}`;
 }
 
 
