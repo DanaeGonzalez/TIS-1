@@ -21,7 +21,6 @@ function abrirModalResena(idProducto) {
 
 document.querySelectorAll('.star-rating i').forEach((star, index, stars) => {
     star.addEventListener('click', function () {
-        // Invertir el índice debido a `row-reverse`
         const valor = stars.length - index; // Calcula el valor invertido
 
         // Asignar el valor correcto al input oculto
