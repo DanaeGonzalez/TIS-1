@@ -80,15 +80,33 @@ unset($_SESSION['mensaje']);
                                     <td>{$row['activo']}</td>
                                     <td>   
                                         <div class='d-flex justify-content-center flex-wrap gap-1'>
-                                            <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarUsuarioModal" . $row["id_usuario"] . "'>
-                                                <i class='bi bi-pen'></i>
-                                            </a>
-                                            <a class='btn btn-primary btn-sm' data-bs-toggle='modal' data-bs-target='#modificarPuntosModal" . $row["id_usuario"] . "'>
-                                                <i class='bi bi-plus-circle'></i>
-                                            </a>
-                                            <a href='cambiar_estado_producto.php?id=" . $row["id_usuario"] . "' class='btn btn-danger btn-sm'>
-                                                <i class='bi bi-trash3'></i>
-                                            </a>
+                                            <div class='btn-group d-block d-sm-none'> <!-- Dropdown para pantallas pequeñas -->
+                                                <button type='button' class='btn btn-secondary btn-sm dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='false'>
+                                                    <i class='bi bi-gear'></i>
+                                                </button>
+                                                <ul class='dropdown-menu'>
+                                                    <li><a class='dropdown-item' data-bs-toggle='modal' data-bs-target='#editarUsuarioModal" . $row["id_usuario"] . "'>
+                                                        <i class='bi bi-pen'></i> Editar
+                                                    </a></li>
+                                                    <li><a class='dropdown-item' data-bs-toggle='modal' data-bs-target='#modificarPuntosModal" . $row["id_usuario"] . "'>
+                                                        <i class='bi bi-plus-circle'></i> Modificar puntos
+                                                    </a></li>
+                                                    <li><a class='dropdown-item' href='cambiar_estado_producto.php?id=" . $row["id_usuario"] . "'>
+                                                        <i class='bi bi-trash3'></i> Cambiar estado
+                                                    </a></li>
+                                                </ul>
+                                            </div>
+                                            <div class='d-none d-sm-flex flex-wrap gap-1'> <!-- Botones normales para pantallas grandes -->
+                                                <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarUsuarioModal" . $row["id_usuario"] . "'>
+                                                    <i class='bi bi-pen'></i>
+                                                </a>
+                                                <a class='btn btn-primary btn-sm' data-bs-toggle='modal' data-bs-target='#modificarPuntosModal" . $row["id_usuario"] . "'>
+                                                    <i class='bi bi-plus-circle'></i>
+                                                </a>
+                                                <a href='cambiar_estado_producto.php?id=" . $row["id_usuario"] . "' class='btn btn-danger btn-sm'>
+                                                    <i class='bi bi-trash3'></i>
+                                                </a>
+                                            </div>
                                         </div>
                                     </td>
                                   </tr>";
