@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['puntos_usar'])) {
     }
 }
 $totalConDescuento = $total - $descuento;
-$totalIVA = $totalConDescuento * 0.19;
+$totalIVA = $total * 0.19;
 $totalFinal = $totalConDescuento;
 
 ?>

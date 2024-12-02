@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     $_SESSION['puntos_usados'] = isset($_POST['puntos_usar']) && is_numeric($_POST['puntos_usar']) 
     ? (int)$_POST['puntos_usar'] 
     : 0;
-    $descuento = $_SESSION['puntos_usados']*0.2;
+    $descuento = $_SESSION['puntos_usados']*0.25;
 
     if ($total_previo == 0) {
         header("Location: carrito.php");
@@ -68,8 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['direccion_pedido'], $_
     if ($descuento > $total_previo*0.7) {
         $descuento = $total_previo*0.7; // Los puntos alcanzan a cubrir hasta el 70% del total
     }
-    $totalConDescuento = $total - $descuento;
-    $totalIVA = $totalConDescuento * 0.19;
+    $totalConDescuento = $total_previo - $descuento;
+    $totalIVA = $total_previo * 0.19;
     $totalFinal = $totalConDescuento;
 
     // Obtener métodos de pago
