@@ -1,146 +1,99 @@
 function buscarProductos() {
-    // Intentar capturar el input del modal o de la barra principal
-    const buscarInputModal = document.getElementById('buscarInputModal');
-    const buscarInputMain = document.getElementById('buscarInputMain');
+    const buscarInput = document.getElementById('buscarInputMain');
+    const productContainer = document.getElementById("product-container");
 
-    // Determinar cuál input usar en base a su disponibilidad
-    const buscarInput = buscarInputModal && buscarInputModal.value ? buscarInputModal : buscarInputMain;
-
-    // Verificar si el campo de entrada fue encontrado
     if (!buscarInput) {
         console.error("Campo de búsqueda no encontrado.");
-        return false;
+        return;
     }
 
-    const buscar = buscarInput.value; // Obtener el valor del input
-    console.log("Valor de búsqueda:", buscar); // Mensaje de depuración
+    const realizarBusqueda = () => {
+        const buscar = buscarInput.value.trim();
 
-    const resultadosDiv = document.getElementById('resultadosBusqueda');
-    if (resultadosDiv) {
-        resultadosDiv.innerHTML = 'Buscando...';
-    }
+        if (!buscar) {
+            console.warn("No se ingresó ningún término de búsqueda.");
+            return;
+        }
 
-    const productContainer = document.getElementById("product-container");
-    productContainer.innerHTML = ""; // Limpia solo el área de productos, manteniendo la barra de filtros
+        // Mostrar un mensaje de carga mientras se obtienen los datos
+        productContainer.innerHTML = "<p>Buscando productos...</p>";
 
-    // Hacer la solicitud fetch
-    fetch(`../assets/php/barra_busqueda.php?buscar=${encodeURIComponent(buscar)}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la respuesta del servidor');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log("Datos recibidos:", data); // Mensaje de depuración
-
-            if (resultadosDiv) {
-                resultadosDiv.innerHTML = ''; // Limpiar los resultados previos
-            }
-
-            if (Array.isArray(data) && data.length > 0) {
-                data.forEach(producto => {
-                    const item = document.createElement('div');
-                    item.classList.add('producto-item');
-                    productContainer.innerHTML += `
-                       <div class="col-6 col-md-4 mb-4">
-                           <a href="producto.php?id=${producto.id_producto}" class="text-decoration-none">
-                               <div class="card" style="width: 100%;">
-                                   <img src="${producto.foto_producto}" class="card-img-top" alt="${producto.nombre_producto}">
-                                   <div class="card-body">
-                                       <h5 class="card-title">${producto.nombre_producto}</h5>
-                                       <h6 class="card-text">$${new Intl.NumberFormat().format(producto.precio_unitario)}</h6>
-                                       <div class="d-flex align-items-center">
-                                           <div>
-                                               <button type="button" class="btn btn-outline-secondary">
-                                                   <i class="bi bi-cart-plus"></i>
-                                               </button>
-                                               <button type="button" class="btn btn-outline-secondary">
-                                                   <i class="bi bi-heart"></i>
-                                               </button>
-                                           </div>
-                                       </div>
-                                   </div>
-                               </div>
-                           </a>
-                       </div>`;
-                    resultadosDiv.appendChild(item);
-                });
-            } else {
-                if (resultadosDiv) {
-                    resultadosDiv.innerHTML = '<p style="color: #555; font-size: 16px;">No se encontraron productos.</p>';
+        fetch(`../assets/php/busqueda_catalogo.php?buscar=${encodeURIComponent(buscar)}`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
                 }
-            }
-        })
-        .catch(error => {
-            if (resultadosDiv) {
-                resultadosDiv.innerHTML = '<p style="color: red; font-size: 16px;">Error en la búsqueda. Intenta nuevamente.</p>';
-            }
-            console.error('Error en la búsqueda:', error);
-        });
+                return response.text(); // Recibimos HTML directamente
+            })
+            .then((html) => {
+                productContainer.innerHTML = html; // Reemplazar contenido del contenedor con el HTML recibido
+                
+                // Cargar las estrellas dinámicamente después de renderizar las cartas
+                const productContainers = document.querySelectorAll('[id^="stars-container-"]');
+                productContainers.forEach(container => {
+                    const idProducto = container.id.split('-')[2]; // Obtener el ID del producto
+                    cargarEstrellas(idProducto);
+                });
+            })
+            .catch((error) => {
+                productContainer.innerHTML = "<p>Error al realizar la búsqueda. Intenta nuevamente.</p>";
+                console.error('Error en la búsqueda:', error);
+            });
+    };
 
-    return false; // Evita el envío del formulario
+    // Evento al presionar Enter
+    buscarInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Evitar el envío automático del formulario
+            realizarBusqueda();
+        }
+    });
+
+    // Evento al hacer clic en el botón de búsqueda
+    const buscarButton = document.getElementById('buscarButton');
+    if (buscarButton) {
+        buscarButton.addEventListener('click', realizarBusqueda);
+    }
 }
 
-function filtrarProductos() {
-    document.getElementById("form-filtros").addEventListener("submit", function (event) {
-        event.preventDefault(); // Evita el envío tradicional del formulario
 
-        const formData = new FormData(this);
+
+
+function filtrarProductos() {
+    const form = document.getElementById("form-filtros");
+
+    if (!form) {
+        console.error("Formulario de filtros no encontrado.");
+        return;
+    }
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(form);
         const queryString = new URLSearchParams(formData).toString();
+        const productContainer = document.getElementById("product-container");
+
+        // Mostrar un mensaje de carga mientras se obtienen los datos
+        productContainer.innerHTML = "<p>Filtrando productos...</p>";
 
         fetch(`../assets/php/filtros_catalogo.php?${queryString}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error("Error en la respuesta del servidor");
                 }
-                return response.json();
+                return response.text(); // Recibe HTML directamente
             })
-            .then(data => {
-                // Selecciona solo el contenedor de los productos
-                const productContainer = document.getElementById("product-container");
-                productContainer.innerHTML = ""; // Limpia solo el área de productos, manteniendo la barra de filtros
-
-                if (data.length === 0) {
-                    productContainer.innerHTML = "<p>No se encontraron productos.</p>";
-                } else {
-                    data.forEach(producto => {
-                        productContainer.innerHTML += `
-                            <div class="col-6 col-md-4 mb-4">
-                                <div class="card d-flex flex-column h-100">
-                                    <a href="producto.php?id=${producto.id_producto}" class="text-decoration-none">
-                                        <div class="card-img-container d-flex justify-content-center align-items-center">
-                                            <img src="${producto.foto_producto}" class="card-img-top img-fluid h-100" alt="${producto.nombre_producto}" style="object-fit: cover; width: 100%; height: auto;" 
-                                                 id="product-image-${producto.id_producto}">
-                                        </div>
-                                    </a>
-                                    <div class="card-body d-flex flex-column">
-                                        <h5 class="card-title text-truncate">${producto.nombre_producto}</h5>
-                                        <h6 class="card-text">$${new Intl.NumberFormat().format(producto.precio_unitario)}</h6>
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <button type="button" class="btn btn-secondary carrito-btn"
-                                                    ${!usuarioAutenticado ? 'disabled' : ''}
-                                                    onclick="agregarAlCarrito(${producto.id_producto})">
-                                                    <i class="bi bi-cart-plus"></i>
-                                                </button>
-
-                                                <button type="button" class="btn btn-secondary lista-deseos-btn"
-                                                    ${!usuarioAutenticado ? 'disabled' : ''}
-                                                    onclick="agregarAListaDeDeseos(${producto.id_producto})">
-                                                    <i class="bi bi-heart"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    });
-                }
+            .then(html => {
+                productContainer.innerHTML = html; // Inserta el HTML recibido en el contenedor
             })
+            .catch(error => {
+                productContainer.innerHTML = "<p>Error al filtrar los productos. Intenta nuevamente.</p>";
+                console.error('Error al filtrar:', error);
+            });
     });
 }
+
 
 function barraBusqueda() {
     const buscarInputMain = document.getElementById('buscarInputMain');
@@ -154,7 +107,7 @@ function barraBusqueda() {
     // Función para mostrar resultados
     function realizarBusqueda(buscar = '') {
         if (listaResultados) {
-            listaResultados.innerHTML = 'Buscando...'; // Mostrar un mensaje temporal
+            listaResultados.innerHTML = '<li class="list-group-item text-muted">Buscando...</li>'; // Mostrar un mensaje temporal
             listaResultados.classList.remove('d-none'); // Asegurar que la lista sea visible
         }
 
@@ -165,12 +118,11 @@ function barraBusqueda() {
 
                 if (Array.isArray(data) && data.length > 0) {
                     data.forEach(producto => {
-                        const rutaAjustada = producto.foto_producto.replace("../../", "../");
                         const item = document.createElement('li');
                         item.classList.add('list-group-item', 'sugerencia-item');
                         item.innerHTML = `
                             <a href="producto.php?id=${producto.id_producto}" class="d-flex align-items-center" style="text-decoration: none;">
-                                <img src="${rutaAjustada}" alt="${producto.nombre_producto}" class="sugerencia-img me-2">
+                                <img src="${producto.foto_producto}" alt="${producto.nombre_producto}" class="sugerencia-img me-2">
                                 <span>${producto.nombre_producto}</span>
                             </a>`;
                         listaResultados.appendChild(item);
@@ -210,5 +162,6 @@ function barraBusqueda() {
         }
     });
 }
+
 
 

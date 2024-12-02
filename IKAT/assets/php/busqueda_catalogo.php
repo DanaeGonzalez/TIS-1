@@ -1,28 +1,47 @@
 <?php
-include '../../config/conexion.php'; // Cambia la ruta si es necesario
-header('Content-Type: application/json');
-// Verifica si se ha enviado una búsqueda
-if (isset($_GET['buscar'])) {
-    $buscar = $_GET['buscar'];
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-    // Preparar la consulta SQL con LIKE para buscar coincidencias
-    $sql = "SELECT * FROM producto WHERE nombre_producto LIKE ? AND activo = 1";
-    $stmt = $conn->prepare($sql);
-    $param = "%" . $buscar . "%"; // Agregar % para la búsqueda parcial
-    $stmt->bind_param("s", $param);
+include 'generar_carta_producto.php';
+include '../../config/conexion.php';
+include 'calcular_top_ventas.php';
+
+// Obtener el término de búsqueda
+$buscar = $_GET['buscar'] ?? '';
+$topVentas = obtenerTopVentas($conn);
+
+if (!empty($buscar)) {
+    // Ajustar los criterios para que sean seguros
+    $buscarTermino = '%' . str_replace(' ', '%', $buscar) . '%';
+    $stmt = $conn->prepare("SELECT * FROM producto WHERE nombre_producto LIKE ? AND activo = 1");
+    $stmt->bind_param("s", $buscarTermino);
     $stmt->execute();
     $result = $stmt->get_result();
 
-    $productos = [];
-
-    if ($result->num_rows > 0) {
+    if ($result && $result->num_rows > 0) {
         while ($producto = $result->fetch_assoc()) {
-            $productos[] = $producto;
+            $id_producto = $producto['id_producto'];
+            $esTopVenta = in_array($id_producto, $topVentas);
+
+            $sqlOferta = "SELECT porcentaje_descuento FROM oferta WHERE id_producto = $id_producto";
+            $resultadoOferta = $conn->query($sqlOferta);
+            $tieneOferta = $resultadoOferta && $resultadoOferta->num_rows > 0;
+            $precioOriginal = $producto['precio_unitario'];
+            $precioConDescuento = $precioOriginal;
+
+            if ($tieneOferta) {
+                $oferta = $resultadoOferta->fetch_assoc();
+                $porcentajeDescuento = $oferta['porcentaje_descuento'];
+                $precioConDescuento = $precioOriginal - ($precioOriginal * $porcentajeDescuento / 100);
+            }
+
+            echo generarCartaProducto($id_producto, $producto, $esTopVenta, $tieneOferta, $precioOriginal, $precioConDescuento);
         }
-        echo json_encode($productos);
     } else {
-        echo json_encode(["error" => "No se encontraron productos."]);
+        echo '<p>No se encontraron productos.</p>';
     }
-    
+} else {
+    echo '<p>No se ingresó un término de búsqueda.</p>';
 }
 ?>
