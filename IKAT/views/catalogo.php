@@ -14,7 +14,10 @@
         <script src="../assets/js/carritoDeseos.js"></script>
         <script src="../assets/js/etiquetas.js"></script>
         <script src="../assets/js/stars.js"></script>
-        <?php include '../assets/php/dropdowns.php'; ?>
+        <?php
+        include '../assets/php/dropdowns.php';
+        include '../assets/php/generar_carta_producto.php';
+        ?>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +26,14 @@
     </head>
 
     <body>
+        <?php
+        // Conectar a la base de datos
+        include_once '../config/conexion.php';
+        include_once '../assets/php/calcular_top_ventas.php'; // Incluir la función para obtener el top de ventas
 
+        // Obtener el top de ventas
+        $topVentas = obtenerTopVentas($conn);
+        ?>
         <div class="container-f">
             <!-- Header -->
             <?php include '../templates/header.php'; ?>
@@ -65,7 +75,7 @@
                                 onfocus="barraBusqueda()" oninput="barraBusqueda()">
 
                             <!-- Botón buscar -->
-                            <button class="input-group-text" id="buscarBtnMain" type="button"
+                            <button class="input-group-text" id="buscarButton" type="button"
                                 onclick="buscarProductos()">
                                 <i class="bi bi-search"></i>
                             </button>
@@ -76,63 +86,35 @@
                     </div>
                 </div>
 
-
-
                 <!-- Contenedor de filtros -->
-                <div class="container mt-3">
-                    <form id="form-filtros" method="GET" action="javascript:void(0);"
-                        onsubmit="return filtrarProductos()"> <!-- Añadimos el formulario -->
+                <div class="container mt-5">
+                    <h1 class="text-center m-0">Productos</h1>
+                    <hr class="mb-4 mt-0">
+                    <form id="form-filtros" method="GET" action="javascript:void(0);" onsubmit="return filtrarProductos()"> <!-- Añadimos el formulario -->
                         <div class="row justify-content-center">
-                            <h1 class="text-center mb-3">Productos</h1>
-                            <hr class="mb-4">
-
                             <!-- Filtro de Categoría -->
-                            <div class="col-auto mb-3">
-                                <div class="dropdown">
-                                    <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                        id="dropdownCategory" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Categoría
-                                    </button>
-                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownCategory">
-                                        <?php generarDropdown('categoria', 'categoria', 'id_categoria', 'nombre_categoria'); ?>
-                                    </div>
+                            <div class="dropdown d-flex justify-content-center">
+                                <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
+                                    id="dropdownCategory" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Comienza eligiendo una categoría
+                                </button>
+                                <div class="dropdown-menu p-2" aria-labelledby="dropdownCategory">
+                                    <?php
+                                    $sql = "SELECT id_categoria, nombre_categoria FROM categoria";
+                                    $result = $conn->query($sql);
+
+                                    if ($result && $result->num_rows > 0) {
+                                        while ($fila = $result->fetch_assoc()) {
+                                            echo "<button class='dropdown-item' onclick='seleccionarCategoria(" . $fila['id_categoria'] . ")'>" . $fila['nombre_categoria'] . "</button>";
+                                        }
+                                    }
+                                    ?>
                                 </div>
                             </div>
-
-                            <!-- Filtro de Color -->
-                            <div class="col-auto mb-3">
-                                <div class="dropdown">
-                                    <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                        id="dropdownColor" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Color
-                                    </button>
-                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownColor">
-                                        <?php generarDropdown('color', 'color', 'id_color', 'nombre_color'); ?>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Filtro de Material -->
-                            <div class="col-auto mb-3">
-                                <div class="dropdown">
-                                    <button class="btn btn-light border dropdown-toggle rounded-pill" type="button"
-                                        id="dropdownMaterial" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Material
-                                    </button>
-                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownMaterial">
-                                        <?php generarDropdown('material', 'material', 'id_material', 'nombre_material'); ?>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Botón para aplicar los filtros -->
-                            <div class="col-auto mb-3">
-                                <button type="submit" class="btn btn-dark rounded-pill">Aplicar filtros</button>
-                            </div>
-
                         </div>
                     </form> <!-- Fin del formulario -->
                 </div>
+
 
                 <!-- Contenedor de la barra de etiquetas -->
                 <div class="container mt-3">
@@ -146,17 +128,6 @@
                 <?php
                 // Conectar a la base de datos
                 include_once '../config/conexion.php';
-
-                // Consulta para obtener el top 3 de productos más vendidos
-                $sqlTopVentas = "SELECT id_producto FROM producto WHERE activo = 1 ORDER BY cantidad_vendida DESC LIMIT 3";
-                $resultTopVentas = $conn->query($sqlTopVentas);
-                
-                $topVentas = [];
-                if ($resultTopVentas && $resultTopVentas->num_rows > 0) {
-                    while ($row = $resultTopVentas->fetch_assoc()) {
-                        $topVentas[] = $row['id_producto'];
-                    }
-                }   
 
                 // Configuración de paginación
                 $productosPorPagina = 6;
@@ -210,8 +181,6 @@
                                 <?php
                                 $id_producto = $producto['id_producto'];
                                 $esTopVenta = in_array($id_producto, $topVentas); // Verificar si es top venta
-                                $ruta_original = $producto['foto_producto'];
-                                $ruta_ajustada = str_replace("../../", "../", $ruta_original);
 
                                 // Verificar si el producto tiene una oferta
                                 $sqlOferta = "SELECT porcentaje_descuento FROM oferta WHERE id_producto = $id_producto";
@@ -225,53 +194,14 @@
                                     $porcentajeDescuento = $oferta['porcentaje_descuento'];
                                     $precioConDescuento = $precioOriginal - ($precioOriginal * $porcentajeDescuento / 100);
                                 }
-                                ?>
-                                <div class="col-6 col-md-4 mb-4">
-                                    <div class="card d-flex flex-column h-100">
-                                        <a href="producto.php?id=<?= $id_producto ?>" class="text-decoration-none">
-                                            <div class="card-img-container position-relative d-flex justify-content-center align-items-center">
-                                                <img src="<?= $ruta_ajustada ?>" class="card-img-top img-fluid h-100" alt="Imagen del producto" style="object-fit: cover; width: 100%; height: auto;" id="product-image-<?= $id_producto ?>">
 
-                                                <?php if ($esTopVenta): ?>
-                                                    <!-- Indicador de Top Ventas -->
-                                                    <span class="badge bg-danger position-absolute top-0 start-0 m-2">Top Ventas</span>
-                                                <?php endif; ?>
-                                            </div>
-                                        </a>
-                                        <div class="card-body d-flex flex-column">
-                                            <h5 class="card-title text-truncate"><?= htmlspecialchars($producto['nombre_producto']) ?></h5>
-                                            <div class="mb-3">
-                                                <?php if ($tieneOferta): ?>
-                                                    <span class="text-muted text-decoration-line-through" style="font-size: 0.9rem;">
-                                                        $<?= number_format($precioOriginal, 0, ',', '.') ?>
-                                                    </span>
-                                                    <span class="text-danger fw-bold" style="font-size: 1.2rem;">
-                                                        $<?= number_format($precioConDescuento, 0, ',', '.') ?>
-                                                    </span>
-                                                <?php else: ?>
-                                                    <h6 class="card-text mb-3">$<?= number_format($precioOriginal, 0, ',', '.') ?></h6>
-                                                <?php endif; ?>
-                                            </div>
-                                            <div class="d-flex justify-content-between align-items-center pe-3">
-                                                <div class="mt-auto d-flex align-items-center">
-                                                    <button type="button" class="btn btn-secondary me-2 carrito-btn" onclick="agregarAlCarrito(<?= $id_producto ?>)">
-                                                        <i class="bi bi-cart-plus"></i>
-                                                    </button>
-                                                    <button type="button" class="btn btn-secondary lista-deseos-btn" onclick="agregarAListaDeDeseos(<?= $id_producto ?>)">
-                                                        <i class="bi bi-heart"></i>
-                                                    </button>
-                                                </div>
-                                                <!-- Estrellitas dinámicas -->
-                                                <div id="stars-container-<?= $id_producto ?>" class="d-flex align-items-center gap-1">
-                                                    <span>Cargando estrellas...</span> <!-- Placeholder mientras se carga AJAX -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                // Usar la función para generar la carta
+                                echo generarCartaProducto($id_producto, $producto, $esTopVenta, $tieneOferta, $precioOriginal, $precioConDescuento);
+                                ?>
                             <?php endwhile; ?>
                         </div>
                     </div>
+
                 <?php
                 else:
                     echo "<p>No se encontraron productos.</p>";
@@ -318,13 +248,9 @@
             <?php include '../templates/footer.php'; ?>
         </div>
 
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-        </script>
-
-        <script>
-            // Pasar el valor de PHP (true o false) a JavaScript
-            let usuarioAutenticado = <?php echo json_encode($usuarioAutenticado); ?>;
         </script>
 
 

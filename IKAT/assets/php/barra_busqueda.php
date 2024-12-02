@@ -1,33 +1,33 @@
 <?php
 include '../../config/conexion.php';
-header('Content-Type: application/json');
 
-// Verifica si se ha enviado una búsqueda
-if (isset($_GET['buscar'])) {
-    $buscar = $_GET['buscar'];
+// Obtener el término de búsqueda
+$buscar = $_GET['buscar'] ?? '';
 
-    // Consulta para buscar productos con LIKE
-    $sql = "SELECT id_producto, nombre_producto, foto_producto, precio_unitario 
-            FROM producto WHERE nombre_producto LIKE ? AND activo = 1
-            ORDER BY nombre_producto ASC";
-    $stmt = $conn->prepare($sql);
-    $param = "%" . $buscar . "%";
-    $stmt->bind_param("s", $param);
-    $stmt->execute();
-    $result = $stmt->get_result();
+if ($buscar) {
+    $sql = "SELECT id_producto, nombre_producto, foto_producto FROM producto 
+    WHERE nombre_producto LIKE '%$buscar%' AND activo = 1 ORDER BY nombre_producto ASC LIMIT 10";
+    
+    $result = $conn->query($sql);
 
     $productos = [];
-    while ($producto = $result->fetch_assoc()) {
-        $productos[] = $producto; // Agregar resultados al arreglo
+    if ($result && $result->num_rows > 0) {
+        while ($producto = $result->fetch_assoc()) {
+            // Ajustar la ruta de la imagen
+            $ruta_original = $producto['foto_producto'];
+            $ruta_ajustada = str_replace("../../", "../", $ruta_original);
+
+            $productos[] = [
+                'id_producto' => $producto['id_producto'],
+                'nombre_producto' => $producto['nombre_producto'],
+                'foto_producto' => $ruta_ajustada,
+            ];
+        }
     }
 
-    // Si no hay resultados, enviar un arreglo vacío
-    if (empty($productos)) {
-        echo json_encode([]); // Responder con un arreglo vacío si no hay productos
-    } else {
-        echo json_encode($productos); // Devolver resultados en formato JSON
-    }
+    // Devolver los resultados como JSON
+    echo json_encode($productos);
 } else {
-    echo json_encode(['error' => 'No se ha enviado parámetro de búsqueda']);
+    echo json_encode([]);
 }
 ?>

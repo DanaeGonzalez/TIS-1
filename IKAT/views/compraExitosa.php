@@ -174,7 +174,6 @@
                             <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Imagen</th>
                                         <th>Producto</th>
                                         <th>Precio Unitario</th>
                                         <th>Cantidad</th>
@@ -211,10 +210,7 @@
 
                                     while ($row = $result->fetch_assoc()) {
                                         $total_compra = $row['total_compra'];
-                                        $imagen = !empty($row['foto_producto']) ? $row['foto_producto'] : '../assets/images/default.png';
-
                                         echo "<tr>
-                                    <td><img src='$imagen' alt='Imagen de {$row['nombre_producto']}' class='product-img'></td>
                                     <td>{$row['nombre_producto']}</td>
                                     <td>$" . number_format($row['precio_unitario'], 0, ',', '.') . "</td>
                                     <td>{$row['cantidad']}</td>
@@ -225,7 +221,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="4" class="text-end"><strong>Total Pagado:</strong></td>
+                                        <td colspan="3" class="text-end"><strong>Total Pagado:</strong></td>
                                         <td><strong>$<?= number_format($total_compra, 0, ',', '.') ?></strong></td>
                                     </tr>
                                 </tfoot>

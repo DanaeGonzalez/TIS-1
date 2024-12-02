@@ -1,146 +1,113 @@
 function buscarProductos() {
-    // Intentar capturar el input del modal o de la barra principal
-    const buscarInputModal = document.getElementById('buscarInputModal');
-    const buscarInputMain = document.getElementById('buscarInputMain');
+    const buscarInput = document.getElementById('buscarInputMain');
+    const productContainer = document.getElementById("product-container");
 
-    // Determinar cuál input usar en base a su disponibilidad
-    const buscarInput = buscarInputModal && buscarInputModal.value ? buscarInputModal : buscarInputMain;
-
-    // Verificar si el campo de entrada fue encontrado
     if (!buscarInput) {
         console.error("Campo de búsqueda no encontrado.");
-        return false;
+        return;
     }
 
-    const buscar = buscarInput.value; // Obtener el valor del input
-    console.log("Valor de búsqueda:", buscar); // Mensaje de depuración
+    const realizarBusqueda = () => {
+        const buscar = buscarInput.value.trim();
 
-    const resultadosDiv = document.getElementById('resultadosBusqueda');
-    if (resultadosDiv) {
-        resultadosDiv.innerHTML = 'Buscando...';
-    }
+        if (!buscar) {
+            console.warn("No se ingresó ningún término de búsqueda.");
+            return;
+        }
 
-    const productContainer = document.getElementById("product-container");
-    productContainer.innerHTML = ""; // Limpia solo el área de productos, manteniendo la barra de filtros
+        // Mostrar un mensaje de carga mientras se obtienen los datos
+        productContainer.innerHTML = "<p>Buscando productos...</p>";
 
-    // Hacer la solicitud fetch
-    fetch(`../assets/php/barra_busqueda.php?buscar=${encodeURIComponent(buscar)}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la respuesta del servidor');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log("Datos recibidos:", data); // Mensaje de depuración
-
-            if (resultadosDiv) {
-                resultadosDiv.innerHTML = ''; // Limpiar los resultados previos
-            }
-
-            if (Array.isArray(data) && data.length > 0) {
-                data.forEach(producto => {
-                    const item = document.createElement('div');
-                    item.classList.add('producto-item');
-                    productContainer.innerHTML += `
-                       <div class="col-6 col-md-4 mb-4">
-                           <a href="producto.php?id=${producto.id_producto}" class="text-decoration-none">
-                               <div class="card" style="width: 100%;">
-                                   <img src="${producto.foto_producto}" class="card-img-top" alt="${producto.nombre_producto}">
-                                   <div class="card-body">
-                                       <h5 class="card-title">${producto.nombre_producto}</h5>
-                                       <h6 class="card-text">$${new Intl.NumberFormat().format(producto.precio_unitario)}</h6>
-                                       <div class="d-flex align-items-center">
-                                           <div>
-                                               <button type="button" class="btn btn-outline-secondary">
-                                                   <i class="bi bi-cart-plus"></i>
-                                               </button>
-                                               <button type="button" class="btn btn-outline-secondary">
-                                                   <i class="bi bi-heart"></i>
-                                               </button>
-                                           </div>
-                                       </div>
-                                   </div>
-                               </div>
-                           </a>
-                       </div>`;
-                    resultadosDiv.appendChild(item);
-                });
-            } else {
-                if (resultadosDiv) {
-                    resultadosDiv.innerHTML = '<p style="color: #555; font-size: 16px;">No se encontraron productos.</p>';
+        fetch(`../assets/php/busqueda_catalogo.php?buscar=${encodeURIComponent(buscar)}`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
                 }
-            }
-        })
-        .catch(error => {
-            if (resultadosDiv) {
-                resultadosDiv.innerHTML = '<p style="color: red; font-size: 16px;">Error en la búsqueda. Intenta nuevamente.</p>';
-            }
-            console.error('Error en la búsqueda:', error);
-        });
+                return response.text(); // Recibimos HTML directamente
+            })
+            .then((html) => {
+                productContainer.innerHTML = html; // Reemplazar contenido del contenedor con el HTML recibido
+                
+                // Cargar las estrellas dinámicamente después de renderizar las cartas
+                const productContainers = document.querySelectorAll('[id^="stars-container-"]');
+                productContainers.forEach(container => {
+                    const idProducto = container.id.split('-')[2]; // Obtener el ID del producto
+                    cargarEstrellas(idProducto);
+                });
+            })
+            .catch((error) => {
+                productContainer.innerHTML = "<p>Error al realizar la búsqueda. Intenta nuevamente.</p>";
+                console.error('Error en la búsqueda:', error);
+            });
+    };
 
-    return false; // Evita el envío del formulario
+    // Evento al presionar Enter
+    buscarInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Evitar el envío automático del formulario
+            realizarBusqueda();
+        }
+    });
+
+    // Evento al hacer clic en el botón de búsqueda
+    const buscarButton = document.getElementById('buscarButton');
+    if (buscarButton) {
+        buscarButton.addEventListener('click', realizarBusqueda);
+    }
 }
 
 function filtrarProductos() {
-    document.getElementById("form-filtros").addEventListener("submit", function (event) {
-        event.preventDefault(); // Evita el envío tradicional del formulario
+    const form = document.getElementById("form-filtros");
+    const productContainer = document.getElementById("product-container");
 
-        const formData = new FormData(this);
-        const queryString = new URLSearchParams(formData).toString();
+    if (!form || !productContainer) {
+        console.error("Formulario o contenedor de productos no encontrado.");
+        return;
+    }
 
-        fetch(`../assets/php/filtros_catalogo.php?${queryString}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Error en la respuesta del servidor");
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Selecciona solo el contenedor de los productos
-                const productContainer = document.getElementById("product-container");
-                productContainer.innerHTML = ""; // Limpia solo el área de productos, manteniendo la barra de filtros
+    // Declarar formData correctamente antes de usarlo
+    const formData = new FormData(form);
 
-                if (data.length === 0) {
-                    productContainer.innerHTML = "<p>No se encontraron productos.</p>";
-                } else {
-                    data.forEach(producto => {
-                        productContainer.innerHTML += `
-                            <div class="col-6 col-md-4 mb-4">
-                                <div class="card d-flex flex-column h-100">
-                                    <a href="producto.php?id=${producto.id_producto}" class="text-decoration-none">
-                                        <div class="card-img-container d-flex justify-content-center align-items-center">
-                                            <img src="${producto.foto_producto}" class="card-img-top img-fluid h-100" alt="${producto.nombre_producto}" style="object-fit: cover; width: 100%; height: auto;" 
-                                                 id="product-image-${producto.id_producto}">
-                                        </div>
-                                    </a>
-                                    <div class="card-body d-flex flex-column">
-                                        <h5 class="card-title text-truncate">${producto.nombre_producto}</h5>
-                                        <h6 class="card-text">$${new Intl.NumberFormat().format(producto.precio_unitario)}</h6>
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <button type="button" class="btn btn-secondary carrito-btn"
-                                                    ${!usuarioAutenticado ? 'disabled' : ''}
-                                                    onclick="agregarAlCarrito(${producto.id_producto})">
-                                                    <i class="bi bi-cart-plus"></i>
-                                                </button>
+    console.log("Filtros enviados:");
+    for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+    }
 
-                                                <button type="button" class="btn btn-secondary lista-deseos-btn"
-                                                    ${!usuarioAutenticado ? 'disabled' : ''}
-                                                    onclick="agregarAListaDeDeseos(${producto.id_producto})">
-                                                    <i class="bi bi-heart"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    });
-                }
-            })
-    });
+    // Mostrar un mensaje de carga mientras se obtienen los productos
+    productContainer.innerHTML = "<p>Cargando productos...</p>";
+
+    // Enviar los filtros seleccionados al servidor
+    fetch(`../assets/php/filtros_catalogo.php`, {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al filtrar los productos.");
+            }
+            return response.text(); // Recibe el HTML de los productos
+        })
+        .then(html => {
+            productContainer.innerHTML = html; // Actualiza el contenedor con los productos filtrados
+            cargarEstrellasDinamicamente(); // Llamar la función para cargar estrellas
+        })
+        .catch(error => {
+            console.error("Error al filtrar los productos:", error);
+            productContainer.innerHTML = "<p>Error al cargar los productos. Intenta nuevamente.</p>";
+        });
 }
+
+
+// Agregar evento de cambio a los filtros
+document.addEventListener("change", event => {
+    if (event.target.closest("#form-filtros")) {
+        filtrarProductos();
+    }
+});
+
+
+
+
 
 function barraBusqueda() {
     const buscarInputMain = document.getElementById('buscarInputMain');
@@ -154,7 +121,7 @@ function barraBusqueda() {
     // Función para mostrar resultados
     function realizarBusqueda(buscar = '') {
         if (listaResultados) {
-            listaResultados.innerHTML = 'Buscando...'; // Mostrar un mensaje temporal
+            listaResultados.innerHTML = '<li class="list-group-item text-muted">Buscando...</li>'; // Mostrar un mensaje temporal
             listaResultados.classList.remove('d-none'); // Asegurar que la lista sea visible
         }
 
@@ -165,12 +132,11 @@ function barraBusqueda() {
 
                 if (Array.isArray(data) && data.length > 0) {
                     data.forEach(producto => {
-                        const rutaAjustada = producto.foto_producto.replace("../../", "../");
                         const item = document.createElement('li');
                         item.classList.add('list-group-item', 'sugerencia-item');
                         item.innerHTML = `
                             <a href="producto.php?id=${producto.id_producto}" class="d-flex align-items-center" style="text-decoration: none;">
-                                <img src="${rutaAjustada}" alt="${producto.nombre_producto}" class="sugerencia-img me-2">
+                                <img src="${producto.foto_producto}" alt="${producto.nombre_producto}" class="sugerencia-img me-2">
                                 <span>${producto.nombre_producto}</span>
                             </a>`;
                         listaResultados.appendChild(item);
@@ -210,5 +176,102 @@ function barraBusqueda() {
         }
     });
 }
+
+function cargarFiltrosPorCategoria(idCategoria) {
+    console.log("Cargando filtros para la categoría:", idCategoria); // Depuración
+    const filtrosContainer = document.getElementById("form-filtros");
+
+    if (!filtrosContainer) {
+        console.error("Contenedor de filtros no encontrado.");
+        return;
+    }
+
+    filtrosContainer.innerHTML = "<p>Cargando filtros...</p>";
+
+    fetch(`../assets/php/cargar_filtros.php?id_categoria=${idCategoria}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al cargar los filtros.");
+            }
+            return response.text(); // Recibe HTML de los nuevos filtros
+        })
+        .then(html => {
+            //console.log("HTML recibido:", html); // Depuración
+            filtrosContainer.innerHTML = html;
+
+            // Inicializar dropdowns de Bootstrap
+            const dropdowns = document.querySelectorAll('.dropdown-toggle');
+            dropdowns.forEach(dropdown => {
+                new bootstrap.Dropdown(dropdown);
+            });
+        })
+        .catch(error => {
+            console.error("Error al cargar los filtros:", error);
+            filtrosContainer.innerHTML = "<p>Error al cargar los filtros. Intenta nuevamente.</p>";
+        });
+}
+
+function cargarFiltrosYProductosPorCategoria(idCategoria) {
+    cargarFiltrosPorCategoria(idCategoria); // Llama a la función existente para cargar los filtros
+
+    const productContainer = document.getElementById("product-container");
+
+    if (!productContainer) {
+        console.error("Contenedor de productos no encontrado.");
+        return;
+    }
+
+    // Mostrar un mensaje de carga mientras se obtienen los productos
+    productContainer.innerHTML = "<p>Cargando productos...</p>";
+
+    // Realizar la llamada para filtrar productos por categoría
+    fetch(`../assets/php/filtros_catalogo.php`, {
+        method: "POST",
+        body: new URLSearchParams({ categoria: idCategoria }),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al cargar los productos.");
+            }
+            return response.text(); // Recibe el HTML de los productos
+        })
+        .then(html => {
+            productContainer.innerHTML = html; // Actualiza el contenedor con los productos filtrados
+            cargarEstrellasDinamicamente(); // Llamar la función para cargar estrellas
+        })
+        .catch(error => {
+            console.error("Error al cargar los productos:", error);
+            productContainer.innerHTML = "<p>Error al cargar los productos. Intenta nuevamente.</p>";
+        });
+}
+
+
+function seleccionarCategoria(idCategoria) {
+    console.log("Seleccionando categoría:", idCategoria);
+
+    fetch('../assets/php/seleccionar_categoria.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `id_categoria=${idCategoria}`
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log(data);
+        // Recargar filtros y productos con la nueva categoría
+        cargarFiltrosYProductosPorCategoria(idCategoria);
+    })
+    .catch(error => {
+        console.error("Error al seleccionar la categoría:", error);
+    });
+}
+
+function cargarEstrellasDinamicamente() {
+    const productContainers = document.querySelectorAll('[id^="stars-container-"]');
+    productContainers.forEach(container => {
+        const idProducto = container.id.split('-')[2]; // Obtener el ID del producto
+        cargarEstrellas(idProducto);
+    });
+}
+
 
 
