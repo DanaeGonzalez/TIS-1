@@ -18,4 +18,7 @@
     } else {
         $_SESSION['mensaje'] = "No se recibió un ID de oferta válido.";
     }
+    header('Location: mostrar_ofertas.php');
+    exit();
+
 ?>

@@ -4,6 +4,38 @@ session_start();
 
 $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : '';
 unset($_SESSION['mensaje']);
+
+$sqlProductos = "SELECT id_producto, nombre_producto FROM producto";
+$resultProductos = $conn->query($sqlProductos);
+
+$productos = [];
+
+if ($resultProductos->num_rows > 0) {
+    while($rowProducto = $resultProductos->fetch_assoc()) {
+        $productos[] = $rowProducto;
+    }
+}
+$opcionesProducto = "";
+foreach ($productos as $producto) {
+    $opcionesProducto .= "<option value='" . $producto['id_producto'] . "'>" . $producto['nombre_producto'] . "</option>";
+}
+
+
+$sqlUsuarios = "SELECT id_usuario, nombre_usuario FROM usuario";
+$resultUsuarios = $conn->query($sqlUsuarios);
+$usuarios = [];
+
+if ($resultUsuarios->num_rows > 0) {
+    while($rowUsuario = $resultUsuarios->fetch_assoc()) {
+        $usuarios[] = $rowUsuario;
+    }
+}
+
+$opcionesUsuario = "";
+foreach ($usuarios as $usuario) {
+    $opcionesUsuario .= "<option value='" . $usuario['id_usuario'] . "'>" . $usuario['nombre_usuario'] . "</option>";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -40,6 +72,16 @@ unset($_SESSION['mensaje']);
             <?php endif; ?>     
 
             <h1 class="text-center p-4">Mantenedor de Reseñas</h1>
+
+            <?php
+                if ($_SESSION['tipo_usuario'] == 'Superadmin') {
+                            echo '<div class="d-flex justify-content-end mb-3">
+                    <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearResenaModal">
+                        <i class="bi bi-file-earmark-plus"></i>
+                    </a>
+                </div>';
+                        }
+            ?>
             
             <div class="table-responsive">
             <?php
@@ -132,6 +174,42 @@ unset($_SESSION['mensaje']);
                             </div>
                         </div>
                         ";
+                        echo "
+                        <div class='modal fade' id='crearResenaModal' tabindex='-1' aria-labelledby='crearResenaModalLabel' aria-hidden='true'>
+                            <div class='modal-dialog'>
+                                <div class='modal-content'>
+                                    <div class='modal-header'>
+                                        <h5 class='modal-title' id='crearResenaModalLabel'>Crear Reseña</h5>
+                                        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                    </div>
+                                    <div class='modal-body'>
+                                        <form action='insertar_resenia.php' method='POST'>
+                                            <label for='calificacion' class='form-label'>Calificación (1-5):</label>
+                                            <input class='form-control' type='number' step='1' min='1' max='5' name='calificacion' required><br>
+
+                                            <label for='comentario' class='form-label'>Comentario:</label>
+                                            <input class='form-control' type='text' name='comentario'><br>
+
+                                            <label for='id_usuario' class='form-label'>Usuario:</label>
+                                            <select class='form-select mb-4' name='id_usuario' required>
+                                                <option value='' disabled selected>Selecciona un usuario</option>
+                                                $opcionesUsuario
+                                            </select>
+
+                                            <label for='id_producto' class='form-label'>Producto:</label>
+                                            <select class='form-select mb-4' name='id_producto' required>
+                                                <option value='' disabled selected>Selecciona un producto</option>
+                                                $opcionesProducto
+                                            </select>
+
+                                            <input class='form-control btn btn-primary d-block' type='submit' value='Crear Reseña'>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>";
+
+
                         
                         echo "
                         <div class='modal fade' id='banModal{$row['id_resenia']}' tabindex='-1' aria-labelledby='banModalLabel{$row['id_resenia']}' aria-hidden='true'>
@@ -156,16 +234,8 @@ unset($_SESSION['mensaje']);
                             </div>
                         </div>";
                     }
-                    echo "</tbody></table>";
-                    if ($_SESSION['tipo_usuario'] == 'Superadmin') {
-                        echo "<a class='btn btn-primary mt-3 d-block' href='insertar_resenia.php'>Agregar Reseña</a>";
-                    }
-                } else {
-                    echo "<p class='text-center'>No hay reseñas registradas.</p>";
-                    if ($_SESSION['tipo_usuario'] == 'Superadmin') {
-                        echo "<a class='btn btn-primary mt-3 d-block' href='insertar_resenia.php'>Agregar Reseña</a>";
-                    }
-                }
+
+                } 
             ?>
 
             </div>

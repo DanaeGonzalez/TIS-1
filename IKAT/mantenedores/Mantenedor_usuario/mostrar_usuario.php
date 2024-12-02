@@ -36,6 +36,12 @@ unset($_SESSION['mensaje']);
             <?php endif; ?>
 
             <h1 class="text-center p-4">Mantenedor de Usuarios</h1>
+
+            <div class="d-flex justify-content-end mb-3">
+                    <a class="btn btn-success" data-bs-toggle='modal' data-bs-target='#agregarUsuarioModal'>
+                        <i class="bi bi-file-earmark-plus"></i>
+                    </a>
+                </div>
             
             <div class="table-responsive">
                 <?php
@@ -73,8 +79,17 @@ unset($_SESSION['mensaje']);
                                     <td>{$row['puntos_totales']}</td>
                                     <td>{$row['activo']}</td>
                                     <td>   
-                                        <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarUsuarioModal" . $row["id_usuario"] . "'>Editar</a> |
-                                        <a href='cambiar_estado_producto.php?id=" . $row["id_usuario"] . "' class='btn btn-danger btn-sm'>Modificar estado</a>
+                                        <div class='d-flex justify-content-center flex-wrap gap-1'>
+                                            <a class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#editarUsuarioModal" . $row["id_usuario"] . "'>
+                                                <i class='bi bi-pen'></i>
+                                            </a>
+                                            <a class='btn btn-primary btn-sm' data-bs-toggle='modal' data-bs-target='#modificarPuntosModal" . $row["id_usuario"] . "'>
+                                                <i class='bi bi-plus-circle'></i>
+                                            </a>
+                                            <a href='cambiar_estado_producto.php?id=" . $row["id_usuario"] . "' class='btn btn-danger btn-sm'>
+                                                <i class='bi bi-trash3'></i>
+                                            </a>
+                                        </div>
                                     </td>
                                   </tr>";
 
@@ -111,20 +126,38 @@ unset($_SESSION['mensaje']);
 
                                                 <input class='form-control btn btn-primary d-block' type='submit' value='Actualizar Usuario'>
 
-                                                <a href='mostrar_usuario.php' class='btn btn-primary mt-3 d-block'>Volver</a>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>";
+
+                            echo "
+                            <div class='modal fade' id='modificarPuntosModal" . $row["id_usuario"] . "' tabindex='-1' aria-labelledby='modificarPuntosModalLabel" . $row["id_usuario"] . "' aria-hidden='true'>
+                                <div class='modal-dialog'>
+                                    <div class='modal-content'>
+                                        <div class='modal-header'>
+                                            <h5 class='modal-title' id='modificarPuntosModalLabel" . $row["id_usuario"] . "'>Modificar Puntos de Usuario</h5>
+                                            <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                        </div>
+                                        <div class='modal-body'>
+                                            <form action='modificar_puntos_usuario.php' method='post'>
+                                                <input type='hidden' name='id_usuario' value='" . $row['id_usuario'] . "'>
+                                                    
+                                                <label for='cantidad_modificar' class='form-label mt-3'>Cantidad a modificar (Negativo para descontar):</label>
+                                                <input class='form-control' type='number' name='cantidad_modificar' id='cantidad_modificar" . $row["id_usuario"] . "' required>
+
+                                                <input class='form-control btn btn-primary d-block mt-3' type='submit' value='Actualizar puntos'>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>";
+
                         }
                         echo "</tbody></table>";
-                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarUsuarioModal'>Agregar Usuario</a>";
-                        echo "<a href='../Mantenedor_puntos/modificar_puntos_usuario.php' class='btn btn-primary mt-3 d-block'>Mantenedor Puntos</a>";
                     } else {
                         echo "<p class='text-center'>No hay usuarios registrados.</p>";
-                        echo "<a class='btn btn-primary mt-3 d-block' data-bs-toggle='modal' data-bs-target='#agregarUsuarioModal'>Agregar Usuario</a>";
-                        echo "<a href='../menu/menu.html' class='btn btn-primary mt-3 d-block'>Volver al menú</a>";
                     }
                 ?>
             </div>

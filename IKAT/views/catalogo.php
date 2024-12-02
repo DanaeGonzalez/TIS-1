@@ -253,12 +253,18 @@
                                             <?php endif; ?>
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center pe-3">
-                                            <button type="button" class="btn btn-secondary me-2 carrito-btn" onclick="agregarAlCarrito(<?= $id_producto ?>)">
-                                                <i class="bi bi-cart-plus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-secondary lista-deseos-btn" onclick="agregarAListaDeDeseos(<?= $id_producto ?>)">
-                                                <i class="bi bi-heart"></i>
-                                            </button>
+                                            <div class="mt-auto d-flex align-items-center">
+                                                <button type="button" class="btn btn-secondary me-2 carrito-btn" onclick="agregarAlCarrito(<?= $id_producto ?>)">
+                                                    <i class="bi bi-cart-plus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-secondary lista-deseos-btn" onclick="agregarAListaDeDeseos(<?= $id_producto ?>)">
+                                                    <i class="bi bi-heart"></i>
+                                                </button>
+                                            </div>
+                                            <!-- Estrellitas dinámicas -->
+                                            <div id="stars-container-<?= $id_producto ?>" class="d-flex align-items-center gap-1">
+                                                <span>Cargando estrellas...</span> <!-- Placeholder mientras se carga AJAX -->
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
